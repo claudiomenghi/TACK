@@ -45,51 +45,72 @@ public class QTLEventually extends QTLFormula {
 		String f2 = t.iff(
 							high(t),
 							t.or(
-									t.and(
-											lO(t), t.rel("=", z0(t), "0"),
-											t.X(
-													t.U(
-															t.rel(">", z0(t), "0"), 
-															t.and(
-																	befDnowU_f1,
-																	t.rel("=", z0(t), String.valueOf(b)),
-																	t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
-																)
-														)
-												)
-									),
-									t.and(
-											lO(t), t.rel("=", z1(t), "0"),
-											t.X(
-													t.U(
-															t.rel(">", z1(t), "0"), 
-															t.and(
-																	befDnowU_f1,
-																	t.rel("=", z1(t), String.valueOf(b)),
-																	t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
-																)
-														)
-												)
-									),
-									t.and(
-											orig, 
-											lC(t),
-											t.or(
-													subf.high(t),
-													t.X(
-															t.U(
-																	t.rel(">", z0(t), "0"),
-																	t.and(
-																			befDnowU_f1,
-																			t.rel(">", z0(t), "0"),
-																			t.rel("<", z0(t), String.valueOf(b))
+								t.and(
+									t.neg(orig),
+									t.or(
+											t.and(
+												lO(t), t.rel("=", z0(t), "0"),
+												t.X(
+														t.U(
+																t.rel(">", z0(t), "0"), 
+																t.and(
+																		befDnowU_f1,
+																		t.rel("=", z0(t), String.valueOf(b)),
+																		t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
 																	)
 															)
 													)
+											),
+											t.and(
+													lO(t), t.rel("=", z1(t), "0"),
+													t.X(
+															t.U(
+																	t.rel(">", z1(t), "0"), 
+																	t.and(
+																			befDnowU_f1,
+																			t.rel("=", z1(t), String.valueOf(b)),
+																			t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
+																		)
+																)
+														)
 											)
-									)
-							)
-					);
+										)
+									),
+									t.and(
+										orig,
+										t.or(
+											t.and(
+												lC(t),
+												t.or(
+														subf.high(t),
+														t.X(
+																t.U(
+																		t.rel(">", z0(t), "0"),
+																		t.and(
+																				befDnowU_f1,
+																				t.rel(">", z0(t), "0"),
+																				t.rel("<", z0(t), String.valueOf(b))
+																		)
+																)
+														)
+												)
+											),
+											t.and(
+												lO(t),
+												t.X(
+														t.U(
+																t.rel(">", z0(t), "0"),
+																t.and(
+																		befDnowU_f1,
+																		t.rel("=", z0(t), String.valueOf(b))													
+																)
+														)
+												)
+											)
+										)
+								)
+						)
+				);
 				
 		
 		// formula (16) - (38a)
@@ -99,9 +120,7 @@ public class QTLEventually extends QTLFormula {
 										befDnowU_f1,
 										t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
 								), 
-								t.or(
-										t.and(t.rel("=", z0(t), String.valueOf(b)), t.rel(">", z1(t), String.valueOf(b))),
-										t.and(t.rel("=", z1(t), String.valueOf(b)), t.rel(">", z0(t), String.valueOf(b))))
+								t.or(t.rel("=", z0(t), String.valueOf(b)), t.rel("=", z1(t), String.valueOf(b)))
 					);
 											
 		// Formula (39)
