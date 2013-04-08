@@ -32,7 +32,7 @@ tlparser:	l=logic NEWLINE
 		 	':bound' INT NEWLINE
 			{
 				p.setHistoryLength(Integer.valueOf($INT.text));
-				System.out.print("Starting parsing formulae...");
+				System.out.println("Starting parsing formulae...");
 			}
 			declaration*
 			':formula' fmla

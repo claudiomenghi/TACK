@@ -108,7 +108,7 @@ public class QTLParser extends Parser {
 			match(input,NEWLINE,FOLLOW_NEWLINE_in_tlparser52); 
 
 							p.setHistoryLength(Integer.valueOf((INT1!=null?INT1.getText():null)));
-							System.out.print("Starting parsing formulae...");
+							System.out.println("Starting parsing formulae...");
 						
 			// QTL.g:37:4: ( declaration )*
 			loop1:
