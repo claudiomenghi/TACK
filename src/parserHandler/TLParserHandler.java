@@ -2,15 +2,11 @@ package parserHandler;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.TreeSet;
 
 import java.util.List;
 
@@ -32,7 +28,6 @@ public abstract class TLParserHandler {
 	
 	private int historyLength;
 	
-	private int theFormula;
 	
 	
 	public boolean dict, verbose;
@@ -43,7 +38,6 @@ public abstract class TLParserHandler {
 	TLParserHandler(){
 		formulae = new LinkedHashSet<Formula>();
 		formulaeOf = new ArrayList<Formula>();
-		theFormula = 0;
 		dict = verbose = true;
 	}
 	
