@@ -4,12 +4,18 @@ import delegateTranslator.CLTLTranslator;
 
 public abstract class QTLFormula extends Formula {
 
+	/* Moved in the class Formula
+	 * 
 	public static final QTLFormula qtlTrue = new QTLTrue();
 	public static final QTLFormula qtlFalse = new QTLTrue();
-	
+	*/
 	
 	public QTLFormula(String formula_p){
-		super(formula_p);	
+		super(formula_p);
+		if (this.getClass() != QTLTrue.class && True == null)
+			True = new QTLTrue();
+		if (this.getClass() != QTLFalse.class && False == null && True != null)
+			False = new QTLFalse();
 	}
 
 		
@@ -170,6 +176,8 @@ public abstract class QTLFormula extends Formula {
 		return S(not(f), f);
 	}
 	
+
+	
 	// Eventually: F_<0,b>
 	public static QTLFormula F(QTLFormula f, Bounds aB, int b, Bounds bB){
 		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//F_(0,b)
@@ -188,7 +196,8 @@ public abstract class QTLFormula extends Formula {
 			
 	}
 	
-	// Past: F_<0,b>
+	
+	// Past: P_<0,b>
 	public static QTLFormula P(QTLFormula f, Bounds aB, int b, Bounds bB){
 		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//F_(0,b)
 			return new QTLPast(f, b);
@@ -211,7 +220,9 @@ public abstract class QTLFormula extends Formula {
 	
 	
 	public static QTLFormula or(QTLFormula f1, QTLFormula f2){
-		return not(and(not(f1), not(f2)));
+		//return not(and(not(f1), not(f2)));
+		
+		return new QTLDisjunction(f1,f2);		
 	}
 	
 	public static QTLFormula implies(QTLFormula f1, QTLFormula f2){
@@ -233,7 +244,7 @@ public abstract class QTLFormula extends Formula {
 	}		
 	
 	
-	
+	/*
 	// Globally: G_(0,b>
 	public static QTLFormula G(QTLFormula f, Bounds aB, int b, Bounds bB){
 		if (aB==Bounds.OPEN)					//G_(0,b) or G_(0,b]
@@ -243,6 +254,27 @@ public abstract class QTLFormula extends Formula {
 			return or(f, G(f, Bounds.OPEN, b, bB));
 		
 	}
+	*/
+	
+	// Globally: G_<0,b> NATIVE IMPLMENTATION
+	public static QTLFormula G(QTLFormula f, Bounds aB, int b, Bounds bB){
+		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//G_(0,b)
+			return new QTLGlobally(f, b);
+		
+		else if (aB==Bounds.CLOSED && bB==Bounds.OPEN)			//G_[0,b)
+			return and(f, G(f, Bounds.OPEN, b, bB));
+		
+		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//G_(0,b]
+			return and (
+						G(f,Bounds.OPEN,b,Bounds.OPEN), 
+						G(F(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN)
+					);
+		
+		else return and(f, G(f, Bounds.OPEN, b, Bounds.CLOSED));	//G_[0,b]
+			
+	}
+	
+	
 	
 	// Historically: H_(0,b>
 	public static QTLFormula H(QTLFormula f, Bounds aB, int b, Bounds bB){
@@ -256,6 +288,9 @@ public abstract class QTLFormula extends Formula {
 	
 	// Eventually: F_<a,+oo)
 	public static QTLFormula F(QTLFormula f, int a, Bounds aB){
+		
+		QTLFormula qtlTrue = (QTLFormula)True();
+		
 		if (a==0 && aB==Bounds.OPEN)				//F_(0,+oo)
 			return U(qtlTrue, f);
 		
@@ -278,6 +313,9 @@ public abstract class QTLFormula extends Formula {
 		
 	// Past: P_<a,+oo)
 	public static QTLFormula P(QTLFormula f, int a, Bounds aB){
+		
+		QTLFormula qtlTrue = (QTLFormula)True();
+		
 		if (a==0 && aB==Bounds.OPEN)				//P_(0,+oo)
 			return S(qtlTrue, f);
 		
@@ -301,13 +339,34 @@ public abstract class QTLFormula extends Formula {
 	public static QTLFormula F(QTLFormula f, int a, Bounds aB, int b, Bounds bB){
 		if (a == 0)
 			return F(f, aB, b, bB);
-		else
-			return and( F(f,a,aB), 
-						F(f,Bounds.OPEN,b,bB));
+		else{
+			QTLFormula result = F(G(F(f,0,Bounds.OPEN,a,Bounds.OPEN),0,Bounds.OPEN,a,Bounds.OPEN),0,aB,1,Bounds.OPEN);
+			for (int i=a+1; i<b-1; i++)
+				result = or(result, F(G(F(f,0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.CLOSED,1,Bounds.OPEN));
+			if (a < b-1)
+				result = or(result, F(G(F(f,0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.CLOSED,1,bB));
+			
+			return result;
+		}
 	}
 	
 
 	public static QTLFormula G(QTLFormula f, int a, Bounds aB, int b, Bounds bB){
-		return not(F(not(f), a, aB, b, bB));
+		//return not(F(not(f), a, aB, b, bB));
+		
+		/* Following implementation uses native encoding for Globally*/
+		
+		if (a == 0)
+			return G(f, aB, b, bB);
+		else{
+			QTLFormula result = G(F(G(f,0,Bounds.OPEN,a,Bounds.OPEN),0,Bounds.OPEN,a,Bounds.OPEN),0,aB,1,Bounds.OPEN);
+			for (int i=a+1; i<b-1; i++)
+				result = and(result, G(F(G(f,0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.CLOSED,1,Bounds.OPEN));
+			if (a < b-1)
+				result = and(result, G(F(G(f,0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.CLOSED,1,bB));
+			
+			return result;
+		}
+		
 	}
 }

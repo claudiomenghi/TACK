@@ -15,10 +15,14 @@ public abstract class Formula implements Comparable<Formula>{
 	
 	public static int isTheFormula = 0;
 	
-	// QTL formula
+	// a formula
 	private final String formula; 
 	
 	private final int progNumber;
+
+	
+	protected static Formula True = null;
+	protected static Formula False = null;	
 	
 	
 	Formula (String QTLformula){		
@@ -36,6 +40,15 @@ public abstract class Formula implements Comparable<Formula>{
 		return formula;
 	}
 	
+	
+	public static Formula True(){
+		return True;
+	}
+
+	
+	public static Formula False(){
+		return False;
+	}	
 	
 	
 /*	public boolean equals(Object o){

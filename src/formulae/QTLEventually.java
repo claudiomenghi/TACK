@@ -52,7 +52,7 @@ public class QTLEventually extends QTLFormula {
 												lO(t), t.rel("=", z0(t), "0"),
 												t.X(
 														t.U(
-																t.rel(">", z0(t), "0"), 
+																t.and(t.rel(">", z0(t), "0"), t.neg(befDnowU_f1)), 
 																t.and(
 																		befDnowU_f1,
 																		t.rel("=", z0(t), String.valueOf(b)),
@@ -65,7 +65,7 @@ public class QTLEventually extends QTLFormula {
 													lO(t), t.rel("=", z1(t), "0"),
 													t.X(
 															t.U(
-																	t.rel(">", z1(t), "0"), 
+																	t.and(t.rel(">", z1(t), "0"), t.neg(befDnowU_f1)), 
 																	t.and(
 																			befDnowU_f1,
 																			t.rel("=", z1(t), String.valueOf(b)),
@@ -97,9 +97,10 @@ public class QTLEventually extends QTLFormula {
 											),
 											t.and(
 												lO(t),
+												nowOnD_f1,
 												t.X(
 														t.U(
-																t.rel(">", z0(t), "0"),
+																t.and(t.rel(">", z0(t), "0"), t.neg(befDnowU_f1)),
 																t.and(
 																		befDnowU_f1,
 																		t.rel("=", z0(t), String.valueOf(b))													

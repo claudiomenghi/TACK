@@ -168,7 +168,7 @@ public abstract class TLParserHandler {
 	
 	
 	public String translate(Formula f, CLTLTranslatorEnum e_transl){
-		
+	
 		//set the main formula
 		f.isTheFormula = f.idFormula();
 		

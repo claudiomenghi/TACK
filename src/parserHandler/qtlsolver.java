@@ -36,7 +36,7 @@ public class qtlsolver {
             	
         	   if (args.length > 1) 
         		   if ( args[1].compareTo("--sat") == 0){
-        		   String[] cmd2 = {"sbcl", "--script", args[0].replaceAll("\\.tl", ".cltl")};
+        		   String[] cmd2 = {"zot", args[0].replaceAll("\\.tl", ".cltl")};
         		   
         		   Runtime r = Runtime.getRuntime();
         		   Process p = r.exec(cmd2);
