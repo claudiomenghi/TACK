@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import delegateTranslator.CLTLTranslator;
 
-public class QTLGlobally extends QTLFormula {
+public class QTLGlobally extends QTLFormula implements Temporized{
 
 	private QTLFormula subformula;
 	private final int b;  

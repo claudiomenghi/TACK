@@ -28,7 +28,7 @@ public abstract class TLParserHandler {
 	
 	private int historyLength;
 	
-	
+	private int maxbound;
 	
 	public boolean dict, verbose;
 	
@@ -149,7 +149,7 @@ public abstract class TLParserHandler {
 					
 				axioms[i] = translator.and(translator.Y(translator.neg(translator.atom("O"))), translator.atom("O"), translator.X(translator.G(translator.neg(translator.atom("O")))));
 				
-				result = this.getCLTLformulaOf(e_transl) + "(ae2zot:zot " + getHistoryLength() + " " + translator.and(axioms) + ":logic :QF_UFLRA :gen-symbolic-val 't :over-clocks " + Formula.maxbound + ")\n";				
+				result = this.getCLTLformulaOf(e_transl) + "(ae2zot:zot " + getHistoryLength() + " " + translator.and(axioms) + ":logic :QF_UFLRA :gen-symbolic-val 't :over-clocks " + maxbound + ")\n";				
 			};
 			case NUZOT: ;		
 		}
@@ -211,9 +211,11 @@ public abstract class TLParserHandler {
 			}
 			
 			
-			if (f instanceof QTLEventually){
-				if (((QTLEventually)f).getBound() > Formula.maxbound)
-					Formula.maxbound = ((QTLEventually)f).getBound();
+			if (f instanceof Temporized){
+				Temporized f1 = ((Temporized)f);
+				
+				if (f1.getBound() > maxbound) 
+					maxbound = f1.getBound();
 			}
 			
 		

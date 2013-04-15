@@ -104,11 +104,14 @@ public class QTLConjunction extends QTLFormula {
 		
 		String f5 = t.iff(
 							singU(t),
-							t.or(
-									t.and(subf1.singU(t), t.neg(nowOnU_p2), t.S(t.neg(nowOnD_p2), nowOnU_p2)),
-									t.and(t.or(subf1.singU(t), t.and(subf1.low(t), subf1.lO(t))), befDnowU_C_p2),
-									t.and(subf2.singU(t), t.neg(nowOnU_p1), t.S(t.neg(nowOnD_p1), nowOnU_p1)),
-									t.and(t.or(subf2.singU(t), t.and(subf2.low(t), subf2.lO(t))), befDnowU_C_p1)
+							t.and(
+									t.neg(orig),
+									t.or(
+											t.and(subf1.singU(t), t.neg(nowOnU_p2), t.S(t.neg(nowOnD_p2), nowOnU_p2)),
+											t.and(t.or(subf1.singU(t), t.and(subf1.low(t), subf1.lO(t))), befDnowU_C_p2),
+											t.and(subf2.singU(t), t.neg(nowOnU_p1), t.S(t.neg(nowOnD_p1), nowOnU_p1)),
+											t.and(t.or(subf2.singU(t), t.and(subf2.low(t), subf2.lO(t))), befDnowU_C_p1)
+									)
 								)
 							);
 							
@@ -116,10 +119,13 @@ public class QTLConjunction extends QTLFormula {
 		
 		String f6 = t.iff(
 							singD(t),
-							t.or(
-									t.and(subf1.singD(t), t.neg(nowOnU_p2), t.S(t.neg(nowOnD_p2), nowOnU_p2)),
-									t.and(subf2.singD(t), t.neg(nowOnU_p1), t.S(t.neg(nowOnD_p1), nowOnU_p1)),
-									t.and(subf1.singD(t), subf2.singD(t))
+							t.and(
+									t.neg(orig),
+									t.or(
+											t.and(subf1.singD(t), t.neg(nowOnU_p2), t.S(t.neg(nowOnD_p2), nowOnU_p2)),
+											t.and(subf2.singD(t), t.neg(nowOnU_p1), t.S(t.neg(nowOnD_p1), nowOnU_p1)),
+											t.and(subf1.singD(t), subf2.singD(t))
+									)
 								)
 							);
 		
