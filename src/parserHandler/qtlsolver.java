@@ -14,7 +14,7 @@ public class qtlsolver {
     public static void main(String[] args) throws Exception {
     	
     	System.out.println("Quantitative - Metric Temporal Logic Solver");
-    	System.out.println("v. 1.0 - 8/4/2013\n");
+    	System.out.println("v. 1.2 - 15/4/2013\n");
     	
     	if ( args[0].matches("[a-zA-Z][a-zA-Z0-9-]+\\.tl") ) {
     	
