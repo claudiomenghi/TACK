@@ -1,10 +1,13 @@
-// $ANTLR 3.5 QTL.g 2013-04-04 16:16:23
+// $ANTLR 3.5 QTL.g 2013-04-19 19:07:46
 
 package parserHandler;
 
 import java.util.HashMap;
 import delegateTranslator.*;
 import formulae.*;
+import formulae.QTL.*;
+import formulae.QTLI.*;
+import formulae.MITL.*;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -79,20 +82,21 @@ public class QTLParser extends Parser {
 	/** Map variable name to Integer object holding value */
 	HashMap<String, Formula> memory = new HashMap<String,Formula>();
 
-	TLParserHandler p ;
+	TLParserHandler p;
+	String tlogic;
 
 
 
 	// $ANTLR start "tlparser"
-	// QTL.g:27:1: tlparser : l= logic NEWLINE ':bound' INT NEWLINE ( declaration )* ':formula' fmla NEWLINE ;
+	// QTL.g:31:1: tlparser : l= logic NEWLINE ':bound' INT NEWLINE ( declaration )* ':formula' fmla NEWLINE ;
 	public final void tlparser() throws RecognitionException {
 		Token INT1=null;
 		String l =null;
 		Formula fmla2 =null;
 
 		try {
-			// QTL.g:27:9: (l= logic NEWLINE ':bound' INT NEWLINE ( declaration )* ':formula' fmla NEWLINE )
-			// QTL.g:27:11: l= logic NEWLINE ':bound' INT NEWLINE ( declaration )* ':formula' fmla NEWLINE
+			// QTL.g:31:9: (l= logic NEWLINE ':bound' INT NEWLINE ( declaration )* ':formula' fmla NEWLINE )
+			// QTL.g:31:11: l= logic NEWLINE ':bound' INT NEWLINE ( declaration )* ':formula' fmla NEWLINE
 			{
 			pushFollow(FOLLOW_logic_in_tlparser35);
 			l=logic();
@@ -100,8 +104,13 @@ public class QTLParser extends Parser {
 
 			match(input,NEWLINE,FOLLOW_NEWLINE_in_tlparser37); 
 			 
-							if (l.equals("qtl"))
-								p = new QTLParserHandler();					 
+							tlogic = l;
+							if (tlogic.equals("qtl"))
+								p = new QTLParserHandler();
+							else if (tlogic.equals("qtl-opt"))
+								p = new QTLIParserHandler();
+							else if (tlogic.equals("mitl"))
+								p = new MITLParserHandler();				 
 					 	
 			match(input,31,FOLLOW_31_in_tlparser48); 
 			INT1=(Token)match(input,INT,FOLLOW_INT_in_tlparser50); 
@@ -110,7 +119,7 @@ public class QTLParser extends Parser {
 							p.setHistoryLength(Integer.valueOf((INT1!=null?INT1.getText():null)));
 							System.out.println("Starting parsing formulae...");
 						
-			// QTL.g:37:4: ( declaration )*
+			// QTL.g:46:4: ( declaration )*
 			loop1:
 			while (true) {
 				int alt1=2;
@@ -121,7 +130,7 @@ public class QTLParser extends Parser {
 
 				switch (alt1) {
 				case 1 :
-					// QTL.g:37:4: declaration
+					// QTL.g:46:4: declaration
 					{
 					pushFollow(FOLLOW_declaration_in_tlparser62);
 					declaration();
@@ -178,7 +187,7 @@ public class QTLParser extends Parser {
 
 
 	// $ANTLR start "logic"
-	// QTL.g:62:1: logic returns [String s] : COLON LOGIC ;
+	// QTL.g:71:1: logic returns [String s] : COLON LOGIC ;
 	public final String logic() throws RecognitionException {
 		String s = null;
 
@@ -186,8 +195,8 @@ public class QTLParser extends Parser {
 		Token LOGIC3=null;
 
 		try {
-			// QTL.g:63:2: ( COLON LOGIC )
-			// QTL.g:63:4: COLON LOGIC
+			// QTL.g:72:2: ( COLON LOGIC )
+			// QTL.g:72:4: COLON LOGIC
 			{
 			match(input,COLON,FOLLOW_COLON_in_logic92); 
 			LOGIC3=(Token)match(input,LOGIC,FOLLOW_LOGIC_in_logic94); 
@@ -209,13 +218,13 @@ public class QTLParser extends Parser {
 
 
 	// $ANTLR start "declaration"
-	// QTL.g:66:1: declaration : ( ':def' s= ID fmla NEWLINE | NEWLINE );
+	// QTL.g:75:1: declaration : ( ':def' s= ID fmla NEWLINE | NEWLINE );
 	public final void declaration() throws RecognitionException {
 		Token s=null;
 		Formula fmla4 =null;
 
 		try {
-			// QTL.g:66:12: ( ':def' s= ID fmla NEWLINE | NEWLINE )
+			// QTL.g:75:12: ( ':def' s= ID fmla NEWLINE | NEWLINE )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0==32) ) {
@@ -233,7 +242,7 @@ public class QTLParser extends Parser {
 
 			switch (alt2) {
 				case 1 :
-					// QTL.g:66:14: ':def' s= ID fmla NEWLINE
+					// QTL.g:75:14: ':def' s= ID fmla NEWLINE
 					{
 					match(input,32,FOLLOW_32_in_declaration108); 
 					s=(Token)match(input,ID,FOLLOW_ID_in_declaration112); 
@@ -248,7 +257,7 @@ public class QTLParser extends Parser {
 					}
 					break;
 				case 2 :
-					// QTL.g:72:5: NEWLINE
+					// QTL.g:81:5: NEWLINE
 					{
 					match(input,NEWLINE,FOLLOW_NEWLINE_in_declaration137); 
 					}
@@ -269,7 +278,7 @@ public class QTLParser extends Parser {
 
 
 	// $ANTLR start "fmla"
-	// QTL.g:75:1: fmla returns [Formula r] : ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP f1= fmla f2= fmla RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR );
+	// QTL.g:84:1: fmla returns [Formula r] : ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP f1= fmla f2= fmla RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR );
 	public final Formula fmla() throws RecognitionException {
 		Formula r = null;
 
@@ -285,7 +294,7 @@ public class QTLParser extends Parser {
 		Formula f2 =null;
 
 		try {
-			// QTL.g:76:2: ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP f1= fmla f2= fmla RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR )
+			// QTL.g:85:2: ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP f1= fmla f2= fmla RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR )
 			int alt3=15;
 			switch ( input.LA(1) ) {
 			case ID:
@@ -386,7 +395,7 @@ public class QTLParser extends Parser {
 			}
 			switch (alt3) {
 				case 1 :
-					// QTL.g:76:6: ID
+					// QTL.g:85:6: ID
 					{
 					ID5=(Token)match(input,ID,FOLLOW_ID_in_fmla161); 
 								
@@ -398,17 +407,25 @@ public class QTLParser extends Parser {
 					}
 					break;
 				case 2 :
-					// QTL.g:83:6: ATOM
+					// QTL.g:92:6: ATOM
 					{
 					ATOM6=(Token)match(input,ATOM,FOLLOW_ATOM_in_fmla172); 
-							
-								Formula f = new QTLAtom((ATOM6!=null?ATOM6.getText():null));
+						
+								Formula f = null;
+								if (tlogic.equals("qtl"))	
+									f = new QTLAtom((ATOM6!=null?ATOM6.getText():null));
+								else if (tlogic.equals("qtl-opt"))
+									f = new QTLIAtom((ATOM6!=null?ATOM6.getText():null));
+								else if (tlogic.equals("mitl"))
+									f = new MITLAtom((ATOM6!=null?ATOM6.getText():null));
+									
 								r = p.addFormula(f);
+								
 							
 					}
 					break;
 				case 3 :
-					// QTL.g:88:4: LPAR NEG_OP f1= fmla RPAR
+					// QTL.g:105:4: LPAR NEG_OP f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla183); 
 					match(input,NEG_OP,FOLLOW_NEG_OP_in_fmla185); 
@@ -418,13 +435,20 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla191); 
 						
-								Formula f = new QTLNegation((QTLFormula) f1);
+								Formula f = null;
+								if (tlogic.equals("qtl")) 
+									f = new QTLNegation((QTLFormula) f1);
+								else if (tlogic.equals("qtl-opt")) 
+									f = new QTLINegation((QTLIFormula) f1);
+								else if (tlogic.equals("mitl"))
+									f = new MITLNegation((MITLFormula) f1);
+									
 								r = p.addFormula(f);
 							
 					}
 					break;
 				case 4 :
-					// QTL.g:93:6: LPAR AND_OP f1= fmla f2= fmla RPAR
+					// QTL.g:117:6: LPAR AND_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla203); 
 					match(input,AND_OP,FOLLOW_AND_OP_in_fmla205); 
@@ -438,13 +462,20 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla215); 
 						
-								Formula f = new QTLConjunction((QTLFormula)f1,(QTLFormula)f2);
+								Formula f = null;
+								if (tlogic.equals("qtl")) 
+									f = new QTLConjunction((QTLFormula)f1,(QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt")) 
+									f = new QTLIConjunction((QTLIFormula)f1,(QTLIFormula)f2);	
+								else if (tlogic.equals("mitl"))
+									f = new MITLConjunction((MITLFormula)f1,(MITLFormula)f2);
+										
 								r = p.addFormula(f);
 							
 					}
 					break;
 				case 5 :
-					// QTL.g:98:6: LPAR OR_OP f1= fmla f2= fmla RPAR
+					// QTL.g:129:6: LPAR OR_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla226); 
 					match(input,OR_OP,FOLLOW_OR_OP_in_fmla228); 
@@ -458,13 +489,20 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla238); 
 						
-								Formula f = QTLFormula.or((QTLFormula)f1, (QTLFormula)f2);
+								Formula f = null;
+								if (tlogic.equals("qtl")) 
+									f = QTLFormula.or((QTLFormula)f1, (QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt")) 
+									f = new QTLIDisjunction((QTLIFormula)f1,(QTLIFormula)f2);		
+								else if (tlogic.equals("mitl"))
+									f = MITLFormula.or((MITLFormula)f1, (MITLFormula)f2);
+									
 								r = p.addFormula(f);	
 							
 					}
 					break;
 				case 6 :
-					// QTL.g:103:6: LPAR IMPL_OP f1= fmla f2= fmla RPAR
+					// QTL.g:141:6: LPAR IMPL_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla249); 
 					match(input,IMPL_OP,FOLLOW_IMPL_OP_in_fmla251); 
@@ -478,13 +516,20 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla261); 
 						
-								Formula f = QTLFormula.implies((QTLFormula)f1, (QTLFormula)f2);
+								Formula f = null; 
+								if (tlogic.equals("qtl")) 
+									f = QTLFormula.implies((QTLFormula)f1, (QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt")) 
+									f = QTLIFormula.implies((QTLIFormula)f1,(QTLIFormula)f2);		
+								else if (tlogic.equals("mitl"))
+									f = MITLFormula.implies((MITLFormula)f1, (MITLFormula)f2);	
+									
 								r = p.addFormula(f);	
 							
 					}
 					break;
 				case 7 :
-					// QTL.g:108:6: LPAR IFF_OP f1= fmla f2= fmla RPAR
+					// QTL.g:153:6: LPAR IFF_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla272); 
 					match(input,IFF_OP,FOLLOW_IFF_OP_in_fmla274); 
@@ -498,13 +543,20 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla284); 
 						
-								Formula f = QTLFormula.iff((QTLFormula)f1, (QTLFormula)f2);
+								Formula f = null; 
+								if (tlogic.equals("qtl")) 
+									f = QTLFormula.iff((QTLFormula)f1, (QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt")) 
+									f = QTLIFormula.iff((QTLIFormula)f1,(QTLIFormula)f2);		
+								else if (tlogic.equals("mitl"))
+									f = MITLFormula.iff((MITLFormula)f1, (MITLFormula)f2);
+									
 								r = p.addFormula(f);		
 							
 					}
 					break;
 				case 8 :
-					// QTL.g:113:6: LPAR F_OP a= INT b= INT f1= fmla RPAR
+					// QTL.g:165:6: LPAR F_OP a= INT b= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla296); 
 					F_OP7=(Token)match(input,F_OP,FOLLOW_F_OP_in_fmla298); 
@@ -516,25 +568,39 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla312); 
 						
-								Formula f;
+								Formula f = null;
 								String s = String.valueOf((F_OP7!=null?F_OP7.getText():null));
 								
-								if (s.compareTo("F_ee") == 0)
-									f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
-								else if (s.compareTo("F_ei") == 0)
-									f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
-								else if (s.compareTo("F_ie") == 0)	
-									f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
-								else
-									f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);
 								
+								if (tlogic.equals("qtl")){
+									if (s.compareTo("F_ee") == 0)
+										f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else if (s.compareTo("F_ei") == 0)
+										f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
+									else if (s.compareTo("F_ie") == 0)	
+										f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);
+								} else if (tlogic.equals("qtl-opt")){
+									if (s.compareTo("F_ee") == 0)
+										f = QTLIFormula.F((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else if (s.compareTo("F_ei") == 0)
+										f = QTLIFormula.F((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
+									else if (s.compareTo("F_ie") == 0)	
+										f = QTLIFormula.F((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLIFormula.F((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);
+								} else if (tlogic.equals("mitl")){
+									if (s.compareTo("F_ei") == 0 || s.compareTo("F_ii") == 0)
+										f = MITLFormula.F((MITLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Integer.valueOf((b!=null?b.getText():null)));  
+								}
 									 
 								r = p.addFormula(f);
 							
 					}
 					break;
 				case 9 :
-					// QTL.g:130:6: LPAR F_inf_OP a= INT f1= fmla RPAR
+					// QTL.g:196:6: LPAR F_inf_OP a= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla324); 
 					F_inf_OP8=(Token)match(input,F_inf_OP,FOLLOW_F_inf_OP_in_fmla326); 
@@ -545,21 +611,30 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla336); 
 						
-								Formula f;
+								Formula f = null;
 								String s = String.valueOf((F_inf_OP8!=null?F_inf_OP8.getText():null));
 								
-								if (s.compareTo("F_e+") == 0)
-									f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN); 
-								else
-									f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED); 
-								
+								if (tlogic.equals("qtl")){
+									if (s.compareTo("F_e+") == 0)
+										f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLFormula.F((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED); 
+								} else if (tlogic.equals("qtl-opt")){
+									if (s.compareTo("F_e+") == 0)
+										f = QTLIFormula.F((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLIFormula.F((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED); 
+								} else if (tlogic.equals("mitl")){
+									if (s.compareTo("F_e+") == 0 || s.compareTo("F_i+") == 0)
+										f = MITLFormula.F_inf((MITLFormula)f1, Integer.valueOf((a!=null?a.getText():null)));  
+								}
 									 
 								r = p.addFormula(f);
 							
 					}
 					break;
 				case 10 :
-					// QTL.g:143:6: LPAR op= G_OP a= INT b= INT f1= fmla RPAR
+					// QTL.g:218:6: LPAR op= G_OP a= INT b= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla350); 
 					op=(Token)match(input,G_OP,FOLLOW_G_OP_in_fmla354); 
@@ -571,25 +646,38 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla368); 
 						
-								Formula f;
+								Formula f = null;
 								String s = String.valueOf((op!=null?op.getText():null));
 								
-								if (s.compareTo("G_ee") == 0)
-									f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
-								else if (s.compareTo("G_ei") == 0)
-									f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
-								else if (s.compareTo("G_ie") == 0)	
-									f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
-								else
-									f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);
-								
+								if (tlogic.equals("qtl")){
+									if (s.compareTo("G_ee") == 0)
+										f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else if (s.compareTo("G_ei") == 0)
+										f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
+									else if (s.compareTo("G_ie") == 0)	
+										f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);
+								} else if (tlogic.equals("qtl-opt")){
+									if (s.compareTo("G_ee") == 0)
+										f = QTLIFormula.G((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else if (s.compareTo("G_ei") == 0)
+										f = QTLIFormula.G((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
+									else if (s.compareTo("G_ie") == 0)	
+										f = QTLIFormula.G((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLIFormula.G((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);
+								} else if (tlogic.equals("mitl")){
+									if (s.compareTo("G_ei") == 0 || s.compareTo("G_ii") == 0)
+										f = MITLFormula.G((MITLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Integer.valueOf((b!=null?b.getText():null))); 
+								}
 									 
 								r = p.addFormula(f);
 							
 					}
 					break;
 				case 11 :
-					// QTL.g:160:6: LPAR op= G_inf_OP a= INT f1= fmla RPAR
+					// QTL.g:248:6: LPAR op= G_inf_OP a= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla380); 
 					op=(Token)match(input,G_inf_OP,FOLLOW_G_inf_OP_in_fmla384); 
@@ -600,13 +688,23 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla394); 
 						
-								Formula f;
+								Formula f = null;
 								String s = String.valueOf((op!=null?op.getText():null));
 								
-								if (s.compareTo("G_e+") == 0)
-									f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN); 
-								else
-									f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED); 
+								if (tlogic.equals("qtl")){
+									if (s.compareTo("G_e+") == 0)
+										f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLFormula.G((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED); 
+								} else if (tlogic.equals("qtl-opt")){
+									if (s.compareTo("G_e+") == 0)
+										f = QTLIFormula.G((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN); 
+									else
+										f = QTLIFormula.G((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED); 
+								} else if (tlogic.equals("mitl")){
+									if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0)
+										f = MITLFormula.G_inf((MITLFormula)f1, Integer.valueOf((a!=null?a.getText():null))); 
+								}
 								
 									 
 								r = p.addFormula(f);
@@ -614,7 +712,7 @@ public class QTLParser extends Parser {
 					}
 					break;
 				case 12 :
-					// QTL.g:173:6: LPAR UNTIL_OP f1= fmla f2= fmla RPAR
+					// QTL.g:271:6: LPAR UNTIL_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla410); 
 					match(input,UNTIL_OP,FOLLOW_UNTIL_OP_in_fmla412); 
@@ -628,13 +726,20 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla422); 
 
-								Formula f = new QTLUntil((QTLFormula)f1,(QTLFormula)f2);
+								Formula f = null;
+								if (tlogic.equals("qtl"))
+								 	f = new QTLUntil((QTLFormula)f1,(QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt"))
+								 	f = new QTLIUntil((QTLIFormula)f1,(QTLIFormula)f2);
+								else if (tlogic.equals("mitl"))
+									f = new MITLUntil((MITLFormula)f1,(MITLFormula)f2);
+									
 								r = p.addFormula(f);
 							
 					}
 					break;
 				case 13 :
-					// QTL.g:178:6: LPAR SINCE_OP f1= fmla f2= fmla RPAR
+					// QTL.g:283:6: LPAR SINCE_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla434); 
 					match(input,SINCE_OP,FOLLOW_SINCE_OP_in_fmla436); 
@@ -648,13 +753,16 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla446); 
 
-								Formula f = new QTLSince((QTLFormula)f1,(QTLFormula)f2);
-								r = p.addFormula(f);
+								Formula f = null;
+								if (tlogic.equals("qtl"))
+								 	f = new QTLSince((QTLFormula)f1,(QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt"))
+								 	f = new QTLISince((QTLIFormula)f1,(QTLIFormula)f2);
 							
 					}
 					break;
 				case 14 :
-					// QTL.g:183:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
+					// QTL.g:291:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla460); 
 					match(input,RELEASE_OP,FOLLOW_RELEASE_OP_in_fmla462); 
@@ -668,13 +776,20 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla472); 
 
-								Formula f = QTLFormula.R((QTLFormula)f1,(QTLFormula)f2);
+								Formula f = null;
+								if (tlogic.equals("qtl"))
+								 	f = QTLFormula.R((QTLFormula)f1,(QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt"))
+								 	f = QTLIFormula.R((QTLIFormula)f1,(QTLIFormula)f2);	
+								else if (tlogic.equals("mitl"))
+								 	f = MITLFormula.R((MITLFormula)f1,(MITLFormula)f2);
+								 	
 								r = p.addFormula(f);
 							
 					}
 					break;
 				case 15 :
-					// QTL.g:188:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
+					// QTL.g:303:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla484); 
 					match(input,TRIGGER_OP,FOLLOW_TRIGGER_OP_in_fmla486); 
@@ -688,7 +803,12 @@ public class QTLParser extends Parser {
 
 					match(input,RPAR,FOLLOW_RPAR_in_fmla496); 
 
-								Formula f = QTLFormula.T((QTLFormula)f1,(QTLFormula)f2);
+								Formula f = null;
+								if (tlogic.equals("qtl"))
+								 	f = QTLFormula.T((QTLFormula)f1,(QTLFormula)f2);
+								else if (tlogic.equals("qtl-opt"))
+								 	f = QTLIFormula.T((QTLIFormula)f1,(QTLIFormula)f2);
+								 		
 								r = p.addFormula(f);
 							
 					}

@@ -214,8 +214,8 @@ public abstract class TLParserHandler {
 			if (f instanceof Temporized){
 				Temporized f1 = ((Temporized)f);
 				
-				if (f1.getBound() > maxbound) 
-					maxbound = f1.getBound();
+				if (f1.upperbound() > maxbound) 
+					maxbound = f1.upperbound();
 			}
 			
 		

@@ -2,6 +2,8 @@ package formulae;
 
 public interface Temporized {
 
-	public int getBound();
+	public int upperbound();
+	
+	public int lowerbound();
 	
 }

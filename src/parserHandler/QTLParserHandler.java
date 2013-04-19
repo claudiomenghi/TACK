@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import delegateTranslator.*;
 import formulae.*;
+import formulae.QTL.QTLFormula;
 
 public class QTLParserHandler extends TLParserHandler {
 

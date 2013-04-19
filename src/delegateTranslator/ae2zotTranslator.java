@@ -28,7 +28,8 @@ public class ae2zotTranslator implements CLTLTranslator {
 		
 		String str = new String();
 		for (String s : args){
-			str = str + " " + s;
+			if (s != null)
+				str = str + " " + s;
 		}
 		
 		return "(&&" + str + ")";
@@ -40,7 +41,8 @@ public class ae2zotTranslator implements CLTLTranslator {
 		
 		String str = new String();
 		for (String s : args){
-			str = str + " " + s;
+			if (s != null)
+				str = str + " " + s;
 		}
 		
 		return "(||" + str + ")";

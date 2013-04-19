@@ -25,7 +25,7 @@ public abstract class Formula implements Comparable<Formula>{
 	protected static Formula False = null;	
 	
 	
-	Formula (String QTLformula){		
+	public Formula (String QTLformula){		
 		this.progNumber = absoluteCounter++;
 		this.formula = QTLformula;
 	}
