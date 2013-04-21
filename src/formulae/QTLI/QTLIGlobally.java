@@ -12,7 +12,7 @@ public class QTLIGlobally extends QTLIFormula implements Temporized{
 	private final int b;  
 	
 	public QTLIGlobally(QTLIFormula subformula, int b){
-		super(new String("(F " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
+		super(new String("(G " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
 		this.subformula = subformula;
 		this.b = b;
 	}
@@ -27,7 +27,7 @@ public class QTLIGlobally extends QTLIFormula implements Temporized{
 		String orig = t.atom("O");
 				
 		String f1;
-		f1 = t.and(interval(t), t.or( t.Y(interval(t)), orig) );
+		f1 = t.implies( interval(t), point(t) ); 
 	
 		String f2 = t.iff(
 				low(t),

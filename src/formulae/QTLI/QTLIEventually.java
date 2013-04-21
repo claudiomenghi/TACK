@@ -27,12 +27,12 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 		String orig = t.atom("O");
 				
 		String f1;
-		f1 = t.and(interval(t), t.or( t.Y(interval(t)), orig) );
+		f1 = t.implies(interval(t), t.or( t.Y(interval(t)), orig) );
 	
 		String f2 = t.iff(
 				high(t),
 				t.or(
-					t.and(
+				/*	t.and(
 						t.neg(orig),
 						t.neg(point(t)),
 						t.or(
@@ -63,7 +63,7 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 											)
 								)
 							)
-						),
+						),*/
 						t.and(
 							orig,
 							t.or(

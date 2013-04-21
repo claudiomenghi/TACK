@@ -28,9 +28,9 @@ public abstract class QTLIFormula extends Formula {
 		//Formula (1) and initialization		
 		String f1;
 		if (idFormula() != isTheFormula)
-			f1 = t.and(point(t), t.rel("=", z0(t), "0"));
-		else 
 			f1 = t.rel("=", z0(t), "0");
+		else 
+			f1 = t.and(point(t), t.rel("=", z0(t), "0"));
 					
 		
 		
@@ -110,19 +110,19 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String befUnowD(CLTLTranslator t){
-		return t.and( t.Y(interval(t)), t.or(t.neg(point(t)), t.neg(interval(t))) );
+		return t.and( t.neg(t.Y(t.neg(interval(t)))), t.or(t.neg(point(t)), t.neg(interval(t))) );
 	}
 	
 	public String befDnowU(CLTLTranslator t){
-		return t.and( t.Y(t.neg(interval(t))), t.or(point(t), interval(t)) );
+		return t.and( t.neg(t.Y(interval(t))), t.or(point(t), interval(t)) );
 	}
 	
 	public String nowOnD(CLTLTranslator t){
-		return t.and( t.or(t.Y(interval(t)), point(t)), t.neg(interval(t)) );
+		return t.and( t.or(t.neg(t.Y(t.neg(interval(t)))), point(t)), t.neg(interval(t)) );
 	}
 	
 	public String nowOnU(CLTLTranslator t){
-		return t.and( t.or(t.Y(t.neg(interval(t))), t.neg(point(t))), interval(t) );
+		return t.and( t.or(t.neg(t.Y(interval(t))), t.neg(point(t))), interval(t) );
 	}
 	
 	public String z0(){

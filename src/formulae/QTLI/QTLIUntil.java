@@ -31,11 +31,11 @@ public class QTLIUntil extends QTLIFormula {
 											
 		String f2;
 		f2 = t.iff(
-						point(t),
-						t.or(
-								t.and(subf1.interval(t), subf2.interval(t)),
-								t.and(
-										subf1.interval(t),
+						interval(t),
+						t.and(
+								subf1.interval(t),
+								t.or(
+										subf2.interval(t),
 										t.X(
 												t.U(
 														t.and(subf1.point(t), subf1.interval(t)),
