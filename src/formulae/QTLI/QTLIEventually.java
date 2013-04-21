@@ -32,7 +32,7 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 		String f2 = t.iff(
 				high(t),
 				t.or(
-				/*	t.and(
+				  t.and(
 						t.neg(orig),
 						t.neg(point(t)),
 						t.or(
@@ -63,7 +63,7 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 											)
 								)
 							)
-						),*/
+						),
 						t.and(
 							orig,
 							t.or(
