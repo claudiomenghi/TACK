@@ -27,39 +27,141 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 		String orig = t.atom("O");
 				
 		String f1;
-		f1 = t.and(interval(t), t.Y(interval(t)) );
+		f1 = t.and(interval(t), t.or( t.Y(interval(t)), orig) );
 	
 		String f2 = t.iff(
-							high(t),
-							t.and(
-									subf.befDnowU(t),
-									t.or(
-											orig,
-											t.Y(
-													t.S(
-															t.neg(subf.befDnowU(t)), 
-															t.and(
-																	orig,
-																	t.neg(subf.point(t)),
-																	t.neg(subf.interval(t))														
+				high(t),
+				t.or(
+					t.and(
+						t.neg(orig),
+						t.neg(point(t)),
+						t.or(
+								t.and(
+									t.rel("=", z0(t), "0"),
+									t.X(
+											t.U(
+													t.and(t.rel(">", z0(t), "0"), t.neg(subf.befDnowU(t))), 
+													t.and(
+															subf.befDnowU(t),
+															t.rel("=", z0(t), String.valueOf(b)),
+															t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
+														)
+												)
+										)
+								),
+								t.and(
+										t.rel("=", z1(t), "0"),
+										t.X(
+												t.U(
+														t.and(t.rel(">", z1(t), "0"), t.neg(subf.befDnowU(t))), 
+														t.and(
+																subf.befDnowU(t),
+																t.rel("=", z1(t), String.valueOf(b)),
+																t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
+															)
+													)
+											)
+								)
+							)
+						),
+						t.and(
+							orig,
+							t.or(
+								t.and(
+										point(t),
+										t.or(
+												subf.high(t),
+												t.X(
+														t.U(
+																t.rel(">", z0(t), "0"),
+																t.and(
+																		subf.befDnowU(t),
+																		t.rel(">", z0(t), "0"),
+																		t.rel("<", z0(t), String.valueOf(b))
 																)
 														)
-											),
-											t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
+												)
+										)
+								),
+								t.and(
+										t.neg(point(t)),
+										subf.low(t),
+										t.X(
+												t.U(
+														t.and(t.rel(">", z0(t), "0"), t.neg(subf.befDnowU(t))),
+														t.and(
+																subf.befDnowU(t),
+																t.rel("=", z0(t), String.valueOf(b))													
+														)
+												)
+										)
+								)
 							)
 					)
-								
+			)
+		);
+					
+		String f3 = t.implies(	
+								t.and(
+										subf.befDnowU(t),
+										t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
+								), 
+								t.or(t.rel("=", z0(t), String.valueOf(b)), t.rel("=", z1(t), String.valueOf(b)))
 		);
 		
-		String f4 = null;
+		String f4 = t.iff(
+				low(t),
+				t.and(
+						subf.nowOnD(t),
+						t.neg(
+								t.X(
+										t.U(
+												t.neg(subf.befDnowU(t)),
+												t.and(
+														subf.befDnowU(t),
+														t.or(
+																t.and(
+																		t.rel(">", subf.z0(t), "0"),
+																		t.rel("<=", subf.z0(t), String.valueOf(b))
+																),
+																t.and(
+																		t.rel(">", subf.z1(t), "0"),
+																		t.rel("<=", subf.z1(t), String.valueOf(b))
+																)
+														)
+												)
+										)
+								)
+						)
+				)
+			);
 
 
 
 
-		String f5 = null;
+		String f5 = t.iff(
+				singD(t),
+				t.and(
+						subf.nowOnD(t),
+						t.X(
+								t.U(
+										t.neg(subf.befDnowU(t)),
+										t.and(
+												subf.befDnowU(t),
+												t.or(
+														t.rel("=", subf.z0(t), String.valueOf(b)),
+														t.rel("=", subf.z1(t), String.valueOf(b))	
+												)
+										)
+								)
+						),
+						t.neg(orig)
+				)
+			);
 		
 		
-		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f4,f5)));
+		
+		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4,f5)));
 	}
 	
 
