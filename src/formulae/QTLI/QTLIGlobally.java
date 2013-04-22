@@ -103,7 +103,7 @@ public class QTLIGlobally extends QTLIFormula implements Temporized{
 					
 		String f3 = t.implies(	
 								t.and(
-										subf.befDnowU(t),
+										subf.befUnowD(t),
 										t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
 								), 
 								t.or(t.rel("=", z0(t), String.valueOf(b)), t.rel("=", z1(t), String.valueOf(b)))
