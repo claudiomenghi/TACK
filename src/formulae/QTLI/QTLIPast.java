@@ -12,7 +12,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 	private final int b;  
 	
 	public QTLIPast(QTLIFormula subformula, int b){
-		super(new String("(F " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
+		super(new String("(P " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
 		this.subformula = subformula;
 		this.b = b;
 	}
@@ -27,141 +27,107 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		String orig = t.atom("O");
 				
 		String f1;
-		f1 = t.and(interval(t), t.or( t.Y(interval(t)), orig) );
+		f1 = t.and( t.implies(point(t), t.and(interval(t), t.Y(interval(t)))),
+					t.iff(t.neg(point(t)), orig) );
 	
 		String f2 = t.iff(
-				high(t),
-				t.or(
-					t.and(
-						t.neg(orig),
-						t.neg(point(t)),
-						t.or(
-								t.and(
-									t.rel("=", z0(t), "0"),
-									t.X(
-											t.U(
-													t.and(t.rel(">", z0(t), "0"), t.neg(subf.befDnowU(t))), 
-													t.and(
-															subf.befDnowU(t),
-															t.rel("=", z0(t), String.valueOf(b)),
-															t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
-														)
-												)
-										)
-								),
-								t.and(
-										t.rel("=", z1(t), "0"),
-										t.X(
-												t.U(
-														t.and(t.rel(">", z1(t), "0"), t.neg(subf.befDnowU(t))), 
-														t.and(
-																subf.befDnowU(t),
-																t.rel("=", z1(t), String.valueOf(b)),
-																t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
+							high(t),
+							t.and(
+									subf.befDnowU(t),
+									t.or(
+											orig,
+											t.Y(
+													t.S(
+															t.neg(subf.befDnowU(t)),
+															t.and(
+																	orig,
+																	t.neg(t.and(subf.point(t), subf.interval(t)))
 															)
 													)
-											)
-								)
+											),
+											t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
+									)
 							)
+					);
+						
+							
+		
+		String f3;
+		f3 = t.iff(
+				low(t),
+				t.or(
+						t.and(orig, t.neg(t.and(subf.point(t), subf.interval(t)))),
+						t.and(
+								t.rel("=", subf.z0(t), String.valueOf(b)),
+								t.S(
+										t.neg(subf.befDnowU(t)),
+										t.and(
+												t.or(
+														t.Y(subf.interval(t)),
+														subf.point(t)
+												),
+												t.rel("=", subf.z0(t), String.valueOf(b))
+										)
+								)
 						),
 						t.and(
-							orig,
-							t.or(
-								t.and(
-										point(t),
-										t.or(
-												subf.high(t),
-												t.X(
-														t.U(
-																t.rel(">", z0(t), "0"),
-																t.and(
-																		subf.befDnowU(t),
-																		t.rel(">", z0(t), "0"),
-																		t.rel("<", z0(t), String.valueOf(b))
-																)
-														)
-												)
-										)
-								),
-								t.and(
-										t.neg(point(t)),
-										subf.low(t),
-										t.X(
-												t.U(
-														t.and(t.rel(">", z0(t), "0"), t.neg(subf.befDnowU(t))),
-														t.and(
-																subf.befDnowU(t),
-																t.rel("=", z0(t), String.valueOf(b))													
-														)
-												)
-										)
-								)
-							)
-					)
-			)
-		);
-					
-		String f3 = t.implies(	
-								t.and(
-										subf.befDnowU(t),
-										t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
-								), 
-								t.or(t.rel("=", z0(t), String.valueOf(b)), t.rel("=", z1(t), String.valueOf(b)))
-		);
-		
-		String f4 = t.iff(
-				low(t),
-				t.and(
-						subf.nowOnD(t),
-						t.neg(
-								t.X(
-										t.U(
-												t.neg(subf.befDnowU(t)),
-												t.and(
-														subf.befDnowU(t),
-														t.or(
-																t.and(
-																		t.rel(">", subf.z0(t), "0"),
-																		t.rel("<=", subf.z0(t), String.valueOf(b))
-																),
-																t.and(
-																		t.rel(">", subf.z1(t), "0"),
-																		t.rel("<=", subf.z1(t), String.valueOf(b))
-																)
-														)
-												)
+								t.rel("=", subf.z1(t), String.valueOf(b)),
+								t.S(
+										t.neg(subf.befDnowU(t)),
+										t.and(
+												t.or(
+														t.Y(subf.interval(t)),
+														subf.point(t)
+												),
+												t.rel("=", subf.z1(t), String.valueOf(b))
 										)
 								)
 						)
 				)
-			);
+		);
 
 
-
-
-		String f5 = t.iff(
+		String f4;
+		f4 = t.iff(
 				singD(t),
 				t.and(
-						subf.nowOnD(t),
-						t.X(
-								t.U(
-										t.neg(subf.befDnowU(t)),
-										t.and(
-												subf.befDnowU(t),
-												t.or(
-														t.rel("=", subf.z0(t), String.valueOf(b)),
-														t.rel("=", subf.z1(t), String.valueOf(b))	
-												)
-										)
-								)
-						),
-						t.neg(orig)
-				)
-			);
+						subf.befDnowU(t),
+						t.or(					
+							t.and(
+									t.rel("=", subf.z0(t), String.valueOf(b)),
+									t.S(
+											t.neg(subf.befDnowU(t)),
+											t.and(
+													t.or(
+															t.Y(subf.interval(t)),
+															subf.point(t)
+													),
+													t.rel("=", subf.z0(t), String.valueOf(b))
+											)
+									)
+							),
+							t.and(
+									t.rel("=", subf.z1(t), String.valueOf(b)),
+									t.S(
+											t.neg(subf.befDnowU(t)),
+											t.and(
+													t.or(
+															t.Y(subf.interval(t)),
+															subf.point(t)
+													),
+													t.rel("=", subf.z1(t), String.valueOf(b))
+											)
+									)
+							)
+					)
+				)	
+		);
+
 		
 		
 		
-		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4,f5)));
+		
+		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4)));
 	}
 	
 

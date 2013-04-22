@@ -24,18 +24,27 @@ public class QTLISince extends QTLIFormula {
 		// Some alias...
 		QTLIFormula subf1 = subformula1;
 		QTLIFormula subf2 = subformula2;
+		
+		String orig = new String("O");
 			
 		String f1;
-		f1 = t.iff(point(t), t.Y(interval(t)));
+		f1 = t.and( 
+					t.and(t.neg(orig), t.iff(point(t), t.Y(interval(t)))),
+					t.and(orig, t.neg(point(t)))
+			);
+					
 											
 		String f2;
 		f2 = t.iff(
 						interval(t),
 						t.S(
 								t.and(subf1.point(t), subf1.interval(t)),
-								t.or(
-										t.or(subf2.point(t), subf2.interval(t)),
-										subf1.interval(t)
+								t.implies(
+											orig,
+											t.and(
+													t.or(subf2.point(t), subf2.interval(t)),
+													subf1.interval(t)
+											)
 								)
 						)								
 			);
