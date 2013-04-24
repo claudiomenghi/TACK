@@ -20,7 +20,8 @@ public class QTLIParserHandler extends TLParserHandler {
 				
 				while (f.hasNext()){
 					QTLIFormula qtlf = (QTLIFormula) f.next();
-					result = result + new String("(define-tvar " + qtlf.z0() + " *real*)\n(define-tvar " + qtlf.z1() + " *real*)\n");	
+					if (qtlf.idFormula() != qtlf.isTheFormula)
+						result = result + new String("(define-tvar " + qtlf.z0() + " *real*)\n(define-tvar " + qtlf.z1() + " *real*)\n");	
 				}				
 			};
 			case NUZOT: ;		

@@ -25,62 +25,70 @@ public abstract class QTLIFormula extends Formula {
 	@Override
 	public String clocksEventsConstraints(CLTLTranslator t) {
 	
-		//Formula (1) and initialization		
-		String f1;
-		if (idFormula() != isTheFormula)
+		String result;
+		
+		
+		
+		if (idFormula() != isTheFormula){
+			
+			String f1;
 			f1 = t.rel("=", z0(t), "0");
-		else 
-			f1 = t.and(point(t), t.rel("=", z0(t), "0"));
-					
+			
+			
+			//Formula (2)
+			String f2 = t.iff(
+								t.or(befDnowU(t), befUnowD(t)),
+								t.or(t.rel("=", z0(t), "0"), t.rel("=", z1(t), "0"))
+						);
+								
+			
+			
+			
+			//formula (3)
+			String f3a = t.implies(
+									t.rel("=", z0(t), "0"),
+									t.X(t.R(t.rel("=", z1(t), "0"), t.rel(">", z0(t), "0"))));
+			
+			String f3b = t.implies(
+									t.rel("=", z1(t), "0"),
+									t.X(t.R(t.rel("=", z0(t), "0"), t.rel(">", z1(t), "0"))));
 		
-		
-		//Formula (2)
-		String f2 = t.iff(
-							t.or(befDnowU(t), befUnowD(t)),
-							t.or(t.rel("=", z0(t), "0"), t.rel("=", z1(t), "0"))
-					);
-							
-		
-		
-		
-		//formula (3)
-		String f3a = t.implies(
-								t.rel("=", z0(t), "0"),
-								t.X(t.R(t.rel("=", z1(t), "0"), t.rel(">", z0(t), "0"))));
-		
-		String f3b = t.implies(
-								t.rel("=", z1(t), "0"),
-								t.X(t.R(t.rel("=", z0(t), "0"), t.rel(">", z1(t), "0"))));
-	
-		
-		// Clocks progression
-		String f4a = t.and(
-							t.G(
-									t.or(
-											t.rel("=", t.X(z0(t)), "0"),
-											t.rel(">", t.X(z0(t)), z0(t)))),
-							t.or(
-									t.G(t.F(t.rel("=", z0(t), "0"))), 
-									t.F(t.G(t.rel(">", z0(t), String.valueOf(Formula.maxbound))))));
-											
+			
+			// Clocks progression
+			String f4a = t.and(
+								t.G(
+										t.or(
+												t.rel("=", t.X(z0(t)), "0"),
+												t.rel(">", t.X(z0(t)), z0(t)))),
+								t.or(
+										t.G(t.F(t.rel("=", z0(t), "0"))), 
+										t.F(t.G(t.rel(">", z0(t), String.valueOf(Formula.maxbound))))));
+												
 
-		String f4b = t.and(
-				t.G(
-						t.or(
-								t.rel("=", t.X(z1(t)), "0"),
-								t.rel(">", t.X(z1(t)), z1(t)))),
-				t.or(
-						t.G(t.F(t.rel("=", z1(t), "0"))), 
-						t.F(t.G(t.rel(">", z1(t), String.valueOf(Formula.maxbound))))));		
+			String f4b = t.and(
+					t.G(
+							t.or(
+									t.rel("=", t.X(z1(t)), "0"),
+									t.rel(">", t.X(z1(t)), z1(t)))),
+					t.or(
+							t.G(t.F(t.rel("=", z1(t), "0"))), 
+							t.F(t.G(t.rel(">", z1(t), String.valueOf(Formula.maxbound))))));		
+			
+			// Clocks non negativeness in the origin
+			String f5 = t.and(
+								t.rel(">=", z0(t), "0"),
+								t.rel(">=", z1(t), "0"));
+			
 		
-		// Clocks non negativeness in the origin
-		String f5 = t.and(
-							t.rel(">=", z0(t), "0"),
-							t.rel(">=", z1(t), "0"));
+			
+			result = t.and(f1, t.G(t.and(f2, f3a, f3b)), f4a, f4b, f5);			
+			
+		}
+		else 
+			result = point(t); // t.and(point(t), t.rel("=", z0(t), "0"));
+					
+			
 		
-	
-		
-		String result = t.and(f1, t.G(t.and(f2, f3a, f3b)), f4a, f4b, f5);
 		
 		return result;
 	}
@@ -94,11 +102,11 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String high(CLTLTranslator t){
-		return t.and( t.neg(t.Y(interval(t))), interval(t) );	
+		return t.and( t.or(t.atom("O"), t.neg(t.Y(interval(t)))), interval(t) );	
 	}
 	
 	public String low(CLTLTranslator t){
-		return t.and( t.neg(t.Y(t.neg(interval(t)))), t.neg(interval(t)) );	
+		return t.and( t.or(t.atom("O"), t.neg(t.Y(t.neg(interval(t))))), t.neg(interval(t)) );	
 	}
 	
 	public String singU(CLTLTranslator t){
@@ -223,11 +231,11 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public static QTLIFormula implies(QTLIFormula f1, QTLIFormula f2){
-		return or(not(f1), f2);
+		return new QTLIImplies(f1, f2);
 	}
 	
 	public static QTLIFormula iff(QTLIFormula f1, QTLIFormula f2){
-		return and(or(not(f1), f2), or(not(f2), f1));
+		return new QTLIIff(f1, f2);
 	}
 	
 	// Producers method to build derived temporal CLTL formulae

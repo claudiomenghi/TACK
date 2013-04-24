@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.FileNotFoundException;
+import java.util.Collections;
 }
 
 @lexer::header { package parserHandler; }
@@ -114,27 +115,47 @@ fmla returns [Formula r]
 				
 			$fmla.r = p.addFormula(f);
 		}
-	|   LPAR AND_OP f1=fmla f2=fmla RPAR
+	|   LPAR AND_OP clist=conjuncts_list RPAR
 		{	
 			Formula f = null;
+			Formula[] arr = null;
+			
 			if (tlogic.equals("qtl")) 
-				f = new QTLConjunction((QTLFormula)$f1.r,(QTLFormula)$f2.r);
-			else if (tlogic.equals("qtl-opt")) 
-				f = new QTLIConjunction((QTLIFormula)$f1.r,(QTLIFormula)$f2.r);	
-			else if (tlogic.equals("mitl"))
-				f = new MITLConjunction((MITLFormula)$f1.r,(MITLFormula)$f2.r);
+				f = new QTLConjunction((QTLFormula)($clist.l).get(0),(QTLFormula)($clist.l).get(1));
+			else if (tlogic.equals("qtl-opt")){ 
+			
+				arr = new QTLIFormula[clist.size()];
+
+				int i = 0;
+				for (Formula fm: clist)
+					arr[i++] = fm;
+			
+				f = new QTLIConjunction((QTLIFormula[]) arr);
+			}	
+			//else if (tlogic.equals("mitl"))
+				//f = new MITLConjunction((MITLFormula)$f1.r,(MITLFormula)$f2.r);
 					
 			$fmla.r = p.addFormula(f);
 		}
 	|   LPAR OR_OP f1=fmla f2=fmla RPAR
 		{	
 			Formula f = null;
+			Formula[] arr = null;
+			
 			if (tlogic.equals("qtl")) 
-				f = QTLFormula.or((QTLFormula)$f1.r, (QTLFormula)$f2.r);
-			else if (tlogic.equals("qtl-opt")) 
-				f = new QTLIDisjunction((QTLIFormula)$f1.r,(QTLIFormula)$f2.r);		
-			else if (tlogic.equals("mitl"))
-				f = MITLFormula.or((MITLFormula)$f1.r, (MITLFormula)$f2.r);
+				f = new QTLDisjunction((QTLFormula)($clist.l).get(0),(QTLFormula)($clist.l).get(1));
+			else if (tlogic.equals("qtl-opt")){ 
+			
+				arr = new QTLIFormula[clist.size()];
+
+				int i = 0;
+				for (Formula fm: clist)
+					arr[i++] = fm;
+			
+				f = new QTLIDisjunction((QTLIFormula[]) arr);
+			}	
+			//else if (tlogic.equals("mitl"))
+				//f = new MITLDisjunction((MITLFormula)$f1.r,(MITLFormula)$f2.r);
 				
 			$fmla.r = p.addFormula(f);	
 		}
@@ -313,6 +334,22 @@ fmla returns [Formula r]
 		
     ;
 
+
+conjuncts_list returns [List<Formula> l]
+	@init{l = new ArrayList<Formula>();}:
+	
+	f1=fmla (clist=conjuncts_list | )
+		{
+			if ($clist.l == null)
+				$l.add(f1);
+			else{
+				($clist.l).add(f1);
+				l = new ArrayList<Formula>($clist.l);
+			}
+				
+		}
+	;
+	 
 
 
 

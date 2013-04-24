@@ -154,8 +154,8 @@ public class QTLIGlobally extends QTLIFormula implements Temporized{
 												)
 										)
 								)
-						),
-						t.neg(orig)
+						)//,
+						//t.neg(orig)
 				)
 			);
 		

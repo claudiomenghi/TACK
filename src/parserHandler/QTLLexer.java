@@ -1,4 +1,4 @@
-// $ANTLR 3.5 QTL.g 2013-04-19 19:07:47
+// $ANTLR 3.5 QTL.g 2013-04-24 19:37:01
  package parserHandler; 
 
 import org.antlr.runtime.*;
@@ -123,8 +123,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = LPAR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:321:5: ( '(' )
-			// QTL.g:321:9: '('
+			// QTL.g:358:5: ( '(' )
+			// QTL.g:358:9: '('
 			{
 			match('('); 
 			}
@@ -143,8 +143,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = RPAR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:322:5: ( ')' )
-			// QTL.g:322:7: ')'
+			// QTL.g:359:5: ( ')' )
+			// QTL.g:359:7: ')'
 			{
 			match(')'); 
 			}
@@ -163,8 +163,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = LBRA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:323:5: ( '[' )
-			// QTL.g:323:7: '['
+			// QTL.g:360:5: ( '[' )
+			// QTL.g:360:7: '['
 			{
 			match('['); 
 			}
@@ -183,8 +183,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = RBRA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:324:5: ( ']' )
-			// QTL.g:324:7: ']'
+			// QTL.g:361:5: ( ']' )
+			// QTL.g:361:7: ']'
 			{
 			match(']'); 
 			}
@@ -203,8 +203,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = NEG_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:329:7: ( '!!' )
-			// QTL.g:329:9: '!!'
+			// QTL.g:366:7: ( '!!' )
+			// QTL.g:366:9: '!!'
 			{
 			match("!!"); 
 
@@ -224,8 +224,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = AND_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:330:7: ( '&&' )
-			// QTL.g:330:9: '&&'
+			// QTL.g:367:7: ( '&&' )
+			// QTL.g:367:9: '&&'
 			{
 			match("&&"); 
 
@@ -245,8 +245,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = OR_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:331:6: ( '||' )
-			// QTL.g:331:8: '||'
+			// QTL.g:368:6: ( '||' )
+			// QTL.g:368:8: '||'
 			{
 			match("||"); 
 
@@ -266,8 +266,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = IMPL_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:332:8: ( '->' )
-			// QTL.g:332:10: '->'
+			// QTL.g:369:8: ( '->' )
+			// QTL.g:369:10: '->'
 			{
 			match("->"); 
 
@@ -287,8 +287,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = IFF_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:333:7: ( '<->' )
-			// QTL.g:333:9: '<->'
+			// QTL.g:370:7: ( '<->' )
+			// QTL.g:370:9: '<->'
 			{
 			match("<->"); 
 
@@ -308,7 +308,7 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = F_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:337:5: ( 'F_ee' | 'F_ei' | 'F_ii' | 'F_ie' )
+			// QTL.g:374:5: ( 'F_ee' | 'F_ei' | 'F_ii' | 'F_ie' )
 			int alt1=4;
 			int LA1_0 = input.LA(1);
 			if ( (LA1_0=='F') ) {
@@ -402,28 +402,28 @@ public class QTLLexer extends Lexer {
 
 			switch (alt1) {
 				case 1 :
-					// QTL.g:337:9: 'F_ee'
+					// QTL.g:374:9: 'F_ee'
 					{
 					match("F_ee"); 
 
 					}
 					break;
 				case 2 :
-					// QTL.g:337:18: 'F_ei'
+					// QTL.g:374:18: 'F_ei'
 					{
 					match("F_ei"); 
 
 					}
 					break;
 				case 3 :
-					// QTL.g:337:27: 'F_ii'
+					// QTL.g:374:27: 'F_ii'
 					{
 					match("F_ii"); 
 
 					}
 					break;
 				case 4 :
-					// QTL.g:337:36: 'F_ie'
+					// QTL.g:374:36: 'F_ie'
 					{
 					match("F_ie"); 
 
@@ -445,7 +445,7 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = F_inf_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:338:9: ( 'F_e+' | 'F_i+' )
+			// QTL.g:375:9: ( 'F_e+' | 'F_i+' )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0=='F') ) {
@@ -497,14 +497,14 @@ public class QTLLexer extends Lexer {
 
 			switch (alt2) {
 				case 1 :
-					// QTL.g:338:12: 'F_e+'
+					// QTL.g:375:12: 'F_e+'
 					{
 					match("F_e+"); 
 
 					}
 					break;
 				case 2 :
-					// QTL.g:338:21: 'F_i+'
+					// QTL.g:375:21: 'F_i+'
 					{
 					match("F_i+"); 
 
@@ -526,7 +526,7 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = G_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:340:5: ( 'G_ee' | 'G_ei' | 'G_ii' | 'G_ie' )
+			// QTL.g:377:5: ( 'G_ee' | 'G_ei' | 'G_ii' | 'G_ie' )
 			int alt3=4;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0=='G') ) {
@@ -620,28 +620,28 @@ public class QTLLexer extends Lexer {
 
 			switch (alt3) {
 				case 1 :
-					// QTL.g:340:9: 'G_ee'
+					// QTL.g:377:9: 'G_ee'
 					{
 					match("G_ee"); 
 
 					}
 					break;
 				case 2 :
-					// QTL.g:340:18: 'G_ei'
+					// QTL.g:377:18: 'G_ei'
 					{
 					match("G_ei"); 
 
 					}
 					break;
 				case 3 :
-					// QTL.g:340:27: 'G_ii'
+					// QTL.g:377:27: 'G_ii'
 					{
 					match("G_ii"); 
 
 					}
 					break;
 				case 4 :
-					// QTL.g:340:36: 'G_ie'
+					// QTL.g:377:36: 'G_ie'
 					{
 					match("G_ie"); 
 
@@ -663,7 +663,7 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = G_inf_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:341:9: ( 'G_e+' | 'G_i+' )
+			// QTL.g:378:9: ( 'G_e+' | 'G_i+' )
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0=='G') ) {
@@ -715,14 +715,14 @@ public class QTLLexer extends Lexer {
 
 			switch (alt4) {
 				case 1 :
-					// QTL.g:341:12: 'G_e+'
+					// QTL.g:378:12: 'G_e+'
 					{
 					match("G_e+"); 
 
 					}
 					break;
 				case 2 :
-					// QTL.g:341:21: 'G_i+'
+					// QTL.g:378:21: 'G_i+'
 					{
 					match("G_i+"); 
 
@@ -744,8 +744,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = P_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:344:5: ( 'P' )
-			// QTL.g:344:9: 'P'
+			// QTL.g:381:5: ( 'P' )
+			// QTL.g:381:9: 'P'
 			{
 			match('P'); 
 			}
@@ -764,8 +764,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = H_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:345:5: ( 'H' )
-			// QTL.g:345:9: 'H'
+			// QTL.g:382:5: ( 'H' )
+			// QTL.g:382:9: 'H'
 			{
 			match('H'); 
 			}
@@ -784,8 +784,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = UNTIL_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:346:9: ( 'U' )
-			// QTL.g:346:11: 'U'
+			// QTL.g:383:9: ( 'U' )
+			// QTL.g:383:11: 'U'
 			{
 			match('U'); 
 			}
@@ -804,8 +804,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = SINCE_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:347:9: ( 'S' )
-			// QTL.g:347:11: 'S'
+			// QTL.g:384:9: ( 'S' )
+			// QTL.g:384:11: 'S'
 			{
 			match('S'); 
 			}
@@ -824,8 +824,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = RELEASE_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:348:11: ( 'R' )
-			// QTL.g:348:13: 'R'
+			// QTL.g:385:11: ( 'R' )
+			// QTL.g:385:13: 'R'
 			{
 			match('R'); 
 			}
@@ -844,8 +844,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = TRIGGER_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:349:11: ( 'T' )
-			// QTL.g:349:13: 'T'
+			// QTL.g:386:11: ( 'T' )
+			// QTL.g:386:13: 'T'
 			{
 			match('T'); 
 			}
@@ -864,7 +864,7 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = LOGIC;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:352:8: ( 'qtl' | 'mitl' | 'qtl-opt' )
+			// QTL.g:389:8: ( 'qtl' | 'mitl' | 'qtl-opt' )
 			int alt5=3;
 			int LA5_0 = input.LA(1);
 			if ( (LA5_0=='q') ) {
@@ -924,21 +924,21 @@ public class QTLLexer extends Lexer {
 
 			switch (alt5) {
 				case 1 :
-					// QTL.g:352:12: 'qtl'
+					// QTL.g:389:12: 'qtl'
 					{
 					match("qtl"); 
 
 					}
 					break;
 				case 2 :
-					// QTL.g:352:18: 'mitl'
+					// QTL.g:389:18: 'mitl'
 					{
 					match("mitl"); 
 
 					}
 					break;
 				case 3 :
-					// QTL.g:352:25: 'qtl-opt'
+					// QTL.g:389:25: 'qtl-opt'
 					{
 					match("qtl-opt"); 
 
@@ -960,8 +960,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = COLON;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:354:6: ( ':' )
-			// QTL.g:354:8: ':'
+			// QTL.g:391:6: ( ':' )
+			// QTL.g:391:8: ':'
 			{
 			match(':'); 
 			}
@@ -980,8 +980,8 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = SEMI;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:355:5: ( ';' )
-			// QTL.g:355:7: ';'
+			// QTL.g:392:5: ( ';' )
+			// QTL.g:392:7: ';'
 			{
 			match(';'); 
 			}
@@ -1000,10 +1000,10 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = ATOM;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:356:7: ( ( 'a' .. 'z' )+ )
-			// QTL.g:356:11: ( 'a' .. 'z' )+
+			// QTL.g:393:7: ( ( 'a' .. 'z' )+ )
+			// QTL.g:393:11: ( 'a' .. 'z' )+
 			{
-			// QTL.g:356:11: ( 'a' .. 'z' )+
+			// QTL.g:393:11: ( 'a' .. 'z' )+
 			int cnt6=0;
 			loop6:
 			while (true) {
@@ -1052,10 +1052,10 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = INT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:357:5: ( ( '0' .. '9' )+ )
-			// QTL.g:357:9: ( '0' .. '9' )+
+			// QTL.g:394:5: ( ( '0' .. '9' )+ )
+			// QTL.g:394:9: ( '0' .. '9' )+
 			{
-			// QTL.g:357:9: ( '0' .. '9' )+
+			// QTL.g:394:9: ( '0' .. '9' )+
 			int cnt7=0;
 			loop7:
 			while (true) {
@@ -1104,12 +1104,12 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:358:3: ( ATOM ( ATOM | INT )* )
-			// QTL.g:358:6: ATOM ( ATOM | INT )*
+			// QTL.g:395:3: ( ATOM ( ATOM | INT )* )
+			// QTL.g:395:6: ATOM ( ATOM | INT )*
 			{
 			mATOM(); 
 
-			// QTL.g:358:10: ( ATOM | INT )*
+			// QTL.g:395:10: ( ATOM | INT )*
 			loop8:
 			while (true) {
 				int alt8=3;
@@ -1123,14 +1123,14 @@ public class QTLLexer extends Lexer {
 
 				switch (alt8) {
 				case 1 :
-					// QTL.g:358:11: ATOM
+					// QTL.g:395:11: ATOM
 					{
 					mATOM(); 
 
 					}
 					break;
 				case 2 :
-					// QTL.g:358:18: INT
+					// QTL.g:395:18: INT
 					{
 					mINT(); 
 
@@ -1158,10 +1158,10 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = NEWLINE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:359:8: ( ( '\\r' )? '\\n' )
-			// QTL.g:359:9: ( '\\r' )? '\\n'
+			// QTL.g:396:8: ( ( '\\r' )? '\\n' )
+			// QTL.g:396:9: ( '\\r' )? '\\n'
 			{
-			// QTL.g:359:9: ( '\\r' )?
+			// QTL.g:396:9: ( '\\r' )?
 			int alt9=2;
 			int LA9_0 = input.LA(1);
 			if ( (LA9_0=='\r') ) {
@@ -1169,7 +1169,7 @@ public class QTLLexer extends Lexer {
 			}
 			switch (alt9) {
 				case 1 :
-					// QTL.g:359:9: '\\r'
+					// QTL.g:396:9: '\\r'
 					{
 					match('\r'); 
 					}
@@ -1194,10 +1194,10 @@ public class QTLLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// QTL.g:360:5: ( ( ' ' | '\\t' )+ )
-			// QTL.g:360:9: ( ' ' | '\\t' )+
+			// QTL.g:397:5: ( ( ' ' | '\\t' )+ )
+			// QTL.g:397:9: ( ' ' | '\\t' )+
 			{
-			// QTL.g:360:9: ( ' ' | '\\t' )+
+			// QTL.g:397:9: ( ' ' | '\\t' )+
 			int cnt10=0;
 			loop10:
 			while (true) {
