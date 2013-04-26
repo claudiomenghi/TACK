@@ -62,13 +62,61 @@ public class MITLIEventually_AtoInf extends MITLIFormula implements Temporized{
 		List<Formula> subfs = this.subformulae();
 		MITLIFormula subf = (MITLIFormula)subfs.get(0);
 		
-		String f1 = null;
 		
+		// Formula (15)
 		
-		String f2 = null;
+		String f1;
+		f1 = t.iff(
+					high(t),
+					t.and(
+						orig,
+						t.U(
+								t.rel(">", z0(t), "0"), 
+								t.and(
+										subf.interval(t),
+										t.or(
+												t.rel("<=", z0(t), String.valueOf(lowerbound())),
+												t.and(
+														t.rel("<=", z0(t), String.valueOf(lowerbound())),
+														t.X(t.rel(">", z0(t), String.valueOf(lowerbound())))
+												)
+										)
+								)
+						)
+				)
+			);
 		
+		// Formula (16)
 		
-		String f3 = null;
+		String f2;
+		f2 = t.iff(
+					low(t), 
+					t.or(
+							t.and(
+									t.rel("=", z1(t), "0"),
+									t.X(
+											t.U(
+													t.rel(">", z1(t), "0"),
+													t.and(
+															subf.low(t),
+															t.rel("=", z1(t), String.valueOf(lowerbound())),
+															t.G(t.neg(subf.high(t)))
+													)
+											)
+									)
+							),
+							t.and(orig, t.neg(high(t)))
+					)
+			);
+		
+		String f3;
+		f3 = t.implies(
+						t.and(
+								subf.low(t),
+								t.G(t.neg(subf.high(t)))
+						),
+						t.rel("=", z1(t), String.valueOf(lowerbound()))	
+			);
 		
 					
 		

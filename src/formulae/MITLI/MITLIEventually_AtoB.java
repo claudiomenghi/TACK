@@ -99,7 +99,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
          }
 
 		
-		
+		// Formula (8)
 		String f1;
 		f1 = t.iff(
 					high(t),
@@ -139,7 +139,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 			_f3[i] = t.rel("=", x(i,t), String.valueOf(b));
 		}
 		
-		
+		// Formula (9)
 		String f3 = t.implies(
 								t.and(
 										subf.high(t), 
@@ -180,7 +180,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		}
 		
 		String f4 = t.or(
-							t.and(_f4),
+							t.or(_f4),
 							t.and(orig, t.neg(high(t))));
 		
 		
@@ -226,6 +226,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 			_f1[i] = t.rel("=", x(i,t), "0");
 		}
 		
+		//Formula (4)		
 		String f1 = t.implies(
 								t.or(high(t), low(t)), 
 								t.or(_f1)
@@ -239,7 +240,8 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 			for (int j=0; j<d; j++)
 				if (i != j)
 					_f2[i*d+j] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
-						
+			
+		// Formuala (5)
 		String f2 = t.and(_f2);
 		
 		
@@ -257,6 +259,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 										
 		}
 		
+		// Formula (6)
 		String f3 = t.and(_f3);
 		
 		

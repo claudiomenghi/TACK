@@ -63,7 +63,7 @@ public class MITLIEventually_ZerotoB extends MITLIEventually_AtoB{
 									t.U(
 											t.rel(">", z0(t), "0"),
 											t.and(
-													subf.high(t),
+													subf.interval(t),
 													t.rel("<=", z0(t), String.valueOf(upperbound()))												
 											)
 									)
