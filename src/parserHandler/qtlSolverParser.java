@@ -1,4 +1,4 @@
-// $ANTLR 3.5 qtlSolver.g 2013-04-26 15:58:08
+// $ANTLR 3.5 qtlSolver.g 2013-04-26 16:15:54
 
 package parserHandler;
 
@@ -112,7 +112,9 @@ public class qtlSolverParser extends Parser {
 							else if (tlogic.equals("qtl-i"))
 								p = new QTLIParserHandler();
 							else if (tlogic.equals("mitl"))
-								p = new MITLParserHandler();				 
+								p = new MITLParserHandler();
+							else if (tlogic.equals("mitl-i"))
+								p = new MITLIParserHandler();				 
 					 	
 			match(input,31,FOLLOW_31_in_tlparser48); 
 			INT1=(Token)match(input,INT,FOLLOW_INT_in_tlparser50); 
@@ -121,7 +123,7 @@ public class qtlSolverParser extends Parser {
 							p.setHistoryLength(Integer.valueOf((INT1!=null?INT1.getText():null)));
 							System.out.println("Starting parsing formulae...");
 						
-			// qtlSolver.g:48:4: ( declaration )*
+			// qtlSolver.g:50:4: ( declaration )*
 			loop1:
 			while (true) {
 				int alt1=2;
@@ -132,7 +134,7 @@ public class qtlSolverParser extends Parser {
 
 				switch (alt1) {
 				case 1 :
-					// qtlSolver.g:48:4: declaration
+					// qtlSolver.g:50:4: declaration
 					{
 					pushFollow(FOLLOW_declaration_in_tlparser62);
 					declaration();
@@ -189,7 +191,7 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "logic"
-	// qtlSolver.g:73:1: logic returns [String s] : COLON LOGIC ;
+	// qtlSolver.g:75:1: logic returns [String s] : COLON LOGIC ;
 	public final String logic() throws RecognitionException {
 		String s = null;
 
@@ -197,8 +199,8 @@ public class qtlSolverParser extends Parser {
 		Token LOGIC3=null;
 
 		try {
-			// qtlSolver.g:74:2: ( COLON LOGIC )
-			// qtlSolver.g:74:4: COLON LOGIC
+			// qtlSolver.g:76:2: ( COLON LOGIC )
+			// qtlSolver.g:76:4: COLON LOGIC
 			{
 			match(input,COLON,FOLLOW_COLON_in_logic92); 
 			LOGIC3=(Token)match(input,LOGIC,FOLLOW_LOGIC_in_logic94); 
@@ -220,13 +222,13 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "declaration"
-	// qtlSolver.g:77:1: declaration : ( ':def' s= ID fmla NEWLINE | NEWLINE );
+	// qtlSolver.g:79:1: declaration : ( ':def' s= ID fmla NEWLINE | NEWLINE );
 	public final void declaration() throws RecognitionException {
 		Token s=null;
 		Formula fmla4 =null;
 
 		try {
-			// qtlSolver.g:77:12: ( ':def' s= ID fmla NEWLINE | NEWLINE )
+			// qtlSolver.g:79:12: ( ':def' s= ID fmla NEWLINE | NEWLINE )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0==32) ) {
@@ -244,7 +246,7 @@ public class qtlSolverParser extends Parser {
 
 			switch (alt2) {
 				case 1 :
-					// qtlSolver.g:77:14: ':def' s= ID fmla NEWLINE
+					// qtlSolver.g:79:14: ':def' s= ID fmla NEWLINE
 					{
 					match(input,32,FOLLOW_32_in_declaration108); 
 					s=(Token)match(input,ID,FOLLOW_ID_in_declaration112); 
@@ -259,7 +261,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:83:5: NEWLINE
+					// qtlSolver.g:85:5: NEWLINE
 					{
 					match(input,NEWLINE,FOLLOW_NEWLINE_in_declaration137); 
 					}
@@ -280,7 +282,7 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "fmla"
-	// qtlSolver.g:86:1: fmla returns [Formula r] : ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR );
+	// qtlSolver.g:88:1: fmla returns [Formula r] : ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR );
 	public final Formula fmla() throws RecognitionException {
 		Formula r = null;
 
@@ -297,7 +299,7 @@ public class qtlSolverParser extends Parser {
 		Formula f2 =null;
 
 		try {
-			// qtlSolver.g:87:2: ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR )
+			// qtlSolver.g:89:2: ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP f1= fmla f2= fmla RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR )
 			int alt3=15;
 			switch ( input.LA(1) ) {
 			case ID:
@@ -398,7 +400,7 @@ public class qtlSolverParser extends Parser {
 			}
 			switch (alt3) {
 				case 1 :
-					// qtlSolver.g:87:6: ID
+					// qtlSolver.g:89:6: ID
 					{
 					ID5=(Token)match(input,ID,FOLLOW_ID_in_fmla161); 
 								
@@ -410,7 +412,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:94:6: ATOM
+					// qtlSolver.g:96:6: ATOM
 					{
 					ATOM6=(Token)match(input,ATOM,FOLLOW_ATOM_in_fmla172); 
 						
@@ -430,7 +432,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 3 :
-					// qtlSolver.g:109:4: LPAR NEG_OP f1= fmla RPAR
+					// qtlSolver.g:111:4: LPAR NEG_OP f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla183); 
 					match(input,NEG_OP,FOLLOW_NEG_OP_in_fmla185); 
@@ -455,7 +457,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 4 :
-					// qtlSolver.g:123:6: LPAR AND_OP clist= conjuncts_list RPAR
+					// qtlSolver.g:125:6: LPAR AND_OP clist= conjuncts_list RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla203); 
 					match(input,AND_OP,FOLLOW_AND_OP_in_fmla205); 
@@ -478,7 +480,7 @@ public class qtlSolverParser extends Parser {
 									for (Formula fm: clist)
 										arr[i++] = fm;
 								
-									f = new QTLIConjunction((QTLIFormula[]) arr);
+									f = QTLIFormula.and((QTLIFormula[]) arr);
 								}	
 								else if (tlogic.equals("mitl"))
 									f = new MITLConjunction((MITLFormula)(clist).get(0),(MITLFormula)(clist).get(1));
@@ -490,7 +492,7 @@ public class qtlSolverParser extends Parser {
 									for (Formula fm: clist)
 										arr[i++] = fm;
 								
-									f = new MITLIConjunction((MITLIFormula[]) arr);
+									f = MITLIFormula.and((MITLIFormula[]) arr);
 								}	
 										
 								r = p.addFormula(f);
@@ -498,7 +500,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 5 :
-					// qtlSolver.g:155:6: LPAR OR_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:157:6: LPAR OR_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla222); 
 					match(input,OR_OP,FOLLOW_OR_OP_in_fmla224); 
@@ -525,7 +527,7 @@ public class qtlSolverParser extends Parser {
 									for (Formula fm: clist)
 										arr[i++] = fm;
 								
-									f = new QTLIDisjunction((QTLIFormula[]) arr);
+									f = QTLIFormula.or((QTLIFormula[]) arr);
 								}	
 								else if (tlogic.equals("mitl"))
 									f = MITLFormula.or((MITLFormula)(clist).get(0),(MITLFormula)(clist).get(1));
@@ -537,7 +539,7 @@ public class qtlSolverParser extends Parser {
 									for (Formula fm: clist)
 										arr[i++] = fm;
 								
-									f = new MITLIDisjunction((MITLIFormula[]) arr);
+									f = MITLIFormula.or((MITLIFormula[]) arr);
 								}
 									
 								r = p.addFormula(f);	
@@ -545,7 +547,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 6 :
-					// qtlSolver.g:187:6: LPAR IMPL_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:189:6: LPAR IMPL_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla245); 
 					match(input,IMPL_OP,FOLLOW_IMPL_OP_in_fmla247); 
@@ -574,7 +576,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 7 :
-					// qtlSolver.g:201:6: LPAR IFF_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:203:6: LPAR IFF_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla268); 
 					match(input,IFF_OP,FOLLOW_IFF_OP_in_fmla270); 
@@ -603,7 +605,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 8 :
-					// qtlSolver.g:215:6: LPAR F_OP a= INT b= INT f1= fmla RPAR
+					// qtlSolver.g:217:6: LPAR F_OP a= INT b= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla292); 
 					F_OP7=(Token)match(input,F_OP,FOLLOW_F_OP_in_fmla294); 
@@ -650,7 +652,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 9 :
-					// qtlSolver.g:249:6: LPAR F_inf_OP a= INT f1= fmla RPAR
+					// qtlSolver.g:251:6: LPAR F_inf_OP a= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla320); 
 					F_inf_OP8=(Token)match(input,F_inf_OP,FOLLOW_F_inf_OP_in_fmla322); 
@@ -687,7 +689,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 10 :
-					// qtlSolver.g:274:6: LPAR op= G_OP a= INT b= INT f1= fmla RPAR
+					// qtlSolver.g:276:6: LPAR op= G_OP a= INT b= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla346); 
 					op=(Token)match(input,G_OP,FOLLOW_G_OP_in_fmla350); 
@@ -733,7 +735,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 11 :
-					// qtlSolver.g:307:6: LPAR op= G_inf_OP a= INT f1= fmla RPAR
+					// qtlSolver.g:309:6: LPAR op= G_inf_OP a= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla376); 
 					op=(Token)match(input,G_inf_OP,FOLLOW_G_inf_OP_in_fmla380); 
@@ -771,7 +773,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 12 :
-					// qtlSolver.g:333:6: LPAR UNTIL_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:335:6: LPAR UNTIL_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla406); 
 					match(input,UNTIL_OP,FOLLOW_UNTIL_OP_in_fmla408); 
@@ -801,7 +803,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 13 :
-					// qtlSolver.g:348:6: LPAR SINCE_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:350:6: LPAR SINCE_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla430); 
 					match(input,SINCE_OP,FOLLOW_SINCE_OP_in_fmla432); 
@@ -824,7 +826,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 14 :
-					// qtlSolver.g:356:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:358:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla456); 
 					match(input,RELEASE_OP,FOLLOW_RELEASE_OP_in_fmla458); 
@@ -853,7 +855,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 15 :
-					// qtlSolver.g:370:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:372:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla480); 
 					match(input,TRIGGER_OP,FOLLOW_TRIGGER_OP_in_fmla482); 
@@ -894,7 +896,7 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "conjuncts_list"
-	// qtlSolver.g:384:1: conjuncts_list returns [List<Formula> l] : f1= fmla (clist= conjuncts_list |) ;
+	// qtlSolver.g:386:1: conjuncts_list returns [List<Formula> l] : f1= fmla (clist= conjuncts_list |) ;
 	public final List<Formula> conjuncts_list() throws RecognitionException {
 		List<Formula> l = null;
 
@@ -904,14 +906,14 @@ public class qtlSolverParser extends Parser {
 
 		l = new ArrayList<Formula>();
 		try {
-			// qtlSolver.g:385:38: (f1= fmla (clist= conjuncts_list |) )
-			// qtlSolver.g:387:2: f1= fmla (clist= conjuncts_list |)
+			// qtlSolver.g:387:38: (f1= fmla (clist= conjuncts_list |) )
+			// qtlSolver.g:389:2: f1= fmla (clist= conjuncts_list |)
 			{
 			pushFollow(FOLLOW_fmla_in_conjuncts_list527);
 			f1=fmla();
 			state._fsp--;
 
-			// qtlSolver.g:387:10: (clist= conjuncts_list |)
+			// qtlSolver.g:389:10: (clist= conjuncts_list |)
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0==ATOM||LA4_0==ID||LA4_0==LPAR) ) {
@@ -929,7 +931,7 @@ public class qtlSolverParser extends Parser {
 
 			switch (alt4) {
 				case 1 :
-					// qtlSolver.g:387:11: clist= conjuncts_list
+					// qtlSolver.g:389:11: clist= conjuncts_list
 					{
 					pushFollow(FOLLOW_conjuncts_list_in_conjuncts_list532);
 					clist=conjuncts_list();
@@ -938,7 +940,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:387:34: 
+					// qtlSolver.g:389:34: 
 					{
 					}
 					break;

@@ -137,7 +137,7 @@ fmla returns [Formula r]
 				for (Formula fm: clist)
 					arr[i++] = fm;
 			
-				f = new QTLIConjunction((QTLIFormula[]) arr);
+				f = QTLIFormula.and((QTLIFormula[]) arr);
 			}	
 			else if (tlogic.equals("mitl"))
 				f = new MITLConjunction((MITLFormula)($clist.l).get(0),(MITLFormula)($clist.l).get(1));
@@ -149,7 +149,7 @@ fmla returns [Formula r]
 				for (Formula fm: clist)
 					arr[i++] = fm;
 			
-				f = new MITLIConjunction((MITLIFormula[]) arr);
+				f = MITLIFormula.and((MITLIFormula[]) arr);
 			}	
 					
 			$fmla.r = p.addFormula(f);
@@ -169,7 +169,7 @@ fmla returns [Formula r]
 				for (Formula fm: clist)
 					arr[i++] = fm;
 			
-				f = new QTLIDisjunction((QTLIFormula[]) arr);
+				f = QTLIFormula.or((QTLIFormula[]) arr);
 			}	
 			else if (tlogic.equals("mitl"))
 				f = MITLFormula.or((MITLFormula)($clist.l).get(0),(MITLFormula)($clist.l).get(1));
@@ -181,7 +181,7 @@ fmla returns [Formula r]
 				for (Formula fm: clist)
 					arr[i++] = fm;
 			
-				f = new MITLIDisjunction((MITLIFormula[]) arr);
+				f = MITLIFormula.or((MITLIFormula[]) arr);
 			}
 				
 			$fmla.r = p.addFormula(f);	
