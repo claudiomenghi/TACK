@@ -38,7 +38,9 @@ tlparser:	l=logic NEWLINE
 				else if (tlogic.equals("qtl-i"))
 					p = new QTLIParserHandler();
 				else if (tlogic.equals("mitl"))
-					p = new MITLParserHandler();				 
+					p = new MITLParserHandler();
+				else if (tlogic.equals("mitl-i"))
+					p = new MITLIParserHandler();				 
 		 	}
 		 	':bound' INT NEWLINE
 			{
