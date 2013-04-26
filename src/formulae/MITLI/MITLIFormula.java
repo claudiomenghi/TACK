@@ -132,8 +132,8 @@ public abstract class MITLIFormula extends Formula {
 		return new MITLINegation(f);
 	}
 	
-	public static MITLIFormula and(MITLIFormula f1, MITLIFormula f2){
-		return new MITLIConjunction(f1, f2);
+	public static MITLIFormula and(MITLIFormula... formulae){
+		return new MITLIConjunction(formulae);
 	}
 		
 	
@@ -186,8 +186,8 @@ public abstract class MITLIFormula extends Formula {
 	// Producers method to build derived boolean CLTL formulae
 	
 	
-	public static MITLIFormula or(MITLIFormula f1, MITLIFormula f2){
-		return new MITLIDisjunction(f1,f2);		
+	public static MITLIFormula or(MITLIFormula... formulae){
+		return new MITLIDisjunction(formulae);		
 	}
 	
 	public static MITLIFormula implies(MITLIFormula f1, MITLIFormula f2){

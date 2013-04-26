@@ -160,8 +160,8 @@ public abstract class QTLIFormula extends Formula {
 		return new QTLINegation(f);
 	}
 	
-	public static QTLIFormula and(QTLIFormula f1, QTLIFormula f2){
-		return new QTLIConjunction(f1, f2);
+	public static QTLIFormula and(QTLIFormula... formulae){
+		return new QTLIConjunction(formulae);
 	}
 		
 	
@@ -224,10 +224,8 @@ public abstract class QTLIFormula extends Formula {
 	// Producers method to build derived boolean CLTL formulae
 	
 	
-	public static QTLIFormula or(QTLIFormula f1, QTLIFormula f2){
-		//return not(and(not(f1), not(f2)));
-		
-		return new QTLIDisjunction(f1,f2);		
+	public static QTLIFormula or(QTLIFormula... formulae){
+		return new QTLIDisjunction(formulae);		
 	}
 	
 	public static QTLIFormula implies(QTLIFormula f1, QTLIFormula f2){
