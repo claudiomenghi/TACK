@@ -19,9 +19,9 @@ public class qtlsolver {
     	if ( args[0].matches("[a-zA-Z][a-zA-Z0-9-]+\\.tl") ) {
     	
 	        ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(args[0]));
-	        QTLLexer lexer = new QTLLexer(input);
+	        qtlSolverLexer lexer = new qtlSolverLexer(input);
 	        CommonTokenStream tokens = new CommonTokenStream(lexer);
-	        QTLParser parser = new QTLParser(tokens);
+	        qtlSolverParser parser = new qtlSolverParser(tokens);
 	        parser.tlparser();
 	        
 	        FileInputStream f0 = null;
