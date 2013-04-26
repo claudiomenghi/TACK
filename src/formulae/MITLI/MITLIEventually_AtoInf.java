@@ -71,7 +71,7 @@ public class MITLIEventually_AtoInf extends MITLIFormula implements Temporized{
 					t.and(
 						orig,
 						t.U(
-								t.rel(">", z0(t), "0"), 
+								t.or(t.rel(">", z0(t), "0"), orig), 
 								t.and(
 										subf.interval(t),
 										t.or(

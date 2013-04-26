@@ -133,6 +133,7 @@ public abstract class MITLIFormula extends Formula {
 	}
 	
 	public static MITLIFormula and(MITLIFormula... formulae){
+		System.out.println(">>" + formulae[0] == null);
 		return new MITLIConjunction(formulae);
 	}
 		
@@ -164,13 +165,12 @@ public abstract class MITLIFormula extends Formula {
 	
 	// Globally: G_<0,b]
 	public static MITLIFormula G(MITLIFormula f, int b){
-		return not(F(not(f),b));
-		
+		return new MITLIGlobally_ZerotoB(f, b);		
 	}
 	
-	// Globally: F_<a,b]
+	// Globally: G_<a,b]
 	public static MITLIFormula G(MITLIFormula f, int a, int b){
-		return  not(F(not(f),a,b));
+		return new MITLIGlobally_AtoB(f, a, b);
 	}
 	
 	// Globally: F_<a,+oo]

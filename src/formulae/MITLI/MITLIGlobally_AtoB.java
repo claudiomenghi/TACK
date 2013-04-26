@@ -6,15 +6,15 @@ import delegateTranslator.CLTLTranslator;
 import formulae.Formula;
 import formulae.Temporized;
 
-public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
+public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 
 
 	
 	private final int a, b;	
 	
 	
-	public MITLIEventually_AtoB(MITLIFormula subformula, int a, int b) {
-		super(new String("(F " + String.valueOf(a) + " " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
+	public MITLIGlobally_AtoB(MITLIFormula subformula, int a, int b) {
+		super(new String("(G " + String.valueOf(a) + " " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
 		this.subformula = subformula;
 		this.a = a;
 		this.b = b;
@@ -48,7 +48,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 
 	@Override
 	public Formula simplify() {
-		return new MITLIEventually_AtoB((MITLIFormula)subformula.simplify(), a, b);
+		return new MITLIGlobally_AtoB((MITLIFormula)subformula.simplify(), a, b);
 	}
 
 
@@ -89,7 +89,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 											t.U(
 													t.rel(">", x(i,t), "0"),
 													t.and(
-															subf.high(t),
+															subf.low(t),
 															t.rel("=", x(i,t), String.valueOf(b)),
 															t.or(t.rel(">", subf.z0(t), String.valueOf(l)), t.rel(">", subf.z1(t), String.valueOf(l)))
 													)
@@ -102,7 +102,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		// Formula (8)
 		String f1;
 		f1 = t.iff(
-					high(t),
+					low(t),
 					t.or(
 							t.and(
 									t.neg(orig),
@@ -113,7 +113,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 									t.U(
 											t.or(t.rel(">", x(0,t), "0"), orig),
 											t.and(
-													subf.interval(t),
+													t.neg(subf.interval(t)),
 													t.or(
 															t.and(t.rel(">=", x(0,t), String.valueOf(a)), t.rel("<=", x(0,t), String.valueOf(b))),
 															t.and(t.rel("<", x(0,t), String.valueOf(a)), t.X(t.rel(">", x(0,t), String.valueOf(a))))
@@ -141,7 +141,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		// Formula (9)
 		String f3 = t.implies(
 								t.and(
-										subf.high(t), 
+										subf.low(t), 
 										t.or(t.rel(">", subf.z0(t), String.valueOf(l)), t.rel(">", subf.z1(t), String.valueOf(l)))
 								),
 								t.or(_f3)
@@ -158,12 +158,12 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 								t.U(
 										t.rel(">", x(i,t), "0"),
 										t.and(
-												subf.low(t),
+												subf.high(t),
 												t.rel("=", x(i,t), String.valueOf(a)),
 												t.R(
-														subf.high(t),
+														subf.low(t),
 														t.neg(t.and(
-																	subf.high(t), 
+																	subf.low(t), 
 																	t.and(
 																		t.rel("<=", subf.z0(t), String.valueOf(l)),
 																		t.rel("<=", subf.z1(t), String.valueOf(l))
@@ -180,12 +180,12 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		
 		String f4;
 		f4 = t.iff(
-					low(t),
-					t.or(
+						high(t),
+						t.or(
 							t.or(_f4),
-							t.and(orig, t.neg(high(t)))
-					)
-			);
+							t.and(orig, t.neg(low(t)))
+						)
+				);
 		
 		
 		String[] _f5 = new String[d];
