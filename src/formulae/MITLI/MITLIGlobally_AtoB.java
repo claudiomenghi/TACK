@@ -79,10 +79,10 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		String orig = t.atom("O");
 		
 		
-		 String[] _f1 = new String[d];
+		String[] _f1 = new String[d];
 		 
     
-         for (int i=0; i<d; i++){
+        for (int i=0; i<d; i++){
                  _f1[i] = t.and(
                 		 			t.rel("=", x(i,t), "0"),
                 		 			t.X(
@@ -197,11 +197,11 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		
 		String f5 = t.implies(
 								t.and(
-										subf.low(t), 
+										subf.high(t), 
 										t.R(
-												subf.high(t),
+												subf.low(t),
 												t.neg(t.and(
-															subf.high(t), 
+															subf.low(t), 
 															t.and(
 																t.rel("<=", subf.z0(t), String.valueOf(l)),
 																t.rel("<=", subf.z1(t), String.valueOf(l))
@@ -231,7 +231,7 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		}
 		
 		//Formula (4)		
-		String f1 = t.implies(
+		String f1 = t.iff(
 								t.or(high(t), low(t)), 
 								t.or(_f1)
 					);
@@ -265,14 +265,19 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		
 		// Formula (6)
 		String f3 = t.and(_f3);
-		
-		
-
-		
+			
 		
 		String f4 = t.rel("=", x(0,t), "0");
 		
-		return t.and(f4, t.G(t.and(f1,f2,f3)));
+		String[] _f5 = new String[d];		
+		for (int i=0; i<d; i++){
+			_f5[i] = t.rel(">=", x(i,t), "0");
+		}
+		
+		// Positiveness of all clocks in the origin
+		String f5 = t.and(_f5);
+		
+		return t.and(f4, f5, t.G(t.and(f1,f2,f3)));
 					
 	}
 
