@@ -6,6 +6,7 @@ import delegateTranslator.*;
 import formulae.*;
 import formulae.MITLI.MITLIEventually_AtoB;
 import formulae.MITLI.MITLIFormula;
+import formulae.MITLI.MITLIGlobally_AtoB;
 
 public class MITLIParserHandler extends TLParserHandler {
 
@@ -26,6 +27,17 @@ public class MITLIParserHandler extends TLParserHandler {
 						result = result + new String("(define-tvar " + mitlf.z0() + " *real*)\n(define-tvar " + mitlf.z1() + " *real*)\n");
 						if (mitlf instanceof MITLIEventually_AtoB){
 							MITLIEventually_AtoB fm = (MITLIEventually_AtoB) mitlf;
+
+							int b = fm.upperbound();
+							int a = fm.lowerbound();
+							
+							int d = 2*(int)Math.floor(b/(b-a)+1) + 1;  
+						
+							for (int i=0; i<d; i++)
+								result = result + new String("(define-tvar " + fm.x(i) + " *real*)\n");
+						} else if (mitlf instanceof MITLIGlobally_AtoB){
+							MITLIGlobally_AtoB fm = (MITLIGlobally_AtoB) mitlf;
+
 							int b = fm.upperbound();
 							int a = fm.lowerbound();
 							

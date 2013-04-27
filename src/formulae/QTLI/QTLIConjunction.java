@@ -20,7 +20,7 @@ public class QTLIConjunction extends QTLIFormula {
 		
 		
 	private static String toStringForm(QTLIFormula... args){
-		String result = null;
+		String result = new String();
 		
 		for(QTLIFormula f: args)
 			result = result + " " + f.strFormula();

@@ -487,6 +487,7 @@ public class qtlSolverParser extends Parser {
 								else if (tlogic.equals("mitl-i")){ 
 								
 									arr = new MITLIFormula[clist.size()];
+									
 
 									int i = 0;
 									for (Formula fm: clist)

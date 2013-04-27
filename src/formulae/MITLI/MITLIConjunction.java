@@ -7,6 +7,7 @@ import java.util.List;
 import delegateTranslator.CLTLTranslator;
 import formulae.Formula;
 
+
 public class MITLIConjunction extends MITLIFormula {
 	
 		
@@ -20,9 +21,9 @@ public class MITLIConjunction extends MITLIFormula {
 		
 		
 	private static String toStringForm(MITLIFormula... args){
-		String result = null;
+		String result = new String();
 		
-		for(MITLIFormula f: args)
+		for(MITLIFormula f: args)			
 			result = result + " " + f.strFormula();
 		
 		return result;

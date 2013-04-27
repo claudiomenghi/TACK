@@ -133,7 +133,6 @@ public abstract class MITLIFormula extends Formula {
 	}
 	
 	public static MITLIFormula and(MITLIFormula... formulae){
-		System.out.println(">>" + formulae[0] == null);
 		return new MITLIConjunction(formulae);
 	}
 		
