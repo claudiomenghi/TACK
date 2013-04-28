@@ -17,6 +17,8 @@ public class MITLIEventually_AtoInf extends MITLIFormula implements Temporized{
 		super(new String("(F " + String.valueOf(a) + " +oo" + subformula.strFormula() + ")"));
 		this.subformula = subformula;
 		this.a = a;
+		
+		this.maxIntComparedto(a);
 	}
 
 

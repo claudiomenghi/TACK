@@ -11,6 +11,9 @@ public abstract class MITLIFormula extends Formula {
 	public static final MITLFormula qtlFalse = new MITLTrue();
 	*/
 	
+	private int maxIntComparedto = 0;
+	
+	
 	public MITLIFormula(String formula_p){
 		super(formula_p);
 		if (this.getClass() != MITLITrue.class && True == null)
@@ -61,7 +64,7 @@ public abstract class MITLIFormula extends Formula {
 												t.rel(">", t.X(z0(t)), z0(t)))),
 								t.or(
 										t.G(t.F(t.rel("=", z0(t), "0"))), 
-										t.F(t.G(t.rel(">", z0(t), String.valueOf(Formula.maxbound))))));
+										t.F(t.G(t.rel(">", z0(t), String.valueOf(maxIntComparedto()))))));
 												
 
 			String f4b = t.and(
@@ -71,7 +74,7 @@ public abstract class MITLIFormula extends Formula {
 									t.rel(">", t.X(z1(t)), z1(t)))),
 					t.or(
 							t.G(t.F(t.rel("=", z1(t), "0"))), 
-							t.F(t.G(t.rel(">", z1(t), String.valueOf(Formula.maxbound))))));		
+							t.F(t.G(t.rel(">", z1(t), String.valueOf(maxIntComparedto()))))));		
 			
 			// Clocks non negativeness in the origin
 			String f5 = t.and(
@@ -89,7 +92,18 @@ public abstract class MITLIFormula extends Formula {
 		return result;
 	}
 	
-
+	
+	public int maxIntComparedto(){
+		return maxIntComparedto;
+	}
+	
+	public int maxIntComparedto(int c){
+		if (maxIntComparedto < c)
+			maxIntComparedto = c;
+		
+		return maxIntComparedto;
+	}
+	
 	
 	public String interval(CLTLTranslator t){
 		return t.atom("H_" + String.valueOf(idFormula()));	

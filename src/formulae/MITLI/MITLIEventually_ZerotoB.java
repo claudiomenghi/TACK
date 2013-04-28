@@ -10,6 +10,9 @@ public class MITLIEventually_ZerotoB extends MITLIEventually_AtoB{
 	
 	public MITLIEventually_ZerotoB(MITLIFormula subformula, int b) {
 		super(subformula, 0, b);
+		
+		subformula.maxIntComparedto(b);
+		this.maxIntComparedto(b);		
 	}
 
 

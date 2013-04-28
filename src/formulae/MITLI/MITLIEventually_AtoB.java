@@ -18,6 +18,8 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		this.subformula = subformula;
 		this.a = a;
 		this.b = b;
+		
+		subformula.maxIntComparedto(b-a);
 	}
 
 
@@ -225,32 +227,18 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		int d = 2*(int)Math.floor(b/(b-a)+1) + 1;  
 		
 		
-		String[] _f1 = new String[d];		
+		String[] _f1 = new String[d];
+		String[] _f2 = new String[d*d];	
+		String[] _f3 = new String[d];
+		String[] _f5 = new String[d];
+		String[] _f6 = new String[d];
+		
 		for (int i=0; i<d; i++){
 			_f1[i] = t.rel("=", x(i,t), "0");
-		}
-		
-		//Formula (4)		
-		String f1 = t.iff(
-								t.or(high(t), low(t)), 
-								t.or(_f1)
-					);
-		
-	
-		
-		
-		String[] _f2 = new String[d*d];		
-		for (int i=0; i<d; i++)
+			_f5[i] = t.rel(">=", x(i,t), "0");
 			for (int j=0; j<d; j++)
 				if (i != j)
 					_f2[i*d+j] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
-			
-		// Formuala (5)
-		String f2 = t.and(_f2);
-		
-		
-		String[] _f3 = new String[d];		
-		for (int i=0; i<d; i++){	
 			_f3[i] = t.implies(
 								t.rel("=", x(i,t), "0"),
 								t.X(
@@ -260,8 +248,26 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 										)
 								)
 					);
-										
+			_f6[i] = t.and(
+							t.G(
+									t.or(
+											t.rel("=", t.X(x(i,t)), "0"),
+											t.rel(">", t.X(x(i,t)), z0(t)))),
+							t.or(
+									t.G(t.F(t.rel("=", x(i,t), "0"))), 
+									t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
 		}
+		
+		//Formula (4)		
+		String f1 = t.iff(
+								t.or(high(t), low(t)), 
+								t.or(_f1)
+					);
+				
+			
+		// Formuala (5)
+		String f2 = t.and(_f2);
+		
 		
 		// Formula (6)
 		String f3 = t.and(_f3);
@@ -269,15 +275,15 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		
 		String f4 = t.rel("=", x(0,t), "0");
 		
-		String[] _f5 = new String[d];		
-		for (int i=0; i<d; i++){
-			_f5[i] = t.rel(">=", x(i,t), "0");
-		}
-		
 		// Positiveness of all clocks in the origin
 		String f5 = t.and(_f5);
+
+		// Clocks progression
+		String f6 = t.and(_f6);
+											
+			
 		
-		return t.and(f4, f5, t.G(t.and(f1,f2,f3)));
+		return t.and(f4, f5, f6, t.G(t.and(f1,f2,f3)));
 					
 	}
 

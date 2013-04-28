@@ -149,7 +149,7 @@ public abstract class TLParserHandler {
 					
 				axioms[i] = translator.and(translator.Y(translator.neg(translator.atom("O"))), translator.atom("O"), translator.X(translator.G(translator.neg(translator.atom("O")))));
 				
-				result = this.getCLTLformulaOf(e_transl) + "(ae2zot:zot " + getHistoryLength() + " " + translator.and(axioms) + ":logic :QF_UFLRA :gen-symbolic-val 't :over-clocks " + maxbound + ")\n";				
+				result = this.getCLTLformulaOf(e_transl) + "(ae2zot:zot " + getHistoryLength() + " " + translator.and(axioms) + ":logic :QF_UFLRA :gen-symbolic-val 't :over-clocks " + Formula.maxbound + ")\n";				
 			};
 			case NUZOT: ;		
 		}
@@ -214,8 +214,8 @@ public abstract class TLParserHandler {
 			if (f instanceof Temporized){
 				Temporized f1 = ((Temporized)f);
 				
-				if (f1.upperbound() > maxbound) 
-					maxbound = f1.upperbound();
+				if (f1.upperbound() > Formula.maxbound) 
+					Formula.maxbound = f1.upperbound();
 			}
 			
 		
