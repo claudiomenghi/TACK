@@ -166,7 +166,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 														subf.high(t),
 														t.neg(t.and(
 																	subf.high(t), 
-																	t.rel("<=", x(i,t), String.valueOf(l))			
+																	t.rel("<=", x(i,t), String.valueOf(upperbound()))			
 																)
 														)
 													
@@ -245,14 +245,19 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 										)
 								)
 					);
-			_f6[i] = t.and(
-							t.G(
-									t.or(
-											t.rel("=", t.X(x(i,t)), "0"),
-											t.rel(">", t.X(x(i,t)), z0(t)))),
-							t.or(
-									t.G(t.F(t.rel("=", x(i,t), "0"))), 
-									t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
+			if (maxIntComparedto() > 0)
+				_f6[i] = t.and(
+								t.G(
+										t.or(
+												t.rel("=", t.X(x(i,t)), "0"),
+												t.rel(">", t.X(x(i,t)), z0(t)))),
+								t.or(
+										t.G(t.F(t.rel("=", x(i,t), "0"))), 
+										t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
+			else 
+				_f6[i] = t.or(
+								t.G(t.F(t.rel("=", x(i,t), "0"))), 
+								t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound())))));
 		}
 		
 		//Formula (4)		
@@ -276,14 +281,8 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		String f5 = t.and(_f5);
 
 		// Clocks progression
-		String f6;
-		if (this.maxIntComparedto() > 0)
-			f6 = t.and(_f6);
-		else 
-			f6 = new String("");
-											
-			
-		
+		String f6 = t.and(_f6);
+	
 		return t.and(f4, f5, f6, t.G(t.and(f1,f2,f3)));
 					
 	}

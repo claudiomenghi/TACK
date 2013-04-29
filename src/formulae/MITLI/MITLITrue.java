@@ -15,7 +15,7 @@ public class MITLITrue extends MITLIFormula {
 	@Override
 	public String translate(CLTLTranslator t) {
 		
-		return t.and(super.clocksEventsConstraints(t), high(t), t.G(interval(t)));
+		return t.and(super.clocksEventsConstraints(t), t.G(interval(t)));
 	}
 
 	@Override
