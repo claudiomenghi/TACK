@@ -165,11 +165,8 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 												t.R(
 														subf.low(t),
 														t.neg(t.and(
-																	subf.low(t), 
-																	t.and(
-																		t.rel("<=", subf.z0(t), String.valueOf(l)),
-																		t.rel("<=", subf.z1(t), String.valueOf(l))
-																	)
+																	subf.low(t), 																
+																	t.rel("<=", x(i,t), String.valueOf(l))
 																)
 														)
 													

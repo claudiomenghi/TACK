@@ -31,7 +31,7 @@ public abstract class MITLIFormula extends Formula {
 		
 		
 		
-		if (idFormula() != isTheFormula){
+		if ( (idFormula() != isTheFormula) && (maxIntComparedto() > 0) ){
 			
 			String f1;
 			f1 = t.rel("=", z0(t), "0");
@@ -168,7 +168,10 @@ public abstract class MITLIFormula extends Formula {
 
 	// Eventually: F_<a,b]
 	public static MITLIFormula F(MITLIFormula f, int a, int b){
-		return new MITLIEventually_AtoB(f, a, b);
+		if (a == 0)
+			return F(f, b);
+		else
+			return new MITLIEventually_AtoB(f, a, b);
 	}
 	
 	// Eventually: F_<a,+oo]
@@ -183,10 +186,13 @@ public abstract class MITLIFormula extends Formula {
 	
 	// Globally: G_<a,b]
 	public static MITLIFormula G(MITLIFormula f, int a, int b){
-		return new MITLIGlobally_AtoB(f, a, b);
+		if (a == 0)
+			return G(f, b);
+		else
+			return new MITLIGlobally_AtoB(f, a, b);
 	}
 	
-	// Globally: F_<a,+oo]
+	// Globally: G_<a,+oo]
 	public static MITLIFormula G_inf(MITLIFormula f, int a){
 		if (a > 0)
 			return not(F_inf(not(f),a));

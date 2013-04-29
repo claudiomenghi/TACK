@@ -31,7 +31,7 @@ public abstract class QTLIFormula extends Formula {
 		
 		
 		
-		if (idFormula() != isTheFormula){
+		if ( (idFormula() != isTheFormula) && (maxIntComparedto() > 0) ){
 			
 			String f1;
 			f1 = t.rel("=", z0(t), "0");

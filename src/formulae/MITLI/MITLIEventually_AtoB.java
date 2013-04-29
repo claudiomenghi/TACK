@@ -166,10 +166,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 														subf.high(t),
 														t.neg(t.and(
 																	subf.high(t), 
-																	t.and(
-																		t.rel("<=", subf.z0(t), String.valueOf(l)),
-																		t.rel("<=", subf.z1(t), String.valueOf(l))
-																	)
+																	t.rel("<=", x(i,t), String.valueOf(l))			
 																)
 														)
 													

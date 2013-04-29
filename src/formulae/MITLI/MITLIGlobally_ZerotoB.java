@@ -10,6 +10,8 @@ public class MITLIGlobally_ZerotoB extends MITLIGlobally_AtoB{
 	
 	public MITLIGlobally_ZerotoB(MITLIFormula subformula, int b) {
 		super(subformula, 0, b);
+		
+		this.maxIntComparedto(b);
 	}
 
 
@@ -17,7 +19,7 @@ public class MITLIGlobally_ZerotoB extends MITLIGlobally_AtoB{
 	@Override
 	public String translate(CLTLTranslator t) {
 		
-		String orig = new String("O");
+		String orig = t.atom("O");
 		
 		List<Formula> subfs = this.subformulae();
 		MITLIFormula subf = (MITLIFormula)subfs.get(0);
@@ -103,7 +105,10 @@ public class MITLIGlobally_ZerotoB extends MITLIGlobally_AtoB{
 
 
 
-	
+	@Override
+	public Formula simplify() {
+		return new MITLIGlobally_ZerotoB((MITLIFormula)subformula.simplify(), upperbound());
+	}
 	
 	
 

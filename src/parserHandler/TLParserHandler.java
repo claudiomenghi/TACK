@@ -14,6 +14,7 @@ import java.util.List;
 
 import delegateTranslator.*;
 import formulae.*;
+import formulae.MITLI.MITLIEventually_ZerotoB;
 
 
 public abstract class TLParserHandler {
@@ -118,7 +119,7 @@ public abstract class TLParserHandler {
 		
 		for(Formula subf: formulaeOf){
 			switch(e_transl){
-				case AE2ZOT : {			
+				case AE2ZOT : {	
 						result = result + "(defconstant f" + subf.idFormula() + " " + subf.translate(translator) + ")\n";			
 				};
 				case NUZOT: ;	

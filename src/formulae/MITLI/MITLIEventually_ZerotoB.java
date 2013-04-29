@@ -11,16 +11,15 @@ public class MITLIEventually_ZerotoB extends MITLIEventually_AtoB{
 	public MITLIEventually_ZerotoB(MITLIFormula subformula, int b) {
 		super(subformula, 0, b);
 		
-		subformula.maxIntComparedto(b);
 		this.maxIntComparedto(b);		
 	}
 
 
 
-	@Override
+	
 	public String translate(CLTLTranslator t) {
 		
-		String orig = new String("O");
+		String orig = t.atom("O");
 		
 		List<Formula> subfs = this.subformulae();
 		MITLIFormula subf = (MITLIFormula)subfs.get(0);
@@ -106,7 +105,11 @@ public class MITLIEventually_ZerotoB extends MITLIEventually_AtoB{
 
 
 
-	
+	@Override
+	public Formula simplify() {
+		return new MITLIEventually_ZerotoB((MITLIFormula)subformula.simplify(), upperbound());
+	}
+
 	
 	
 
