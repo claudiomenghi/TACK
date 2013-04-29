@@ -18,6 +18,8 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		this.subformula = subformula;
 		this.a = a;
 		this.b = b;
+		
+		subformula.maxIntComparedto(b-a);
 	}
 
 

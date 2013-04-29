@@ -15,6 +15,8 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 		super(new String("(F " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
 		this.subformula = subformula;
 		this.b = b;
+		
+		subformula.maxIntComparedto(b);		
 	}
 	
 	
