@@ -276,7 +276,11 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		String f5 = t.and(_f5);
 
 		// Clocks progression
-		String f6 = t.and(_f6);
+		String f6;
+		if (this.maxIntComparedto() > 0)
+			f6 = t.and(_f6);
+		else 
+			f6 = new String("");
 											
 			
 		

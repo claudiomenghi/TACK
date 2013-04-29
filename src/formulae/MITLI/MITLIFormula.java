@@ -176,7 +176,10 @@ public abstract class MITLIFormula extends Formula {
 	
 	// Eventually: F_<a,+oo]
 	public static MITLIFormula F_inf(MITLIFormula f, int a){
-		return new MITLIEventually_AtoInf(f, a);
+		if (a == 0)
+			return U((MITLIFormula)True, f);
+		else
+			return new MITLIEventually_AtoInf(f, a);
 	}
 	
 	// Globally: G_<0,b]
@@ -192,12 +195,9 @@ public abstract class MITLIFormula extends Formula {
 			return new MITLIGlobally_AtoB(f, a, b);
 	}
 	
-	// Globally: G_<a,+oo]
+	// Globally: F_<a,+oo]
 	public static MITLIFormula G_inf(MITLIFormula f, int a){
-		if (a > 0)
-			return not(F_inf(not(f),a));
-		else
-			return not(U((MITLIFormula)False, not(f)));
+		return not(F_inf(not(f),a));
 	}
 	
 	
