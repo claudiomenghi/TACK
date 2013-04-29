@@ -28,12 +28,12 @@ public class MITLIParserHandler extends TLParserHandler {
 				while (f.hasNext()){
 					MITLIFormula mitlf = (MITLIFormula) f.next();
 					
-					if ( (mitlf.idFormula() != mitlf.isTheFormula) && 
-							( (mitlf instanceof MITLIEventually_ZerotoB) || 
-							  (mitlf instanceof MITLIGlobally_ZerotoB) || 
-							  (mitlf instanceof MITLIEventually_AtoInf) || 
-							  //(mitlf instanceof MITLIGlobally_AtoInf) ||
-							  (mitlf.maxIntComparedto() > 0)) )
+					if ( (mitlf instanceof MITLIEventually_ZerotoB) || 
+						 (mitlf instanceof MITLIGlobally_ZerotoB) || 
+						 (mitlf instanceof MITLIEventually_AtoInf) || 
+					     //(mitlf instanceof MITLIGlobally_AtoInf) ||
+						 ( (mitlf.idFormula() != mitlf.isTheFormula) && 
+						   (mitlf.maxIntComparedto() > 0) ) )
 						result = result + new String("(define-tvar " + mitlf.z0() + " *real*)\n(define-tvar " + mitlf.z1() + " *real*)\n");
 					if ( (mitlf instanceof MITLIEventually_AtoB) && !(mitlf instanceof MITLIEventually_ZerotoB)){
 						MITLIEventually_AtoB fm = (MITLIEventually_AtoB) mitlf;
