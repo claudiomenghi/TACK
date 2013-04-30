@@ -27,7 +27,10 @@ public class MITLIUntil extends MITLIFormula {
 		MITLIFormula subf2 = subformula2;	
 
 		
-		String f1 = t.U(subf1.interval(t), subf2.interval(t));
+		String f1 = t.iff(
+							interval(t),
+							t.U(subf1.interval(t), subf2.interval(t))
+					);
 		
 		
 		return t.and(super.clocksEventsConstraints(t), t.G(f1));
