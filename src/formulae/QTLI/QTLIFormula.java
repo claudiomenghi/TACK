@@ -31,59 +31,63 @@ public abstract class QTLIFormula extends Formula {
 		
 		
 		
-		if ( (idFormula() != isTheFormula) && (maxIntComparedto() > 0) ){
+		if ( idFormula() != isTheFormula ){
 			
-			String f1;
-			f1 = t.rel("=", z0(t), "0");
+			if (maxIntComparedto() > 0) {
+				String f1;
+				f1 = t.rel("=", z0(t), "0");
+				
+				
+				//Formula (2)
+				String f2 = t.iff(
+									t.or(befDnowU(t), befUnowD(t)),
+									t.or(t.rel("=", z0(t), "0"), t.rel("=", z1(t), "0"))
+							);
+									
+				
+				
+				
+				//formula (3)
+				String f3a = t.implies(
+										t.rel("=", z0(t), "0"),
+										t.X(t.R(t.rel("=", z1(t), "0"), t.rel(">", z0(t), "0"))));
+				
+				String f3b = t.implies(
+										t.rel("=", z1(t), "0"),
+										t.X(t.R(t.rel("=", z0(t), "0"), t.rel(">", z1(t), "0"))));
 			
-			
-			//Formula (2)
-			String f2 = t.iff(
-								t.or(befDnowU(t), befUnowD(t)),
-								t.or(t.rel("=", z0(t), "0"), t.rel("=", z1(t), "0"))
-						);
-								
-			
-			
-			
-			//formula (3)
-			String f3a = t.implies(
-									t.rel("=", z0(t), "0"),
-									t.X(t.R(t.rel("=", z1(t), "0"), t.rel(">", z0(t), "0"))));
-			
-			String f3b = t.implies(
-									t.rel("=", z1(t), "0"),
-									t.X(t.R(t.rel("=", z0(t), "0"), t.rel(">", z1(t), "0"))));
-		
-			
-			// Clocks progression
-			String f4a = t.and(
-								t.G(
-										t.or(
-												t.rel("=", t.X(z0(t)), "0"),
-												t.rel(">", t.X(z0(t)), z0(t)))),
+				
+				// Clocks progression
+				String f4a = t.and(
+									t.G(
+											t.or(
+													t.rel("=", t.X(z0(t)), "0"),
+													t.rel(">", t.X(z0(t)), z0(t)))),
+									t.or(
+											t.G(t.F(t.rel("=", z0(t), "0"))), 
+											t.F(t.G(t.rel(">", z0(t), String.valueOf(maxIntComparedto()))))));
+													
+	
+				String f4b = t.and(
+						t.G(
 								t.or(
-										t.G(t.F(t.rel("=", z0(t), "0"))), 
-										t.F(t.G(t.rel(">", z0(t), String.valueOf(maxIntComparedto()))))));
-												
-
-			String f4b = t.and(
-					t.G(
-							t.or(
-									t.rel("=", t.X(z1(t)), "0"),
-									t.rel(">", t.X(z1(t)), z1(t)))),
-					t.or(
-							t.G(t.F(t.rel("=", z1(t), "0"))), 
-							t.F(t.G(t.rel(">", z1(t), String.valueOf(maxIntComparedto()))))));		
+										t.rel("=", t.X(z1(t)), "0"),
+										t.rel(">", t.X(z1(t)), z1(t)))),
+						t.or(
+								t.G(t.F(t.rel("=", z1(t), "0"))), 
+								t.F(t.G(t.rel(">", z1(t), String.valueOf(maxIntComparedto()))))));		
+				
+				// Clocks non negativeness in the origin
+				String f5 = t.and(
+									t.rel(">=", z0(t), "0"),
+									t.rel(">=", z1(t), "0"));
+				
 			
-			// Clocks non negativeness in the origin
-			String f5 = t.and(
-								t.rel(">=", z0(t), "0"),
-								t.rel(">=", z1(t), "0"));
-			
-		
-			
-			result = t.and(f1, t.G(t.and(f2, f3a, f3b)), f4a, f4b, f5);			
+				
+				result = t.and(f1, t.G(t.and(f2, f3a, f3b)), f4a, f4b, f5);	
+			}
+			else
+				result = new String("");
 			
 		}
 		else 

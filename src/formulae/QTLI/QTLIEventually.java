@@ -16,7 +16,8 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 		this.subformula = subformula;
 		this.b = b;
 		
-		subformula.maxIntComparedto(b);		
+		subformula.maxIntComparedto(b);
+		maxIntComparedto(b);
 	}
 	
 	
