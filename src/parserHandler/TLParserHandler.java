@@ -120,7 +120,9 @@ public abstract class TLParserHandler {
 		for(Formula subf: formulaeOf){
 			switch(e_transl){
 				case AE2ZOT : {	
-						result = result + "(defconstant f" + subf.idFormula() + " " + subf.translate(translator) + ")\n";			
+						String s = subf.translate(translator);
+						if (s.length() > 0)
+							result = result + "(defconstant f" + subf.idFormula() + " " + s + ")\n";			
 				};
 				case NUZOT: ;	
 			}
@@ -145,7 +147,8 @@ public abstract class TLParserHandler {
 				String[] axioms = new String[formulaeOf.size()+1];
 				int i = 0;
 				for (Formula fmla : formulaeOf){
-					axioms[i++] = "f" + fmla.idFormula(); 
+					if ((fmla.translate(translator)).length() > 0)
+						axioms[i++] = "f" + fmla.idFormula(); 
 				}
 					
 				axioms[i] = translator.and(translator.Y(translator.neg(translator.atom("O"))), translator.atom("O"), translator.X(translator.G(translator.neg(translator.atom("O")))));

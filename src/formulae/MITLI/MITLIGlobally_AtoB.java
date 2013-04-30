@@ -73,7 +73,7 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		
 		int l = b - a;
 		
-		int d = 2*(int)Math.floor(b/l + 1) + 1;  
+		int d = 2*(int)Math.floor(b/l + 1);  
 		
 		
 		MITLIFormula subf = subformula;
@@ -202,8 +202,8 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 												t.neg(t.and(
 															subf.low(t), 
 															t.and(
-																t.rel("<", subf.z0(t), String.valueOf(l)),
-																t.rel("<", subf.z1(t), String.valueOf(l))
+																t.rel("<=", subf.z0(t), String.valueOf(l)),
+																t.rel("<=", subf.z1(t), String.valueOf(l))
 															)
 														)
 												)
@@ -221,7 +221,7 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 	
 	private String auxiliaryClocksConstraints(CLTLTranslator t){
 		
-		int d = 2*(int)Math.floor(b/(b-a)+1) + 1;  
+		int d = 2*(int)Math.floor(b/(b-a)+1);  
 		
 		
 		String[] _f1 = new String[d];

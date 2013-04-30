@@ -41,7 +41,7 @@ public class MITLIParserHandler extends TLParserHandler {
 						int b = fm.upperbound();
 						int a = fm.lowerbound();
 						
-						int d = 2*(int)Math.floor(b/(b-a)+1) + 1;  
+						int d = 2*(int)Math.floor(b/(b-a)+1);  
 					
 						for (int i=0; i<d; i++)
 							result = result + new String("(define-tvar " + fm.x(i) + " *real*)\n");
@@ -51,7 +51,7 @@ public class MITLIParserHandler extends TLParserHandler {
 						int b = fm.upperbound();
 						int a = fm.lowerbound();
 						
-						int d = 2*(int)Math.floor(b/(b-a)+1) + 1;  
+						int d = 2*(int)Math.floor(b/(b-a)+1);  
 					
 						for (int i=0; i<d; i++)
 							result = result + new String("(define-tvar " + fm.x(i) + " *real*)\n");

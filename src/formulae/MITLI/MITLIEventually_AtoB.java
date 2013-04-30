@@ -73,7 +73,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		
 		int l = b - a;
 		
-		int d = 2*(int)Math.floor(b/l + 1) + 1;  
+		int d = 2*(int)Math.floor(b/l + 1);  
 		
 		
 		MITLIFormula subf = subformula;
@@ -221,7 +221,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 	
 	private String auxiliaryClocksConstraints(CLTLTranslator t){
 		
-		int d = 2*(int)Math.floor(b/(b-a)+1) + 1;  
+		int d = 2*(int)Math.floor(b/(b-a)+1);  
 		
 		
 		String[] _f1 = new String[d];
