@@ -14,7 +14,7 @@ public class MITLIDisjunction extends MITLIFormula {
 	
 	public MITLIDisjunction(MITLIFormula... args){
 			
-		super(new String("(AND " + toStringForm(args) + ")"));
+		super(new String("(OR " + toStringForm(args) + ")"));
 		this.subformulae = Arrays.asList(args);		
 	}
 		

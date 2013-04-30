@@ -21,7 +21,7 @@ public class MITLIConjunction extends MITLIFormula {
 		
 		
 	private static String toStringForm(MITLIFormula... args){
-		String result = new String();
+		String result = new String("");
 		
 		for(MITLIFormula f: args)			
 			result = result + " " + f.strFormula();

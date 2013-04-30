@@ -14,13 +14,13 @@ public class QTLIDisjunction extends QTLIFormula {
 	
 	public QTLIDisjunction(QTLIFormula... args){
 			
-		super(new String("(AND " + toStringForm(args) + ")"));
+		super(new String("(OR " + toStringForm(args) + ")"));
 		this.subformulae = Arrays.asList(args);		
 	}
 		
 		
 	private static String toStringForm(QTLIFormula... args){
-		String result = null;
+		String result = new String("");
 		
 		for(QTLIFormula f: args)
 			result = result + " " + f.strFormula();
