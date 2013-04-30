@@ -11,6 +11,7 @@ import formulae.MITLI.MITLIEventually_ZerotoB;
 import formulae.MITLI.MITLIFormula;
 import formulae.MITLI.MITLIGlobally;
 import formulae.MITLI.MITLIGlobally_AtoB;
+import formulae.MITLI.MITLIGlobally_AtoInf;
 import formulae.MITLI.MITLIGlobally_ZerotoB;
 
 public class MITLIParserHandler extends TLParserHandler {
@@ -31,7 +32,7 @@ public class MITLIParserHandler extends TLParserHandler {
 					if ( (mitlf instanceof MITLIEventually_ZerotoB) || 
 						 (mitlf instanceof MITLIGlobally_ZerotoB) || 
 						 (mitlf instanceof MITLIEventually_AtoInf) || 
-					     //(mitlf instanceof MITLIGlobally_AtoInf) ||
+					     (mitlf instanceof MITLIGlobally_AtoInf) ||
 						 ( (mitlf.idFormula() != mitlf.isTheFormula) && 
 						   (mitlf.maxIntComparedto() > 0) ) )
 						result = result + new String("(define-tvar " + mitlf.z0() + " *real*)\n(define-tvar " + mitlf.z1() + " *real*)\n");
