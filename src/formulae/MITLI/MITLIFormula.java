@@ -200,7 +200,10 @@ public abstract class MITLIFormula extends Formula {
 	
 	// Globally: F_<a,+oo]
 	public static MITLIFormula G_inf(MITLIFormula f, int a){
-		return not(F_inf(not(f),a));
+		if (a == 0)
+			return R((MITLIFormula)False, f);
+		else
+			return new MITLIGlobally_AtoInf(f, a);
 	}
 	
 	
@@ -223,7 +226,7 @@ public abstract class MITLIFormula extends Formula {
 	// Producers method to build derived temporal CLTL formulae
 
 	public static MITLIFormula R(MITLIFormula f1, MITLIFormula f2){
-		return not(U(not(f1), not(f2)));
+		return new MITLIRelease(f1, f2);
 	}
 	
 	
