@@ -233,9 +233,8 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 		for (int i=0; i<d; i++){
 			_f1[i] = t.rel("=", x(i,t), "0");
 			_f5[i] = t.rel(">=", x(i,t), "0");
-			for (int j=0; j<d; j++)
-				if (i != j)
-					_f2[i*d+j] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
+			for (int j=i+1; j<d; j++)
+				_f2[i*(d-i)+j] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
 			_f3[i] = t.implies(
 								t.rel("=", x(i,t), "0"),
 								t.X(

@@ -154,7 +154,7 @@ fmla returns [Formula r]
 					
 			$fmla.r = p.addFormula(f);
 		}
-	|   LPAR OR_OP f1=fmla f2=fmla RPAR
+	|   LPAR OR_OP clist=conjuncts_list RPAR
 		{	
 			Formula f = null;
 			Formula[] arr = null;

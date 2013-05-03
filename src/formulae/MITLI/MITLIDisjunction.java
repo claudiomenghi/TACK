@@ -20,7 +20,7 @@ public class MITLIDisjunction extends MITLIFormula {
 		
 		
 	private static String toStringForm(MITLIFormula... args){
-		String result = null;
+		String result = new String("");
 		
 		for(MITLIFormula f: args)
 			result = result + " " + f.strFormula();

@@ -12,7 +12,7 @@ public class MITLIRelease extends MITLIFormula {
 	private MITLIFormula subformula1, subformula2;
 	
 	public MITLIRelease(MITLIFormula subformula1, MITLIFormula subformula2){
-		super(new String("(U " + subformula1.strFormula() + " " + subformula2.strFormula() + ")"));
+		super(new String("(R " + subformula1.strFormula() + " " + subformula2.strFormula() + ")"));
 		this.subformula1 = subformula1;
 		this.subformula2 = subformula2;
 	}
@@ -29,7 +29,7 @@ public class MITLIRelease extends MITLIFormula {
 		
 		String f1 = t.iff(
 							interval(t),
-							t.U(subf1.interval(t), subf2.interval(t))
+							t.R(subf1.interval(t), subf2.interval(t))
 					);
 		
 		

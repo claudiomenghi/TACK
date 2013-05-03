@@ -227,7 +227,7 @@ public abstract class QTLIFormula extends Formula {
 			return new QTLIPast(f, b);
 		
 		else if (aB==Bounds.CLOSED && bB==Bounds.OPEN)			//F_[0,b)
-			return or(f, F(f, Bounds.OPEN, b, bB));
+			return or(f, P(f, Bounds.OPEN, b, bB));
 		
 		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//F_(0,b]
 			return or(
@@ -362,33 +362,82 @@ public abstract class QTLIFormula extends Formula {
 		if (a == 0)
 			return F(f, aB, b, bB);
 		else{
-			QTLIFormula result = F(G(F(f,0,Bounds.OPEN,a,Bounds.OPEN),0,Bounds.OPEN,a,Bounds.OPEN),0,aB,1,Bounds.OPEN);
-			for (int i=a+1; i<b-1; i++)
-				result = or(result, F(G(F(f,0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.CLOSED,1,Bounds.OPEN));
-			if (a < b-1)
-				result = or(result, F(G(F(f,0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.CLOSED,1,bB));
+			int d = b-a;
+			QTLIFormula fm = f;
 			
-			return result;
-		}
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+					fm = G(F(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
+			
+			if (low > 0){
+					QTLIFormula[] _or =  new QTLIFormula[d];
+					int i = 0;
+			 		for (int j = low; j < upp; j++){
+						if (j == d)
+							_or[i++] = F(G(F(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.CLOSED,1,bB);		
+						else{
+							QTLIFormula orf = fm;
+							for (int h=j; h>0; h--)
+								orf = G(F(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
+							if (i == 0)								
+								orf = F(orf, 0, aB, 1, Bounds.OPEN);							
+			 				else
+								orf = F(orf, 0, Bounds.CLOSED, 1, Bounds.OPEN);
+			
+			 				_or[i++] = orf;
+						}
+					}
+					return or(_or);
+			 }
+			else
+			 		return F(fm,0,aB,d,Bounds.OPEN);
+		 		
+		}		
+		 		
+		
 	}
 	
 
 	public static QTLIFormula G(QTLIFormula f, int a, Bounds aB, int b, Bounds bB){
-		//return not(F(not(f), a, aB, b, bB));
+		return not(F(not(f), a, aB, b, bB));
 		
 		/* Following implementation uses native encoding for Globally*/
 		
-		if (a == 0)
+		/*if (a == 0)
 			return G(f, aB, b, bB);
 		else{
-			QTLIFormula result = G(F(G(f,0,Bounds.OPEN,a,Bounds.OPEN),0,Bounds.OPEN,a,Bounds.OPEN),0,aB,1,Bounds.OPEN);
-			for (int i=a+1; i<b-1; i++)
-				result = and(result, G(F(G(f,0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.CLOSED,1,Bounds.OPEN));
-			if (a < b-1)
-				result = and(result, G(F(G(f,0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.CLOSED,1,bB));
+			int d = b-a;
+			QTLIFormula fm = f;
 			
-			return result;
-		}
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+					fm = F(G(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
+			
+			if (low > 0){
+					QTLIFormula[] _or =  new QTLIFormula[d];
+					int i = 0;
+			 		for (int j = low; j < upp; j++){
+						if (j == d)
+							_or[i++] = G(F(G(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.CLOSED,1,bB);		
+						else{
+							QTLIFormula orf = fm;
+							for (int h=j; h>0; h--)
+								orf = G(F(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
+							if (i == 0)								
+								orf = F(orf, 0, aB, 1, Bounds.OPEN);							
+			 				else
+								orf = F(orf, 0, Bounds.CLOSED, 1, Bounds.OPEN);
+			
+			 				_or[i++] = orf;
+						}
+					}
+					return or(_or);
+			 }
+			else
+			 		return F(fm,0,aB,d,Bounds.OPEN);
 		
+		}*/
 	}
 }
