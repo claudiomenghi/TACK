@@ -45,14 +45,11 @@ public class MITLIIff extends MITLIFormula {
 	@Override
 	public MITLIFormula update(List<Formula> l) {
 		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-		if (l.get(0).equals(subformula1) && l.get(1).equals(subformula2)){
-			subformula1 = (MITLIFormula)l.get(0);
-			subformula2 = (MITLIFormula)l.get(1);
-			return this;
-		}
-		//else rise an error. TODO: implement WrongUpdateException
-		else
-			return null; //return new MITLNegation((MITLFormula)l.get(0));
+
+		subformula1 = (MITLIFormula)l.get(0);
+		subformula2 = (MITLIFormula)l.get(1);
+		return this;
+	
 	}
 
 	@Override

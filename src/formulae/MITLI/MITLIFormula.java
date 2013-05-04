@@ -3,6 +3,7 @@ package formulae.MITLI;
 import delegateTranslator.CLTLTranslator;
 import formulae.Formula;
 
+
 public abstract class MITLIFormula extends Formula {
 
 	/* Moved in the class Formula
@@ -18,8 +19,12 @@ public abstract class MITLIFormula extends Formula {
 		super(formula_p);
 		if (this.getClass() != MITLITrue.class && True == null)
 			True = new MITLITrue();
+		else if (this.getClass() == MITLITrue.class && True == null)
+			True = this;
 		if (this.getClass() != MITLIFalse.class && False == null && True != null)
 			False = new MITLIFalse();
+		else if (this.getClass() == MITLIFalse.class && False == null)
+			False = this;
 	}
 
 		

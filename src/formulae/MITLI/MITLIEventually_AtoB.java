@@ -6,6 +6,7 @@ import delegateTranslator.CLTLTranslator;
 import formulae.Formula;
 import formulae.Temporized;
 
+
 public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 
 
@@ -38,13 +39,11 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 	@Override
 	public MITLIFormula update(List<Formula> l) {
 		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-		if (l.get(0).equals(subformula)){
-			subformula = (MITLIFormula)l.get(0);					
-			return this;
-		}
-		//else rise an error. TODO: implement WrongUpdateException
-		else
-			return null;
+		
+		int m = subformula.maxIntComparedto();
+		subformula = (MITLIFormula)l.get(0);	
+		subformula.maxIntComparedto(m);
+		return this;
 	}
 
 

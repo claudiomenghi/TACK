@@ -1,4 +1,4 @@
-// $ANTLR 3.5 qtlSolver.g 2013-05-04 11:15:28
+// $ANTLR 3.5 qtlSolver.g 2013-05-04 15:27:57
 
 package parserHandler;
 
@@ -24,43 +24,45 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class qtlSolverParser extends Parser {
 	public static final String[] tokenNames = new String[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "AND_OP", "ATOM", "COLON", "F_OP", 
-		"F_inf_OP", "G_OP", "G_inf_OP", "H_OP", "ID", "IFF_OP", "IMPL_OP", "INT", 
-		"LBRA", "LOGIC", "LPAR", "NEG_OP", "NEWLINE", "OR_OP", "P_OP", "RBRA", 
-		"RELEASE_OP", "RPAR", "SEMI", "SINCE_OP", "TRIGGER_OP", "UNTIL_OP", "WS", 
-		"':bound'", "':def'", "':formula'"
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "AND_OP", "ATOM", "COLON", "FALSE", 
+		"F_OP", "F_inf_OP", "G_OP", "G_inf_OP", "H_OP", "ID", "IFF_OP", "IMPL_OP", 
+		"INT", "LBRA", "LOGIC", "LPAR", "NEG_OP", "NEWLINE", "OR_OP", "P_OP", 
+		"RBRA", "RELEASE_OP", "RPAR", "SEMI", "SINCE_OP", "TRIGGER_OP", "TRUE", 
+		"UNTIL_OP", "WS", "':bound'", "':def'", "':formula'"
 	};
 	public static final int EOF=-1;
-	public static final int T__31=31;
-	public static final int T__32=32;
 	public static final int T__33=33;
+	public static final int T__34=34;
+	public static final int T__35=35;
 	public static final int AND_OP=4;
 	public static final int ATOM=5;
 	public static final int COLON=6;
-	public static final int F_OP=7;
-	public static final int F_inf_OP=8;
-	public static final int G_OP=9;
-	public static final int G_inf_OP=10;
-	public static final int H_OP=11;
-	public static final int ID=12;
-	public static final int IFF_OP=13;
-	public static final int IMPL_OP=14;
-	public static final int INT=15;
-	public static final int LBRA=16;
-	public static final int LOGIC=17;
-	public static final int LPAR=18;
-	public static final int NEG_OP=19;
-	public static final int NEWLINE=20;
-	public static final int OR_OP=21;
-	public static final int P_OP=22;
-	public static final int RBRA=23;
-	public static final int RELEASE_OP=24;
-	public static final int RPAR=25;
-	public static final int SEMI=26;
-	public static final int SINCE_OP=27;
-	public static final int TRIGGER_OP=28;
-	public static final int UNTIL_OP=29;
-	public static final int WS=30;
+	public static final int FALSE=7;
+	public static final int F_OP=8;
+	public static final int F_inf_OP=9;
+	public static final int G_OP=10;
+	public static final int G_inf_OP=11;
+	public static final int H_OP=12;
+	public static final int ID=13;
+	public static final int IFF_OP=14;
+	public static final int IMPL_OP=15;
+	public static final int INT=16;
+	public static final int LBRA=17;
+	public static final int LOGIC=18;
+	public static final int LPAR=19;
+	public static final int NEG_OP=20;
+	public static final int NEWLINE=21;
+	public static final int OR_OP=22;
+	public static final int P_OP=23;
+	public static final int RBRA=24;
+	public static final int RELEASE_OP=25;
+	public static final int RPAR=26;
+	public static final int SEMI=27;
+	public static final int SINCE_OP=28;
+	public static final int TRIGGER_OP=29;
+	public static final int TRUE=30;
+	public static final int UNTIL_OP=31;
+	public static final int WS=32;
 
 	// delegates
 	public Parser[] getDelegates() {
@@ -116,7 +118,7 @@ public class qtlSolverParser extends Parser {
 							else if (tlogic.equals("mitl-i"))
 								p = new MITLIParserHandler();				 
 					 	
-			match(input,31,FOLLOW_31_in_tlparser48); 
+			match(input,33,FOLLOW_33_in_tlparser48); 
 			INT1=(Token)match(input,INT,FOLLOW_INT_in_tlparser50); 
 			match(input,NEWLINE,FOLLOW_NEWLINE_in_tlparser52); 
 
@@ -128,7 +130,7 @@ public class qtlSolverParser extends Parser {
 			while (true) {
 				int alt1=2;
 				int LA1_0 = input.LA(1);
-				if ( (LA1_0==NEWLINE||LA1_0==32) ) {
+				if ( (LA1_0==NEWLINE||LA1_0==34) ) {
 					alt1=1;
 				}
 
@@ -148,7 +150,7 @@ public class qtlSolverParser extends Parser {
 				}
 			}
 
-			match(input,33,FOLLOW_33_in_tlparser68); 
+			match(input,35,FOLLOW_35_in_tlparser68); 
 			pushFollow(FOLLOW_fmla_in_tlparser70);
 			fmla2=fmla();
 			state._fsp--;
@@ -231,7 +233,7 @@ public class qtlSolverParser extends Parser {
 			// qtlSolver.g:79:12: ( ':def' s= ID fmla NEWLINE | NEWLINE )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
-			if ( (LA2_0==32) ) {
+			if ( (LA2_0==34) ) {
 				alt2=1;
 			}
 			else if ( (LA2_0==NEWLINE) ) {
@@ -248,7 +250,7 @@ public class qtlSolverParser extends Parser {
 				case 1 :
 					// qtlSolver.g:79:14: ':def' s= ID fmla NEWLINE
 					{
-					match(input,32,FOLLOW_32_in_declaration108); 
+					match(input,34,FOLLOW_34_in_declaration108); 
 					s=(Token)match(input,ID,FOLLOW_ID_in_declaration112); 
 					pushFollow(FOLLOW_fmla_in_declaration118);
 					fmla4=fmla();
@@ -282,7 +284,7 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "fmla"
-	// qtlSolver.g:88:1: fmla returns [Formula r] : ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR );
+	// qtlSolver.g:88:1: fmla returns [Formula r] : ( ID | TRUE | FALSE | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR );
 	public final Formula fmla() throws RecognitionException {
 		Formula r = null;
 
@@ -300,17 +302,27 @@ public class qtlSolverParser extends Parser {
 		Formula f2 =null;
 
 		try {
-			// qtlSolver.g:89:2: ( ID | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR )
-			int alt3=16;
+			// qtlSolver.g:89:2: ( ID | TRUE | FALSE | ATOM | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR )
+			int alt3=18;
 			switch ( input.LA(1) ) {
 			case ID:
 				{
 				alt3=1;
 				}
 				break;
-			case ATOM:
+			case TRUE:
 				{
 				alt3=2;
+				}
+				break;
+			case FALSE:
+				{
+				alt3=3;
+				}
+				break;
+			case ATOM:
+				{
+				alt3=4;
 				}
 				break;
 			case LPAR:
@@ -318,72 +330,72 @@ public class qtlSolverParser extends Parser {
 				switch ( input.LA(2) ) {
 				case NEG_OP:
 					{
-					alt3=3;
+					alt3=5;
 					}
 					break;
 				case AND_OP:
 					{
-					alt3=4;
+					alt3=6;
 					}
 					break;
 				case OR_OP:
 					{
-					alt3=5;
+					alt3=7;
 					}
 					break;
 				case IMPL_OP:
 					{
-					alt3=6;
+					alt3=8;
 					}
 					break;
 				case IFF_OP:
 					{
-					alt3=7;
+					alt3=9;
 					}
 					break;
 				case F_OP:
 					{
-					alt3=8;
+					alt3=10;
 					}
 					break;
 				case F_inf_OP:
 					{
-					alt3=9;
+					alt3=11;
 					}
 					break;
 				case G_OP:
 					{
-					alt3=10;
+					alt3=12;
 					}
 					break;
 				case G_inf_OP:
 					{
-					alt3=11;
+					alt3=13;
 					}
 					break;
 				case P_OP:
 					{
-					alt3=12;
+					alt3=14;
 					}
 					break;
 				case UNTIL_OP:
 					{
-					alt3=13;
+					alt3=15;
 					}
 					break;
 				case SINCE_OP:
 					{
-					alt3=14;
+					alt3=16;
 					}
 					break;
 				case RELEASE_OP:
 					{
-					alt3=15;
+					alt3=17;
 					}
 					break;
 				case TRIGGER_OP:
 					{
-					alt3=16;
+					alt3=18;
 					}
 					break;
 				default:
@@ -391,7 +403,7 @@ public class qtlSolverParser extends Parser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 3, 3, input);
+							new NoViableAltException("", 3, 5, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -413,14 +425,51 @@ public class qtlSolverParser extends Parser {
 								if (memory.containsKey((ID5!=null?ID5.getText():null))){
 									r = memory.get((ID5!=null?ID5.getText():null));					
 								}
-								
 							
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:96:6: ATOM
+					// qtlSolver.g:95:4: TRUE
 					{
-					ATOM6=(Token)match(input,ATOM,FOLLOW_ATOM_in_fmla172); 
+					match(input,TRUE,FOLLOW_TRUE_in_fmla170); 
+
+								Formula f = null;
+								if (tlogic.equals("qtl"))	
+									f = new QTLTrue();
+								else if (tlogic.equals("qtl-i"))
+									f = new QTLITrue();
+								else if (tlogic.equals("mitl"))
+									f = new MITLTrue();
+								else if (tlogic.equals("mitl-i"))
+									f = new MITLITrue();
+									
+								r = p.addFormula(f);
+							
+					}
+					break;
+				case 3 :
+					// qtlSolver.g:109:4: FALSE
+					{
+					match(input,FALSE,FOLLOW_FALSE_in_fmla179); 
+
+								Formula f = null;
+								if (tlogic.equals("qtl"))	
+									f = new QTLFalse();
+								else if (tlogic.equals("qtl-i"))
+									f = new QTLIFalse();
+								else if (tlogic.equals("mitl"))
+									f = new MITLFalse();
+								else if (tlogic.equals("mitl-i"))
+									f = new MITLIFalse();
+									
+								r = p.addFormula(f);
+							
+					}
+					break;
+				case 4 :
+					// qtlSolver.g:123:6: ATOM
+					{
+					ATOM6=(Token)match(input,ATOM,FOLLOW_ATOM_in_fmla190); 
 						
 								Formula f = null;
 								if (tlogic.equals("qtl"))	
@@ -437,16 +486,16 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 3 :
-					// qtlSolver.g:111:4: LPAR NEG_OP f1= fmla RPAR
+				case 5 :
+					// qtlSolver.g:138:4: LPAR NEG_OP f1= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla183); 
-					match(input,NEG_OP,FOLLOW_NEG_OP_in_fmla185); 
-					pushFollow(FOLLOW_fmla_in_fmla189);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla201); 
+					match(input,NEG_OP,FOLLOW_NEG_OP_in_fmla203); 
+					pushFollow(FOLLOW_fmla_in_fmla207);
 					f1=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla191); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla209); 
 						
 								Formula f = null;
 								if (tlogic.equals("qtl")) 
@@ -462,16 +511,16 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 4 :
-					// qtlSolver.g:125:6: LPAR AND_OP clist= conjuncts_list RPAR
+				case 6 :
+					// qtlSolver.g:152:6: LPAR AND_OP clist= conjuncts_list RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla203); 
-					match(input,AND_OP,FOLLOW_AND_OP_in_fmla205); 
-					pushFollow(FOLLOW_conjuncts_list_in_fmla209);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla221); 
+					match(input,AND_OP,FOLLOW_AND_OP_in_fmla223); 
+					pushFollow(FOLLOW_conjuncts_list_in_fmla227);
 					clist=conjuncts_list();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla211); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla229); 
 						
 								Formula f = null;
 								Formula[] arr = null;
@@ -505,16 +554,16 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 5 :
-					// qtlSolver.g:157:6: LPAR OR_OP clist= conjuncts_list RPAR
+				case 7 :
+					// qtlSolver.g:184:6: LPAR OR_OP clist= conjuncts_list RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla222); 
-					match(input,OR_OP,FOLLOW_OR_OP_in_fmla224); 
-					pushFollow(FOLLOW_conjuncts_list_in_fmla228);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla240); 
+					match(input,OR_OP,FOLLOW_OR_OP_in_fmla242); 
+					pushFollow(FOLLOW_conjuncts_list_in_fmla246);
 					clist=conjuncts_list();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla230); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla248); 
 						
 								Formula f = null;
 								Formula[] arr = null;
@@ -548,20 +597,20 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 6 :
-					// qtlSolver.g:189:6: LPAR IMPL_OP f1= fmla f2= fmla RPAR
+				case 8 :
+					// qtlSolver.g:216:6: LPAR IMPL_OP f1= fmla f2= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla241); 
-					match(input,IMPL_OP,FOLLOW_IMPL_OP_in_fmla243); 
-					pushFollow(FOLLOW_fmla_in_fmla247);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla259); 
+					match(input,IMPL_OP,FOLLOW_IMPL_OP_in_fmla261); 
+					pushFollow(FOLLOW_fmla_in_fmla265);
 					f1=fmla();
 					state._fsp--;
 
-					pushFollow(FOLLOW_fmla_in_fmla251);
+					pushFollow(FOLLOW_fmla_in_fmla269);
 					f2=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla253); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla271); 
 						
 								Formula f = null; 
 								if (tlogic.equals("qtl")) 
@@ -577,20 +626,20 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 7 :
-					// qtlSolver.g:203:6: LPAR IFF_OP f1= fmla f2= fmla RPAR
+				case 9 :
+					// qtlSolver.g:230:6: LPAR IFF_OP f1= fmla f2= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla264); 
-					match(input,IFF_OP,FOLLOW_IFF_OP_in_fmla266); 
-					pushFollow(FOLLOW_fmla_in_fmla270);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla282); 
+					match(input,IFF_OP,FOLLOW_IFF_OP_in_fmla284); 
+					pushFollow(FOLLOW_fmla_in_fmla288);
 					f1=fmla();
 					state._fsp--;
 
-					pushFollow(FOLLOW_fmla_in_fmla274);
+					pushFollow(FOLLOW_fmla_in_fmla292);
 					f2=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla276); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla294); 
 						
 								Formula f = null; 
 								if (tlogic.equals("qtl")) 
@@ -606,18 +655,18 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 8 :
-					// qtlSolver.g:217:6: LPAR F_OP a= INT b= INT f1= fmla RPAR
+				case 10 :
+					// qtlSolver.g:244:6: LPAR F_OP a= INT b= INT f1= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla288); 
-					F_OP7=(Token)match(input,F_OP,FOLLOW_F_OP_in_fmla290); 
-					a=(Token)match(input,INT,FOLLOW_INT_in_fmla294); 
-					b=(Token)match(input,INT,FOLLOW_INT_in_fmla298); 
-					pushFollow(FOLLOW_fmla_in_fmla302);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla306); 
+					F_OP7=(Token)match(input,F_OP,FOLLOW_F_OP_in_fmla308); 
+					a=(Token)match(input,INT,FOLLOW_INT_in_fmla312); 
+					b=(Token)match(input,INT,FOLLOW_INT_in_fmla316); 
+					pushFollow(FOLLOW_fmla_in_fmla320);
 					f1=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla304); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla322); 
 						
 								Formula f = null;
 								String s = String.valueOf((F_OP7!=null?F_OP7.getText():null));
@@ -653,17 +702,17 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 9 :
-					// qtlSolver.g:251:6: LPAR F_inf_OP a= INT f1= fmla RPAR
+				case 11 :
+					// qtlSolver.g:278:6: LPAR F_inf_OP a= INT f1= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla316); 
-					F_inf_OP8=(Token)match(input,F_inf_OP,FOLLOW_F_inf_OP_in_fmla318); 
-					a=(Token)match(input,INT,FOLLOW_INT_in_fmla322); 
-					pushFollow(FOLLOW_fmla_in_fmla326);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla334); 
+					F_inf_OP8=(Token)match(input,F_inf_OP,FOLLOW_F_inf_OP_in_fmla336); 
+					a=(Token)match(input,INT,FOLLOW_INT_in_fmla340); 
+					pushFollow(FOLLOW_fmla_in_fmla344);
 					f1=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla328); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla346); 
 						
 								Formula f = null;
 								String s = String.valueOf((F_inf_OP8!=null?F_inf_OP8.getText():null));
@@ -690,18 +739,18 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 10 :
-					// qtlSolver.g:276:6: LPAR op= G_OP a= INT b= INT f1= fmla RPAR
+				case 12 :
+					// qtlSolver.g:303:6: LPAR op= G_OP a= INT b= INT f1= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla342); 
-					op=(Token)match(input,G_OP,FOLLOW_G_OP_in_fmla346); 
-					a=(Token)match(input,INT,FOLLOW_INT_in_fmla350); 
-					b=(Token)match(input,INT,FOLLOW_INT_in_fmla354); 
-					pushFollow(FOLLOW_fmla_in_fmla358);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla360); 
+					op=(Token)match(input,G_OP,FOLLOW_G_OP_in_fmla364); 
+					a=(Token)match(input,INT,FOLLOW_INT_in_fmla368); 
+					b=(Token)match(input,INT,FOLLOW_INT_in_fmla372); 
+					pushFollow(FOLLOW_fmla_in_fmla376);
 					f1=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla360); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla378); 
 						
 								Formula f = null;
 								String s = String.valueOf((op!=null?op.getText():null));
@@ -736,17 +785,17 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 11 :
-					// qtlSolver.g:309:6: LPAR op= G_inf_OP a= INT f1= fmla RPAR
+				case 13 :
+					// qtlSolver.g:336:6: LPAR op= G_inf_OP a= INT f1= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla372); 
-					op=(Token)match(input,G_inf_OP,FOLLOW_G_inf_OP_in_fmla376); 
-					a=(Token)match(input,INT,FOLLOW_INT_in_fmla380); 
-					pushFollow(FOLLOW_fmla_in_fmla384);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla390); 
+					op=(Token)match(input,G_inf_OP,FOLLOW_G_inf_OP_in_fmla394); 
+					a=(Token)match(input,INT,FOLLOW_INT_in_fmla398); 
+					pushFollow(FOLLOW_fmla_in_fmla402);
 					f1=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla386); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla404); 
 						
 								Formula f = null;
 								String s = String.valueOf((op!=null?op.getText():null));
@@ -774,18 +823,18 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 12 :
-					// qtlSolver.g:335:6: LPAR P_OP a= INT b= INT f1= fmla RPAR
+				case 14 :
+					// qtlSolver.g:362:6: LPAR P_OP a= INT b= INT f1= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla399); 
-					P_OP9=(Token)match(input,P_OP,FOLLOW_P_OP_in_fmla401); 
-					a=(Token)match(input,INT,FOLLOW_INT_in_fmla405); 
-					b=(Token)match(input,INT,FOLLOW_INT_in_fmla409); 
-					pushFollow(FOLLOW_fmla_in_fmla413);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla417); 
+					P_OP9=(Token)match(input,P_OP,FOLLOW_P_OP_in_fmla419); 
+					a=(Token)match(input,INT,FOLLOW_INT_in_fmla423); 
+					b=(Token)match(input,INT,FOLLOW_INT_in_fmla427); 
+					pushFollow(FOLLOW_fmla_in_fmla431);
 					f1=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla415); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla433); 
 						
 								Formula f = null;
 								String s = String.valueOf((P_OP9!=null?P_OP9.getText():null));
@@ -819,20 +868,20 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 13 :
-					// qtlSolver.g:367:6: LPAR UNTIL_OP f1= fmla f2= fmla RPAR
+				case 15 :
+					// qtlSolver.g:394:6: LPAR UNTIL_OP f1= fmla f2= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla434); 
-					match(input,UNTIL_OP,FOLLOW_UNTIL_OP_in_fmla436); 
-					pushFollow(FOLLOW_fmla_in_fmla440);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla452); 
+					match(input,UNTIL_OP,FOLLOW_UNTIL_OP_in_fmla454); 
+					pushFollow(FOLLOW_fmla_in_fmla458);
 					f1=fmla();
 					state._fsp--;
 
-					pushFollow(FOLLOW_fmla_in_fmla444);
+					pushFollow(FOLLOW_fmla_in_fmla462);
 					f2=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla446); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla464); 
 
 								Formula f = null;
 								if (tlogic.equals("qtl"))
@@ -849,20 +898,20 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 14 :
-					// qtlSolver.g:382:6: LPAR SINCE_OP f1= fmla f2= fmla RPAR
+				case 16 :
+					// qtlSolver.g:409:6: LPAR SINCE_OP f1= fmla f2= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla458); 
-					match(input,SINCE_OP,FOLLOW_SINCE_OP_in_fmla460); 
-					pushFollow(FOLLOW_fmla_in_fmla464);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla476); 
+					match(input,SINCE_OP,FOLLOW_SINCE_OP_in_fmla478); 
+					pushFollow(FOLLOW_fmla_in_fmla482);
 					f1=fmla();
 					state._fsp--;
 
-					pushFollow(FOLLOW_fmla_in_fmla468);
+					pushFollow(FOLLOW_fmla_in_fmla486);
 					f2=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla470); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla488); 
 
 								Formula f = null;
 								if (tlogic.equals("qtl"))
@@ -872,20 +921,20 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 15 :
-					// qtlSolver.g:390:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
+				case 17 :
+					// qtlSolver.g:417:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla484); 
-					match(input,RELEASE_OP,FOLLOW_RELEASE_OP_in_fmla486); 
-					pushFollow(FOLLOW_fmla_in_fmla490);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla502); 
+					match(input,RELEASE_OP,FOLLOW_RELEASE_OP_in_fmla504); 
+					pushFollow(FOLLOW_fmla_in_fmla508);
 					f1=fmla();
 					state._fsp--;
 
-					pushFollow(FOLLOW_fmla_in_fmla494);
+					pushFollow(FOLLOW_fmla_in_fmla512);
 					f2=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla496); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla514); 
 
 								Formula f = null;
 								if (tlogic.equals("qtl"))
@@ -901,20 +950,20 @@ public class qtlSolverParser extends Parser {
 							
 					}
 					break;
-				case 16 :
-					// qtlSolver.g:404:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
+				case 18 :
+					// qtlSolver.g:431:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
 					{
-					match(input,LPAR,FOLLOW_LPAR_in_fmla508); 
-					match(input,TRIGGER_OP,FOLLOW_TRIGGER_OP_in_fmla510); 
-					pushFollow(FOLLOW_fmla_in_fmla514);
+					match(input,LPAR,FOLLOW_LPAR_in_fmla526); 
+					match(input,TRIGGER_OP,FOLLOW_TRIGGER_OP_in_fmla528); 
+					pushFollow(FOLLOW_fmla_in_fmla532);
 					f1=fmla();
 					state._fsp--;
 
-					pushFollow(FOLLOW_fmla_in_fmla518);
+					pushFollow(FOLLOW_fmla_in_fmla536);
 					f2=fmla();
 					state._fsp--;
 
-					match(input,RPAR,FOLLOW_RPAR_in_fmla520); 
+					match(input,RPAR,FOLLOW_RPAR_in_fmla538); 
 
 								Formula f = null;
 								if (tlogic.equals("qtl"))
@@ -943,7 +992,7 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "conjuncts_list"
-	// qtlSolver.g:418:1: conjuncts_list returns [List<Formula> l] : f1= fmla (clist= conjuncts_list |) ;
+	// qtlSolver.g:445:1: conjuncts_list returns [List<Formula> l] : f1= fmla (clist= conjuncts_list |) ;
 	public final List<Formula> conjuncts_list() throws RecognitionException {
 		List<Formula> l = null;
 
@@ -953,17 +1002,17 @@ public class qtlSolverParser extends Parser {
 
 		l = new ArrayList<Formula>();
 		try {
-			// qtlSolver.g:419:38: (f1= fmla (clist= conjuncts_list |) )
-			// qtlSolver.g:421:2: f1= fmla (clist= conjuncts_list |)
+			// qtlSolver.g:446:38: (f1= fmla (clist= conjuncts_list |) )
+			// qtlSolver.g:448:2: f1= fmla (clist= conjuncts_list |)
 			{
-			pushFollow(FOLLOW_fmla_in_conjuncts_list555);
+			pushFollow(FOLLOW_fmla_in_conjuncts_list573);
 			f1=fmla();
 			state._fsp--;
 
-			// qtlSolver.g:421:10: (clist= conjuncts_list |)
+			// qtlSolver.g:448:10: (clist= conjuncts_list |)
 			int alt4=2;
 			int LA4_0 = input.LA(1);
-			if ( (LA4_0==ATOM||LA4_0==ID||LA4_0==LPAR) ) {
+			if ( (LA4_0==ATOM||LA4_0==FALSE||LA4_0==ID||LA4_0==LPAR||LA4_0==TRUE) ) {
 				alt4=1;
 			}
 			else if ( (LA4_0==RPAR) ) {
@@ -978,16 +1027,16 @@ public class qtlSolverParser extends Parser {
 
 			switch (alt4) {
 				case 1 :
-					// qtlSolver.g:421:11: clist= conjuncts_list
+					// qtlSolver.g:448:11: clist= conjuncts_list
 					{
-					pushFollow(FOLLOW_conjuncts_list_in_conjuncts_list560);
+					pushFollow(FOLLOW_conjuncts_list_in_conjuncts_list578);
 					clist=conjuncts_list();
 					state._fsp--;
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:421:34: 
+					// qtlSolver.g:448:34: 
 					{
 					}
 					break;
@@ -1021,94 +1070,96 @@ public class qtlSolverParser extends Parser {
 
 
 
-	public static final BitSet FOLLOW_logic_in_tlparser35 = new BitSet(new long[]{0x0000000000100000L});
-	public static final BitSet FOLLOW_NEWLINE_in_tlparser37 = new BitSet(new long[]{0x0000000080000000L});
-	public static final BitSet FOLLOW_31_in_tlparser48 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_tlparser50 = new BitSet(new long[]{0x0000000000100000L});
-	public static final BitSet FOLLOW_NEWLINE_in_tlparser52 = new BitSet(new long[]{0x0000000300100000L});
-	public static final BitSet FOLLOW_declaration_in_tlparser62 = new BitSet(new long[]{0x0000000300100000L});
-	public static final BitSet FOLLOW_33_in_tlparser68 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_tlparser70 = new BitSet(new long[]{0x0000000000100000L});
+	public static final BitSet FOLLOW_logic_in_tlparser35 = new BitSet(new long[]{0x0000000000200000L});
+	public static final BitSet FOLLOW_NEWLINE_in_tlparser37 = new BitSet(new long[]{0x0000000200000000L});
+	public static final BitSet FOLLOW_33_in_tlparser48 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_tlparser50 = new BitSet(new long[]{0x0000000000200000L});
+	public static final BitSet FOLLOW_NEWLINE_in_tlparser52 = new BitSet(new long[]{0x0000000C00200000L});
+	public static final BitSet FOLLOW_declaration_in_tlparser62 = new BitSet(new long[]{0x0000000C00200000L});
+	public static final BitSet FOLLOW_35_in_tlparser68 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_tlparser70 = new BitSet(new long[]{0x0000000000200000L});
 	public static final BitSet FOLLOW_NEWLINE_in_tlparser77 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_COLON_in_logic92 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_COLON_in_logic92 = new BitSet(new long[]{0x0000000000040000L});
 	public static final BitSet FOLLOW_LOGIC_in_logic94 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_32_in_declaration108 = new BitSet(new long[]{0x0000000000001000L});
-	public static final BitSet FOLLOW_ID_in_declaration112 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_declaration118 = new BitSet(new long[]{0x0000000000100000L});
+	public static final BitSet FOLLOW_34_in_declaration108 = new BitSet(new long[]{0x0000000000002000L});
+	public static final BitSet FOLLOW_ID_in_declaration112 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_declaration118 = new BitSet(new long[]{0x0000000000200000L});
 	public static final BitSet FOLLOW_NEWLINE_in_declaration131 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_NEWLINE_in_declaration137 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_ID_in_fmla161 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ATOM_in_fmla172 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla183 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_NEG_OP_in_fmla185 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla189 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla191 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla203 = new BitSet(new long[]{0x0000000000000010L});
-	public static final BitSet FOLLOW_AND_OP_in_fmla205 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_conjuncts_list_in_fmla209 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla211 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla222 = new BitSet(new long[]{0x0000000000200000L});
-	public static final BitSet FOLLOW_OR_OP_in_fmla224 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_conjuncts_list_in_fmla228 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla230 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla241 = new BitSet(new long[]{0x0000000000004000L});
-	public static final BitSet FOLLOW_IMPL_OP_in_fmla243 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla247 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla251 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla253 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla264 = new BitSet(new long[]{0x0000000000002000L});
-	public static final BitSet FOLLOW_IFF_OP_in_fmla266 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla270 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla274 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla276 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla288 = new BitSet(new long[]{0x0000000000000080L});
-	public static final BitSet FOLLOW_F_OP_in_fmla290 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla294 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla298 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla302 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla304 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla316 = new BitSet(new long[]{0x0000000000000100L});
-	public static final BitSet FOLLOW_F_inf_OP_in_fmla318 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla322 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla326 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla328 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla342 = new BitSet(new long[]{0x0000000000000200L});
-	public static final BitSet FOLLOW_G_OP_in_fmla346 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla350 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla354 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla358 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla360 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla372 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_G_inf_OP_in_fmla376 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla380 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla384 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla386 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla399 = new BitSet(new long[]{0x0000000000400000L});
-	public static final BitSet FOLLOW_P_OP_in_fmla401 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla405 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_INT_in_fmla409 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla413 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla415 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla434 = new BitSet(new long[]{0x0000000020000000L});
-	public static final BitSet FOLLOW_UNTIL_OP_in_fmla436 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla440 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla444 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla446 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla458 = new BitSet(new long[]{0x0000000008000000L});
-	public static final BitSet FOLLOW_SINCE_OP_in_fmla460 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla464 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla468 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla470 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla484 = new BitSet(new long[]{0x0000000001000000L});
-	public static final BitSet FOLLOW_RELEASE_OP_in_fmla486 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla490 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla494 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla496 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAR_in_fmla508 = new BitSet(new long[]{0x0000000010000000L});
-	public static final BitSet FOLLOW_TRIGGER_OP_in_fmla510 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla514 = new BitSet(new long[]{0x0000000000041020L});
-	public static final BitSet FOLLOW_fmla_in_fmla518 = new BitSet(new long[]{0x0000000002000000L});
-	public static final BitSet FOLLOW_RPAR_in_fmla520 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_fmla_in_conjuncts_list555 = new BitSet(new long[]{0x0000000000041022L});
-	public static final BitSet FOLLOW_conjuncts_list_in_conjuncts_list560 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_TRUE_in_fmla170 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FALSE_in_fmla179 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ATOM_in_fmla190 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla201 = new BitSet(new long[]{0x0000000000100000L});
+	public static final BitSet FOLLOW_NEG_OP_in_fmla203 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla207 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla209 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla221 = new BitSet(new long[]{0x0000000000000010L});
+	public static final BitSet FOLLOW_AND_OP_in_fmla223 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_conjuncts_list_in_fmla227 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla229 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla240 = new BitSet(new long[]{0x0000000000400000L});
+	public static final BitSet FOLLOW_OR_OP_in_fmla242 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_conjuncts_list_in_fmla246 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla248 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla259 = new BitSet(new long[]{0x0000000000008000L});
+	public static final BitSet FOLLOW_IMPL_OP_in_fmla261 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla265 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla269 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla271 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla282 = new BitSet(new long[]{0x0000000000004000L});
+	public static final BitSet FOLLOW_IFF_OP_in_fmla284 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla288 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla292 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla294 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla306 = new BitSet(new long[]{0x0000000000000100L});
+	public static final BitSet FOLLOW_F_OP_in_fmla308 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla312 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla316 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla320 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla322 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla334 = new BitSet(new long[]{0x0000000000000200L});
+	public static final BitSet FOLLOW_F_inf_OP_in_fmla336 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla340 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla344 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla346 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla360 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_G_OP_in_fmla364 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla368 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla372 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla376 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla378 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla390 = new BitSet(new long[]{0x0000000000000800L});
+	public static final BitSet FOLLOW_G_inf_OP_in_fmla394 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla398 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla402 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla404 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla417 = new BitSet(new long[]{0x0000000000800000L});
+	public static final BitSet FOLLOW_P_OP_in_fmla419 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla423 = new BitSet(new long[]{0x0000000000010000L});
+	public static final BitSet FOLLOW_INT_in_fmla427 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla431 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla433 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla452 = new BitSet(new long[]{0x0000000080000000L});
+	public static final BitSet FOLLOW_UNTIL_OP_in_fmla454 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla458 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla462 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla464 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla476 = new BitSet(new long[]{0x0000000010000000L});
+	public static final BitSet FOLLOW_SINCE_OP_in_fmla478 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla482 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla486 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla488 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla502 = new BitSet(new long[]{0x0000000002000000L});
+	public static final BitSet FOLLOW_RELEASE_OP_in_fmla504 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla508 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla512 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla514 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAR_in_fmla526 = new BitSet(new long[]{0x0000000020000000L});
+	public static final BitSet FOLLOW_TRIGGER_OP_in_fmla528 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla532 = new BitSet(new long[]{0x00000000400820A0L});
+	public static final BitSet FOLLOW_fmla_in_fmla536 = new BitSet(new long[]{0x0000000004000000L});
+	public static final BitSet FOLLOW_RPAR_in_fmla538 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_fmla_in_conjuncts_list573 = new BitSet(new long[]{0x00000000400820A2L});
+	public static final BitSet FOLLOW_conjuncts_list_in_conjuncts_list578 = new BitSet(new long[]{0x0000000000000002L});
 }

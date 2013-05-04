@@ -63,6 +63,7 @@ public class MITLIConjunction extends MITLIFormula {
 	@Override
 	public MITLIFormula update(List<Formula> l) {
 		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
+		// method can be simplified
 		
 		for(MITLIFormula f: subformulae){	
 			

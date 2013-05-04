@@ -91,7 +91,34 @@ fmla returns [Formula r]
 			if (memory.containsKey($ID.text)){
 				$fmla.r = memory.get($ID.text);					
 			}
-			
+		}
+	|	TRUE
+		{
+			Formula f = null;
+			if (tlogic.equals("qtl"))	
+				f = new QTLTrue();
+			else if (tlogic.equals("qtl-i"))
+				f = new QTLITrue();
+			else if (tlogic.equals("mitl"))
+				f = new MITLTrue();
+			else if (tlogic.equals("mitl-i"))
+				f = new MITLITrue();
+				
+			$fmla.r = p.addFormula(f);
+		}
+	|	FALSE
+		{
+			Formula f = null;
+			if (tlogic.equals("qtl"))	
+				f = new QTLFalse();
+			else if (tlogic.equals("qtl-i"))
+				f = new QTLIFalse();
+			else if (tlogic.equals("mitl"))
+				f = new MITLFalse();
+			else if (tlogic.equals("mitl-i"))
+				f = new MITLIFalse();
+				
+			$fmla.r = p.addFormula(f);
 		}
 	|   ATOM  
 		{	
@@ -440,7 +467,8 @@ RPAR:	')';
 LBRA:	'[';
 RBRA:	']';
 
-
+TRUE: 'true';
+FALSE: 'false';
 
 /* Boolean connectives*/
 NEG_OP:	'!!';

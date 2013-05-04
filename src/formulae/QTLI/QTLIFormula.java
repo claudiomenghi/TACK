@@ -18,8 +18,12 @@ public abstract class QTLIFormula extends Formula {
 		super(formula_p);
 		if (this.getClass() != QTLITrue.class && True == null)
 			True = new QTLITrue();
+		else if (this.getClass() == QTLITrue.class && True == null)
+			True = this;
 		if (this.getClass() != QTLIFalse.class && False == null && True != null)
 			False = new QTLIFalse();
+		else if (this.getClass() == QTLIFalse.class && False == null)
+			False = this;
 	}
 
 		
