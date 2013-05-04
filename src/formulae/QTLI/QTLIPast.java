@@ -15,6 +15,8 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		super(new String("(P " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
 		this.subformula = subformula;
 		this.b = b;
+		
+		subformula.maxIntComparedto(b);
 	}
 	
 	
@@ -27,8 +29,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		String orig = t.atom("O");
 				
 		String f1;
-		f1 = t.and( t.implies(point(t), t.and(interval(t), t.Y(interval(t)))),
-					t.iff(t.neg(point(t)), orig) );
+		f1 = t.and( t.implies(point(t), t.and(interval(t), t.Y(interval(t)), orig)));
 	
 		String f2 = t.iff(
 							high(t),
@@ -66,7 +67,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 														t.Y(subf.interval(t)),
 														subf.point(t)
 												),
-												t.rel("=", subf.z0(t), String.valueOf(b))
+												t.rel("=", subf.z0(t), "0")
 										)
 								)
 						),
@@ -79,7 +80,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 														t.Y(subf.interval(t)),
 														subf.point(t)
 												),
-												t.rel("=", subf.z1(t), String.valueOf(b))
+												t.rel("=", subf.z1(t), "0")
 										)
 								)
 						)
@@ -102,7 +103,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 															t.Y(subf.interval(t)),
 															subf.point(t)
 													),
-													t.rel("=", subf.z0(t), String.valueOf(b))
+													t.rel("=", subf.z0(t), "0")
 											)
 									)
 							),
@@ -115,7 +116,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 															t.Y(subf.interval(t)),
 															subf.point(t)
 													),
-													t.rel("=", subf.z1(t), String.valueOf(b))
+													t.rel("=", subf.z1(t), "0")
 											)
 									)
 							)
@@ -155,13 +156,9 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 	@Override
 	public QTLIFormula update(List<Formula> l) {
 		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-		if (l.get(0).equals(subformula)){
-			subformula = (QTLIFormula)l.get(0);					
-			return this;
-		}
-		//else rise an error. TODO: implement WrongUpdateException
-		else
-			return null;
+
+		subformula = (QTLIFormula)l.get(0);					
+		return this;
 	}
 
 

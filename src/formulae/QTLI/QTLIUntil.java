@@ -70,14 +70,11 @@ public class QTLIUntil extends QTLIFormula {
 	@Override
 	public QTLIFormula update(List<Formula> l) {
 		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-		if (l.get(0).equals(subformula1) && l.get(1).equals(subformula2)){
-			subformula1 = (QTLIFormula)l.get(0);
-			subformula2 = (QTLIFormula)l.get(1);
-			return this;
-		}
-		//else rise an error. TODO: implement WrongUpdateException
-		else
-			return null; //return new QTLUntil((QTLFormula)l.get(0),(QTLFormula)l.get(1));
+
+		subformula1 = (QTLIFormula)l.get(0);	
+		subformula2 = (QTLIFormula)l.get(1);	
+		
+		return this;
 	}
 
 

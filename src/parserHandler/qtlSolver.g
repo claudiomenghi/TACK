@@ -331,18 +331,50 @@ fmla returns [Formula r]
 			
 				 
 			$fmla.r = p.addFormula(f);
-		}				
+		}	
+	|   LPAR P_OP a=INT b=INT f1=fmla RPAR 
+		{	
+			Formula f = null;
+			String s = String.valueOf($P_OP.text);
+			
+			
+			if (tlogic.equals("qtl")){
+				if (s.compareTo("P_ee") == 0)
+					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.OPEN); 
+				else if (s.compareTo("F_ei") == 0)
+					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.CLOSED); 
+				else if (s.compareTo("F_ie") == 0)	
+					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.OPEN); 
+				else
+					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.CLOSED);
+			} else if (tlogic.equals("qtl-i")){
+				if (s.compareTo("P_ee") == 0)
+					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.OPEN); 
+				else if (s.compareTo("F_ei") == 0)
+					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.CLOSED); 
+				else if (s.compareTo("F_ie") == 0)	
+					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.OPEN); 
+				else
+					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.CLOSED);
+			} else if (tlogic.equals("mitl")){
+					f = null;
+			} else if (tlogic.equals("mitl-i")){
+					f = null; 
+			}
+				 
+			$fmla.r = p.addFormula(f);
+		}							
 	|   LPAR UNTIL_OP f1=fmla f2=fmla RPAR 
 		{
 			Formula f = null;
 			if (tlogic.equals("qtl"))
-			 	f = new QTLUntil((QTLFormula)$f1.r,(QTLFormula)$f2.r);
+			 	f = QTLFormula.U((QTLFormula)$f1.r,(QTLFormula)$f2.r);
 			else if (tlogic.equals("qtl-i"))
-			 	f = new QTLIUntil((QTLIFormula)$f1.r,(QTLIFormula)$f2.r);
+			 	f = QTLIFormula.U((QTLIFormula)$f1.r,(QTLIFormula)$f2.r);
 			else if (tlogic.equals("mitl"))
-				f = new MITLUntil((MITLFormula)$f1.r,(MITLFormula)$f2.r);
+				f = MITLFormula.U((MITLFormula)$f1.r,(MITLFormula)$f2.r);
 			else if (tlogic.equals("mitl-i"))
-				f = new MITLIUntil((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
+				f = MITLIFormula.U((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
 				
 				
 			$fmla.r = p.addFormula(f);
@@ -351,9 +383,9 @@ fmla returns [Formula r]
 		{
 			Formula f = null;
 			if (tlogic.equals("qtl"))
-			 	f = new QTLSince((QTLFormula)$f1.r,(QTLFormula)$f2.r);
+			 	f = QTLFormula.S((QTLFormula)$f1.r,(QTLFormula)$f2.r);
 			else if (tlogic.equals("qtl-i"))
-			 	f = new QTLISince((QTLIFormula)$f1.r,(QTLIFormula)$f2.r);
+			 	f = QTLIFormula.S((QTLIFormula)$f1.r,(QTLIFormula)$f2.r);
 		}		
 	|   LPAR RELEASE_OP f1=fmla f2=fmla RPAR 
 		{
@@ -426,8 +458,10 @@ G_OP: 		'G_ee' | 'G_ei' | 'G_ii' | 'G_ie';
 G_inf_OP: 	'G_e+' | 'G_i+';
 
 
-P_OP:   'P';
-H_OP:   'H';
+P_OP:   'P_ee' | 'P_ei' | 'P_ii' | 'P_ie';
+H_OP:   'H_ee' | 'H_ei' | 'H_ii' | 'H_ie';
+
+
 UNTIL_OP:	'U';
 SINCE_OP:	'S';
 RELEASE_OP:	'R';

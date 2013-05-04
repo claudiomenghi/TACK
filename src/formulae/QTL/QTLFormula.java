@@ -3,6 +3,7 @@ package formulae.QTL;
 import delegateTranslator.CLTLTranslator;
 import formulae.Bounds;
 import formulae.Formula;
+import formulae.QTLI.QTLIFormula;
 
 public abstract class QTLFormula extends Formula {
 
@@ -342,33 +343,127 @@ public abstract class QTLFormula extends Formula {
 		if (a == 0)
 			return F(f, aB, b, bB);
 		else{
-			QTLFormula result = F(G(F(f,0,Bounds.OPEN,a,Bounds.OPEN),0,Bounds.OPEN,a,Bounds.OPEN),0,aB,1,Bounds.OPEN);
-			for (int i=a+1; i<b-1; i++)
-				result = or(result, F(G(F(f,0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.CLOSED,1,Bounds.OPEN));
-			if (a < b-1)
-				result = or(result, F(G(F(f,0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.CLOSED,1,bB));
+			int d = b-a;
+			QTLFormula fm = f;
 			
-			return result;
-		}
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+					fm = G(F(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
+			
+			if (low > 0){
+					QTLFormula[] _or =  new QTLFormula[d];
+					int i = 0;
+			 		for (int j = low; j < upp; j++){
+						if (j == d)
+							_or[i++] = F(G(F(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.CLOSED,1,bB);		
+						else{
+							QTLFormula orf = fm;
+							for (int h=j; h>0; h--)
+								orf = G(F(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
+							if (i == 0)								
+								orf = F(orf, 0, aB, 1, Bounds.OPEN);							
+			 				else
+								orf = F(orf, 0, Bounds.CLOSED, 1, Bounds.OPEN);
+			
+			 				_or[i++] = orf;
+						}
+					}
+			 		QTLFormula result = _or[0];
+			 		for (int j=1; j<d; j++)
+			 			result = or(result, _or[j]);
+			 		
+					return result;
+			 }
+			else
+			 		return F(fm,0,aB,d,Bounds.OPEN);
+		 		
+		}		
+		 		
+		
 	}
 	
 
 	public static QTLFormula G(QTLFormula f, int a, Bounds aB, int b, Bounds bB){
-		//return not(F(not(f), a, aB, b, bB));
-		
-		/* Following implementation uses native encoding for Globally*/
-		
 		if (a == 0)
 			return G(f, aB, b, bB);
 		else{
-			QTLFormula result = G(F(G(f,0,Bounds.OPEN,a,Bounds.OPEN),0,Bounds.OPEN,a,Bounds.OPEN),0,aB,1,Bounds.OPEN);
-			for (int i=a+1; i<b-1; i++)
-				result = and(result, G(F(G(f,0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.OPEN,i,Bounds.OPEN),0,Bounds.CLOSED,1,Bounds.OPEN));
-			if (a < b-1)
-				result = and(result, G(F(G(f,0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.OPEN,b-1,Bounds.OPEN),0,Bounds.CLOSED,1,bB));
-			
-			return result;
-		}
 		
+		
+		/* Following implementation uses native encoding for Globally*/
+		
+			int d = b-a;
+			QTLFormula fm = f;
+			
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+				if (low == a)
+					fm = F(G(fm,0,aB,d,bB),0,Bounds.OPEN,d,Bounds.OPEN);
+				else
+					fm = F(G(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
+					
+			
+			if (low > 0){
+					QTLFormula orf = fm;
+					
+					for (int h=low; h>0; h--)
+						orf = G(F(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
+					
+					return F(orf, 0, Bounds.OPEN, 1, Bounds.OPEN);
+			}
+			else
+			 		return F(fm,0,Bounds.OPEN,1,Bounds.OPEN);
+		}
+	}
+	
+	
+	public static QTLFormula H(QTLFormula f, int a, Bounds aB, int b, Bounds bB){
+		if (a == 0)
+			return H(f, aB, b, bB);
+		else
+			return not(P(not(f), a, aB, b, bB));
+	}
+	
+	
+	public static QTLFormula P(QTLFormula f, int a, Bounds aB, int b, Bounds bB){
+		if (a == 0)
+			return P(f, aB, b, bB);
+		else{
+			int d = b-a;
+			QTLFormula fm = f;
+			
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+					fm = H(P(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
+			
+			if (low > 0){
+					QTLFormula[] _or =  new QTLFormula[d];
+					int i = 0;
+			 		for (int j = low; j < upp; j++){
+						if (j == d)
+							_or[i++] = P(H(P(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.CLOSED,1,bB);		
+						else{
+							QTLFormula orf = fm;
+							for (int h=j; h>0; h--)
+								orf = H(P(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
+							if (i == 0)								
+								orf = P(orf, 0, aB, 1, Bounds.OPEN);							
+			 				else
+								orf = P(orf, 0, Bounds.CLOSED, 1, Bounds.OPEN);
+			
+			 				_or[i++] = orf;
+						}
+					}
+			 		QTLFormula result = _or[0];
+			 		for (int j=1; j<d; j++)
+			 			result = or(result, _or[j]);
+			 		
+					return result;
+			 }
+			else
+		 		return P(fm,0,aB,d,Bounds.OPEN);
+		}		
 	}
 }

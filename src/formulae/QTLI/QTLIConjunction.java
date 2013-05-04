@@ -65,6 +65,7 @@ public class QTLIConjunction extends QTLIFormula {
 	@Override
 	public QTLIFormula update(List<Formula> l) {
 		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
+		//TODO: can be symplied 
 		
 		for(QTLIFormula f: subformulae){	
 			

@@ -25,10 +25,10 @@ public class QTLISince extends QTLIFormula {
 		QTLIFormula subf1 = subformula1;
 		QTLIFormula subf2 = subformula2;
 		
-		String orig = new String("O");
+		String orig = t.atom("O");
 			
 		String f1;
-		f1 = t.and( 
+		f1 = t.or( 
 					t.and(t.neg(orig), t.iff(point(t), t.Y(interval(t)))),
 					t.and(orig, t.neg(point(t)))
 			);
@@ -39,13 +39,10 @@ public class QTLISince extends QTLIFormula {
 						interval(t),
 						t.S(
 								t.and(subf1.point(t), subf1.interval(t)),
-								t.implies(
-											orig,
-											t.and(
-													t.or(subf2.point(t), subf2.interval(t)),
-													subf1.interval(t)
-											)
-								)
+								t.and(
+										t.or(subf2.point(t), subf2.interval(t)),
+										subf1.interval(t)
+								)							
 						)								
 			);
 				
@@ -70,14 +67,11 @@ public class QTLISince extends QTLIFormula {
 	@Override
 	public QTLIFormula update(List<Formula> l) {
 		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-		if (l.get(0).equals(subformula1) && l.get(1).equals(subformula2)){
-			subformula1 = (QTLIFormula)l.get(0);
-			subformula2 = (QTLIFormula)l.get(1);
-			return this;
-		}
-		//else rise an error. TODO: implement WrongUpdateException
-		else
-			return null; //return new QTLSince((QTLFormula)l.get(0),(QTLFormula)l.get(1));
+		
+		subformula1 = (QTLIFormula)l.get(0);	
+		subformula2 = (QTLIFormula)l.get(1);	
+		
+		return this;
 	}
 
 
