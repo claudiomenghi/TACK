@@ -220,11 +220,11 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 	
 	private String auxiliaryClocksConstraints(CLTLTranslator t){
 		
-		int d = 2*(int)Math.floor(b/(b-a)+1);  
-		
+		int d = 2*(int)Math.round(b/(b-a)+0.5);  
+		int p = 0;
 		
 		String[] _f1 = new String[d];
-		String[] _f2 = new String[d*d];	
+		String[] _f2 = new String[((d*d) - d)/2];	
 		String[] _f3 = new String[d];
 		String[] _f5 = new String[d];
 		String[] _f6 = new String[d];
@@ -233,7 +233,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 			_f1[i] = t.rel("=", x(i,t), "0");
 			_f5[i] = t.rel(">=", x(i,t), "0");
 			for (int j=i+1; j<d; j++)
-				_f2[i*(d-i)+j] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
+				_f2[p++] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
 			_f3[i] = t.implies(
 								t.rel("=", x(i,t), "0"),
 								t.X(
@@ -243,19 +243,14 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 										)
 								)
 					);
-			if (maxIntComparedto() > 0)
-				_f6[i] = t.and(
-								t.G(
-										t.or(
-												t.rel("=", t.X(x(i,t)), "0"),
-												t.rel(">", t.X(x(i,t)), z0(t)))),
-								t.or(
-										t.G(t.F(t.rel("=", x(i,t), "0"))), 
-										t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
-			else 
-				_f6[i] = t.or(
-								t.G(t.F(t.rel("=", x(i,t), "0"))), 
-								t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound())))));
+			_f6[i] = t.and(
+					t.G(
+							t.or(
+									t.rel("=", t.X(x(i,t)), "0"),
+									t.rel(">", t.X(x(i,t)), x(i,t)))),
+					t.or(
+							t.G(t.F(t.rel("=", x(i,t), "0"))), 
+							t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
 		}
 		
 		//Formula (4)		

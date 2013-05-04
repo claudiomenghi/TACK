@@ -1,4 +1,4 @@
-// $ANTLR 3.5 qtlSolver.g 2013-05-04 15:27:57
+// $ANTLR 3.5 qtlSolver.g 2013-05-05 01:19:49
 
 package parserHandler;
 
@@ -843,18 +843,18 @@ public class qtlSolverParser extends Parser {
 								if (tlogic.equals("qtl")){
 									if (s.compareTo("P_ee") == 0)
 										f = QTLFormula.P((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
-									else if (s.compareTo("F_ei") == 0)
+									else if (s.compareTo("P_ei") == 0)
 										f = QTLFormula.P((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
-									else if (s.compareTo("F_ie") == 0)	
+									else if (s.compareTo("P_ie") == 0)	
 										f = QTLFormula.P((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
 									else
 										f = QTLFormula.P((QTLFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);
 								} else if (tlogic.equals("qtl-i")){
 									if (s.compareTo("P_ee") == 0)
 										f = QTLIFormula.P((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
-									else if (s.compareTo("F_ei") == 0)
+									else if (s.compareTo("P_ei") == 0)
 										f = QTLIFormula.P((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.OPEN, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED); 
-									else if (s.compareTo("F_ie") == 0)	
+									else if (s.compareTo("P_ie") == 0)	
 										f = QTLIFormula.P((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.OPEN); 
 									else
 										f = QTLIFormula.P((QTLIFormula)f1, Integer.valueOf((a!=null?a.getText():null)), Bounds.CLOSED, Integer.valueOf((b!=null?b.getText():null)), Bounds.CLOSED);

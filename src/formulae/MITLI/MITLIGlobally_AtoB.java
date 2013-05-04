@@ -219,23 +219,23 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 	
 	private String auxiliaryClocksConstraints(CLTLTranslator t){
 		
-		int d = 2*(int)Math.floor(b/(b-a)+1);  
-		
+		int d = 2*(int)Math.round(b/(b-a)+0.5);  
+		int p = 0;
 		
 		String[] _f1 = new String[d];
-		String[] _f2 = new String[(d*d)/2 - d + 1];	
+		String[] _f2 = new String[((d*d) - d)/2];	
 		String[] _f3 = new String[d];		
 		String[] _f5 = new String[d];
 		String[] _f6 = new String[d];
 		String[] _f7 = new String[d];
-		String[] __f7 = new String[d];
+		String[][] __f7 = new String[d][d];
 		String[] _f8 = new String[d];
 		
 		for (int i=0; i<d; i++){
 			_f1[i] = t.rel("=", x(i,t), "0");
 			_f5[i] = t.rel(">=", x(i,t), "0");
 			for (int j=i+1; j<d; j++)
-					_f2[i*(d-i)+j] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
+					_f2[p++] = t.neg( t.and( t.rel("=", x(i,t), "0"), t.rel("=", x(j,t), "0") ) );
 			_f3[i] = t.implies(
 								t.rel("=", x(i,t), "0"),
 								t.X(
@@ -248,30 +248,25 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 			
 			for (int j=0; j<d; j++)
 				if (j != (i+1)%d)
-					__f7[i] = t.and(__f7[i], t.rel(">", x(j,t), "0") );
+					__f7[i][j] = t.rel(">", x(j,t), "0");
 			
 			_f7[i] = t.implies(
 					t.rel("=", x(i,t), "0"),
 					t.X(
 							t.R(
-									__f7[i],
-									t.rel("=", x((i+1)%d,t), "0")
+									t.rel("=", x((i+1)%d,t), "0"),
+									t.and(__f7[i])									
 							)
 					)
 			);
-			if (maxIntComparedto() > 0)
-				_f6[i] = t.and(
-								t.G(
-										t.or(
-												t.rel("=", t.X(x(i,t)), "0"),
-												t.rel(">", t.X(x(i,t)), z0(t)))),
-								t.or(
-										t.G(t.F(t.rel("=", x(i,t), "0"))), 
-										t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
-			else 
-				_f6[i] = t.or(
-								t.G(t.F(t.rel("=", x(i,t), "0"))), 
-								t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound())))));
+			_f6[i] = t.and(
+							t.G(
+									t.or(
+											t.rel("=", t.X(x(i,t)), "0"),
+											t.rel(">", t.X(x(i,t)), x(i,t)))),
+							t.or(
+									t.G(t.F(t.rel("=", x(i,t), "0"))), 
+									t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
 			
 			if (i < d-1)
 				_f8[i] = t.rel("<", x((d-i)%d,t), x(d-(i+1),t));
@@ -302,11 +297,13 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		
 		String f6 = t.and(_f6);
 		
+		// strict sequence among clocks
 		String f7 = t.and(_f7);
 		
+		// order of clocks at the origin
 		String f8 = t.and(_f8);
 		
-		return t.and(f4, f5, f6, f8, t.G(t.and(f1,f2,f3, f7)));
+		return t.and(f4, f5, f6, f8, t.G(t.and(f1,f2,f7)));
 					
 	}
 

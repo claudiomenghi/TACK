@@ -368,18 +368,18 @@ fmla returns [Formula r]
 			if (tlogic.equals("qtl")){
 				if (s.compareTo("P_ee") == 0)
 					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.OPEN); 
-				else if (s.compareTo("F_ei") == 0)
+				else if (s.compareTo("P_ei") == 0)
 					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.CLOSED); 
-				else if (s.compareTo("F_ie") == 0)	
+				else if (s.compareTo("P_ie") == 0)	
 					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.OPEN); 
 				else
 					f = QTLFormula.P((QTLFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.CLOSED);
 			} else if (tlogic.equals("qtl-i")){
 				if (s.compareTo("P_ee") == 0)
 					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.OPEN); 
-				else if (s.compareTo("F_ei") == 0)
+				else if (s.compareTo("P_ei") == 0)
 					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.OPEN, Integer.valueOf($b.text), Bounds.CLOSED); 
-				else if (s.compareTo("F_ie") == 0)	
+				else if (s.compareTo("P_ie") == 0)	
 					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.OPEN); 
 				else
 					f = QTLIFormula.P((QTLIFormula)$f1.r, Integer.valueOf($a.text), Bounds.CLOSED, Integer.valueOf($b.text), Bounds.CLOSED);
