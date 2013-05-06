@@ -29,7 +29,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		String orig = t.atom("O");
 				
 		String f1;
-		f1 = t.and( t.implies(point(t), t.and(interval(t), t.Y(interval(t)), orig)));
+		f1 = t.implies(point(t), t.and(interval(t), t.Y(interval(t)), t.neg(orig)));
 	
 		String f2 = t.iff(
 							high(t),
@@ -46,7 +46,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 															)
 													)
 											),
-											t.or(t.rel(">=", subf.z0(t), String.valueOf(b)), t.rel(">=", subf.z1(t), String.valueOf(b)))
+											t.or(t.rel(">", subf.z0(t), String.valueOf(b)), t.rel(">", subf.z1(t), String.valueOf(b)))
 									)
 							)
 					);
@@ -55,18 +55,15 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		
 		String f3;
 		f3 = t.iff(
-				low(t),
+				low(t),	
 				t.or(
 						t.and(orig, t.neg(t.and(subf.point(t), subf.interval(t)))),
 						t.and(
 								t.rel("=", subf.z0(t), String.valueOf(b)),
 								t.S(
 										t.neg(subf.befDnowU(t)),
-										t.and(
-												t.or(
-														t.Y(subf.interval(t)),
-														subf.point(t)
-												),
+										t.and(											
+												subf.nowOnD(t),
 												t.rel("=", subf.z0(t), "0")
 										)
 								)
@@ -76,15 +73,12 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 								t.S(
 										t.neg(subf.befDnowU(t)),
 										t.and(
-												t.or(
-														t.Y(subf.interval(t)),
-														subf.point(t)
-												),
+												subf.nowOnD(t),
 												t.rel("=", subf.z1(t), "0")
 										)
 								)
 						)
-				)
+				)	
 		);
 
 
@@ -92,32 +86,31 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		f4 = t.iff(
 				singD(t),
 				t.and(
+						t.neg(orig),
 						subf.befDnowU(t),
 						t.or(					
 							t.and(
 									t.rel("=", subf.z0(t), String.valueOf(b)),
-									t.S(
+									t.Y(
+										t.S(
 											t.neg(subf.befDnowU(t)),
 											t.and(
-													t.or(
-															t.Y(subf.interval(t)),
-															subf.point(t)
-													),
+													subf.nowOnD(t),
 													t.rel("=", subf.z0(t), "0")
 											)
+										)
 									)
 							),
 							t.and(
 									t.rel("=", subf.z1(t), String.valueOf(b)),
-									t.S(
+									t.Y(
+										t.S(
 											t.neg(subf.befDnowU(t)),
 											t.and(
-													t.or(
-															t.Y(subf.interval(t)),
-															subf.point(t)
-													),
+													subf.nowOnD(t),
 													t.rel("=", subf.z1(t), "0")
 											)
+										)
 									)
 							)
 					)
