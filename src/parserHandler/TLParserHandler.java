@@ -90,7 +90,7 @@ public abstract class TLParserHandler {
 		Formula newf;
 		
 		// if formula f has subformulae
-		if (subf != null){ 
+		if (subf != null){ // null non si usa
 			for (Formula fmla: subf){
 				newsubf.add(addToformulae(fmla));	
 			}

@@ -1,4 +1,4 @@
-// $ANTLR 3.5 qtlSolver.g 2013-05-05 01:19:50
+// $ANTLR 3.5 qtlSolver.g 2013-05-08 13:18:11
  package parserHandler; 
 
 import org.antlr.runtime.*;
@@ -125,8 +125,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = LPAR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:465:5: ( '(' )
-			// qtlSolver.g:465:9: '('
+			// qtlSolver.g:498:5: ( '(' )
+			// qtlSolver.g:498:9: '('
 			{
 			match('('); 
 			}
@@ -145,8 +145,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = RPAR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:466:5: ( ')' )
-			// qtlSolver.g:466:7: ')'
+			// qtlSolver.g:499:5: ( ')' )
+			// qtlSolver.g:499:7: ')'
 			{
 			match(')'); 
 			}
@@ -165,8 +165,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = LBRA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:467:5: ( '[' )
-			// qtlSolver.g:467:7: '['
+			// qtlSolver.g:500:5: ( '[' )
+			// qtlSolver.g:500:7: '['
 			{
 			match('['); 
 			}
@@ -185,8 +185,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = RBRA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:468:5: ( ']' )
-			// qtlSolver.g:468:7: ']'
+			// qtlSolver.g:501:5: ( ']' )
+			// qtlSolver.g:501:7: ']'
 			{
 			match(']'); 
 			}
@@ -205,8 +205,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = TRUE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:470:5: ( 'true' )
-			// qtlSolver.g:470:7: 'true'
+			// qtlSolver.g:503:5: ( 'true' )
+			// qtlSolver.g:503:7: 'true'
 			{
 			match("true"); 
 
@@ -226,8 +226,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = FALSE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:471:6: ( 'false' )
-			// qtlSolver.g:471:8: 'false'
+			// qtlSolver.g:504:6: ( 'false' )
+			// qtlSolver.g:504:8: 'false'
 			{
 			match("false"); 
 
@@ -247,8 +247,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = NEG_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:474:7: ( '!!' )
-			// qtlSolver.g:474:9: '!!'
+			// qtlSolver.g:507:7: ( '!!' )
+			// qtlSolver.g:507:9: '!!'
 			{
 			match("!!"); 
 
@@ -268,8 +268,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = AND_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:475:7: ( '&&' )
-			// qtlSolver.g:475:9: '&&'
+			// qtlSolver.g:508:7: ( '&&' )
+			// qtlSolver.g:508:9: '&&'
 			{
 			match("&&"); 
 
@@ -289,8 +289,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = OR_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:476:6: ( '||' )
-			// qtlSolver.g:476:8: '||'
+			// qtlSolver.g:509:6: ( '||' )
+			// qtlSolver.g:509:8: '||'
 			{
 			match("||"); 
 
@@ -310,8 +310,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = IMPL_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:477:8: ( '->' )
-			// qtlSolver.g:477:10: '->'
+			// qtlSolver.g:510:8: ( '->' )
+			// qtlSolver.g:510:10: '->'
 			{
 			match("->"); 
 
@@ -331,8 +331,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = IFF_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:478:7: ( '<->' )
-			// qtlSolver.g:478:9: '<->'
+			// qtlSolver.g:511:7: ( '<->' )
+			// qtlSolver.g:511:9: '<->'
 			{
 			match("<->"); 
 
@@ -352,7 +352,7 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = F_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:482:5: ( 'F_ee' | 'F_ei' | 'F_ii' | 'F_ie' )
+			// qtlSolver.g:515:5: ( 'F_ee' | 'F_ei' | 'F_ii' | 'F_ie' )
 			int alt1=4;
 			int LA1_0 = input.LA(1);
 			if ( (LA1_0=='F') ) {
@@ -446,28 +446,28 @@ public class qtlSolverLexer extends Lexer {
 
 			switch (alt1) {
 				case 1 :
-					// qtlSolver.g:482:9: 'F_ee'
+					// qtlSolver.g:515:9: 'F_ee'
 					{
 					match("F_ee"); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:482:18: 'F_ei'
+					// qtlSolver.g:515:18: 'F_ei'
 					{
 					match("F_ei"); 
 
 					}
 					break;
 				case 3 :
-					// qtlSolver.g:482:27: 'F_ii'
+					// qtlSolver.g:515:27: 'F_ii'
 					{
 					match("F_ii"); 
 
 					}
 					break;
 				case 4 :
-					// qtlSolver.g:482:36: 'F_ie'
+					// qtlSolver.g:515:36: 'F_ie'
 					{
 					match("F_ie"); 
 
@@ -489,7 +489,7 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = F_inf_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:483:9: ( 'F_e+' | 'F_i+' )
+			// qtlSolver.g:516:9: ( 'F_e+' | 'F_i+' )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0=='F') ) {
@@ -541,14 +541,14 @@ public class qtlSolverLexer extends Lexer {
 
 			switch (alt2) {
 				case 1 :
-					// qtlSolver.g:483:12: 'F_e+'
+					// qtlSolver.g:516:12: 'F_e+'
 					{
 					match("F_e+"); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:483:21: 'F_i+'
+					// qtlSolver.g:516:21: 'F_i+'
 					{
 					match("F_i+"); 
 
@@ -570,7 +570,7 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = G_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:485:5: ( 'G_ee' | 'G_ei' | 'G_ii' | 'G_ie' )
+			// qtlSolver.g:518:5: ( 'G_ee' | 'G_ei' | 'G_ii' | 'G_ie' )
 			int alt3=4;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0=='G') ) {
@@ -664,28 +664,28 @@ public class qtlSolverLexer extends Lexer {
 
 			switch (alt3) {
 				case 1 :
-					// qtlSolver.g:485:9: 'G_ee'
+					// qtlSolver.g:518:9: 'G_ee'
 					{
 					match("G_ee"); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:485:18: 'G_ei'
+					// qtlSolver.g:518:18: 'G_ei'
 					{
 					match("G_ei"); 
 
 					}
 					break;
 				case 3 :
-					// qtlSolver.g:485:27: 'G_ii'
+					// qtlSolver.g:518:27: 'G_ii'
 					{
 					match("G_ii"); 
 
 					}
 					break;
 				case 4 :
-					// qtlSolver.g:485:36: 'G_ie'
+					// qtlSolver.g:518:36: 'G_ie'
 					{
 					match("G_ie"); 
 
@@ -707,7 +707,7 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = G_inf_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:486:9: ( 'G_e+' | 'G_i+' )
+			// qtlSolver.g:519:9: ( 'G_e+' | 'G_i+' )
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0=='G') ) {
@@ -759,14 +759,14 @@ public class qtlSolverLexer extends Lexer {
 
 			switch (alt4) {
 				case 1 :
-					// qtlSolver.g:486:12: 'G_e+'
+					// qtlSolver.g:519:12: 'G_e+'
 					{
 					match("G_e+"); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:486:21: 'G_i+'
+					// qtlSolver.g:519:21: 'G_i+'
 					{
 					match("G_i+"); 
 
@@ -788,7 +788,7 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = P_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:489:5: ( 'P_ee' | 'P_ei' | 'P_ii' | 'P_ie' )
+			// qtlSolver.g:522:5: ( 'P_ee' | 'P_ei' | 'P_ii' | 'P_ie' )
 			int alt5=4;
 			int LA5_0 = input.LA(1);
 			if ( (LA5_0=='P') ) {
@@ -882,28 +882,28 @@ public class qtlSolverLexer extends Lexer {
 
 			switch (alt5) {
 				case 1 :
-					// qtlSolver.g:489:9: 'P_ee'
+					// qtlSolver.g:522:9: 'P_ee'
 					{
 					match("P_ee"); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:489:18: 'P_ei'
+					// qtlSolver.g:522:18: 'P_ei'
 					{
 					match("P_ei"); 
 
 					}
 					break;
 				case 3 :
-					// qtlSolver.g:489:27: 'P_ii'
+					// qtlSolver.g:522:27: 'P_ii'
 					{
 					match("P_ii"); 
 
 					}
 					break;
 				case 4 :
-					// qtlSolver.g:489:36: 'P_ie'
+					// qtlSolver.g:522:36: 'P_ie'
 					{
 					match("P_ie"); 
 
@@ -925,7 +925,7 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = H_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:490:5: ( 'H_ee' | 'H_ei' | 'H_ii' | 'H_ie' )
+			// qtlSolver.g:523:5: ( 'H_ee' | 'H_ei' | 'H_ii' | 'H_ie' )
 			int alt6=4;
 			int LA6_0 = input.LA(1);
 			if ( (LA6_0=='H') ) {
@@ -1019,28 +1019,28 @@ public class qtlSolverLexer extends Lexer {
 
 			switch (alt6) {
 				case 1 :
-					// qtlSolver.g:490:9: 'H_ee'
+					// qtlSolver.g:523:9: 'H_ee'
 					{
 					match("H_ee"); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:490:18: 'H_ei'
+					// qtlSolver.g:523:18: 'H_ei'
 					{
 					match("H_ei"); 
 
 					}
 					break;
 				case 3 :
-					// qtlSolver.g:490:27: 'H_ii'
+					// qtlSolver.g:523:27: 'H_ii'
 					{
 					match("H_ii"); 
 
 					}
 					break;
 				case 4 :
-					// qtlSolver.g:490:36: 'H_ie'
+					// qtlSolver.g:523:36: 'H_ie'
 					{
 					match("H_ie"); 
 
@@ -1062,8 +1062,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = UNTIL_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:493:9: ( 'U' )
-			// qtlSolver.g:493:11: 'U'
+			// qtlSolver.g:526:9: ( 'U' )
+			// qtlSolver.g:526:11: 'U'
 			{
 			match('U'); 
 			}
@@ -1082,8 +1082,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = SINCE_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:494:9: ( 'S' )
-			// qtlSolver.g:494:11: 'S'
+			// qtlSolver.g:527:9: ( 'S' )
+			// qtlSolver.g:527:11: 'S'
 			{
 			match('S'); 
 			}
@@ -1102,8 +1102,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = RELEASE_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:495:11: ( 'R' )
-			// qtlSolver.g:495:13: 'R'
+			// qtlSolver.g:528:11: ( 'R' )
+			// qtlSolver.g:528:13: 'R'
 			{
 			match('R'); 
 			}
@@ -1122,8 +1122,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = TRIGGER_OP;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:496:11: ( 'T' )
-			// qtlSolver.g:496:13: 'T'
+			// qtlSolver.g:529:11: ( 'T' )
+			// qtlSolver.g:529:13: 'T'
 			{
 			match('T'); 
 			}
@@ -1142,7 +1142,7 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = LOGIC;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:499:8: ( 'qtl' | 'mitl' | 'qtl-i' | 'mitl-i' )
+			// qtlSolver.g:532:8: ( 'qtl' | 'mitl' | 'qtl-i' | 'mitl-i' )
 			int alt7=4;
 			int LA7_0 = input.LA(1);
 			if ( (LA7_0=='q') ) {
@@ -1262,28 +1262,28 @@ public class qtlSolverLexer extends Lexer {
 
 			switch (alt7) {
 				case 1 :
-					// qtlSolver.g:499:12: 'qtl'
+					// qtlSolver.g:532:12: 'qtl'
 					{
 					match("qtl"); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:499:18: 'mitl'
+					// qtlSolver.g:532:18: 'mitl'
 					{
 					match("mitl"); 
 
 					}
 					break;
 				case 3 :
-					// qtlSolver.g:499:25: 'qtl-i'
+					// qtlSolver.g:532:25: 'qtl-i'
 					{
 					match("qtl-i"); 
 
 					}
 					break;
 				case 4 :
-					// qtlSolver.g:499:33: 'mitl-i'
+					// qtlSolver.g:532:33: 'mitl-i'
 					{
 					match("mitl-i"); 
 
@@ -1305,8 +1305,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = COLON;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:501:6: ( ':' )
-			// qtlSolver.g:501:8: ':'
+			// qtlSolver.g:534:6: ( ':' )
+			// qtlSolver.g:534:8: ':'
 			{
 			match(':'); 
 			}
@@ -1325,8 +1325,8 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = SEMI;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:502:5: ( ';' )
-			// qtlSolver.g:502:7: ';'
+			// qtlSolver.g:535:5: ( ';' )
+			// qtlSolver.g:535:7: ';'
 			{
 			match(';'); 
 			}
@@ -1345,10 +1345,10 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = ATOM;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:503:7: ( ( 'a' .. 'z' )+ )
-			// qtlSolver.g:503:11: ( 'a' .. 'z' )+
+			// qtlSolver.g:536:7: ( ( 'a' .. 'z' )+ )
+			// qtlSolver.g:536:11: ( 'a' .. 'z' )+
 			{
-			// qtlSolver.g:503:11: ( 'a' .. 'z' )+
+			// qtlSolver.g:536:11: ( 'a' .. 'z' )+
 			int cnt8=0;
 			loop8:
 			while (true) {
@@ -1397,10 +1397,10 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = INT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:504:5: ( ( '0' .. '9' )+ )
-			// qtlSolver.g:504:9: ( '0' .. '9' )+
+			// qtlSolver.g:537:5: ( ( '0' .. '9' )+ )
+			// qtlSolver.g:537:9: ( '0' .. '9' )+
 			{
-			// qtlSolver.g:504:9: ( '0' .. '9' )+
+			// qtlSolver.g:537:9: ( '0' .. '9' )+
 			int cnt9=0;
 			loop9:
 			while (true) {
@@ -1449,12 +1449,12 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:505:3: ( ATOM ( ATOM | INT )* )
-			// qtlSolver.g:505:6: ATOM ( ATOM | INT )*
+			// qtlSolver.g:538:3: ( ATOM ( ATOM | INT )* )
+			// qtlSolver.g:538:6: ATOM ( ATOM | INT )*
 			{
 			mATOM(); 
 
-			// qtlSolver.g:505:10: ( ATOM | INT )*
+			// qtlSolver.g:538:10: ( ATOM | INT )*
 			loop10:
 			while (true) {
 				int alt10=3;
@@ -1468,14 +1468,14 @@ public class qtlSolverLexer extends Lexer {
 
 				switch (alt10) {
 				case 1 :
-					// qtlSolver.g:505:11: ATOM
+					// qtlSolver.g:538:11: ATOM
 					{
 					mATOM(); 
 
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:505:18: INT
+					// qtlSolver.g:538:18: INT
 					{
 					mINT(); 
 
@@ -1503,10 +1503,10 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = NEWLINE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:506:8: ( ( '\\r' )? '\\n' )
-			// qtlSolver.g:506:9: ( '\\r' )? '\\n'
+			// qtlSolver.g:539:8: ( ( '\\r' )? '\\n' )
+			// qtlSolver.g:539:9: ( '\\r' )? '\\n'
 			{
-			// qtlSolver.g:506:9: ( '\\r' )?
+			// qtlSolver.g:539:9: ( '\\r' )?
 			int alt11=2;
 			int LA11_0 = input.LA(1);
 			if ( (LA11_0=='\r') ) {
@@ -1514,7 +1514,7 @@ public class qtlSolverLexer extends Lexer {
 			}
 			switch (alt11) {
 				case 1 :
-					// qtlSolver.g:506:9: '\\r'
+					// qtlSolver.g:539:9: '\\r'
 					{
 					match('\r'); 
 					}
@@ -1539,10 +1539,10 @@ public class qtlSolverLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// qtlSolver.g:507:5: ( ( ' ' | '\\t' )+ )
-			// qtlSolver.g:507:9: ( ' ' | '\\t' )+
+			// qtlSolver.g:540:5: ( ( ' ' | '\\t' )+ )
+			// qtlSolver.g:540:9: ( ' ' | '\\t' )+
 			{
-			// qtlSolver.g:507:9: ( ' ' | '\\t' )+
+			// qtlSolver.g:540:9: ( ' ' | '\\t' )+
 			int cnt12=0;
 			loop12:
 			while (true) {
