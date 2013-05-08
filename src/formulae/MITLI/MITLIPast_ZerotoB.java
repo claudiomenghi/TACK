@@ -80,16 +80,16 @@ public class MITLIPast_ZerotoB extends MITLIPast_AtoB{
 								t.U(
 										t.rel("<", subf.z0(t), "1"),
 										t.or(
-												t.and(subf.high(t), t.rel("<", subf.z0(t), "1")), 
+												t.and(subf.high(t), t.rel(">", subf.z0(t), "0"), t.rel("<", subf.z0(t), "1")), 
 												t.rel("=", subf.z0(t), "1"))											
 								)			
 					),
 					t.implies(
 							t.and(subf.low(t), t.rel("=", subf.z1(t), "0")),
 							t.U(
-									t.rel("<", subf.z0(t), "1"),
+									t.rel("<", subf.z1(t), "1"),
 									t.or(
-											t.and(subf.high(t), t.rel("<", subf.z0(t), "1")), 
+											t.and(subf.high(t), t.rel(">", subf.z1(t), "0"), t.rel("<", subf.z1(t), "1")), 
 											t.rel("=", subf.z0(t), "1"))											
 							)
 					)
