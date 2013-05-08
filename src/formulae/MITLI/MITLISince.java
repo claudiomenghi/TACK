@@ -29,7 +29,7 @@ public class MITLISince extends MITLIFormula {
 		
 		String f1 = t.iff(
 							interval(t),
-							t.S(subf1.interval(t), subf2.interval(t))
+							t.S(subf1.interval(t), t.and(subf2.interval(t), subf1.interval(t)))
 					);
 		
 		
