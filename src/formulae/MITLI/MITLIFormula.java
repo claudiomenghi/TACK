@@ -163,7 +163,9 @@ public abstract class MITLIFormula extends Formula {
 		return new MITLIUntil(f1, f2);
 	}
 	
-	
+	public static MITLIFormula S(MITLIFormula f1, MITLIFormula f2){
+		return new MITLISince(f1, f2);
+	}
 	
 	
 
@@ -211,6 +213,33 @@ public abstract class MITLIFormula extends Formula {
 			return new MITLIGlobally_AtoInf(f, a);
 	}
 	
+	// Past: P_<0,b]
+	public static MITLIFormula P(MITLIFormula f, int b){
+		return new MITLIPast_ZerotoB(f, b);
+			
+	}			
+
+	// Past: P_<a,b]
+	public static MITLIFormula P(MITLIFormula f, int a, int b){
+		if (a == 0)
+			return P(f, b);
+		else
+			return new MITLIPast_AtoB(f, a, b);
+	}
+	
+	
+	// Historically: H_<0,b]
+	public static MITLIFormula H(MITLIFormula f, int b){
+		return not(P(not(f), b));
+	}
+	
+	// Historically: H_<a,b]
+	public static MITLIFormula H(MITLIFormula f, int a, int b){
+		if (a == 0)
+			return H(f, b);
+		else
+			return not(P(not(f), a, b));
+	}
 	
 	
 	// Producers method to build derived boolean CLTL formulae

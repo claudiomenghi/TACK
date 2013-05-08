@@ -303,7 +303,7 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		// order of clocks at the origin
 		String f8 = t.and(_f8);
 		
-		return t.and(f4, f5, f6, f8, t.G(t.and(f1,f2,f7)));
+		return t.and(f4,f6,f8,t.G(t.and(f1,f2,f7)));
 					
 	}
 
