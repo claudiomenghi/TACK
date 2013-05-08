@@ -1,4 +1,4 @@
-// $ANTLR 3.5 qtlSolver.g 2013-05-05 01:19:49
+// $ANTLR 3.5 qtlSolver.g 2013-05-08 11:45:26
 
 package parserHandler;
 
@@ -918,11 +918,13 @@ public class qtlSolverParser extends Parser {
 								 	f = QTLFormula.S((QTLFormula)f1,(QTLFormula)f2);
 								else if (tlogic.equals("qtl-i"))
 								 	f = QTLIFormula.S((QTLIFormula)f1,(QTLIFormula)f2);
+								 	
+								r = p.addFormula(f); 	
 							
 					}
 					break;
 				case 17 :
-					// qtlSolver.g:417:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:419:6: LPAR RELEASE_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla502); 
 					match(input,RELEASE_OP,FOLLOW_RELEASE_OP_in_fmla504); 
@@ -951,7 +953,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 18 :
-					// qtlSolver.g:431:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
+					// qtlSolver.g:433:6: LPAR TRIGGER_OP f1= fmla f2= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla526); 
 					match(input,TRIGGER_OP,FOLLOW_TRIGGER_OP_in_fmla528); 
@@ -992,7 +994,7 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "conjuncts_list"
-	// qtlSolver.g:445:1: conjuncts_list returns [List<Formula> l] : f1= fmla (clist= conjuncts_list |) ;
+	// qtlSolver.g:447:1: conjuncts_list returns [List<Formula> l] : f1= fmla (clist= conjuncts_list |) ;
 	public final List<Formula> conjuncts_list() throws RecognitionException {
 		List<Formula> l = null;
 
@@ -1002,14 +1004,14 @@ public class qtlSolverParser extends Parser {
 
 		l = new ArrayList<Formula>();
 		try {
-			// qtlSolver.g:446:38: (f1= fmla (clist= conjuncts_list |) )
-			// qtlSolver.g:448:2: f1= fmla (clist= conjuncts_list |)
+			// qtlSolver.g:448:38: (f1= fmla (clist= conjuncts_list |) )
+			// qtlSolver.g:450:2: f1= fmla (clist= conjuncts_list |)
 			{
 			pushFollow(FOLLOW_fmla_in_conjuncts_list573);
 			f1=fmla();
 			state._fsp--;
 
-			// qtlSolver.g:448:10: (clist= conjuncts_list |)
+			// qtlSolver.g:450:10: (clist= conjuncts_list |)
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0==ATOM||LA4_0==FALSE||LA4_0==ID||LA4_0==LPAR||LA4_0==TRUE) ) {
@@ -1027,7 +1029,7 @@ public class qtlSolverParser extends Parser {
 
 			switch (alt4) {
 				case 1 :
-					// qtlSolver.g:448:11: clist= conjuncts_list
+					// qtlSolver.g:450:11: clist= conjuncts_list
 					{
 					pushFollow(FOLLOW_conjuncts_list_in_conjuncts_list578);
 					clist=conjuncts_list();
@@ -1036,7 +1038,7 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 2 :
-					// qtlSolver.g:448:34: 
+					// qtlSolver.g:450:34: 
 					{
 					}
 					break;
