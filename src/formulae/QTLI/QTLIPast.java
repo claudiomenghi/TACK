@@ -125,7 +125,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 								t.U(
 										t.rel("<", subf.z0(t), "1"),
 										t.or(
-												t.and(subf.befDnowU(t), t.rel("<", subf.z0(t), "1")), 
+												t.and(subf.befDnowU(t), t.rel(">", subf.z0(t), "0"), t.rel("<", subf.z0(t), "1")), 
 												t.rel("=", subf.z0(t), "1"))											
 								)				
 					),
@@ -134,7 +134,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 							t.U(
 									t.rel("<", subf.z1(t), "1"),
 									t.or(
-											t.and(subf.befDnowU(t), t.rel("<", subf.z1(t), "1")), 
+											t.and(subf.befDnowU(t), t.rel(">", subf.z1(t), "0"), t.rel("<", subf.z1(t), "1")), 
 											t.rel("=", subf.z1(t), "1"))			
 							)
 					)
