@@ -118,10 +118,30 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		);
 
 		
+		String f5;
+		f5 = t.and(
+					t.implies(
+								t.and(subf.nowOnD(t), t.rel("=", subf.z0(t), "0")),
+								t.X(
+									t.R(
+											t.or(subf.befDnowU(t), t.rel("=", subf.z0(t), "1")), 
+											t.rel("<=", subf.z0(t), "1")
+									)
+								)
+					),
+					t.implies(
+							t.and(subf.nowOnD(t), t.rel("=", subf.z1(t), "0")),
+							t.X(
+								t.R(
+										t.or(subf.befDnowU(t), t.rel("=", subf.z1(t), "1")), 
+										t.rel("<=", subf.z1(t), "1")
+								)
+							)
+					)
+			);
 		
 		
-		
-		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4)));
+		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4,f5)));
 	}
 	
 
