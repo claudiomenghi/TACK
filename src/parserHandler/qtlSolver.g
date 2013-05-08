@@ -413,6 +413,8 @@ fmla returns [Formula r]
 			 	f = QTLFormula.S((QTLFormula)$f1.r,(QTLFormula)$f2.r);
 			else if (tlogic.equals("qtl-i"))
 			 	f = QTLIFormula.S((QTLIFormula)$f1.r,(QTLIFormula)$f2.r);
+			 	
+			$fmla.r = p.addFormula(f); 	
 		}		
 	|   LPAR RELEASE_OP f1=fmla f2=fmla RPAR 
 		{
