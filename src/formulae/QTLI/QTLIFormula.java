@@ -432,7 +432,7 @@ public abstract class QTLIFormula extends Formula {
 				return orf;
 			}
 			else
-			 	return G(fm, 0, Bounds.OPEN, 1, Bounds.OPEN);
+			 	return G(fm, 0, Bounds.OPEN, d, Bounds.OPEN);
 		
 		}
 	}
