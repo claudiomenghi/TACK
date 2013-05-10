@@ -32,8 +32,13 @@ public class MITLISince extends MITLIFormula {
 							t.and(subf1.interval(t), t.S(subf1.interval(t), subf2.interval(t)))
 					);
 		
+		String f2;
+		f2 = t.iff(
+				interval(t),
+				t.and(subf1.interval(t), subf2.interval(t))
+		);
 		
-		return t.and(super.clocksEventsConstraints(t), t.G(f1));
+		return t.and(super.clocksEventsConstraints(t), f2, t.G(f1));
 		
 	}
 
