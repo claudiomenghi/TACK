@@ -4,7 +4,15 @@ import java.util.Iterator;
 
 import delegateTranslator.*;
 import formulae.*;
+import formulae.MITLI.MITLIEventually_AtoInf;
+import formulae.MITLI.MITLIEventually_ZerotoB;
+import formulae.MITLI.MITLIGlobally_AtoInf;
+import formulae.MITLI.MITLIGlobally_ZerotoB;
+import formulae.QTLI.QTLIEventually;
 import formulae.QTLI.QTLIFormula;
+import formulae.QTLI.QTLIGlobally;
+import formulae.QTLI.QTLIHistorically;
+import formulae.QTLI.QTLIPast;
 
 public class QTLIParserHandler extends TLParserHandler {
 
@@ -20,7 +28,12 @@ public class QTLIParserHandler extends TLParserHandler {
 				
 				while (f.hasNext()){
 					QTLIFormula qtlf = (QTLIFormula) f.next();
-					if ( (qtlf.idFormula() != qtlf.isTheFormula) && (qtlf.maxIntComparedto() > 0))
+					if ( ( (qtlf instanceof QTLIEventually) || 
+						   (qtlf instanceof QTLIGlobally) || 
+						   (qtlf instanceof QTLIPast) || 
+						   (qtlf instanceof QTLIHistorically) ||
+						   ( (qtlf.idFormula() != qtlf.isTheFormula) && 
+							 (qtlf.maxIntComparedto() > 0) ) ) )
 						result = result + new String("(define-tvar " + qtlf.z0() + " *real*)\n(define-tvar " + qtlf.z1() + " *real*)\n");	
 				}				
 			};

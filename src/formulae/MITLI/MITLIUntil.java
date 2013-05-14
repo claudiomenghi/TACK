@@ -29,7 +29,7 @@ public class MITLIUntil extends MITLIFormula {
 		
 		String f1 = t.iff(
 							interval(t),
-							t.U(subf1.interval(t), subf2.interval(t))
+							t.and(subf1.interval(t), t.U(subf1.interval(t), subf2.interval(t)))
 					);
 		
 		

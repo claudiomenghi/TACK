@@ -164,6 +164,7 @@ public class QTLIGlobally extends QTLIFormula implements Temporized{
 		
 		
 		
+		
 		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4,f5)));
 	}
 	

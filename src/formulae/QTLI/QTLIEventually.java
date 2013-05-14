@@ -163,8 +163,30 @@ public class QTLIEventually extends QTLIFormula implements Temporized{
 			);
 		
 		
+		String f6;
+		f6 = t.and(
+					t.implies(
+								t.and(subf.nowOnD(t), t.rel("=", subf.z0(t), "0")),
+								t.U(
+										t.rel("<", subf.z0(t), String.valueOf(upperbound())),
+										t.or(
+												t.and(subf.befDnowU(t), t.rel(">", subf.z0(t), "0"), t.rel("<", subf.z0(t), String.valueOf(upperbound()))), 
+												t.rel("=", subf.z0(t), String.valueOf(upperbound())))											
+								)				
+					),
+					t.implies(
+							t.and(subf.nowOnD(t), t.rel("=", subf.z1(t), "0")),
+							t.U(
+									t.rel("<", subf.z1(t), String.valueOf(upperbound())),
+									t.or(
+											t.and(subf.befDnowU(t), t.rel(">", subf.z1(t), "0"), t.rel("<", subf.z1(t), String.valueOf(upperbound()))), 
+											t.rel("=", subf.z1(t), String.valueOf(upperbound())))			
+							)
+					)
+			);
 		
-		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4,f5)));
+		
+		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4,f5,f6)));
 	}
 	
 

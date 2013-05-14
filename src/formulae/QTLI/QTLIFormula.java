@@ -141,19 +141,19 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String befUnowD(CLTLTranslator t){
-		return t.and( t.neg(t.Y(t.neg(interval(t)))), t.or(t.neg(point(t)), t.neg(interval(t))) );
+		return t.or( low(t), singD(t) );
 	}
 	
 	public String befDnowU(CLTLTranslator t){
-		return t.and( t.neg(t.Y(interval(t))), t.or(point(t), interval(t)) );
+		return t.or( high(t), singU(t) );
 	}
 	
 	public String nowOnD(CLTLTranslator t){
-		return t.and( t.or(t.and(t.neg(t.Y(t.neg(interval(t)))), t.neg(t.atom("O"))), point(t)), t.neg(interval(t)) );
+		return t.and( t.or(t.neg(t.Y(t.neg(interval(t)))), t.atom("O"), point(t)), t.neg(interval(t)) );
 	}
 	
 	public String nowOnU(CLTLTranslator t){
-		return t.and( t.or(t.or(t.neg(t.Y(interval(t))), t.neg(t.atom("O"))), t.neg(point(t))), interval(t) );
+		return t.and( t.or(t.neg(t.Y(interval(t))), t.atom("O"), t.neg(point(t))), interval(t) );
 	}
 	
 	public String z0(){
