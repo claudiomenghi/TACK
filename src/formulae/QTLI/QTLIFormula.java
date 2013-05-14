@@ -153,7 +153,7 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String nowOnU(CLTLTranslator t){
-		return t.and( t.and(t.or(t.neg(t.Y(interval(t))), t.neg(t.atom("O"))), t.neg(point(t))), interval(t) );
+		return t.and( t.or(t.or(t.neg(t.Y(interval(t))), t.neg(t.atom("O"))), t.neg(point(t))), interval(t) );
 	}
 	
 	public String z0(){
