@@ -29,9 +29,7 @@ public class QTLIParserHandler extends TLParserHandler {
 				while (f.hasNext()){
 					QTLIFormula qtlf = (QTLIFormula) f.next();
 					if ( ( (qtlf instanceof QTLIEventually) || 
-						   (qtlf instanceof QTLIGlobally) || 
-						   (qtlf instanceof QTLIPast) || 
-						   (qtlf instanceof QTLIHistorically) ||
+						   (qtlf instanceof QTLIGlobally) || 						   
 						   ( (qtlf.idFormula() != qtlf.isTheFormula) && 
 							 (qtlf.maxIntComparedto() > 0) ) ) )
 						result = result + new String("(define-tvar " + qtlf.z0() + " *real*)\n(define-tvar " + qtlf.z1() + " *real*)\n");	

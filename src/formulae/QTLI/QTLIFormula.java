@@ -129,7 +129,9 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String low(CLTLTranslator t){
-		return t.and( t.or(t.atom("O"), t.neg(t.Y(t.neg(interval(t))))), t.neg(interval(t)) );	
+		//return t.and( t.or(t.atom("O"), t.neg(t.Y(t.neg(interval(t))))), t.neg(interval(t)) );
+		/* Modified because of explicit origin */
+		return t.and( t.or(t.atom("O"), t.Y(interval(t))), t.neg(interval(t)) );
 	}
 	
 	public String singU(CLTLTranslator t){
@@ -137,7 +139,9 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String singD(CLTLTranslator t){
-		return t.and( t.neg(t.Y(t.neg(interval(t)))), t.neg(point(t)), interval(t), t.neg(t.atom("O")) );
+		//return t.and( t.neg(t.Y(t.neg(interval(t)))), t.neg(point(t)), interval(t), t.neg(t.atom("O")) );
+		/* Modified because of explicit origin */
+		return t.and( t.Y(interval(t)), t.neg(point(t)), interval(t), t.neg(t.atom("O")) );
 	}
 	
 	public String befUnowD(CLTLTranslator t){
@@ -149,7 +153,9 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String nowOnD(CLTLTranslator t){
-		return t.and( t.or(t.neg(t.Y(t.neg(interval(t)))), t.atom("O"), point(t)), t.neg(interval(t)) );
+		//return t.and( t.or(t.neg(t.Y(t.neg(interval(t)))), t.atom("O"), point(t)), t.neg(interval(t)) );
+		/* Modified because of explicit origin */
+		return t.and( t.or(t.Y(interval(t)), t.atom("O"), point(t)), t.neg(interval(t)) );
 	}
 	
 	public String nowOnU(CLTLTranslator t){
