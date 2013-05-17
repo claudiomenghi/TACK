@@ -42,7 +42,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 															t.neg(subf.befDnowU(t)),
 															t.and(
 																	orig,
-																	t.neg(t.and(subf.point(t), subf.interval(t)))
+																	t.and(t.neg(subf.point(t)), t.neg(subf.interval(t)))
 															)
 													)
 											),
@@ -57,7 +57,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 		f3 = t.iff(
 				low(t),	
 				t.or(
-						t.and(orig, t.neg(t.and(subf.point(t), subf.interval(t)))),
+						t.and(orig, t.and(t.neg(subf.point(t)), t.neg(subf.interval(t)))),
 						t.and(
 								t.rel("=", subf.z0(t), String.valueOf(b)),
 								t.S(
@@ -97,7 +97,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 											t.and(
 													subf.nowOnD(t),
 													t.rel("=", subf.z0(t), "0"),
-													t.neg(t.and(orig, t.neg(t.and(subf.point(t), subf.interval(t)))))
+													t.neg(t.and(orig, t.and(t.neg(subf.point(t)), t.neg(subf.interval(t)))))
 											)
 										)
 									)
@@ -110,7 +110,7 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 											t.and(
 													subf.nowOnD(t),
 													t.rel("=", subf.z1(t), "0"),
-													t.neg(t.and(orig, t.neg(t.and(subf.point(t), subf.interval(t)))))
+													t.neg(t.and(orig, t.and(t.neg(subf.point(t)), t.neg(subf.interval(t)))))
 											)
 										)
 									)
