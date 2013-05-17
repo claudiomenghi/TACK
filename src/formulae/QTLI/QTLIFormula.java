@@ -303,7 +303,7 @@ public abstract class QTLIFormula extends Formula {
 		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//G_(0,b]
 			return and (
 						G(f,Bounds.OPEN,b,Bounds.OPEN), 
-						G(F(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN)
+						or(not(first(not(f))), F(G(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN))
 					);
 		
 		else return and(f, G(f, Bounds.OPEN, b, Bounds.CLOSED));	//G_[0,b]
