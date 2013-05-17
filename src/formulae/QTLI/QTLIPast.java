@@ -96,7 +96,8 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 											t.neg(subf.befDnowU(t)),
 											t.and(
 													subf.nowOnD(t),
-													t.rel("=", subf.z0(t), "0")
+													t.rel("=", subf.z0(t), "0"),
+													t.neg(orig)
 											)
 										)
 									)
@@ -108,7 +109,8 @@ public class QTLIPast extends QTLIFormula implements Temporized{
 											t.neg(subf.befDnowU(t)),
 											t.and(
 													subf.nowOnD(t),
-													t.rel("=", subf.z1(t), "0")
+													t.rel("=", subf.z1(t), "0"),
+													t.neg(orig)
 											)
 										)
 									)

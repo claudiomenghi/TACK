@@ -145,25 +145,25 @@ public abstract class QTLIFormula extends Formula {
 	}
 	
 	public String befUnowD(CLTLTranslator t){
-		return t.or( low(t), singD(t) );
+		return t.or( low(t), singD(t), t.and(t.atom("O"), t.neg(point(t))) );
 	}
 	
 	public String befDnowU(CLTLTranslator t){
-		return t.or( high(t), singU(t) );
+		return t.or( high(t), singU(t), t.and(t.atom("O"), point(t)) );		
 	}
 	
 	public String nowOnD(CLTLTranslator t){		
 		/* Modified because of explicit origin */
-		//return t.and( t.or(t.Y(interval(t)), t.atom("O"), point(t)), t.neg(interval(t)) );
+		return t.and( t.or(t.Y(interval(t)), t.atom("O"), point(t)), t.neg(interval(t)) );
 		
-		return t.or( low(t), singU(t) );
+		//return t.or( low(t), singU(t) );
 	}
 	
 	public String nowOnU(CLTLTranslator t){
 		/* Modified because of explicit origin */
-		//return t.and( t.or(t.neg(t.Y(interval(t))), t.atom("O"), t.neg(point(t))), interval(t) );
+		return t.and( t.or(t.neg(t.Y(interval(t))), t.atom("O"), t.neg(point(t))), interval(t) );
 		
-		return t.or( high(t), singU(t) );
+		//return t.or( high(t), singU(t) );
 	}
 	
 	public String z0(){
