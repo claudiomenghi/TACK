@@ -79,18 +79,19 @@ logic returns [String s]
 declaration: ':def' s=ID
 			 fmla 
 			 {
-			 	memory.put($s.text, $fmla.r);
+			 	if (memory.containsKey($ID.text))
+					emitErrorMessage("warning: duplicate name formula! " + $ID.text + " was already defined.");		
+				else
+			 		memory.put($s.text, $fmla.r);
 			 }
 			 NEWLINE
 		| NEWLINE;
 
         
 fmla returns [Formula r]
-	:   ID
-		{			
-			if (memory.containsKey($ID.text)){
-				$fmla.r = memory.get($ID.text);					
-			}
+	:   LPAR in_fmla=fmla RPAR
+		{
+			$fmla.r = in_fmla;
 		}
 	|	TRUE
 		{
@@ -120,20 +121,24 @@ fmla returns [Formula r]
 				
 			$fmla.r = p.addFormula(f);
 		}
-	|   ATOM  
+	|   ID  
 		{	
-			Formula f = null;
-			if (tlogic.equals("qtl"))	
-				f = new QTLAtom($ATOM.text);
-			else if (tlogic.equals("qtl-i"))
-				f = new QTLIAtom($ATOM.text);
-			else if (tlogic.equals("mitl"))
-				f = new MITLAtom($ATOM.text);
-			else if (tlogic.equals("mitl-i"))
-				f = new MITLIAtom($ATOM.text);
+			if (memory.containsKey($ID.text)){
+				$fmla.r = memory.get($ID.text);					
+			}
+			else{
+				Formula f = null;
+				if (tlogic.equals("qtl"))	
+					f = new QTLAtom($ID.text);
+				else if (tlogic.equals("qtl-i"))
+					f = new QTLIAtom($ID.text);
+				else if (tlogic.equals("mitl"))
+					f = new MITLAtom($ID.text);
+				else if (tlogic.equals("mitl-i"))
+					f = new MITLIAtom($ID.text);
 				
-			$fmla.r = p.addFormula(f);
-			
+				$fmla.r = p.addFormula(f);
+			}
 		}
 	|	LPAR NEG_OP f1=fmla RPAR 
 		{	
@@ -386,7 +391,7 @@ fmla returns [Formula r]
 			} else if (tlogic.equals("mitl")){
 					f = null;
 			} else if (tlogic.equals("mitl-i")){
-					if (s.compareTo("P_ei") == 0 || s.compareTo("P_ii") == 0)
+					if (s.compareTo("P_ie") == 0 || s.compareTo("P_ii") == 0)
 					f = MITLIFormula.P((MITLIFormula)$f1.r, Integer.valueOf($a.text), Integer.valueOf($b.text)); 
 			}
 				 
@@ -533,8 +538,11 @@ LOGIC  :   'qtl'|'mitl'|'qtl-i'|'mitl-i';
 
 COLON: ':';
 SEMI: ';';
-ATOM  :   ('a'..'z')+ ;
-INT :   '0'..'9'+ ;
-ID:  ATOM(ATOM | INT)*;
+INT : ('0'..'9')+ ;
+fragment ATOM: 'a'..'z';
+
+ID:  ATOM(ATOM | INT | '_')*;
+
 NEWLINE:'\r'? '\n' ;
 WS  :   (' '|'\t')+ {skip();} ;
+COMMENT: '#'~('\r' | '\n')* {skip();} ;
