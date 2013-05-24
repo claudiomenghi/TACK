@@ -376,6 +376,8 @@ public abstract class QTLIFormula extends Formula {
 		if (a == 0)
 			return F(f, aB, b, bB);
 		else{
+			
+			/*
 			int d = b-a;
 			QTLIFormula fm = f;
 			
@@ -406,6 +408,11 @@ public abstract class QTLIFormula extends Formula {
 			 }
 			else
 			 		return F(fm,0,aB,d,Bounds.OPEN);
+			*/
+			
+			// easier translation by G
+			
+			not(G(not(f), aB, b, bB));
 		 		
 		}		
 		 		
@@ -420,7 +427,7 @@ public abstract class QTLIFormula extends Formula {
 		
 		
 		/* Following implementation uses native encoding for Globally*/
-		
+		/*
 			int d = b-a;
 			QTLIFormula fm = f;
 			
@@ -443,7 +450,23 @@ public abstract class QTLIFormula extends Formula {
 			}
 			else
 			 	return G(fm, 0, Bounds.OPEN, d, Bounds.OPEN);
-		
+			
+			*/
+			
+			int d = b-a;
+			QTLIFormula fm = G(f,0,aB,d,bB);
+			
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+				fm = G(F(fm,0,bB,d,aB),0,aB,d,bB);
+								
+			if (low > 0){
+				for (int h=low; h>0; h--)
+					fm = G(F(fm, 0, bB, 1, aB), 0, aB, 1, bB);			
+			}
+			
+			return fm;		
 		}
 	}
 	
