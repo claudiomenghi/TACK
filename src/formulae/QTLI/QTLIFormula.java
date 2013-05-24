@@ -412,7 +412,7 @@ public abstract class QTLIFormula extends Formula {
 			
 			// easier translation by G
 			
-			not(G(not(f), aB, b, bB));
+			return not(G(not(f), aB, b, bB));
 		 		
 		}		
 		 		
