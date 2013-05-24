@@ -214,46 +214,6 @@ public abstract class QTLIFormula extends Formula {
 		return S(not(f), f);
 	}
 	
-
-	
-	// Eventually: F_<0,b>
-	public static QTLIFormula F(QTLIFormula f, Bounds aB, int b, Bounds bB){
-		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//F_(0,b)
-			return new QTLIEventually(f, b);
-		
-		else if (aB==Bounds.CLOSED && bB==Bounds.OPEN)			//F_[0,b)
-			return or(f, F(f, Bounds.OPEN, b, bB));
-		
-		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//F_(0,b]
-			return or(
-						F(f,Bounds.OPEN,b,Bounds.OPEN), 
-						and(first(f), G(F(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN))
-					);
-		
-		else return or(f, F(f, Bounds.OPEN, b, Bounds.CLOSED));	//F_[0,b]
-			
-	}
-	
-	
-	// Past: P_<0,b>
-	public static QTLIFormula P(QTLIFormula f, Bounds aB, int b, Bounds bB){
-		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//F_(0,b)
-			return new QTLIPast(f, b);
-		
-		else if (aB==Bounds.CLOSED && bB==Bounds.OPEN)			//F_[0,b)
-			return or(f, P(f, Bounds.OPEN, b, bB));
-		
-		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//F_(0,b]
-			return or(
-						P(f,Bounds.OPEN,b,Bounds.OPEN), 
-						and(last(f), G(P(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN))
-					);
-		
-		else return or(f, P(f, Bounds.OPEN, b, Bounds.CLOSED));	//F_[0,b]
-			
-	}
-	
-	
 	// Producers method to build derived boolean CLTL formulae
 	
 	
@@ -277,20 +237,45 @@ public abstract class QTLIFormula extends Formula {
 	
 	public static QTLIFormula T(QTLIFormula f1, QTLIFormula f2){
 		return not(S(not(f1), not(f2)));
-	}		
+	}	
 	
 	
-	/*
-	// Globally: G_(0,b>
-	public static QTLFormula G(QTLFormula f, Bounds aB, int b, Bounds bB){
-		if (aB==Bounds.OPEN)					//G_(0,b) or G_(0,b]
-			return not(F(not(f), aB, b, bB));
+	
+	// Eventually: F_<0,b>
+	public static QTLIFormula F(QTLIFormula f, Bounds aB, int b, Bounds bB){
+		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//F_(0,b)
+			return new QTLIEventually(f, b);
 		
-		else 									//G_[0,b) or G_[0,b]
-			return or(f, G(f, Bounds.OPEN, b, bB));
+		else if (aB==Bounds.CLOSED && bB==Bounds.OPEN)			//F_[0,b)
+			return or(f, F(f, Bounds.OPEN, b, bB));
 		
+		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//F_(0,b]
+			return or(
+						F(f,Bounds.OPEN,b,Bounds.OPEN), 
+						and(first(f), G(F(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN))
+					);
+		
+		else return or(f, F(f, Bounds.OPEN, b, Bounds.CLOSED));	//F_[0,b]
+			
 	}
-	*/
+	
+	// Past: P_<0,b>
+	public static QTLIFormula P(QTLIFormula f, Bounds aB, int b, Bounds bB){
+		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//F_(0,b)
+			return new QTLIPast(f, b);
+		
+		else if (aB==Bounds.CLOSED && bB==Bounds.OPEN)			//F_[0,b)
+			return or(f, P(f, Bounds.OPEN, b, bB));
+		
+		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//F_(0,b]
+			return or(
+						P(f,Bounds.OPEN,b,Bounds.OPEN), 
+						and(last(f), G(P(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN))
+					);
+		
+		else return or(f, P(f, Bounds.OPEN, b, Bounds.CLOSED));	//F_[0,b]
+			
+	}
 	
 	// Globally: G_<0,b> NATIVE IMPLMENTATION
 	public static QTLIFormula G(QTLIFormula f, Bounds aB, int b, Bounds bB){
@@ -310,16 +295,21 @@ public abstract class QTLIFormula extends Formula {
 			
 	}
 	
-	
-	
-	// Historically: H_(0,b>
-	public static QTLIFormula H(QTLIFormula f, Bounds aB, int b, Bounds bB){
-		if (aB==Bounds.OPEN)					//G_(0,b) or G_(0,b]
-			return not(P(not(f), aB, b, bB));
+	// Historically: H_<0,b>
+	public static QTLIFormula H(QTLIFormula f, Bounds aB, int b, Bounds bB){		
+		if (aB==Bounds.OPEN && bB==Bounds.OPEN)					//H_(0,b)
+			return new QTLIHistorically(f, b);
 		
-		else 									//G_[0,b) or G_[0,b]
-			return or(f, H(f, Bounds.OPEN, b, bB));
+		else if (aB==Bounds.CLOSED && bB==Bounds.OPEN)			//H_[0,b)
+			return and(f, H(f, Bounds.OPEN, b, bB));
 		
+		else if (aB==Bounds.OPEN && bB==Bounds.CLOSED)			//H_(0,b]
+			return and (
+						H(f,Bounds.OPEN,b,Bounds.OPEN), 
+						or(not(last(not(f))), P(H(f, Bounds.OPEN, b, Bounds.OPEN), Bounds.OPEN, b, Bounds.OPEN))
+					);
+		
+		else return and(f, H(f, Bounds.OPEN, b, Bounds.CLOSED));	//H_[0,b]	
 	}	
 	
 	// Eventually: F_<a,+oo)
@@ -359,10 +349,10 @@ public abstract class QTLIFormula extends Formula {
 			return or(f, P(f, 0, Bounds.OPEN));
 		
 		else if (a>0 && aB==Bounds.OPEN)			//P_(a,+oo)
-			return G(P(f, 0, Bounds.OPEN), Bounds.OPEN, a, Bounds.CLOSED);
+			return H(P(f, 0, Bounds.OPEN), Bounds.OPEN, a, Bounds.CLOSED);
 		
 		else										//P_[a,+oo)
-			return G(P(f, 0, Bounds.CLOSED), Bounds.OPEN, a, Bounds.CLOSED);
+			return H(P(f, 0, Bounds.CLOSED), Bounds.OPEN, a, Bounds.CLOSED);
 	}
 	
 	// Historically: H_<a,+oo)
@@ -375,84 +365,15 @@ public abstract class QTLIFormula extends Formula {
 	public static QTLIFormula F(QTLIFormula f, int a, Bounds aB, int b, Bounds bB){
 		if (a == 0)
 			return F(f, aB, b, bB);
-		else{
-			
-			/*
-			int d = b-a;
-			QTLIFormula fm = f;
-			
-			int low = a;
-			int upp = b;
-			for (; low >= d; low = low - d, upp = upp - d)
-					fm = G(F(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
-			
-			if (low > 0){
-					QTLIFormula[] _or =  new QTLIFormula[d];
-					int i = 0;
-			 		for (int j = low; j < upp; j++){
-						if (j == d)
-							_or[i++] = F(G(F(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.CLOSED,1,bB);		
-						else{
-							QTLIFormula orf = fm;
-							for (int h=j; h>0; h--)
-								orf = G(F(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
-							if (i == 0)								
-								orf = F(orf, 0, aB, 1, Bounds.OPEN);							
-			 				else
-								orf = F(orf, 0, Bounds.CLOSED, 1, Bounds.OPEN);
-			
-			 				_or[i++] = orf;
-						}
-					}
-					return or(_or);
-			 }
-			else
-			 		return F(fm,0,aB,d,Bounds.OPEN);
-			*/
-			
-			// easier translation by G
-			
+		else
 			return not(G(not(f), aB, b, bB));
-		 		
-		}		
-		 		
-		
 	}
 	
 
 	public static QTLIFormula G(QTLIFormula f, int a, Bounds aB, int b, Bounds bB){
 		if (a == 0)
 			return G(f, aB, b, bB);
-		else{
-		
-		
-		/* Following implementation uses native encoding for Globally*/
-		/*
-			int d = b-a;
-			QTLIFormula fm = f;
-			
-			int low = a;
-			int upp = b;
-			for (; low >= d; low = low - d, upp = upp - d)
-				if (low == a)
-					fm = F(G(fm,0,aB,d,bB),0,Bounds.OPEN,d,Bounds.OPEN);
-				else
-					fm = F(G(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
-					
-			
-			if (low > 0){
-				QTLIFormula orf = G(fm,0,Bounds.OPEN,d,Bounds.OPEN);
-				
-				for (int h=low; h>0; h--)
-					orf = G(F(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
-				
-				return orf;
-			}
-			else
-			 	return G(fm, 0, Bounds.OPEN, d, Bounds.OPEN);
-			
-			*/
-			
+		else{		
 			int d = b-a;
 			QTLIFormula fm = G(f,0,aB,d,bB);
 			
@@ -474,46 +395,30 @@ public abstract class QTLIFormula extends Formula {
 	public static QTLIFormula H(QTLIFormula f, int a, Bounds aB, int b, Bounds bB){
 		if (a == 0)
 			return H(f, aB, b, bB);
-		else
-			return not(P(not(f), a, aB, b, bB));
+		else{
+			int d = b-a;
+			QTLIFormula fm = H(f,0,aB,d,bB);
+			
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+				fm = H(P(fm,0,bB,d,aB),0,aB,d,bB);
+								
+			if (low > 0){
+				for (int h=low; h>0; h--)
+					fm = H(P(fm, 0, bB, 1, aB), 0, aB, 1, bB);			
+			}
+			
+			return fm;
+		}
 	}
 	
 	
 	public static QTLIFormula P(QTLIFormula f, int a, Bounds aB, int b, Bounds bB){
 		if (a == 0)
 			return P(f, aB, b, bB);
-		else{
-			int d = b-a;
-			QTLIFormula fm = f;
-			
-			int low = a;
-			int upp = b;
-			for (; low >= d; low = low - d, upp = upp - d)
-					fm = H(P(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN);
-			
-			if (low > 0){
-					QTLIFormula[] _or =  new QTLIFormula[d];
-					int i = 0;
-			 		for (int j = low; j < upp; j++){
-						if (j == d)
-							_or[i++] = P(H(P(fm,0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.OPEN,d,Bounds.OPEN),0,Bounds.CLOSED,1,bB);		
-						else{
-							QTLIFormula orf = fm;
-							for (int h=j; h>0; h--)
-								orf = H(P(orf, 0, Bounds.OPEN, 1, Bounds.OPEN), 0, Bounds.OPEN, 1, Bounds.OPEN);
-							if (i == 0)								
-								orf = P(orf, 0, aB, 1, Bounds.OPEN);							
-			 				else
-								orf = P(orf, 0, Bounds.CLOSED, 1, Bounds.OPEN);
-			
-			 				_or[i++] = orf;
-						}
-					}
-					return or(_or);
-			 }
-			else
-		 		return P(fm,0,aB,d,Bounds.OPEN);
-		}		
+		else
+			return not(H(not(f), aB, b, bB));	
 	}
 	
 }
