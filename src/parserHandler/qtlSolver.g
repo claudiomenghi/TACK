@@ -8,6 +8,7 @@ import delegateTranslator.*;
 import formulae.*;
 import formulae.QTL.*;
 import formulae.QTLI.*;
+import formulae.QTLI.Counting.*;
 import formulae.MITL.*;
 import formulae.MITLI.*;
 import java.io.FileOutputStream;
@@ -477,6 +478,13 @@ fmla returns [Formula r]
 			$fmla.r = p.addFormula(f);
 		}
 		
+	| LPAR COUNT_OP n=INT d=INT f1=fmla RPAR
+	  {
+	      Formula f;
+	      f = QTLIFormula.count((QTLIFormula)$f1.r,Integer.valueOf($d.text),Integer.valueOf($n.text));
+	  	  $fmla.r = p.addFormula(f);
+	  }
+		
     ;
 
 
@@ -532,6 +540,8 @@ UNTIL_OP:	'U';
 SINCE_OP:	'S';
 RELEASE_OP:	'R';
 TRIGGER_OP: 'T';
+
+COUNT_OP: 'C';
 
 
 LOGIC  :   'qtl'|'mitl'|'qtl-i'|'mitl-i';
