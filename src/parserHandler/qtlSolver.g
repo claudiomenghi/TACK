@@ -478,10 +478,10 @@ fmla returns [Formula r]
 			$fmla.r = p.addFormula(f);
 		}
 		
-	| LPAR COUNT_OP n=INT d=INT f1=fmla RPAR
+	| LPAR COUNT_OP n=INT b=INT f1=fmla RPAR
 	  {
 	      Formula f;
-	      f = QTLIFormula.count((QTLIFormula)$f1.r,Integer.valueOf($d.text),Integer.valueOf($n.text));
+	      f = QTLIFormula.count((QTLIFormula)$f1.r,Integer.valueOf($b.text),Integer.valueOf($n.text));
 	  	  $fmla.r = p.addFormula(f);
 	  }
 		

@@ -70,7 +70,9 @@ public abstract class MITLIFormula extends Formula {
 													t.rel(">", t.X(z0(t)), z0(t)))),
 									t.or(
 											t.G(t.F(t.rel("=", z0(t), "0"))), 
-											t.F(t.G(t.rel(">", z0(t), String.valueOf(maxIntComparedto()))))));
+											t.F(t.G(t.rel(">", z0(t), String.valueOf(maxIntComparedto()))))
+											//t.F(t.G(t.rel(">", z0(t), t.X(z0(t)))))
+													));
 													
 	
 				String f4b = t.and(
@@ -80,7 +82,10 @@ public abstract class MITLIFormula extends Formula {
 										t.rel(">", t.X(z1(t)), z1(t)))),
 						t.or(
 								t.G(t.F(t.rel("=", z1(t), "0"))), 
-								t.F(t.G(t.rel(">", z1(t), String.valueOf(maxIntComparedto()))))));		
+								t.F(t.G(t.rel(">", z1(t), String.valueOf(maxIntComparedto()))))
+								//t.F(t.G(t.rel(">", z0(t), t.X(z0(t)))))
+								));		
+				
 				
 				// Clocks non negativeness in the origin
 				String f5 = t.and(

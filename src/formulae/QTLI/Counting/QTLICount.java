@@ -14,7 +14,7 @@ public class QTLICount extends QTLIFormula implements Temporized{
 	private int nClocks;  
 	
 	public QTLICount(QTLIFormula subformula, int b, int n){
-		super(new String("(C " + String.valueOf(n) + String.valueOf(b) + " " + subformula.strFormula() + ")"));
+		super(new String("(C " + String.valueOf(n) + " " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
 		this.subformula = subformula;
 		this.b = b;
 		this.nClocks = n + 1;
@@ -131,12 +131,12 @@ public class QTLICount extends QTLIFormula implements Temporized{
 		
 		String[] _f4a = new String[nClocks];
 		for (int i = 0; i < nClocks; i++)
-			_f4a[i] = t.or(t.implies(t.rel("=", subf.z(i,t), "0"), upSub(n,i,"=",b,subf.nowOnU(t),t)), _f4a(i,t));
+			_f4a[i] = t.implies(t.rel("=", subf.z(i,t), "0"), t.or(upSub(n,i,"=",b,subf.befDnowU(t),t), _f4a(i,t)));
 		String f4a = t.and(_f4a);
 		
 		String[] _f4b = new String[nClocks];
 		for (int i = 0; i < nClocks; i++)
-			_f4b[i] = t.implies(t.rel("=", subf.z(i,t), "0"), upSub(n,i,"=",b,subf.nowOnU(t),t));
+			_f4b[i] = t.implies(t.rel("=", subf.z(i,t), "0"), upSub(n,i,"=",b,subf.befDnowU(t),t));
 		String f4b = t.and(_f4b);
 		
 		String f4;
@@ -154,15 +154,15 @@ public class QTLICount extends QTLIFormula implements Temporized{
 
 	private String _f3a(int i, CLTLTranslator t) {
 		String[] s = new String[nClocks - 1];
-		for (int k = 0; k < nClocks-2 ; k++)
-			s[i] = upSub(k,i,"<=",b,"",t);
+		for (int k = 0; k < nClocks-1 ; k++)
+			s[k] = upSub(k,i,"<=",b,"",t);
 		return t.or(s);
 	}
 	
 	private String _f4a(int i, CLTLTranslator t) {
 		String[] s = new String[nClocks - 1];
 		for (int k = 0; k < nClocks-2 ; k++)
-			s[i] = upSub(k+1,i,"=",b,subformula.high(t),t);
+			s[k] = upSub(k+1,i,"=",b,subformula.high(t),t);
 		return t.or(s);
 	}
 
@@ -265,7 +265,7 @@ public class QTLICount extends QTLIFormula implements Temporized{
 
 	
 	private String upSub(int n, int j, String o, int d, String e, CLTLTranslator t){
-		if (o.compareTo("=") != 0){
+		if (o.compareTo("=") == 0){
 			if (n == 1){
 				return t.X(t.U(t.neg(befDnowU(t)), t.and(e, t.rel("=", String.valueOf(d), z(j,t)))));			
 			}
@@ -283,12 +283,13 @@ public class QTLICount extends QTLIFormula implements Temporized{
 				return t.neg(t.X(t.U(t.neg(befDnowU(t)), t.and(subformula.befDnowU(t), t.rel("<", "0", z(j,t)), t.rel("<=", z(j,t), String.valueOf(d))))));			
 			}
 			else{
-				return t.X(
+				String s=  t.X(
 							t.U(
 								t.neg(befDnowU(t)),
 								t.and(subformula.singU(t), t.rel("<", "0", z(j,t)), t.rel(o, z(j,t), String.valueOf(d)), upSub(n-1,j,o,d,e,t))
 							)
 						);
+				return s;
 			}
 		}
 			

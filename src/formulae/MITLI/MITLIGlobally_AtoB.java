@@ -20,6 +20,7 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		this.b = b;
 		
 		subformula.maxIntComparedto(b-a);
+		this.maxIntComparedto(b);
 	}
 
 
@@ -111,12 +112,12 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 							t.and(
 									orig,	
 									t.U(
-											t.or(t.rel(">", x(0,t), "0"), orig),
+											t.or(t.rel(">", z0(t), "0"), orig),
 											t.and(
 													t.neg(subf.interval(t)),
 													t.or(
-															t.and(t.rel(">=", x(0,t), String.valueOf(a)), t.rel("<=", x(0,t), String.valueOf(b))),
-															t.and(t.rel("<", x(0,t), String.valueOf(a)), t.X(t.rel(">", x(0,t), String.valueOf(a))))
+															t.and(t.rel(">=", z0(t), String.valueOf(a)), t.rel("<=", z0(t), String.valueOf(b))),
+															t.and(t.rel("<", z0(t), String.valueOf(a)), t.X(t.rel(">", z0(t), String.valueOf(a))))
 													)
 											)
 													
@@ -266,7 +267,9 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 											t.rel(">", t.X(x(i,t)), x(i,t)))),
 							t.or(
 									t.G(t.F(t.rel("=", x(i,t), "0"))), 
-									t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))));
+									t.F(t.G(t.rel(">", x(i,t), String.valueOf(upperbound()))))
+									//t.F(t.G(t.rel(">", x(i,t), t.X(x(i,t)))))
+									));
 			
 			if (i < d-1)
 				_f8[i] = t.rel("<", x((d-i)%d,t), x(d-(i+1),t));
@@ -289,7 +292,8 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements Temporized{
 		String f3 = t.and(_f3);
 			
 		
-		String f4 = t.rel("=", x(0,t), "0");
+		//String f4 = t.rel("=", x(0,t), "0");
+		String f4 = t.or(_f1);
 		
 		
 		// Positiveness of all clocks in the origin

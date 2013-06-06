@@ -1,4 +1,4 @@
-// $ANTLR 3.5 qtlSolver.g 2013-06-06 19:28:41
+// $ANTLR 3.5 qtlSolver.g 2013-06-06 22:07:16
 
 package parserHandler;
 
@@ -290,7 +290,7 @@ public class qtlSolverParser extends Parser {
 
 
 	// $ANTLR start "fmla"
-	// qtlSolver.g:92:1: fmla returns [Formula r] : ( LPAR in_fmla= fmla RPAR | TRUE | FALSE | ID | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR H_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR | LPAR COUNT_OP n= INT d= INT f1= fmla RPAR );
+	// qtlSolver.g:92:1: fmla returns [Formula r] : ( LPAR in_fmla= fmla RPAR | TRUE | FALSE | ID | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR H_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR | LPAR COUNT_OP n= INT b= INT f1= fmla RPAR );
 	public final Formula fmla() throws RecognitionException {
 		Formula r = null;
 
@@ -299,7 +299,6 @@ public class qtlSolverParser extends Parser {
 		Token b=null;
 		Token op=null;
 		Token n=null;
-		Token d=null;
 		Token ID5=null;
 		Token F_OP6=null;
 		Token F_inf_OP7=null;
@@ -311,7 +310,7 @@ public class qtlSolverParser extends Parser {
 		Formula f2 =null;
 
 		try {
-			// qtlSolver.g:93:2: ( LPAR in_fmla= fmla RPAR | TRUE | FALSE | ID | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR H_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR | LPAR COUNT_OP n= INT d= INT f1= fmla RPAR )
+			// qtlSolver.g:93:2: ( LPAR in_fmla= fmla RPAR | TRUE | FALSE | ID | LPAR NEG_OP f1= fmla RPAR | LPAR AND_OP clist= conjuncts_list RPAR | LPAR OR_OP clist= conjuncts_list RPAR | LPAR IMPL_OP f1= fmla f2= fmla RPAR | LPAR IFF_OP f1= fmla f2= fmla RPAR | LPAR F_OP a= INT b= INT f1= fmla RPAR | LPAR F_inf_OP a= INT f1= fmla RPAR | LPAR op= G_OP a= INT b= INT f1= fmla RPAR | LPAR op= G_inf_OP a= INT f1= fmla RPAR | LPAR P_OP a= INT b= INT f1= fmla RPAR | LPAR H_OP a= INT b= INT f1= fmla RPAR | LPAR UNTIL_OP f1= fmla f2= fmla RPAR | LPAR SINCE_OP f1= fmla f2= fmla RPAR | LPAR RELEASE_OP f1= fmla f2= fmla RPAR | LPAR TRIGGER_OP f1= fmla f2= fmla RPAR | LPAR COUNT_OP n= INT b= INT f1= fmla RPAR )
 			int alt3=20;
 			switch ( input.LA(1) ) {
 			case LPAR:
@@ -1051,12 +1050,12 @@ public class qtlSolverParser extends Parser {
 					}
 					break;
 				case 20 :
-					// qtlSolver.g:481:4: LPAR COUNT_OP n= INT d= INT f1= fmla RPAR
+					// qtlSolver.g:481:4: LPAR COUNT_OP n= INT b= INT f1= fmla RPAR
 					{
 					match(input,LPAR,FOLLOW_LPAR_in_fmla587); 
 					match(input,COUNT_OP,FOLLOW_COUNT_OP_in_fmla589); 
 					n=(Token)match(input,INT,FOLLOW_INT_in_fmla593); 
-					d=(Token)match(input,INT,FOLLOW_INT_in_fmla597); 
+					b=(Token)match(input,INT,FOLLOW_INT_in_fmla597); 
 					pushFollow(FOLLOW_fmla_in_fmla601);
 					f1=fmla();
 					state._fsp--;
@@ -1064,7 +1063,7 @@ public class qtlSolverParser extends Parser {
 					match(input,RPAR,FOLLOW_RPAR_in_fmla603); 
 
 						      Formula f;
-						      f = QTLIFormula.count((QTLIFormula)f1,Integer.valueOf((d!=null?d.getText():null)),Integer.valueOf((n!=null?n.getText():null)));
+						      f = QTLIFormula.count((QTLIFormula)f1,Integer.valueOf((b!=null?b.getText():null)),Integer.valueOf((n!=null?n.getText():null)));
 						  	  r = p.addFormula(f);
 						  
 					}

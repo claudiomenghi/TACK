@@ -32,7 +32,16 @@ public class QTLIParserHandler extends TLParserHandler {
 						   (qtlf instanceof QTLIGlobally) || 						   
 						   ( (qtlf.idFormula() != qtlf.isTheFormula) && 
 							 (qtlf.maxIntComparedto() > 0) ) ) )
-						result = result + new String("(define-tvar " + qtlf.z0() + " *real*)\n(define-tvar " + qtlf.z1() + " *real*)\n");	
+						result = result + new String("(define-tvar " + qtlf.z0() + " *real*)\n(define-tvar " + qtlf.z1() + " *real*)\n");
+					if (qtlf.getCountingClocks() > 0){
+						
+						String s = new String();
+						for (int i = 0; i < qtlf.getCountingClocks(); i++)
+							s = s + new String("(define-tvar " + qtlf.z(i) + " *real*)\n");
+						
+						result = result + s;
+					}
+						 
 				}				
 			};
 			case NUZOT: ;		
