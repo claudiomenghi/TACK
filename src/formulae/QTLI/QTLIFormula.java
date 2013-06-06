@@ -3,8 +3,9 @@ package formulae.QTLI;
 import delegateTranslator.CLTLTranslator;
 import formulae.Bounds;
 import formulae.Formula;
+import formulae.QTLI.Counting.QTLICount;
 
-public abstract class QTLIFormula extends Formula {
+public abstract class QTLIFormula extends Formula implements SupplingCountingClocks{
 
 	/* Moved in the class Formula
 	 * 
@@ -13,6 +14,7 @@ public abstract class QTLIFormula extends Formula {
 	*/
 	
 	private int maxIntComparedto = 0;
+	private int nCountingClocks = 0;
 	
 	public QTLIFormula(String formula_p){
 		super(formula_p);
@@ -99,9 +101,121 @@ public abstract class QTLIFormula extends Formula {
 					
 			
 		
-		
-		return result;
+		if (nCountingClocks == 0)
+			return result;
+		else
+			return t.and(result, countingClocksConstraints(t));
 	}
+	
+	
+
+	@Override
+	public void setCountingClocks(int nCountingClocks) {
+		this.nCountingClocks = nCountingClocks;
+	}
+
+
+	@Override
+	public int getCountingClocks() {
+		return nCountingClocks ;
+	}
+
+
+
+	@Override
+	public String countingClocksConstraints(CLTLTranslator t) {
+
+		// when no counting clocks are needed then simply return empty string
+		if (nCountingClocks == 0)
+			return new String("");
+		
+		//else
+		int p = 0;
+		
+		String[] _f1 = new String[nCountingClocks];
+		String[] _f2 = new String[((nCountingClocks*nCountingClocks) - nCountingClocks)/2];	
+		String[] _f3 = new String[nCountingClocks];		
+		String[] _f5 = new String[nCountingClocks];
+		String[] _f6 = new String[nCountingClocks];
+		String[] _f7 = new String[nCountingClocks];
+		String[][] __f7 = new String[nCountingClocks][nCountingClocks];
+		String[] _f8 = new String[nCountingClocks];
+		
+		for (int i=0; i<nCountingClocks; i++){
+			_f1[i] = t.rel("=", z(i,t), "0");
+			_f5[i] = t.rel(">=", z(i,t), "0");
+			for (int j=i+1; j<nCountingClocks; j++)
+					_f2[p++] = t.neg( t.and( t.rel("=", z(i,t), "0"), t.rel("=", z(j,t), "0") ) );
+			_f3[i] = t.implies(
+								t.rel("=", z(i,t), "0"),
+								t.X(
+										t.R(
+												t.rel("=", z((i+nCountingClocks-1)%nCountingClocks,t), "0"),
+												t.rel(">", z(i,t), "0")
+										)
+								)
+					);
+			
+			for (int j=0; j<nCountingClocks; j++)
+				if (j != (i+1)%nCountingClocks)
+					__f7[i][j] = t.rel(">", z(j,t), "0");
+			
+			_f7[i] = t.implies(
+					t.rel("=", z(i,t), "0"),
+					t.X(
+							t.R(
+									t.rel("=", z((i+1)%nCountingClocks,t), "0"),
+									t.and(__f7[i])									
+							)
+					)
+			);
+			_f6[i] = t.and(
+							t.G(
+									t.or(
+											t.rel("=", t.X(z(i,t)), "0"),
+											t.rel(">", t.X(z(i,t)), z(i,t)))),
+							t.or(
+									t.G(t.F(t.rel("=", z(i,t), "0"))), 
+									t.F(t.G(t.rel(">", z(i,t), String.valueOf(maxIntComparedto()))))));
+			
+			if (i < nCountingClocks-1)
+				_f8[i] = t.rel("<", z((nCountingClocks-i)%nCountingClocks,t), z(nCountingClocks-(i+1),t));
+			
+		}
+		
+		//Formula (4)		
+		String f1 = t.iff(
+								t.or(befUnowD(t), befDnowU(t)), 
+								t.or(_f1)
+					);
+
+			
+		// Formuala (5)
+		String f2 = t.and(_f2);
+		
+		
+		
+		// Formula (6)
+		String f3 = t.and(_f3);
+			
+		
+		String f4 = t.rel("=", z(0,t), "0");
+		
+		
+		// Positiveness of all clocks in the origin
+		String f5 = t.and(_f5);
+		
+		String f6 = t.and(_f6);
+		
+		// strict sequence among clocks
+		String f7 = t.and(_f7);
+		
+		// order of clocks at the origin
+		String f8 = t.and(_f8);
+		
+		return t.and(f4,f6,f8,t.G(t.and(f1,f2,f7)));
+	}
+	
 	
 	
 	public int maxIntComparedto(){
@@ -182,6 +296,17 @@ public abstract class QTLIFormula extends Formula {
 		return t.var(z1());	
 	}
 	
+	
+	@Override
+	public String z(int i) {
+		return "x" + String.valueOf(i)+ "_" + String.valueOf(idFormula());	
+	}
+
+	
+	public String z(int i, CLTLTranslator t){
+		return t.var(z(i));	
+	}
+	
 
 	// Producers method to build CLTL formulae of the argument formula 
 	
@@ -239,6 +364,12 @@ public abstract class QTLIFormula extends Formula {
 		return not(S(not(f1), not(f2)));
 	}	
 	
+	
+	//Count C_n_b
+	
+	public static QTLIFormula count(QTLIFormula f, int b, int n){
+		return new QTLICount(f, b, n);
+	}
 	
 	
 	// Eventually: F_<0,b>
@@ -420,5 +551,9 @@ public abstract class QTLIFormula extends Formula {
 		else
 			return not(H(not(f), aB, b, bB));	
 	}
+
+
+
+
 	
 }
