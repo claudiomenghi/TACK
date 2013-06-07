@@ -12,7 +12,7 @@ public interface SupplingCountingClocks {
 	
 	
 	//returns the CLTL formula constraining clocks
-	public String countingClocksConstraints(CLTLTranslator t);
+	//public String countingClocksConstraints(CLTLTranslator t);
 	
 	//returns the number of counting clocks needed by the formula implementing the interface
 	public void setCountingClocks(int nCountingClocks);

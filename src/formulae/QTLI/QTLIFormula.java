@@ -122,8 +122,7 @@ public abstract class QTLIFormula extends Formula implements SupplingCountingClo
 
 
 
-	@Override
-	public String countingClocksConstraints(CLTLTranslator t) {
+	private String countingClocksConstraints(CLTLTranslator t) {
 
 		// when no counting clocks are needed then simply return empty string
 		if (nCountingClocks == 0)

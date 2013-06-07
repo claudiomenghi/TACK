@@ -22,6 +22,8 @@ public class QTLICount extends QTLIFormula implements Temporized{
 		subformula.maxIntComparedto(b);
 		maxIntComparedto(b);
 		
+		
+		setCountingClocks(nClocks);
 		subformula.setCountingClocks(nClocks);
 	}
 	
@@ -37,13 +39,18 @@ public class QTLICount extends QTLIFormula implements Temporized{
 		int n = nClocks-1;
 		
 		
+		String f0 = t.implies(point(t), t.and(interval(t), t.or( t.Y(interval(t)), orig) ) );
+		
 		String[] f1a = new String[nClocks];
 		for (int i = 0; i < nClocks; i++)
 			f1a[i] = t.and(
 							t.neg(point(t)),
 							t.rel("=", z(i,t), "0"),
 							t.or(
-									up(n,n,i,"=",b, subf.singU(t),t),
+									t.and(
+											up(n,n,i,"=",b, subf.singU(t),t),
+											t.neg(subformula.singU(t))
+									),
 									_f1a(i,t)
 							)
 					 );
@@ -86,7 +93,7 @@ public class QTLICount extends QTLIFormula implements Temporized{
 									)
 							),
 							t.and(
-									t.neg(orig),
+								t.neg(orig),
 									_f1a
 							)
 					)
@@ -98,6 +105,11 @@ public class QTLICount extends QTLIFormula implements Temporized{
 			__f2[i] = pastup(i,i+1,"=",b, subf.high(t),t);
 		String _f2 = t.or(__f2);	
 		
+		String[] __f2b = new String[n+1];
+		for (int i = 0; i<=n; i++) 
+			__f2b[i] = t.rel("=", z(i,t), String.valueOf(b));
+		String _f2b = t.or(__f2b);	
+		
 		
 		String f2;
 		f2 = t.implies(	
@@ -105,19 +117,19 @@ public class QTLICount extends QTLIFormula implements Temporized{
 						pastup(n-1,n,"=",b, subf.singU(t),t),
 						_f2						
 				), 
-				t.or(t.rel("=", z0(t), String.valueOf(b)), t.rel("=", z1(t), String.valueOf(b)))
+				_f2b
 		);
 		
 
 
 		
 		String[] _f3a = new String[nClocks];
-		for (int i = 0; i < nClocks; i++)
+		for (int i = 0; i <= n-1; i++)
 			_f3a[i] = t.implies(t.rel("=", subf.z(i,t), "0"), _f3a(i,t));
 		String f3a = t.and(_f3a);
 		
 		String[] _f3b = new String[nClocks];
-		for (int i = 0; i < nClocks; i++)
+		for (int i = 0; i <= n; i++)
 			_f3b[i] = t.implies(t.rel("=", subf.z(i,t), "0"), upSub(n-1,i,"<",b,"",t));
 		String f3b = t.and(_f3b);
 		
@@ -146,7 +158,7 @@ public class QTLICount extends QTLIFormula implements Temporized{
 			);
 		
 		
-		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2,f3,f4)));
+		return t.and(super.clocksEventsConstraints(t), f0, t.G(t.and(f1,f2,f3)));
 	}
 	
 
@@ -179,10 +191,10 @@ public class QTLICount extends QTLIFormula implements Temporized{
 		
 		String orig = t.atom("O");
 		
-		if (n == 0)
-			return new String("");
+		if (n == 1)
+			return t.Y(t.S(t.neg(subformula.nowOnD(t)), t.and(t.or(subformula.singU(t), t.and(orig, subformula.high(t))))));
 		else
-			return t.and(t.neg(orig), t.Y(t.S(t.neg(subformula.nowOnD(t)), t.and(subformula.singU(t), pastnspikes(n-1,t)))));
+			return t.and(t.Y(t.S(t.neg(subformula.nowOnD(t)), t.and(subformula.singU(t), pastnspikes(n-1,t)))));
 	}
 
 
@@ -200,9 +212,9 @@ public class QTLICount extends QTLIFormula implements Temporized{
 	private String up(int n, int p, int j, String o, int d, String e, CLTLTranslator t) {
 		
 		if (n == 1)
-			return t.U(zetagamma(j,">",t), t.and(e, t.rel("=", z(j,t), String.valueOf(d)), zetahatp(o,d,p,t)));
+			return t.X(t.U(zetagamma(j,">",t), t.and(e, t.rel("=", z(j,t), String.valueOf(d)), zetahatp(o,d,p,t))));
 		else
-			return t.U(zetagamma(j,">",t), t.and(subformula.singU(t), t.rel("<", "0", z(j,t)), t.rel("<", z(j,t), String.valueOf(d)), up(n-1,p,j,o,d,e,t)));
+			return t.X(t.U(zetagamma(j,">",t), t.and(subformula.singU(t), t.rel("<", "0", z(j,t)), t.rel("<", z(j,t), String.valueOf(d)), up(n-1,p,j,o,d,e,t))));
 	}
 
 
@@ -223,8 +235,8 @@ public class QTLICount extends QTLIFormula implements Temporized{
 	private String zetahatp(String o, int d, int p, CLTLTranslator t) {
 		
 		
-		String[] s = new String[nClocks];
-		for (int i = 0; i<nClocks; i++)
+		String[] s = new String[subformula.getCountingClocks()];
+		for (int i = 0; i<subformula.getCountingClocks(); i++)
 			s[i] = t.and(zetahatp1(true,i,o,p,d,t), zetahatp1(false,i,o,p,d,t));
 		
 		return t.or(s);
@@ -258,38 +270,37 @@ public class QTLICount extends QTLIFormula implements Temporized{
 
 	private String uporig(int n, String o, int d, String e, CLTLTranslator t) {
 		if (n == 1)
-			return t.U(zetagamma(0,">",t), t.and(e, t.rel(o, z(0,t), String.valueOf(d))));
+			return t.X(t.U(zetagamma(0,">",t), t.and(e, t.rel("<", "0", z(0,t)), t.rel(o, z(0,t), String.valueOf(d)))));
 		else
-			return t.U(zetagamma(0,">",t), t.and(subformula.singU(t), t.rel("<", "0", z(0,t)), t.rel("<", z(0,t), String.valueOf(d)), uporig(n-1,o,d,e,t)));	
+			return t.X(t.U(zetagamma(0,">",t), t.and(subformula.singU(t), t.rel("<", "0", z(0,t)), t.rel("<", z(0,t), String.valueOf(d)), uporig(n-1,o,d,e,t))));	
 	}
 
 	
 	private String upSub(int n, int j, String o, int d, String e, CLTLTranslator t){
 		if (o.compareTo("=") == 0){
 			if (n == 1){
-				return t.X(t.U(t.neg(befDnowU(t)), t.and(e, t.rel("=", String.valueOf(d), z(j,t)))));			
+				return t.X(t.U(t.neg(subformula.befDnowU(t)), t.and(e, t.rel("=", String.valueOf(d), subformula.z(j,t)))));			
 			}
 			else{
 				return t.X(
 							t.U(
-								t.neg(befDnowU(t)),
-								t.and(subformula.singU(t), t.rel("<", "0", z(j,t)), t.rel("<", z(j,t), String.valueOf(d)), upSub(n-1,j,o,d,e,t))
+								t.neg(subformula.befDnowU(t)),
+								t.and(subformula.singU(t), t.rel("<", "0", subformula.z(j,t)), t.rel("<", subformula.z(j,t), String.valueOf(d)), upSub(n-1,j,o,d,e,t))
 							)
 						);
 			}
 		}
 		else{
 			if (n == 0){
-				return t.neg(t.X(t.U(t.neg(befDnowU(t)), t.and(subformula.befDnowU(t), t.rel("<", "0", z(j,t)), t.rel("<=", z(j,t), String.valueOf(d))))));			
+				return t.neg(t.X(t.U(t.neg(subformula.befDnowU(t)), t.and(subformula.befDnowU(t), t.rel("<", "0", subformula.z(j,t)), t.rel("<=", subformula.z(j,t), String.valueOf(d))))));			
 			}
 			else{
-				String s=  t.X(
+				return t.X(
 							t.U(
-								t.neg(befDnowU(t)),
-								t.and(subformula.singU(t), t.rel("<", "0", z(j,t)), t.rel(o, z(j,t), String.valueOf(d)), upSub(n-1,j,o,d,e,t))
+								t.neg(subformula.befDnowU(t)),
+								t.and(subformula.singU(t), t.rel("<", "0", subformula.z(j,t)), t.rel(o, subformula.z(j,t), String.valueOf(d)), upSub(n-1,j,o,d,e,t))
 							)
-						);
-				return s;
+						);				
 			}
 		}
 			
