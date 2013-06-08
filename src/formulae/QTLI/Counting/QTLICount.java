@@ -134,9 +134,12 @@ public class QTLICount extends QTLIFormula implements Temporized{
 		String f3b = t.and(_f3b);
 		
 		String f3;
-		f3 = t.or(
-					t.and(subf.low(t), f3a),
-					t.and(subf.singU(t), f3b)
+		f3 = t.iff(
+					low(t),
+					t.or(
+							t.and(subf.low(t), f3a),
+							t.and(subf.singU(t), f3b)
+					)
 			);
 				
 		
@@ -152,13 +155,19 @@ public class QTLICount extends QTLIFormula implements Temporized{
 		String f4b = t.and(_f4b);
 		
 		String f4;
-		f4 = t.or(
-					t.and(subf.low(t), f4a),
-					t.and(subf.singU(t), f4b)
+		f4 = t.iff(
+				singD(t),
+				t.and(
+						t.neg(orig),
+						t.or(
+								t.and(subf.low(t), f4a),
+								t.and(subf.singU(t), f4b)
+						)
+				)
 			);
 		
 		
-		return t.and(super.clocksEventsConstraints(t), f0, t.G(t.and(f1,f2,f3)));
+		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f0,f1,f2,f3,f4)));
 	}
 	
 
@@ -173,8 +182,8 @@ public class QTLICount extends QTLIFormula implements Temporized{
 	
 	private String _f4a(int i, CLTLTranslator t) {
 		String[] s = new String[nClocks - 1];
-		for (int k = 0; k < nClocks-2 ; k++)
-			s[k] = upSub(k+1,i,"=",b,subformula.high(t),t);
+		for (int k = 1; k < nClocks-1 ; k++)
+			s[k-1] = upSub(k,i,"=",b,subformula.high(t),t);
 		return t.or(s);
 	}
 
