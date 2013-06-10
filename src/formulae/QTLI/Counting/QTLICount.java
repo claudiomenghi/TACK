@@ -128,8 +128,8 @@ public class QTLICount extends QTLIFormula implements Temporized{
 			_f3a[i] = t.implies(t.rel("=", subf.z(i,t), "0"), _f3a(i,t));
 		String f3a = t.and(_f3a);
 		
-		String[] _f3b = new String[nClocks];
-		for (int i = 0; i <= n; i++)
+		String[] _f3b = new String[subformula.getCountingClocks()];
+		for (int i = 0; i < subformula.getCountingClocks(); i++)
 			_f3b[i] = t.implies(t.rel("=", subf.z(i,t), "0"), upSub(n-1,i,"<",b,"",t));
 		String f3b = t.and(_f3b);
 		
@@ -149,8 +149,8 @@ public class QTLICount extends QTLIFormula implements Temporized{
 			_f4a[i] = t.implies(t.rel("=", subf.z(i,t), "0"), t.or(upSub(n,i,"=",b,subf.befDnowU(t),t), _f4a(i,t)));
 		String f4a = t.and(_f4a);
 		
-		String[] _f4b = new String[nClocks];
-		for (int i = 0; i <= n; i++)
+		String[] _f4b = new String[subformula.getCountingClocks()];
+		for (int i = 0; i < subformula.getCountingClocks(); i++)
 			_f4b[i] = t.implies(t.rel("=", subf.z(i,t), "0"), upSub(n,i,"=",b,subf.befDnowU(t),t));
 		String f4b = t.and(_f4b);
 		
@@ -166,7 +166,7 @@ public class QTLICount extends QTLIFormula implements Temporized{
 			);
 		
 		
-		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f0,f1,f2,f4)));
+		return t.and(super.clocksEventsConstraints(t), t.G(t.and(f0,f1,f2,f3,f4)));
 	}
 	
 
