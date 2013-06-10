@@ -111,7 +111,8 @@ public abstract class QTLIFormula extends Formula implements SupplingCountingClo
 
 	@Override
 	public void setCountingClocks(int nCountingClocks) {
-		this.nCountingClocks = nCountingClocks;
+		if (this.nCountingClocks < nCountingClocks)
+			this.nCountingClocks = nCountingClocks;
 	}
 
 
