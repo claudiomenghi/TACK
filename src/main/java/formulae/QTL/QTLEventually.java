@@ -193,11 +193,12 @@ public class QTLEventually extends QTLFormula implements Temporized{
 		return r;
 	}
 	
-	
+	@Override
 	public int upperbound(){
 		return b; 
 	}
 	
+	@Override
 	public int lowerbound(){
 		return 0; 
 	}

@@ -64,16 +64,15 @@ public class ae2zotTranslator implements CLTLTranslator {
 		return "(trigger " + s1 + " " + s2 + ")";
 	}
 
-	
+	@Override
 	public String implies(String s1, String s2) {
 		return "(-> " + s1 + " " + s2 + ")";
 	}
 
-
+	@Override
 	public String iff(String s1, String s2) {
 		return "(<-> " + s1 + " " + s2 + ")";
 	}
-	
 	
 	@Override
 	public String rel(String r, String[] args) {
@@ -86,42 +85,29 @@ public class ae2zotTranslator implements CLTLTranslator {
 		return str;
 	}
 
-
-
+	@Override
 	public String rel(String r, String s1, String s2) {
-		// TODO Auto-generated method stub
 		return "([" + r + "] " + s1 + " " + s2 + ")";
 	}
 
-
-
-
 	@Override
 	public String X(String s1) {
-		// TODO Auto-generated method stub
 		return "(next " + s1 + ")";
 	}
 
-
 	@Override
 	public String Y(String s1) {
-		// TODO Auto-generated method stub
 		return "(yesterday " + s1 + ")";
 	}
 
 
 	@Override
 	public String G(String s1) {
-		// TODO Auto-generated method stub
 		return "(alwf " + s1 + ")";
 	}
 
-
 	@Override
 	public String F(String s1) {
-		// TODO Auto-generated method stub
 		return "(somf " + s1 + ")";
 	}
-	
-	
 }

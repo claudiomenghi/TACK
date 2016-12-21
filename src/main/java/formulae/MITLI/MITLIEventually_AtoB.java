@@ -27,7 +27,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements Temporized{
 
 	@Override
 	public List<Formula> subformulae() {
-		ArrayList<Formula> r = new ArrayList<Formula>();
+		ArrayList<Formula> r = new ArrayList<>();
 		
 		r.add(subformula);
 		

@@ -36,8 +36,8 @@ public abstract class TLParserHandler {
 	private PrintStream prn = null;
 	
 	TLParserHandler(){
-		formulae = new LinkedHashSet<Formula>();
-		formulaeOf = new ArrayList<Formula>();
+		formulae = new LinkedHashSet<>();
+		formulaeOf = new ArrayList<>();
 		dict = verbose = true;
 	}
 	
