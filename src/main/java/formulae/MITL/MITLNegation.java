@@ -1,63 +1,31 @@
-package formulae.MITL;
+package formulae.mitl;
 
-import java.util.ArrayList;
-import java.util.List;
+import formulae.UnaryFormula;
+import formulae.mitl.visitors.MITLVisitor;
 
-import delegateTranslator.CLTLTranslator;
-import formulae.Formula;
+public class MITLNegation extends MITLFormula implements UnaryFormula<MITLFormula> {
 
-public class MITLNegation extends MITLFormula {
+	// Formula f1 which is argument of the negation (\neg f1)
+	private MITLFormula child;
 
-	//Formula f1 which is argument of the negation (\neg f1) 
-	private MITLFormula subformula;
-	
-	public MITLNegation(MITLFormula subformula){
+	public MITLNegation(MITLFormula subformula) {
 		super(new String("(NEG " + subformula.strFormula()) + ")");
-		this.subformula = subformula;
+		this.child = subformula;
 	}
 
-
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String translate(CLTLTranslator t) {
-		
-		MITLFormula subf = subformula;
-		
-		String f1 = t.iff(high(t),subf.low(t));
-		String f2 = t.iff(low(t),subf.high(t));
-		
-		return  t.and(super.clocksEventsConstraints(t), t.G(t.and(f1,f2)));
+	public MITLFormula getChild() {
+		return this.child;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public List<Formula> subformulae() {
-		ArrayList<Formula> r = new ArrayList<Formula>();
-		
-		r.add(subformula);
-		
-		return r;
+	public <T> T accept(MITLVisitor<T> visitor) {
+		return visitor.visit(this);
 	}
-
-	@Override
-	public MITLFormula update(List<Formula> l) {
-		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-		if (l.get(0).equals(subformula)){
-			subformula = (MITLFormula)l.get(0);					
-			return this;
-		}
-		//else rise an error. TODO: implement WrongUpdateException
-		else
-			return null; //return new MITLNegation((MITLFormula)l.get(0));
-	}
-
-	@Override
-	public Formula simplify() {
-		if (subformula.getClass() == MITLNegation.class){
-			List<Formula> l = subformula.subformulae();
-			return l.get(0).simplify();
-		}
-		else return new MITLNegation((MITLFormula)subformula.simplify());
-	}
-	
-	
 }

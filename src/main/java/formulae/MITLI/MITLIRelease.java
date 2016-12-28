@@ -1,4 +1,4 @@
-package formulae.MITLI;
+package formulae.mitli;
 
 import java.util.ArrayList;
 import java.util.List;

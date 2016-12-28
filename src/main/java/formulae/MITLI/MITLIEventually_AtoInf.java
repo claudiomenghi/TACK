@@ -1,12 +1,13 @@
-package formulae.MITLI;
+package formulae.mitli;
 
 import java.util.ArrayList;
 import java.util.List;
 import delegateTranslator.CLTLTranslator;
 import formulae.Formula;
-import formulae.Temporized;
+import formulae.TemporizedFormula;
+import formulae.mitli.visitors.MITLIVisitor;
 
-public class MITLIEventually_AtoInf extends MITLIFormula implements Temporized{
+public class MITLIEventually_AtoInf extends MITLIFormula implements TemporizedFormula{
 
 
 	private MITLIFormula subformula;
@@ -138,6 +139,14 @@ public class MITLIEventually_AtoInf extends MITLIFormula implements Temporized{
 	@Override
 	public int lowerbound() {
 		return a;
+	}
+
+
+
+	@Override
+	public <T> T accept(MITLIVisitor<T> visitor) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

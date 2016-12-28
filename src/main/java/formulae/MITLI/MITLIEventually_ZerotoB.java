@@ -1,4 +1,4 @@
-package formulae.MITLI;
+package formulae.mitli;
 
 import java.util.List;
 import delegateTranslator.CLTLTranslator;

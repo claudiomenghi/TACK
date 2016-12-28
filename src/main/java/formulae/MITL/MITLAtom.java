@@ -1,35 +1,18 @@
-package formulae.MITL;
+package formulae.mitl;
 
-import java.util.List;
-
-import delegateTranslator.CLTLTranslator;
-import formulae.Formula;
+import formulae.mitl.visitors.MITLVisitor;
 
 public class MITLAtom extends MITLFormula {
 
-		
-	public MITLAtom(String atom){
+	public MITLAtom(String atom) {
 		super(atom);
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String translate(CLTLTranslator t) {
-		return super.clocksEventsConstraints(t);
+	public <T> T accept(MITLVisitor<T> visitor) {
+		return visitor.visit(this);
 	}
-
-	@Override
-	public List<Formula> subformulae() {
-		return null;
-	}
-
-	@Override
-	public MITLFormula update(List<Formula> l) {
-		return this;
-	}
-
-	@Override
-	public Formula simplify() {
-		return this;
-	}
-
 }

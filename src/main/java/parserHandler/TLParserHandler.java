@@ -11,9 +11,9 @@ import java.util.Set;
 
 import delegateTranslator.CLTLTranslator;
 import delegateTranslator.CLTLTranslatorEnum;
-import delegateTranslator.ae2zotTranslator;
+import delegateTranslator.Ae2zotTranslator;
 import formulae.Formula;
-import formulae.Temporized;
+import formulae.TemporizedFormula;
 
 
 public abstract class TLParserHandler {
@@ -44,9 +44,9 @@ public abstract class TLParserHandler {
 	
 	public void setCLTLTranslator(CLTLTranslatorEnum e_transl){
 		switch(e_transl){
-			case AE2ZOT : this.translator = new ae2zotTranslator();
+			case AE2ZOT : this.translator = new Ae2zotTranslator();
 			case NUZOT: ;
-			default: this.translator = new ae2zotTranslator();
+			default: this.translator = new Ae2zotTranslator();
 		}
 	}
 	
@@ -214,8 +214,8 @@ public abstract class TLParserHandler {
 			}
 			
 			
-			if (f instanceof Temporized){
-				Temporized f1 = ((Temporized)f);
+			if (f instanceof TemporizedFormula){
+				TemporizedFormula f1 = ((TemporizedFormula)f);
 				
 				if (f1.upperbound() > Formula.maxbound) 
 					Formula.maxbound = f1.upperbound();

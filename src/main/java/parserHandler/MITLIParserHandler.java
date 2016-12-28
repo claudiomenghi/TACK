@@ -4,13 +4,13 @@ import java.util.Iterator;
 
 import delegateTranslator.CLTLTranslatorEnum;
 import formulae.Formula;
-import formulae.MITLI.MITLIEventually_AtoB;
-import formulae.MITLI.MITLIEventually_AtoInf;
-import formulae.MITLI.MITLIEventually_ZerotoB;
-import formulae.MITLI.MITLIFormula;
-import formulae.MITLI.MITLIGlobally_AtoB;
-import formulae.MITLI.MITLIGlobally_AtoInf;
-import formulae.MITLI.MITLIGlobally_ZerotoB;
+import formulae.mitli.MITLIEventually_AtoB;
+import formulae.mitli.MITLIEventually_AtoInf;
+import formulae.mitli.MITLIEventually_ZerotoB;
+import formulae.mitli.MITLIFormula;
+import formulae.mitli.MITLIGlobally_AtoB;
+import formulae.mitli.MITLIGlobally_AtoInf;
+import formulae.mitli.MITLIGlobally_ZerotoB;
 
 public class MITLIParserHandler extends TLParserHandler {
 

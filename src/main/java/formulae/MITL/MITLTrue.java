@@ -1,38 +1,18 @@
-package formulae.MITL;
+package formulae.mitl;
 
-import java.util.List;
-
-import delegateTranslator.CLTLTranslator;
-import formulae.Formula;
+import formulae.mitl.visitors.MITLVisitor;
 
 public class MITLTrue extends MITLFormula {
-	
-	
+
 	public MITLTrue() {
 		super(new String("TRUE"));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String translate(CLTLTranslator t) {
-		
-		return t.and(super.clocksEventsConstraints(t) + t.and(
-															high(t), 
-															t.neg(t.F(low(t)))));
-	}
-
-	@Override
-	public List<Formula> subformulae() {
-		return null;
-	}
-
-
-	@Override
-	public MITLFormula update(List<Formula> l) {
-		return this;
-	}
-
-	@Override
-	public Formula simplify() {
-		return this;
+	public <T> T accept(MITLVisitor<T> visitor) {
+		return visitor.visit(this);
 	}
 }

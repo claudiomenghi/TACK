@@ -1,47 +1,23 @@
-package formulae.MITLI;
+package formulae.mitli;
 
-import java.util.ArrayList;
-import java.util.List;
-import formulae.Formula;
-import formulae.Temporized;
+import formulae.TemporizedFormula;
+import formulae.UnaryFormula;
 
-public abstract class MITLIEventually extends MITLIFormula implements Temporized{
+public abstract class MITLIEventually extends MITLIFormula implements TemporizedFormula, UnaryFormula<MITLIFormula> {
 
+	private final MITLIFormula subformula;
 
-	protected MITLIFormula subformula;
-	
-	
-	public MITLIEventually(String subformula) {
-		super(subformula);
+	public MITLIEventually(MITLIFormula subformula, String subformulaDescription) {
+		super(subformulaDescription);
+		this.subformula = subformula;
 	}
 
-
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public List<Formula> subformulae() {
-		ArrayList<Formula> r = new ArrayList<Formula>();
-		
-		r.add(subformula);
-		
-		return r;
-	}
-	
-	
-
-	@Override
-	public MITLIFormula update(List<Formula> l) {
-		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-		if (l.get(0).equals(subformula)){
-			subformula = (MITLIFormula)l.get(0);					
-			return this;
-		}
-		//else rise an error. TODO: implement WrongUpdateException
-		else
-			return null;
+	public MITLIFormula getChild() {
+		return this.subformula;
 	}
 
-
-
-	
 }
-

@@ -1,75 +1,40 @@
-package formulae.MITLI;
+package formulae.mitli;
 
-import java.util.ArrayList;
-import java.util.List;
+import formulae.BinaryFormula;
+import formulae.mitli.visitors.MITLIVisitor;
 
-import delegateTranslator.CLTLTranslator;
-import formulae.Formula;
+public class MITLISince extends MITLIFormula implements BinaryFormula<MITLIFormula> {
 
-public class MITLISince extends MITLIFormula {
+	private final MITLIFormula subformula1;
+	private final MITLIFormula subformula2;
 
-	
-	private MITLIFormula subformula1, subformula2;
-	
-	public MITLISince(MITLIFormula subformula1, MITLIFormula subformula2){
+	public MITLISince(MITLIFormula subformula1, MITLIFormula subformula2) {
 		super(new String("(S " + subformula1.strFormula() + " " + subformula2.strFormula() + ")"));
 		this.subformula1 = subformula1;
 		this.subformula2 = subformula2;
 	}
-	
-	
-	
-	@Override
-	public String translate(CLTLTranslator t) {
-		
-		// Some alias...
-		MITLIFormula subf1 = subformula1;
-		MITLIFormula subf2 = subformula2;	
 
-		
-		String f1 = t.iff(
-							interval(t),
-							t.and(subf1.interval(t), t.S(subf1.interval(t), subf2.interval(t)))
-					);
-		
-		String f2;
-		f2 = t.iff(
-				interval(t),
-				t.and(subf1.interval(t), subf2.interval(t))
-		);
-		
-		return t.and(super.clocksEventsConstraints(t), f2, t.G(f1));
-		
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public <T> T accept(MITLIVisitor<T> visitor) {
+		return visitor.visit(this);
 	}
 
-
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public List<Formula> subformulae() {
-		ArrayList<Formula> r = new ArrayList<Formula>();
-		
-		r.add(subformula1);
-		r.add(subformula2);
-		
-		return r;
-	}	
-
-	
-	@Override
-	public MITLIFormula update(List<Formula> l) {
-		// if the list of subformulae are logically equivalent to the subformulae then we can safely replace them
-	
-		subformula1 = (MITLIFormula)l.get(0);
-		subformula2 = (MITLIFormula)l.get(1);
-		return this;
+	public MITLIFormula getLeftChild() {
+		return subformula1;
 	}
 
-
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public Formula simplify() {
-		return new MITLISince((MITLIFormula)subformula1.simplify(),(MITLIFormula)subformula2.simplify());
+	public MITLIFormula getRightChild() {
+		return subformula2;
 	}
-
-	
 }

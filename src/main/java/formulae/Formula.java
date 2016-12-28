@@ -1,66 +1,55 @@
 package formulae;
 
+import com.google.common.base.Preconditions;
 
-import java.util.List;
-
-import delegateTranslator.*;
-
-
-public abstract class Formula implements Comparable<Formula>{
+public abstract class Formula implements Comparable<Formula> {
 	// progressive number assigned
 	private static int absoluteCounter = 0;
-	
+
 	// maximum of the constant that clocks are compared with
 	public static int maxbound = 0;
-	
+
 	public static int isTheFormula = 0;
-	
-	// a formula
-	private final String formula; 
-	
+
+	// the textual version of the formula
+	private final String formula;
+
 	private final int progNumber;
 
-	
 	protected static Formula True = null;
-	protected static Formula False = null;	
-	
-	
-	public Formula (String QTLformula){		
-		this.progNumber = absoluteCounter++;
-		this.formula = QTLformula;
-	}
-	
+	protected static Formula False = null;
 
-	public int idFormula(){
+	
+	/**
+	 * creates a formula specified by the given string
+	 * 
+	 * @param formula
+	 *            the string representation of the formula to be creates
+	 * @throws NullPointerException
+	 *             if the string representation of the formula to be created is
+	 *             null
+	 */
+	public Formula(String formula) {
+		Preconditions.checkNotNull(formula, "The string representation of the formula cannot be null");
+		this.progNumber = absoluteCounter++;
+		this.formula = formula;
+	}
+
+	public int idFormula() {
 		return progNumber;
 	}
-	
-	
-	public String strFormula(){
+
+	public String strFormula() {
 		return formula;
 	}
-	
-	
-	public static Formula True(){
+
+	public static Formula True() {
 		return True;
 	}
 
-	
-	public static Formula False(){
+	public static Formula False() {
 		return False;
-	}	
-	
-		
-	public abstract String translate(CLTLTranslator t);
-		
-	public abstract String clocksEventsConstraints(CLTLTranslator t);
-	
-	public abstract List<Formula> subformulae();
-
-	public abstract Formula update(List<Formula> l);
-	
-	public abstract Formula simplify(); 
-	
+	}
 
 	@Override
 	public int hashCode() {
@@ -69,6 +58,7 @@ public abstract class Formula implements Comparable<Formula>{
 		result = prime * result + ((formula == null) ? 0 : formula.hashCode());
 		return result;
 	}
+	
 
 
 	@Override
@@ -88,15 +78,15 @@ public abstract class Formula implements Comparable<Formula>{
 		return true;
 	}
 
-
 	@Override
 	public int compareTo(Formula f) {
 		if (this.equals(f))
 			return 0;
-		else{
+		else {
 			if (this.progNumber < f.progNumber)
 				return -1;
-			else return 1;
+			else
+				return 1;
 		}
-	}	
+	}
 }

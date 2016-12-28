@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import delegateTranslator.*;
 import formulae.*;
-import formulae.MITL.MITLEventually_AtoB;
-import formulae.MITL.MITLFormula;
+import formulae.mitl.MITLEventually_AtoB;
+import formulae.mitl.MITLFormula;
 
 public class MITLParserHandler extends TLParserHandler {
 
