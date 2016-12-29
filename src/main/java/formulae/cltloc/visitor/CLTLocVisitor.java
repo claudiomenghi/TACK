@@ -1,6 +1,6 @@
 package formulae.cltloc.visitor;
 
-import formulae.cltloc.atoms.CLTLVariable;
+import formulae.cltloc.atoms.CLTLClock;
 import formulae.cltloc.atoms.CLTLocAtom;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -57,7 +57,7 @@ public interface CLTLocVisitor<T> {
 	
 	public T visit(CLTLocDisjunction formula);
 	
-	public T visit(CLTLVariable formula);
+	public T visit(CLTLClock formula);
 	
 	
 	

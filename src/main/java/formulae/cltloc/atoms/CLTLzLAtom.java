@@ -1,6 +1,6 @@
 package formulae.cltloc.atoms;
 
-public class CLTLzLAtom extends CLTLVariable {
+public class CLTLzLAtom extends CLTLClock {
 
 	public CLTLzLAtom(String atom) {
 		super("zL_" + atom);

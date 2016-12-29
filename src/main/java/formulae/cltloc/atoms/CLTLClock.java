@@ -2,9 +2,9 @@ package formulae.cltloc.atoms;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLVariable extends CLTLocAtom {
+public class CLTLClock extends CLTLocAtom {
 
-	public CLTLVariable(String name) {
+	public CLTLClock(String name) {
 		super(name);
 	}
 

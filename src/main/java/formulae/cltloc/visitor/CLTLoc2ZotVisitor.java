@@ -1,6 +1,6 @@
 package formulae.cltloc.visitor;
 
-import formulae.cltloc.atoms.CLTLVariable;
+import formulae.cltloc.atoms.CLTLClock;
 import formulae.cltloc.atoms.CLTLocAtom;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -16,7 +16,7 @@ import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.relations.CLTLocRelation;
 
-public class CLTLocToStringVisitor implements CLTLocVisitor<String> {
+public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 
 	@Override
 	public String visit(CLTLocAtom atom) {
@@ -91,25 +91,7 @@ public class CLTLocToStringVisitor implements CLTLocVisitor<String> {
 	}
 
 	@Override
-	public String visit(CLTLVariable formula){
+	public String visit(CLTLClock formula){
 		return "(-V- "+formula.strFormula() + ")";
 	}
-
-	
-	
-	
-	/*
-	 * 
-	 * 
-	 * @Override public String T(String s1, String s2) { return "(trigger " + s1
-	 * + " " + s2 + ")"; }
-	 * 
-	 * @Override public String rel(String r, String[] args) { String rel = "[" +
-	 * r + "]"; String str = "(" + rel; for (String s : args) { str = str + s; }
-	 * str = str + ")"; return str; }
-	 * 
-	 * @Override public String rel(String r, String s1, String s2) {
-	 * 
-	 * }
-	 */
 }

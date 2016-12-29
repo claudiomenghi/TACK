@@ -101,13 +101,12 @@ public class qtlSolverParser extends Parser {
 	/** Map variable name to Integer object holding value */
 	HashMap<String, Formula> memory = new HashMap<String, Formula>();
 
-	TLParserHandler p;
 	String tlogic;
 
 	// $ANTLR start "tlparser"
 	// qtlSolver.g:34:1: tlparser : l= logic NEWLINE ':bound' INT NEWLINE (
 	// declaration )* ':formula' fmla NEWLINE ;
-	public final void tlparser() throws RecognitionException {
+	public final Formula tlparser() throws RecognitionException {
 		Token INT1 = null;
 		String l = null;
 		Formula fmla2 = null;
@@ -117,79 +116,58 @@ public class qtlSolverParser extends Parser {
 			// declaration )* ':formula' fmla NEWLINE )
 			// qtlSolver.g:34:11: l= logic NEWLINE ':bound' INT NEWLINE (
 			// declaration )* ':formula' fmla NEWLINE
-			{
-				pushFollow(FOLLOW_logic_in_tlparser35);
-				l = logic();
-				state._fsp--;
 
-				match(input, NEWLINE, FOLLOW_NEWLINE_in_tlparser37);
+			pushFollow(FOLLOW_logic_in_tlparser35);
+			l = logic();
+			state._fsp--;
 
-				tlogic = l;
-				if (tlogic.equals("mitl"))
-					p = new MITLParserHandler();
-				else if (tlogic.equals("mitl-i"))
-					p = new MITLIParserHandler();
+			match(input, NEWLINE, FOLLOW_NEWLINE_in_tlparser37);
 
-				match(input, 35, FOLLOW_35_in_tlparser48);
-				INT1 = (Token) match(input, INT, FOLLOW_INT_in_tlparser50);
-				match(input, NEWLINE, FOLLOW_NEWLINE_in_tlparser52);
+			tlogic = l;
+			
+			match(input, 35, FOLLOW_35_in_tlparser48);
+			INT1 = (Token) match(input, INT, FOLLOW_INT_in_tlparser50);
+			match(input, NEWLINE, FOLLOW_NEWLINE_in_tlparser52);
 
-				p.setHistoryLength(Integer.valueOf((INT1 != null ? INT1.getText() : null)));
-				System.out.println("Starting parsing formulae...");
+			System.out.println("Starting parsing formulae...");
 
-				// qtlSolver.g:51:4: ( declaration )*
-				loop1: while (true) {
-					int alt1 = 2;
-					int LA1_0 = input.LA(1);
-					if ((LA1_0 == NEWLINE || LA1_0 == 36)) {
-						alt1 = 1;
-					}
-
-					switch (alt1) {
-					case 1:
-					// qtlSolver.g:51:4: declaration
-					{
-						pushFollow(FOLLOW_declaration_in_tlparser62);
-						declaration();
-						state._fsp--;
-
-					}
-						break;
-
-					default:
-						break loop1;
-					}
+			// qtlSolver.g:51:4: ( declaration )*
+			loop1: while (true) {
+				int alt1 = 2;
+				int LA1_0 = input.LA(1);
+				if ((LA1_0 == NEWLINE || LA1_0 == 36)) {
+					alt1 = 1;
 				}
 
-				match(input, 37, FOLLOW_37_in_tlparser68);
-				pushFollow(FOLLOW_fmla_in_tlparser70);
-				fmla2 = fmla();
-				state._fsp--;
+				switch (alt1) {
+				case 1:
+				// qtlSolver.g:51:4: declaration
+				{
+					pushFollow(FOLLOW_declaration_in_tlparser62);
+					declaration();
+					state._fsp--;
 
-				p.setCLTLTranslator(CLTLTranslatorEnum.AE2ZOT);
-
-				FileOutputStream f0 = null;
-
-				try {
-					f0 = new FileOutputStream("output.cltl");
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
 				}
+					break;
 
-				if (f0 != null) {
-					PrintStream prn = new PrintStream(f0);
-					prn.println(p.translate(fmla2, CLTLTranslatorEnum.AE2ZOT));
-				} else
-					System.out.println("Opps...some errors occurred!");
-
-				match(input, NEWLINE, FOLLOW_NEWLINE_in_tlparser77);
+				default:
+					break loop1;
+				}
 			}
+
+			match(input, 37, FOLLOW_37_in_tlparser68);
+			pushFollow(FOLLOW_fmla_in_tlparser70);
+			fmla2 = fmla();
+			state._fsp--;
+
+			match(input, NEWLINE, FOLLOW_NEWLINE_in_tlparser77);
+			return fmla2;
 
 		} catch (RecognitionException re) {
 			reportError(re);
 			recover(input, re);
 		} finally {
-			// do for sure before leaving
+			return fmla2;
 		}
 	}
 	// $ANTLR end "tlparser"
@@ -447,7 +425,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = new MITLITrue();
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -462,7 +440,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = new MITLIFalse();
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -480,7 +458,7 @@ public class qtlSolverParser extends Parser {
 					else if (tlogic.equals("mitl-i"))
 						f = new MITLIAtom((ID5 != null ? ID5.getText() : null));
 
-					r = p.addFormula(f);
+					r = f;
 				}
 
 			}
@@ -502,7 +480,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = new MITLINegation((MITLIFormula) f1);
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -533,7 +511,7 @@ public class qtlSolverParser extends Parser {
 					f = MITLIFormula.and((MITLIFormula[]) arr);
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -564,7 +542,7 @@ public class qtlSolverParser extends Parser {
 					f = MITLIFormula.or((MITLIFormula[]) arr);
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -589,7 +567,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = MITLIFormula.implies((MITLIFormula) f1, (MITLIFormula) f2);
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -614,7 +592,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = MITLIFormula.iff((MITLIFormula) f1, (MITLIFormula) f2);
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -644,7 +622,7 @@ public class qtlSolverParser extends Parser {
 								Integer.valueOf((b != null ? b.getText() : null)));
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -671,7 +649,7 @@ public class qtlSolverParser extends Parser {
 						f = MITLIFormula.F_inf((MITLIFormula) f1, Integer.valueOf((a != null ? a.getText() : null)));
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -701,7 +679,7 @@ public class qtlSolverParser extends Parser {
 								Integer.valueOf((b != null ? b.getText() : null)));
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -727,7 +705,7 @@ public class qtlSolverParser extends Parser {
 						f = MITLIFormula.G_inf((MITLIFormula) f1, Integer.valueOf((a != null ? a.getText() : null)));
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -755,7 +733,7 @@ public class qtlSolverParser extends Parser {
 								Integer.valueOf((b != null ? b.getText() : null)));
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -783,7 +761,7 @@ public class qtlSolverParser extends Parser {
 								Integer.valueOf((b != null ? b.getText() : null)));
 				}
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -808,7 +786,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = MITLIFormula.U((MITLIFormula) f1, (MITLIFormula) f2);
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -833,7 +811,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = MITLIFormula.S((MITLIFormula) f1, (MITLIFormula) f2);
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -858,7 +836,7 @@ public class qtlSolverParser extends Parser {
 				else if (tlogic.equals("mitl-i"))
 					f = MITLIFormula.R((MITLIFormula) f1, (MITLIFormula) f2);
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -879,7 +857,7 @@ public class qtlSolverParser extends Parser {
 
 				Formula f = null;
 
-				r = p.addFormula(f);
+				r = f;
 
 			}
 				break;
@@ -896,8 +874,8 @@ public class qtlSolverParser extends Parser {
 
 				match(input, RPAR, FOLLOW_RPAR_in_fmla603);
 
-				Formula f=null;
-				r = p.addFormula(f);
+				Formula f = null;
+				r = f;
 
 			}
 				break;

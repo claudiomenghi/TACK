@@ -6,8 +6,8 @@ import formulae.Formula;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLHighAtom;
 import formulae.cltloc.atoms.CLTLLowAtom;
-import formulae.cltloc.atoms.CLTLValueAtom;
-import formulae.cltloc.atoms.CLTLVariable;
+import formulae.cltloc.atoms.CLTLConstantAtom;
+import formulae.cltloc.atoms.CLTLClock;
 import formulae.cltloc.atoms.CLTLocAtom;
 import formulae.cltloc.atoms.CLTLzHAtom;
 import formulae.cltloc.atoms.CLTLzLAtom;
@@ -42,11 +42,11 @@ import formulae.mitl.MITLUntil;
 public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 
 	public CLTLocFormula createXVariable(int i, int formulaId) {
-		return new CLTLVariable("x" + i + "_" + formulaId);
+		return new CLTLClock("x" + i + "_" + formulaId);
 	}
 
 	public CLTLocFormula createYVariable(int i, int formulaId) {
-		return new CLTLVariable("y" + i + "_" + formulaId);
+		return new CLTLClock("y" + i + "_" + formulaId);
 	}
 
 	public CLTLocFormula getDwBf(MITLFormula xi, MITLFormula upsilon) {
@@ -82,7 +82,7 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 			f1 = new CLTLocDisjunction(highAtom, lowAtom);
 		}
 
-		CLTLValueAtom zero = new CLTLValueAtom(0);
+		CLTLConstantAtom zero = new CLTLConstantAtom(0);
 		int formulaId = formula.idFormula();
 
 		CLTLocFormula and0 = new CLTLocNegation(
@@ -141,16 +141,16 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 		CLTLocFormula subflow = new CLTLLowAtom(subf.idFormula());
 		CLTLocFormula subfhigh = new CLTLHighAtom(subf.idFormula());
 
-		CLTLValueAtom c0 = new CLTLValueAtom(0);
+		CLTLConstantAtom c0 = new CLTLConstantAtom(0);
 
-		CLTLValueAtom aAtom = new CLTLValueAtom(a);
-		CLTLValueAtom bAtom = new CLTLValueAtom(b);
-		CLTLValueAtom lAtom = new CLTLValueAtom(l);
+		CLTLConstantAtom aAtom = new CLTLConstantAtom(a);
+		CLTLConstantAtom bAtom = new CLTLConstantAtom(b);
+		CLTLConstantAtom lAtom = new CLTLConstantAtom(l);
 		CLTLzLAtom zlT = new CLTLzLAtom(formula.idFormula());
 		CLTLzLAtom subfZl = new CLTLzLAtom(formula.getChild().idFormula());
 
-		CLTLVariable x0Fid = new CLTLVariable("x" + 0 + "_" + formula.idFormula());
-		CLTLVariable y0Fid = new CLTLVariable("y" + 0 + "_" + formula.idFormula());
+		CLTLClock x0Fid = new CLTLClock("x" + 0 + "_" + formula.idFormula());
+		CLTLClock y0Fid = new CLTLClock("y" + 0 + "_" + formula.idFormula());
 
 		CLTLocFormula f1;
 		f1 = new CLTLocIff(new CLTLocEQRelation(x0Fid, c0),
@@ -185,12 +185,12 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 		CLTLocFormula[] _f3 = new CLTLocFormula[d];
 
 		for (int i = 0; i < d; i++) {
-			_f3[i] = new CLTLocEQRelation(new CLTLVariable("x" + i + "_" + formula.idFormula()), new CLTLValueAtom(b));
+			_f3[i] = new CLTLocEQRelation(new CLTLClock("x" + i + "_" + formula.idFormula()), new CLTLConstantAtom(b));
 		}
 
 		CLTLocFormula f3 = new CLTLocImplies(
 				new CLTLocConjunction(new CLTLHighAtom(subf.idFormula()),
-						new CLTLocGERelation(new CLTLzLAtom(subf.idFormula()), new CLTLValueAtom(l))),
+						new CLTLocGERelation(new CLTLzLAtom(subf.idFormula()), new CLTLConstantAtom(l))),
 				_f3.length > 1 ? new CLTLocDisjunction(_f3[0], Arrays.copyOfRange(_f3, 1, _f3.length)) : _f3[0]);
 
 		CLTLocFormula[] _f4 = new CLTLocFormula[d];
@@ -211,7 +211,7 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 		CLTLocFormula[] _f5 = new CLTLocFormula[d];
 
 		for (int i = 0; i < d; i++) {
-			_f5[i] = new CLTLocEQRelation(new CLTLVariable("y" + i + "_" + formula.idFormula()), new CLTLValueAtom(a));
+			_f5[i] = new CLTLocEQRelation(new CLTLClock("y" + i + "_" + formula.idFormula()), new CLTLConstantAtom(a));
 		}
 
 		CLTLocFormula orF5 = _f5.length > 1 ? new CLTLocDisjunction(_f5[0], Arrays.copyOfRange(_f5, 1, _f5.length))
@@ -240,14 +240,14 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLEventually_AtoInf formula) {
-		CLTLValueAtom orig = new CLTLValueAtom(0);
+		CLTLConstantAtom orig = new CLTLConstantAtom(0);
 
-		CLTLValueAtom lowerBound = new CLTLValueAtom(formula.lowerbound());
+		CLTLConstantAtom lowerBound = new CLTLConstantAtom(formula.lowerbound());
 
 		MITLFormula subf = formula.getChild();
 
-		CLTLVariable zht = new CLTLzHAtom(formula.idFormula());
-		CLTLVariable zlt = new CLTLzLAtom(formula.idFormula());
+		CLTLClock zht = new CLTLzHAtom(formula.idFormula());
+		CLTLClock zlt = new CLTLzLAtom(formula.idFormula());
 
 		CLTLLowAtom subflow = new CLTLLowAtom(subf.idFormula());
 		CLTLHighAtom subfhigh = new CLTLHighAtom(subf.idFormula());
@@ -290,21 +290,21 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 
 	@Override
 	public CLTLocFormula visit(MITLEventually_ZerotoB formula) {
-		CLTLValueAtom orig = new CLTLValueAtom(0);
+		CLTLConstantAtom orig = new CLTLConstantAtom(0);
 
 		MITLFormula subf = formula.getChild();
 
 		CLTLLowAtom low = new CLTLLowAtom(formula.idFormula());
 		CLTLHighAtom high = new CLTLHighAtom(formula.idFormula());
 
-		CLTLValueAtom upperBound = new CLTLValueAtom(formula.upperbound());
+		CLTLConstantAtom upperBound = new CLTLConstantAtom(formula.upperbound());
 
-		CLTLVariable zht = new CLTLzHAtom(formula.idFormula());
+		CLTLClock zht = new CLTLzHAtom(formula.idFormula());
 
 		CLTLLowAtom subflow = new CLTLLowAtom(subf.idFormula());
 		CLTLHighAtom subfhigh = new CLTLHighAtom(subf.idFormula());
 
-		CLTLVariable subfzl = new CLTLzLAtom(formula.getChild().idFormula());
+		CLTLClock subfzl = new CLTLzLAtom(formula.getChild().idFormula());
 
 		CLTLocFormula f1;
 		f1 = new CLTLocIff(high, new CLTLocDisjunction(
@@ -367,7 +367,7 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 
 		int d = (int) Math.floor(b / (b - a) + 1) + 1;
 
-		CLTLValueAtom zeroValue = new CLTLValueAtom(0);
+		CLTLConstantAtom zeroValue = new CLTLConstantAtom(0);
 
 		CLTLocFormula fHighAtom = new CLTLHighAtom(formula.idFormula());
 
@@ -376,7 +376,7 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 		CLTLocFormula[] _f1 = new CLTLocFormula[d];
 
 		for (int i = 0; i < d; i++) {
-			_f1[i] = new CLTLocEQRelation(new CLTLVariable("x" + i + "_" + formula.idFormula()), zeroValue);
+			_f1[i] = new CLTLocEQRelation(new CLTLClock("x" + i + "_" + formula.idFormula()), zeroValue);
 		}
 
 		CLTLocFormula f1OR = _f1.length > 1 ? new CLTLocDisjunction(_f1[0], Arrays.copyOfRange(_f1, 1, _f1.length))
@@ -386,7 +386,7 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 
 		CLTLocFormula[] _f2 = new CLTLocFormula[d];
 		for (int i = 0; i < d; i++) {
-			_f2[i] = new CLTLocEQRelation(new CLTLVariable("y" + i + "_" + formula.idFormula()), zeroValue);
+			_f2[i] = new CLTLocEQRelation(new CLTLClock("y" + i + "_" + formula.idFormula()), zeroValue);
 		}
 
 		CLTLocFormula f2OR = _f2.length > 1 ? new CLTLocDisjunction(_f2[0], Arrays.copyOfRange(_f2, 1, _f2.length))
@@ -401,17 +401,17 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 					_f3[i * d + j] = new CLTLocConjunction(
 							new CLTLocNegation(
 									new CLTLocConjunction(
-											new CLTLocEQRelation(new CLTLVariable("x" + i + "_" + formula.idFormula()),
+											new CLTLocEQRelation(new CLTLClock("x" + i + "_" + formula.idFormula()),
 													zeroValue),
 											new CLTLocEQRelation(
-													new CLTLVariable("x" + j + "_"
+													new CLTLClock("x" + j + "_"
 															+ formula
 																	.idFormula()),
 													zeroValue))),
 							new CLTLocNegation(new CLTLocConjunction(
-									new CLTLocEQRelation(new CLTLVariable("y" + i + "_" + formula.idFormula()),
+									new CLTLocEQRelation(new CLTLClock("y" + i + "_" + formula.idFormula()),
 											zeroValue),
-									new CLTLocEQRelation(new CLTLVariable("y" + j + "_" + formula.idFormula()),
+									new CLTLocEQRelation(new CLTLClock("y" + j + "_" + formula.idFormula()),
 											zeroValue))));
 
 		CLTLocFormula f3 = _f2.length > 1 ? new CLTLocConjunction(_f3[0], Arrays.copyOfRange(_f3, 1, _f3.length))
@@ -425,14 +425,14 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 
 			for (int j = 0; j < d; j++) {
 				if (j != i)
-					_f4_x[j] = new CLTLocEQRelation(new CLTLVariable("y" + j + "_" + formula.idFormula()), zeroValue);
+					_f4_x[j] = new CLTLocEQRelation(new CLTLClock("y" + j + "_" + formula.idFormula()), zeroValue);
 			}
 			CLTLocFormula f4_x = _f4_x.length > 1
 					? new CLTLocConjunction(_f4_x[0], Arrays.copyOfRange(_f4_x, 1, _f4_x.length)) : _f4_x[0];
 
 			for (int j = 0; j < d; j++) {
 				if (j != (i + 1) % d)
-					_f4_y[j] = new CLTLocEQRelation(new CLTLVariable("x" + j + "_" + formula.idFormula()), zeroValue);
+					_f4_y[j] = new CLTLocEQRelation(new CLTLClock("x" + j + "_" + formula.idFormula()), zeroValue);
 
 			}
 			CLTLocFormula f4_y = _f4_y.length > 1
@@ -441,20 +441,20 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 			_f4[i] = new CLTLocConjunction(
 					new CLTLocImplies(
 							new CLTLocEQRelation(
-									new CLTLVariable("x" + i + "_"
+									new CLTLClock("x" + i + "_"
 											+ formula
 													.idFormula()),
 									zeroValue),
 							new CLTLocRelease(
 									new CLTLocEQRelation(
-											new CLTLVariable("y" + i + "_"
+											new CLTLClock("y" + i + "_"
 													+ formula.idFormula()),
 											zeroValue),
 									f4_x)),
 					new CLTLocImplies(
-							new CLTLocEQRelation(new CLTLVariable("y" + i + "_" + formula.idFormula()), zeroValue),
+							new CLTLocEQRelation(new CLTLClock("y" + i + "_" + formula.idFormula()), zeroValue),
 							new CLTLocRelease(new CLTLocEQRelation(
-									new CLTLVariable("x" + ((i + 1) % d) + "_" + formula.idFormula()), zeroValue),
+									new CLTLClock("x" + ((i + 1) % d) + "_" + formula.idFormula()), zeroValue),
 									f4_y)));
 
 		}
@@ -468,29 +468,29 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 			_f5[i] = new CLTLocConjunction(
 					new CLTLocImplies(
 							new CLTLocEQRelation(
-									new CLTLVariable("x" + i + "_"
+									new CLTLClock("x" + i + "_"
 											+ formula
 													.idFormula()),
 									zeroValue),
 							new CLTLocNext(
 									new CLTLocRelease(
 											new CLTLocEQRelation(
-													new CLTLVariable(
+													new CLTLClock(
 															"y" + ((i + d - 1) % d) + "_" + formula.idFormula()),
 													zeroValue),
-											new CLTLocGERelation(new CLTLVariable("x" + i + "_" + formula.idFormula()),
+											new CLTLocGERelation(new CLTLClock("x" + i + "_" + formula.idFormula()),
 													zeroValue)))),
 					new CLTLocImplies(
 							new CLTLocEQRelation(
-									new CLTLVariable(
+									new CLTLClock(
 											"y" + i + "_"
 													+ formula
 															.idFormula()),
 									zeroValue),
 							new CLTLocNext(new CLTLocRelease(
-									new CLTLocEQRelation(new CLTLVariable("x" + ((i) % d) + "_" + formula.idFormula()),
+									new CLTLocEQRelation(new CLTLClock("x" + ((i) % d) + "_" + formula.idFormula()),
 											zeroValue),
-									new CLTLocGERelation(new CLTLVariable("y" + i + "_" + formula.idFormula()),
+									new CLTLocGERelation(new CLTLClock("y" + i + "_" + formula.idFormula()),
 											zeroValue)))));
 
 		}
@@ -499,9 +499,9 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 				: _f5[0];
 
 		CLTLocFormula f6 = new CLTLocIff(
-				new CLTLocEQRelation(new CLTLVariable("y" + 0 + "_" + formula.idFormula()), zeroValue),
+				new CLTLocEQRelation(new CLTLClock("y" + 0 + "_" + formula.idFormula()), zeroValue),
 				new CLTLocNegation(
-						new CLTLocEQRelation(new CLTLVariable("x" + 0 + "_" + formula.idFormula()), zeroValue)));
+						new CLTLocEQRelation(new CLTLClock("x" + 0 + "_" + formula.idFormula()), zeroValue)));
 
 		CLTLocFormula f1f2f3f4f5 = new CLTLocConjunction(f1, f2, f3, f4, f5);
 		CLTLocFormula globallyf1f2f3f4f5 = new CLTLocGlobally(f1f2f3f4f5);
@@ -520,7 +520,7 @@ public class MITL2CLTLocVisitor implements MITLVisitor<CLTLocFormula> {
 		MITLFormula subf1 = formula.getLeftChild();
 		MITLFormula subf2 = formula.getRightChild();
 
-		CLTLValueAtom orig = new CLTLValueAtom(0);
+		CLTLConstantAtom orig = new CLTLConstantAtom(0);
 
 		CLTLocFormula lowAtom = new CLTLLowAtom(formula.idFormula());
 
