@@ -28,6 +28,8 @@ public class MITLIDisjunction extends MITLIFormula {
 		return new ArrayList<>(subformulae);
 	}
 
+	
+
 	@Override
 	public <T> T accept(MITLIVisitor<T> visitor) {
 		return visitor.visit(this);

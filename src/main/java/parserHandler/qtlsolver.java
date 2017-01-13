@@ -16,9 +16,9 @@ import formulae.cltloc.visitor.CLTLoc2ZotVisitor;
 import formulae.mitl.MITLFormula;
 import formulae.mitl.visitors.MITL2CLTLocVisitor;
 import formulae.mitl.visitors.MITL2ZotHeader;
-import formulae.mitli.MITLIFormula;
 import formulae.mitli.visitors.MITLI2CLTLocVisitor;
 import formulae.mitli.visitors.MITLI2ZotHeader;
+import formulae.mitli.MITLIFormula;
 
 public class qtlsolver {
 	public static void main(String[] args) throws Exception {

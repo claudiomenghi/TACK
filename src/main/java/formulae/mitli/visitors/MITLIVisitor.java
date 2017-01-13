@@ -1,6 +1,5 @@
 package formulae.mitli.visitors;
 
-import formulae.cltloc.CLTLocFormula;
 import formulae.mitli.MITLIAtom;
 import formulae.mitli.MITLIConjunction;
 import formulae.mitli.MITLIDisjunction;
