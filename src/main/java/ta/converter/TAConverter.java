@@ -68,9 +68,10 @@ public class TAConverter implements TAListener {
 	public final Set<State> states;
 	public final Set<AP> propositions;
 	public final Set<Transition> transitions;
+	public State initialState;
 
 	private State currentSource;
-	
+
 	public TAConverter() {
 		this.states = new HashSet<>();
 		this.propositions = new HashSet<>();
@@ -79,7 +80,7 @@ public class TAConverter implements TAListener {
 	}
 
 	public TA getTA() {
-		return new TA(propositions, states, transitions);
+		return new TA(propositions, states, transitions, initialState);
 	}
 
 	@Override
@@ -146,8 +147,8 @@ public class TAConverter implements TAListener {
 		// State(destination)));
 		if (ctx.ID() != null && !ctx.ID().equals("null")) {
 			String destination = ctx.ID().getText();
-			
-			//TODO
+
+			// TODO
 			transitions.add(new Transition(this.currentSource, new State(destination), null));
 		}
 
@@ -331,17 +332,7 @@ public class TAConverter implements TAListener {
 
 	}
 
-	@Override
-	public void enterInit(InitContext ctx) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void exitInit(InitContext ctx) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	public void enterFieldDecl(FieldDeclContext ctx) {
@@ -643,10 +634,6 @@ public class TAConverter implements TAListener {
 
 	}
 
-	
-
-	
-
 	@Override
 	public void enterTernaryexpression(TernaryexpressionContext ctx) {
 		// TODO Auto-generated method stub
@@ -707,20 +694,33 @@ public class TAConverter implements TAListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void enterTransition(TransitionContext ctx) {
 		// no actions are performed when a transition is entered
 	}
-	
+
 	@Override
 	public void exitTransition(TransitionContext ctx) {
 		String source = ctx.ID(0).getText();
-		this.currentSource=new State(source);
+		this.currentSource = new State(source);
 		String destination = ctx.ID(1).getText();
-		//TODO
-		transitions.add(new Transition(new State(source), new State(destination),null));
+		// TODO
+		transitions.add(new Transition(new State(source), new State(destination), null));
+
+	}
+	
+	@Override
+	public void enterInit(InitContext ctx) {
+		// no actions are performed when a transition is entered
+	}
+
+	@Override
+	public void exitInit(InitContext ctx) {
+		String initialStateString=ctx.ID().getText();
 		
+		this.initialState=new State(initialStateString);
+
 	}
 
 }

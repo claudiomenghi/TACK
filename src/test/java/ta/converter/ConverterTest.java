@@ -71,6 +71,22 @@ public class ConverterTest {
 	}
 	
 	@Test
+	public void testInitialState() throws IOException{
+		ANTLRInputStream input = new ANTLRFileStream(ClassLoader
+				.getSystemResource("ta/converter/WSAT_UPPAAL_MODEL.ta").getPath());
+	    TALexer lexer = new TALexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        TAParser parser = new TAParser(tokens);
+        parser.setBuildParseTree(true);
+        ParseTree tree = parser.ta();
+        TAConverter converter=new TAConverter();
+        ParseTreeWalker.DEFAULT.walk(converter, tree);  
+        
+        TA ta=converter.getTA();
+        assertEquals("The initial state is correct", new State("start"), ta.getInitialState());
+	}
+	
+	@Test
 	public void testObtainedTAContainsAllTheTransitions() throws IOException{
 		ANTLRInputStream input = new ANTLRFileStream(ClassLoader
 				.getSystemResource("ta/converter/WSAT_UPPAAL_MODEL.ta").getPath());

@@ -13,7 +13,6 @@ public class Transition {
 	public Transition(State source, State destination, Expression guard){
 		Preconditions.checkNotNull(source, "The source of the transition cannot be null");
 		Preconditions.checkNotNull(destination, "The destination of the transition cannot be null");
-		Preconditions.checkNotNull(guard, "The guard cannot be null");
 		
 		this.source=source;
 		this.destination=destination;
