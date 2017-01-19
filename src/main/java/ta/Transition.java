@@ -2,23 +2,29 @@ package ta;
 
 import com.google.common.base.Preconditions;
 
+import ta.expressions.Assignement;
 import ta.expressions.Expression;
+import ta.expressions.SyncExpression;
 
 public class Transition {
 
 	private final State source;
 	private final State destination;
 	private final Expression guard;
-	
-	public Transition(State source, State destination, Expression guard){
+	private final SyncExpression sync;
+	private final Assignement assignement;
+
+	public Transition(State source, State destination, Expression guard, SyncExpression sync, Assignement assignement) {
 		Preconditions.checkNotNull(source, "The source of the transition cannot be null");
 		Preconditions.checkNotNull(destination, "The destination of the transition cannot be null");
-		
-		this.source=source;
-		this.destination=destination;
-		this.guard=guard;
+
+		this.source = source;
+		this.destination = destination;
+		this.guard = guard;
+		this.sync = sync;
+		this.assignement = assignement;
 	}
-	
+
 	public State getSource() {
 		return source;
 	}
@@ -26,7 +32,7 @@ public class Transition {
 	public State getDestination() {
 		return destination;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -57,6 +63,7 @@ public class Transition {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Transition [source=" + source + ", destination=" + destination + "]";
@@ -64,6 +71,10 @@ public class Transition {
 
 	public Expression getGuard() {
 		return guard;
+	}
+
+	public SyncExpression getSync() {
+		return sync;
 	}
 
 }

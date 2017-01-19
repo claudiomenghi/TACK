@@ -2,7 +2,14 @@ package ta.expressions.unary;
 
 import ta.expressions.Expression;
 
-public interface UnaryExpression<T extends Expression> {
+public class UnaryExpression extends Expression {
 
-	public T getChild();
+	Expression e;
+	
+	public UnaryExpression(Expression e){
+		this.e=e;
+	}
+	public Expression getChild(){
+		return e;
+	}
 }

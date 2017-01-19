@@ -7,17 +7,24 @@ import com.google.common.base.Preconditions;
 
 public class TA {
 
+	private final String name;
 	private final State initialState;
 	private final Set<AP> atomicPropositions;
 	private final Set<State> states;
 
 	private final Set<Transition> transitions;
 
-	public TA(Set<AP> atomicPropositions, Set<State> states, Set<Transition> transitions, State initialState) {
-		Preconditions.checkNotNull(atomicPropositions, "The set of atomic propositions cannot be null");
+	public TA(String name, Set<AP> atomicPropositions, Set<State> states, Set<Transition> transitions,
+			State initialState) {
 		Preconditions.checkNotNull(states, "The set of the states cannot be null");
 
-		this.atomicPropositions = new HashSet<>(atomicPropositions);
+		this.name = name;
+		if (atomicPropositions != null) {
+			this.atomicPropositions = new HashSet<>(atomicPropositions);
+		}
+		else{
+			this.atomicPropositions = new HashSet<>();
+		}
 		this.states = new HashSet<>(states);
 		this.transitions = new HashSet<>(transitions);
 		this.initialState = initialState;
@@ -43,6 +50,10 @@ public class TA {
 
 	public State getInitialState() {
 		return initialState;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

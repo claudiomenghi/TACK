@@ -21,7 +21,7 @@ import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.SystemDecl;
 
-public class ConverterTest {
+public class Example1Test {
 
 	Set<State> states;
 	
@@ -74,21 +74,23 @@ public class ConverterTest {
 	@Test
 	public void testInitialState() throws IOException{
 		ANTLRInputStream input = new ANTLRFileStream(ClassLoader
-				.getSystemResource("ta/converter/WSAT_UPPAAL_MODEL.ta").getPath());
+				.getSystemResource("ta/converter/Example1.ta").getPath());
 	    TALexer lexer = new TALexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         TAParser parser = new TAParser(tokens);
         parser.setBuildParseTree(true);
         SystemDecl system= parser.ta().systemret;
         
+
         TA ta=system.getTimedAutomata().iterator().next();
+        assertNotNull("The timed automaton cannot be null ", ta);
         assertEquals("The initial state is correct", new State("start"), ta.getInitialState());
 	}
 	
 	@Test
 	public void testObtainedTAContainsAllTheTransitions() throws IOException{
 		ANTLRInputStream input = new ANTLRFileStream(ClassLoader
-				.getSystemResource("ta/converter/WSAT_UPPAAL_MODEL.ta").getPath());
+				.getSystemResource("ta/converter/Example1.ta").getPath());
 	    TALexer lexer = new TALexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
        
@@ -98,13 +100,14 @@ public class ConverterTest {
         
         TA ta=system.getTimedAutomata().iterator().next();
         
+        assertNotNull("The timed automaton cannot be null ", ta);
         assertEquals("The TA does not contains all the transitions of the automaton", transitions, ta.getTransitions());
 	}
 	@Test
 	public void testObtainedTAContainsAllTheStates() throws IOException {
 	
 		ANTLRInputStream input = new ANTLRFileStream(ClassLoader
-				.getSystemResource("ta/converter/WSAT_UPPAAL_MODEL.ta").getPath());
+				.getSystemResource("ta/converter/Example1.ta").getPath());
 	    TALexer lexer = new TALexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
       
@@ -114,6 +117,7 @@ public class ConverterTest {
         
         TA ta=system.getTimedAutomata().iterator().next();
       
+        assertNotNull("The timed automaton cannot be null ", ta);
         assertEquals("The TA does not contains all the states of the automaton", states, ta.getStates());
     }
 }

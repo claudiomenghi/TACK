@@ -2,18 +2,14 @@ package ta.expressions.binary;
 
 import ta.expressions.Expression;
 
-public class AssignementExpression extends BinaryOperator<Expression, Expression>{
+public class AssignementExpression extends BinaryExpression<Expression, Expression>{
 	
-	private final AssignementOperator operator;
 	
-	public AssignementExpression(AssignementOperator operator, Expression exp1,  Expression exp2){
-		super(exp1, exp2);
-		this.operator=operator;
+	public AssignementExpression(Expression exp1,  String operator, Expression exp2){
+		super(exp1, operator, exp2);
 	}
 	
-	public AssignementOperator getOperator() {
-		return operator;
-	}
+
 
 	//| '+=' | '-=' | '*=' | '/=' | '%=' | '|=' | '&=' | '^=' | '<<=' | '>>='
 	public enum AssignementOperator{
@@ -28,7 +24,8 @@ public class AssignementExpression extends BinaryOperator<Expression, Expression
 		APQEUAL("^="),
 		LLEQ("<<="),
 		GGEQ(">>="),
-		COMEQ(":=");
+		COMEQ(":="),
+		EQ("=");
 		
 		private final String stringRep;
 		
