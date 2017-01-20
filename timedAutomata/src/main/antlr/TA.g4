@@ -20,7 +20,9 @@ import ta.declarations.Variable;
 import ta.TA;
 }
 
-ta returns [SystemDecl systemret] @init{$systemret= new SystemDecl();}: 
+ta returns [SystemDecl systemret] @init{
+	$systemret= new SystemDecl();
+}: 
 		(dec=declaration{
 			if($declaration.timedAutomaton!=null){
 				$systemret.addTA($declaration.timedAutomaton);
@@ -164,9 +166,13 @@ states returns [Set<State> stateset] @init{
 	$stateset.add($s2.state);
 })* ';';
 
-stateDecl returns[State state] : ID  ('{' exp=expression '}')?{
-	$state=new State($ID.text, $exp.exp);
-};
+stateDecl returns[State state] : ID {
+		$state=new State($ID.text);
+	}
+	| ID  ('{' exp=expression '}'){
+		$state=new State($ID.text, $exp.exp);
+	}
+;
 
 init returns [State initstate]: 'init' ID  ';'{
 	$initstate=new State($ID.text);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ta.converter.Example1Test" tests="3" skipped="0" failures="0" errors="0" timestamp="2017-01-20T13:25:47" hostname="claudios-MacBook-Air.local" time="0.02">
+  <properties/>
+  <testcase name="testObtainedTAContainsAllTheStates" classname="ta.converter.Example1Test" time="0.008"/>
+  <testcase name="testObtainedTAContainsAllTheTransitions" classname="ta.converter.Example1Test" time="0.007"/>
+  <testcase name="testInitialState" classname="ta.converter.Example1Test" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

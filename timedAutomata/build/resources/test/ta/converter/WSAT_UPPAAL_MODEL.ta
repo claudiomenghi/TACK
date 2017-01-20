@@ -1,0 +1,111 @@
+process Sender_A {
+  state  call_check, call_observe, check_eof, end_jam, ex_jam {A_c <= 781 }, ex_silence1 {A_c <= 2343}, ex_silence2 {A_c <= 781}, ex_start, goto_idle, hold {A_c <= 28116}, idle {A_c <= 781}, jam {A_c <= 25000}, nPf, newPn {A_c <= 40}, other_started {A_c <= 3124}, sample {A_c <= 781}, start {A_c <= 0}, stop, transmit {A_c <= 781}, until_silence {A_c <= 781};
+  commit call_check,call_observe,check_eof,ex_start,goto_idle,nPf;
+  init   start;
+  trans  call_check -> ex_jam {
+           guard  A_stop  ==0;
+           sync   A_check!;
+           assign A_c = 0;
+         },
+         ex_start -> ex_silence1 {
+           guard  B_start  ==0;
+           assign A_c := 0;
+         },
+          -> other_started {
+           guard  B_start  ==1;
+           assign A_c := 0;
+         },
+         goto_idle -> idle {
+           assign A_c := 0;
+         },
+         hold -> end_jam {
+           guard  A_c  ==28116;
+           assign A_res := 0;
+         },
+         idle -> ex_start {
+           guard  A_c  ==781;
+         },
+         jam -> end_jam {
+           guard  A_c  ==25000;
+           assign A_Pn := 1,A_start := 0,A_res := 0,A_c := 0;
+         },
+         newPn -> sample {
+           guard  A_c  ==40;
+           assign A_Pn := 1;
+         },
+          -> sample {
+           guard  A_c  ==40;
+           sync   A_new_Pn!;
+         },
+          -> sample {
+           guard  A_err  ==0;
+           sync   A_new_Pn!;
+         },
+         other_started -> ex_silence1 {
+           guard  A_c  ==3124 && B_start  ==0;
+           assign A_c := 0;
+         },
+         sample -> call_observe {
+           guard  A_c  ==781;
+           sync   one?;
+           assign A_S2 := 1;
+         },
+         start -> idle {
+           guard  A_c  ==0;
+         },
+         transmit -> check_eof {
+           guard  A_c  ==781;
+           sync   A_frame!;
+           assign A_err := 0,A_diff := 0,A_Pf := 1;
+         },
+         until_silence -> hold {
+           guard  A_c  ==781;
+           sync   one?;
+           assign A_c := 0;
+         },
+          -> until_silence {
+           guard  A_c  ==781;
+           sync   zero?;
+           assign A_c := 0;
+         };
+}
+
+ 
+ 
+ clock c;
+ 
+clock A_c;
+int A_Pf, A_Pn, A_S1, A_S2,
+  A_start, A_stop;
+ 
+clock B_c;
+int B_Pf, B_Pn, B_S1, B_S2,
+  B_start, B_stop;
+ 
+chan A_frame, A_reset, A_new_Pn;
+int A_msg, A_no, A_eof, A_T4;
+ 
+chan B_frame, B_reset, B_new_Pn;
+int B_msg, B_no, B_eof, B_T4;
+ 
+chan A_check;
+int A_err, A_res;
+ 
+chan B_check;
+int B_err, B_res;
+ 
+chan A_observe;
+int A_diff;
+ 
+chan B_observe;
+int B_diff;
+ 
+chan one, zero;
+
+ 
+system Sender_A, Sender_B, 
+  Frame_Generator_A, Frame_Generator_B,
+  Detector_A, Detector_B,
+  Observer_A, Observer_B,
+  Bus;
+

@@ -1,4 +1,4 @@
-# A checker for Timed Automaton
+# A checker for Timed Automata
 
 
 ### Generating the parser 
