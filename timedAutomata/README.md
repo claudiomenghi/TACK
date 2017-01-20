@@ -1,7 +1,6 @@
+# A checker for Timed Automaton
 
 
-
-
-##### Generating the parser 
-run 'gradle generateGrammarSource'
-refresh your IDE	
+### Generating the parser 
+1. run 'gradle generateGrammarSource'
+2. refresh your IDE	
