@@ -10,6 +10,9 @@ import ta.expressions.ternary.*;
 import ta.*;
 import ta.Transition;
 import ta.SystemDecl;
+import ta.declarations.Initializer;
+import ta.declarations.Variable;
+import ta.declarations.Variable;
 import ta.TA;
 
 

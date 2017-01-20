@@ -14,6 +14,9 @@ import ta.expressions.ternary.*;
 import ta.*;
 import ta.Transition;
 import ta.SystemDecl;
+import ta.declarations.Initializer;
+import ta.declarations.Variable;
+import ta.declarations.Variable;
 import ta.TA;
 }
 
@@ -83,18 +86,18 @@ initialiser returns [Initializer initialiserret] : expression
 
 type returns [Class typeret] : 
 				//TODO
-				prefix ID ( range )?{ $typeret=
-				}
-                 |  prefix 'struct' '{' fieldDecl+ '}'{ $typeret=$fieldDecl.typeret
-                 }
+				prefix ID ( range )?
+				//TODO
+                 |  prefix 'struct' '{' fieldDecl+ '}'
+                 //TODO
                  | prefix (
-                 		'int'{ $typeret=Integer.getClass();
+                 		'int'{ $typeret=Integer.class;
                 		 } 
-                		 | 'clock' { $typeret=Clock.getClass();
+                		 | 'clock' { $typeret=Clock.class;
                 		 } 
-                		 | 'char' { $typeret=Character.getClass();
+                		 | 'char' { $typeret=Character.class;
                 		 }
-                		 | 'bool' { $typeret=Boolean.getClass();
+                		 | 'bool' { $typeret=Boolean.class;
                 		 });     
 
 
