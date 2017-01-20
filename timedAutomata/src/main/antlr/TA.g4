@@ -38,7 +38,7 @@ instantiation : ID assignment ID LPAR argList RPAR ';' ;
 system : 'system' ID (',' ID)* ';' ;  
 
  parameterList : (LPAR  parameter ( ',' parameter )*  RPAR)?;
- parameter : type  ('&')?  ID arrayDecl*;
+ parameter : type  (BITAND)?  ID arrayDecl*;
  
  
 procDecl returns [TA timedAutomaton]: 'process' ID parameterList '{' procBody '}' {
@@ -259,48 +259,48 @@ expression returns [Expression exp]:
 	| NAT{
 		$exp=new Value($NAT.text);
 	}
-     |  exp1=expression op=('++' | '--'){
+     |  exp1=expression op=(PLUSPLUS | MINUSMINUS){
       $exp=new RightUnaryOperator($exp1.exp, $op.text);
     }
-    |   op=('+'|'-'|'++'|'--') exp1=expression{
+    |   op=(PLUS | MINUS | PLUSPLUS | MINUSMINUS) exp1=expression{
     	$exp=new LeftUnaryOperator($op.text, $exp1.exp);
     }
     |   op=('~'|'!') exp1=expression{
     	$exp=new LeftUnaryOperator($op.text, $exp1.exp);
     }
-    |   exp1=expression op=('*'|'/'|'%') exp2=expression{
+    |   exp1=expression op=(MULT | FRACT | MOD) exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op=('+'|'-') exp2=expression{
+    |   exp1=expression op=(PLUS | MINUS) exp2=expression{
     		BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op=('<=' | '>=' | '>' | LE) exp2=expression{
+    |   exp1=expression op=(LEQ | GEQ | GE | LE) exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op=('==' | '!=') exp2=expression{
+    |   exp1=expression op=(EQCOMP | NEQ) exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op='&' exp2=expression{
+    |   exp1=expression op=BITAND exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op='^' exp2=expression{
+    |   exp1=expression op=POW exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op='|' exp2=expression{
+    |   exp1=expression op=BITOR exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op='&&' exp2=expression{
+    |   exp1=expression op=AND exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
-    |   exp1=expression op='||' exp2=expression{
+    |   exp1=expression op=OR exp2=expression{
     	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
@@ -308,18 +308,18 @@ expression returns [Expression exp]:
     	$exp=new TernaryExpression($exp1.exp, $exp2.exp, $exp3.exp);
     }
     |   exp1=expression
-        op=(  COLUMEQ |  EQ |   '+=' |   '-='   |   '*=' |   '/='  |   '&=' |   '|='  |   '^=' |   '>>='  |   '>>>='  |   '<<=' |   '%=' )
+        op=(  COLUMEQ |  EQ |   PLUSEQ |   MINUSEQ   |  MULTEQ |   FRACTEQ  |   BITANDEQ |   BITOREQ  |   POWEQ |   '>>='  |   '>>>='  |   '<<=' |   MODEQ)
         exp2=expression{
     	$exp=new BinaryExpression($exp1.exp, $op.text, $exp2.exp);
     } ;
 
- assignment returns [Expression exp]: (ID op='='  expr=expression) 
+ assignment returns [Expression exp]: (ID op= EQ  expr=expression) 
  					{$exp=new AssignementExpression(
  						new Identifier($ID.text),
  						$op.text, 
  						$expr.exp
  					);}
- 					 | (ID op=':=' expr=expression)
+ 					 | (ID op=COLUMEQ expr=expression)
  					 {$exp=new AssignementExpression(
  						 new Identifier($ID.text),
  						$op.text,
@@ -336,34 +336,53 @@ argList returns [List<Expression> args] @init {
 			|
 			 ;
 
- ASSIGNOP : ( '+=' | '-=' | '*=' | '/=' | '%=' 
-            | '|=' | '&=' | '^=' | '<<=' | '>>=' | ':=' );
 
-REL : ('<' | '<=' | '==' | '!=' | '>=' | '>') ;
 
+LE: '<';
+LEQ: '<=';
+GEQ: '>=';
+GE: '>';
+EQCOMP: '==';
+NEQ: '!=';
 EQ: '=';
-COLUMEQ: ':=';
+FRACTEQ: '/=';
 UNARYOP : ( '-' | '!') ;
-BININTOP : '+' | '-' | '*' | '/' | '%' | '&' | '|' | '^' | '<<' | '>>' ;
 
+// MATH OPERATORS
+MODEQ: '%=' ;
+PLUS: '+';
+PLUSPLUS: '++';
+MINUSMINUS: '--';
+MINUS: '-';
+MULT: '*';
+PLUSEQ: '+=';
+MINUSEQ: '-=';
+COLUMEQ: ':=';
+MULTEQ: '*=';
+POWEQ: '^=';
+FRACT: '/';
+MOD: '%';
+POW: '^';
 
-LE : '<';
+// LOGIC OPERATORS
+AND: '&&';
+OR: '||';
+BITAND: '&';
+BITANDEQ: '&=';
+BITOREQ: '|=';
+BITOR: '|';
 
-BINBOOLOP :  ('&&' | '||') ;
-WS: [ \n\t\r]+ -> skip;
-    
-ID : ('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
-NAT: ('0'..'9')('0'..'9')*;
-
-
-/* Parenthsis */
+/* PARENTHESIS */
 LPAR:   '(';
 RPAR:	')';
 LBRA:	'[';
 RBRA:	']';
 
+// IDENTIFIERS
+WS: [ \n\t\r]+ -> skip;
+    
+ID : ('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
+NAT: ('0'..'9')('0'..'9')*;
+
 TRUE: 'true';
 FALSE: 'false';
-
-
-
