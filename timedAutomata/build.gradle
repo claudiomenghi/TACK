@@ -1,0 +1,53 @@
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'antlr'
+
+
+
+
+generateGrammarSource << {
+    println "Copying generated grammar lexer/parser files to main directory."
+    copy {
+        from "${buildDir}/generated-src/antlr/main"
+        into "src/main/java/ta/parser"
+    }
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+	mavenCentral()    
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources' 
+        }
+    }
+
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+        resources {
+            srcDir 'src/test/resources' 
+        }
+    }
+}
+
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+ 	compile group: 'com.google.guava', name: 'guava', version: '15.0'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+	antlr "org.antlr:antlr4:4.5" 
+	
+    testCompile 'junit:junit:4.12'
+}
+
+
