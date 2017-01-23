@@ -1,7 +1,8 @@
 package formulae.cltloc.visitor;
 
 import formulae.cltloc.atoms.CLTLClock;
-import formulae.cltloc.atoms.CLTLocAtom;
+import formulae.cltloc.atoms.CLTLConstantAtom;
+import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
@@ -16,98 +17,94 @@ import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.relations.CLTLocRelation;
 
+
+/**
+ * This visitor explores a CLTLoc formula and creates the Header for the Zot solver
+ * 
+ * @author Claudio Menghi
+ *
+ */
 public class CLTL2ZotHeaderVisitor  implements CLTLocVisitor<String> {
 
-	
-	
 	@Override
-	public String visit(CLTLocAtom atom) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String visit(CLTLocConjunction atom) {
-		// TODO Auto-generated method stub
-		return null;
+	public String visit(CLTLocConjunction formula) {
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocNegation formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocUntil formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
+		
 	}
 
 	@Override
 	public String visit(CLTLocImplies formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocIff formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocNext formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocGlobally formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocEventually formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocSince formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocYesterday formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocRelease formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocRelation formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLocDisjunction formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return formula.getLeftChild().accept(this)+formula.getRightChild().accept(this);
 	}
 
 	@Override
 	public String visit(CLTLClock formula) {
-		// TODO Auto-generated method stub
-		return null;
+		return "(define-tvar " + formula.strFormula() + " *real*)\n";
+	}
+
+	@Override
+	public String visit(CLTLocAP cltLocAP) {
+		return "(define-tvar " + cltLocAP.strFormula() + " *real*)\n";
+	}
+
+	@Override
+	public String visit(CLTLConstantAtom cltlConstantAtom) {
+		return "";
 	}
 
 }

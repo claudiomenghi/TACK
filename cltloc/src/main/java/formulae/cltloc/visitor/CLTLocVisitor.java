@@ -1,6 +1,8 @@
 package formulae.cltloc.visitor;
 
 import formulae.cltloc.atoms.CLTLClock;
+import formulae.cltloc.atoms.CLTLConstantAtom;
+import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocAtom;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -18,17 +20,6 @@ import formulae.cltloc.relations.CLTLocRelation;
 
 public interface CLTLocVisitor<T> {
 
-	/**
-	 * visit a CLTLoc formula of type atoms and performs the operation specified
-	 * by the visitor
-	 * 
-	 * @param atom
-	 *            the atom to be visited
-	 * @return the result computed by the visitor
-	 * @throws NullPointerException
-	 *             if the atom is null
-	 */
-	public T visit(CLTLocAtom atom);
 	
 	
 	public T visit(CLTLocConjunction atom);
@@ -58,6 +49,10 @@ public interface CLTLocVisitor<T> {
 	public T visit(CLTLocDisjunction formula);
 	
 	public T visit(CLTLClock formula);
+
+	public T visit(CLTLocAP cltLocAP);
+
+	public T visit(CLTLConstantAtom cltlConstantAtom);
 	
 	
 	

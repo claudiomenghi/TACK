@@ -2,11 +2,12 @@ package formulae.cltloc.atoms;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLConstantAtom extends CLTLocAtom {
+public class CLTLocAP extends CLTLocAtom {
 
-	public CLTLConstantAtom(int value) {
-		super(Integer.toString(value));
+	public CLTLocAP(String atom) {
+		super(atom);
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
