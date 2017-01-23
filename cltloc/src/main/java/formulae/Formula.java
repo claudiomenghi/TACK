@@ -2,24 +2,18 @@ package formulae;
 
 import com.google.common.base.Preconditions;
 
-public abstract class Formula implements Comparable<Formula> {
-	// progressive number assigned
-	private static int absoluteCounter = 0;
+/**
+ * Contains a generic formula
+ * 
+ * @author Claudio Menghi
+ */
+public abstract class Formula {
 
-	// maximum of the constant that clocks are compared with
-	public static int maxbound = 0;
+	/**
+	 * the textual version of the formula
+	 */
+	private final String formulaText;
 
-	public static int isTheFormula = 0;
-
-	// the textual version of the formula
-	private final String formula;
-
-	private final int progNumber;
-
-	protected static Formula True = null;
-	protected static Formula False = null;
-
-	
 	/**
 	 * creates a formula specified by the given string
 	 * 
@@ -31,36 +25,32 @@ public abstract class Formula implements Comparable<Formula> {
 	 */
 	public Formula(String formula) {
 		Preconditions.checkNotNull(formula, "The string representation of the formula cannot be null");
-		this.progNumber = absoluteCounter++;
-		this.formula = formula;
+		this.formulaText = formula;
 	}
 
-	public int idFormula() {
-		return progNumber;
-	}
-
+	/**
+	 * returns the textual description of the formula
+	 * 
+	 * @return the textual description of the formula
+	 */
 	public String strFormula() {
-		return formula;
+		return formulaText;
 	}
 
-	public static Formula True() {
-		return True;
-	}
-
-	public static Formula False() {
-		return False;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((formula == null) ? 0 : formula.hashCode());
+		result = prime * result + ((formulaText == null) ? 0 : formulaText.hashCode());
 		return result;
 	}
-	
 
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -70,23 +60,11 @@ public abstract class Formula implements Comparable<Formula> {
 		if (getClass() != obj.getClass())
 			return false;
 		Formula other = (Formula) obj;
-		if (formula == null) {
-			if (other.formula != null)
+		if (formulaText == null) {
+			if (other.formulaText != null)
 				return false;
-		} else if (!formula.equals(other.formula))
+		} else if (!formulaText.equals(other.formulaText))
 			return false;
 		return true;
-	}
-
-	@Override
-	public int compareTo(Formula f) {
-		if (this.equals(f))
-			return 0;
-		else {
-			if (this.progNumber < f.progNumber)
-				return -1;
-			else
-				return 1;
-		}
 	}
 }

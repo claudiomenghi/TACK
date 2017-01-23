@@ -3,7 +3,6 @@ package formulae.cltloc.visitor;
 import formulae.cltloc.atoms.CLTLClock;
 import formulae.cltloc.atoms.CLTLConstantAtom;
 import formulae.cltloc.atoms.CLTLocAP;
-import formulae.cltloc.atoms.CLTLocAtom;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
@@ -18,44 +17,159 @@ import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.relations.CLTLocRelation;
 
+/**
+ * This visitor explores a CLTLoc formula. To implement a custom visitor
+ * implement the CLTLocVisitor interface. Change the generic type T to the
+ * desired return type.
+ * 
+ * @author Claudio Menghi
+ *
+ * @param <T>
+ */
 public interface CLTLocVisitor<T> {
 
-	
-	
-	public T visit(CLTLocConjunction atom);
-	
+	/**
+	 * Visits a CLTLoc conjunction formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
+	public T visit(CLTLocConjunction formula);
+
+	/**
+	 * Visits a CLTLoc negation formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocNegation formula);
-	
+
+	/**
+	 * Visits a CLTLoc until formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocUntil formula);
-	
+
+	/**
+	 * Visits a CLTLoc implication formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocImplies formula);
-	
+
+	/**
+	 * Visits a CLTLoc if and only if formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocIff formula);
-	
+
+	/**
+	 * Visits a CLTLoc next formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocNext formula);
-	
+
+	/**
+	 * Visits a CLTLoc globally formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocGlobally formula);
-	
+
+	/**
+	 * Visits a CLTLoc eventually formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocEventually formula);
-	
+
+	/**
+	 * Visits a CLTLoc since formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocSince formula);
-	
+
+	/**
+	 * Visits a CLTLoc yesterday formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocYesterday formula);
-	
+
+	/**
+	 * Visits a CLTLoc release formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocRelease formula);
-	
+
+	/**
+	 * Visits a CLTLoc relation formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocRelation formula);
-	
+
+	/**
+	 * Visits a CLTLoc disjunction formula
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLocDisjunction formula);
-	
+
+	/**
+	 * Visits a CLTLoc clock atom
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
 	public T visit(CLTLClock formula);
 
-	public T visit(CLTLocAP cltLocAP);
+	/**
+	 * Visits a CLTLoc atomic proposition atom
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
+	public T visit(CLTLocAP formula);
 
-	public T visit(CLTLConstantAtom cltlConstantAtom);
-	
-	
-	
-	
+	/**
+	 * Visits a CLTLoc constants atom
+	 * 
+	 * @param formula
+	 *            the formula to be visited
+	 * @return an object of type T
+	 */
+	public T visit(CLTLConstantAtom formula);
+
 }
-

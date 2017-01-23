@@ -10,5 +10,5 @@ public abstract class CLTLocFormula extends Formula {
 		
 	}
 	
-	abstract public <T> T accept(CLTLocVisitor<T> t);
+	 public abstract <T> T accept(CLTLocVisitor<T> t);
 }

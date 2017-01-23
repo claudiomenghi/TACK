@@ -18,9 +18,9 @@ import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.relations.CLTLocRelation;
 
 /**
- * Translates a CLTLoc formula into a Zot formula
+ * Translates a CLTLoc formula into a Zot formula. Each method specifies how a specific type of formula must be converted.
+ * 
  * @author Claudio Menghi
- *
  */
 public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 
