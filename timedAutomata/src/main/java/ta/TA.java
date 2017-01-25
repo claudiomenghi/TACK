@@ -5,6 +5,8 @@ import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
+import ta.visitors.TAVisitor;
+
 public class TA {
 
 	private final String name;
@@ -30,6 +32,10 @@ public class TA {
 		this.initialState = initialState;
 	}
 
+	
+	public <T> T accept(TAVisitor<T> visitor){
+		return visitor.visit(this);
+	}
 	public Set<AP> getAtomicPropositions() {
 		return atomicPropositions;
 	}

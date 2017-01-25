@@ -1,0 +1,15 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+subprojects {
+    apply plugin: 'java'
+ 
+  }
+repositories {
+        mavenCentral()
+} 
+
+
+
+
