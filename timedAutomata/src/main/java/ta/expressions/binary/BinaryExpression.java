@@ -1,6 +1,8 @@
 package ta.expressions.binary;
 
 import ta.expressions.Expression;
+import ta.visitors.ExpressionVisitor;
+import ta.visitors.TAVisitor;
 
 public class BinaryExpression<T extends Expression, S extends Expression> extends Expression {
 	
@@ -24,5 +26,17 @@ public class BinaryExpression<T extends Expression, S extends Expression> extend
 
 	public String getOperator() {
 		return operator;
+	}
+
+	@Override
+	public <T> T accept(TAVisitor<T> visitor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T accept(ExpressionVisitor<T> visitor) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

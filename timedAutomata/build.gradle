@@ -46,6 +46,7 @@ sourceSets {
 // In this section you declare the dependencies for your production and test code
 dependencies {
 	 compile project(':cltloc')
+	 compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
  	compile group: 'com.google.guava', name: 'guava', version: '15.0'
     compile 'org.slf4j:slf4j-api:1.7.21'
 	antlr "org.antlr:antlr4:4.5" 

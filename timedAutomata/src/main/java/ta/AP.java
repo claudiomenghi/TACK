@@ -2,7 +2,9 @@ package ta;
 
 import com.google.common.base.Preconditions;
 
-public class AP {
+import ta.visitors.TAVisitor;
+
+public class AP extends ModelElement{
 
 	private final String name;
 	
@@ -13,5 +15,10 @@ public class AP {
 	
 	public String getName(){
 		return name;
+	}
+
+	@Override
+	public <T> T accept(TAVisitor<T> t) {
+		return t.visit(this);
 	}
 }
