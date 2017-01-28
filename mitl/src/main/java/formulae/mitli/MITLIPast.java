@@ -1,7 +1,8 @@
 package formulae.mitli;
 
 import formulae.UnaryFormula;
-import formulae.mitl.TemporizedFormula;
+import formulae.mitli.TemporizedFormula;
+
 
 public abstract class MITLIPast extends MITLIFormula implements TemporizedFormula, UnaryFormula<MITLIFormula> {
 

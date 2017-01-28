@@ -2,9 +2,6 @@
 
 package parserHandler;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +14,6 @@ import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.TokenStream;
 
-import delegateTranslator.CLTLTranslatorEnum;
 import formulae.Formula;
 import formulae.mitl.MITLAtom;
 import formulae.mitl.MITLConjunction;

@@ -1,6 +1,6 @@
 package formulae.mitli;
 
-import formulae.mitl.TemporizedFormula;
+import formulae.mitli.TemporizedFormula;
 import formulae.mitli.visitors.MITLIVisitor;
 
 public class MITLIEventually_AtoB extends MITLIEventually implements TemporizedFormula {

@@ -9,7 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import delegateTranslator.CLTLTranslatorEnum;
 import formulae.Formula;
 import formulae.mitl.TemporizedFormula;
 
@@ -85,89 +84,12 @@ public abstract class TLParserHandler {
 		return f;
 	}
 
-	public String getCLTLformulaOf(CLTLTranslatorEnum e_transl) {
-		String result = new String();
-
-		for (Formula subf : formulaeOf) {
-			switch (e_transl) {
-			case AE2ZOT: {
-				// TODO fix this
-				// String s = subf.translate(translator);
-				String s = null;
-			}
-				;
-			case NUZOT:
-				;
-			}
-		}
-
-		return result;
-	}
-
-	public abstract String getHeader(CLTLTranslatorEnum e_transl);
-
-	public String getEpilogue(CLTLTranslatorEnum e_transl) {
-		String result = new String();
-
-		// TODO fix this
-		switch (e_transl) {
-		case AE2ZOT: {
-
-			/*
-			 * String[] axioms = new String[formulaeOf.size() + 1]; int i = 0;
-			 * for (Formula fmla : formulaeOf) { if
-			 * ((fmla.translate(translator)).length() > 0) axioms[i++] = "f" +
-			 * fmla.idFormula(); }
-			 * 
-			 * axioms[i] =
-			 * translator.and(translator.Y(translator.neg(translator.atom("O")))
-			 * , translator.atom("O"),
-			 * translator.X(translator.G(translator.neg(translator.atom("O")))))
-			 * ;
-			 * 
-			 * result = this.getCLTLformulaOf(e_transl) + "(ae2zot:zot " +
-			 * getHistoryLength() + " " + translator.and(axioms) +
-			 * ":logic :QF_UFLRA :gen-symbolic-val 't :over-clocks " +
-			 * Formula.maxbound + ")\n";
-			 */
-		}
-			;
-		case NUZOT:
-			;
-		}
-		return result;
-	}
-
 	public Iterator<Formula> iterator() {
 		return formulae.iterator();
 	}
 
 	public Iterator<Formula> iteratorOf() {
 		return formulaeOf.iterator();
-	}
-
-	public String translate(Formula f, CLTLTranslatorEnum e_transl) {
-
-		// set the main formula
-
-		if (dict) {
-			try {
-				f0 = new FileOutputStream("dict.txt");
-				prn = new PrintStream(f0);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-
-		visit(f);
-
-		System.out.println("\ndone!");
-
-		if (dict && f0 != null) {
-			System.out.println("Dictionary file written.");
-		}
-
-		return getHeader(e_transl) + getEpilogue(e_transl);
 	}
 
 	private void visit(Formula f) {

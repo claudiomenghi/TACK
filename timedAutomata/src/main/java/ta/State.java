@@ -7,30 +7,27 @@ import com.google.common.base.Preconditions;
 import ta.expressions.Expression;
 import ta.visitors.TAVisitor;
 
-public class State extends ModelElement{
+public class State extends ModelElement {
 
 	private final String stateId;
 	private final Expression invariant;
-	private final Set<AP> atomicPropositions;
 
-	public State(String stateId, Expression invariant, Set<AP> atomicPropositions) {
+	public State(String stateId, Expression invariant) {
 		Preconditions.checkNotNull(stateId, "The id of the state cannot be null");
 		this.stateId = stateId;
 		this.invariant = invariant;
-		this.atomicPropositions=atomicPropositions;
 	}
 
-	public State(String stateId, Set<AP> atomicPropositions) {
+	public State(String stateId) {
 		Preconditions.checkNotNull(stateId, "The id of the state cannot be null");
 		this.stateId = stateId;
 		this.invariant = null;
-		this.atomicPropositions=atomicPropositions;
 	}
 
-	public String getId(){
+	public String getId() {
 		return stateId;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "State [stateId=" + stateId + "]";
@@ -70,7 +67,15 @@ public class State extends ModelElement{
 		return visitor.visit(this);
 	}
 
-	public Set<AP> getAtomicPropositions() {
-		return atomicPropositions;
+	/**
+	 * given a set of atomic propositions returns the propositions that are true
+	 * in that state
+	 * 
+	 * @param ap
+	 *            the set of atomic propositions to be evaluated
+	 * @return the set of atomic propositions true in the state
+	 */
+	public Set<AP> getValid(Set<AP> ap) {
+		return ap;
 	}
 }

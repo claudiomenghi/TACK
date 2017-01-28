@@ -1,6 +1,7 @@
 package formulae.mitli;
 
-import formulae.mitl.TemporizedFormula;
+import formulae.mitli.TemporizedFormula;
+
 import formulae.mitli.visitors.MITLIVisitor;
 
 public class MITLIGlobally_AtoInf extends MITLIGlobally implements TemporizedFormula {

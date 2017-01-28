@@ -6,6 +6,9 @@ import formulae.mitli.visitors.MITLIVisitor;
 public abstract class MITLIFormula extends Formula {
 
 	private int maxIntComparedto = 0;
+	
+	public static final MITLIFormula TRUE=new MITLIAtom("True");
+	public static final MITLIFormula FALSE=new MITLIAtom("True");
 
 	public MITLIFormula(String formula) {
 		super(formula);
