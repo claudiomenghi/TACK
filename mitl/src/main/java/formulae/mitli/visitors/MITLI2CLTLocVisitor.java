@@ -63,6 +63,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	private static final BinaryOperator<CLTLocFormula> conjunctionOperator = CLTLocConjunction::new;
 	private static final BinaryOperator<CLTLocFormula> disjunctionOperator = CLTLocDisjunction::new;
 	private static final BinaryOperator<CLTLocFormula> implicationOperator = CLTLocImplies::new;
+	private static final BinaryOperator<CLTLocFormula> untilOperatior = CLTLocUntil::new;
 	private static final BinaryOperator<CLTLocFormula> iffOperator = CLTLocIff::new;
 	private static final BiFunction<CLTLClock, CLTLConstantAtom, CLTLocFormula> cltoEqOperator = CLTLocEQRelation::new;
 
@@ -71,9 +72,41 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	private static final UnaryOperator<CLTLocFormula> nextOperator = CLTLocNext::new;
 
 	private static final Function<Integer, CLTLocFormula> restHIGHAtom = (s) -> new CLTLocAP("H_" + s);
-	private static final Function<Integer, CLTLocFormula> restLOWAtom = (s) -> new CLTLocAP("L_" + s);
-	private static final Function<Integer, CLTLocFormula> firstHIGHAtom = (s) -> new CLTLocAP("zH_" + s);
-	private static final Function<Integer, CLTLocFormula> firstLOWAtom = (s) -> new CLTLocAP("zL_" + s);
+	
+	private static final Function<Integer, CLTLocFormula> firstHIGHAtom = (s) -> new CLTLocAP("z0_" + s);
+	private static final Function<Integer, CLTLocFormula> firstLOWAtom = (s) -> new CLTLocAP("z1_" + s);
+
+	/**
+	 * step up (fist shortcut in table 3)
+	 */
+	private static final Function<Integer, CLTLocFormula> stepUp = (s) -> new CLTLocConjunction(
+			new CLTLocNegation(new CLTLocYesterday(restHIGHAtom.apply(s))), restHIGHAtom.apply(s));
+
+	/**
+	 * step down (Third shortcut in table 3)
+	 */
+	private static final Function<Integer, CLTLocFormula> stepDown = (s) -> new CLTLocConjunction(
+			new CLTLocYesterday(restHIGHAtom.apply(s)), new CLTLocNegation(restHIGHAtom.apply(s)));
+
+	/**
+	 * step up (second shortcut in table 3)
+	 */
+	private static final Function<Integer, CLTLocFormula> upSingularity = (s) -> new CLTLocConjunction(
+			new CLTLocYesterday(new CLTLocNegation(restHIGHAtom.apply(s))),
+			new CLTLocConjunction(firstHIGHAtom.apply(s), new CLTLocNegation(restHIGHAtom.apply(s))));
+
+	/**
+	 * step down (fourth shortcut in table 3)
+	 */
+	private static final Function<Integer, CLTLocFormula> downSingularity = (s) -> new CLTLocConjunction(
+			new CLTLocYesterday(restHIGHAtom.apply(s)),
+			new CLTLocConjunction(new CLTLocNegation(firstHIGHAtom.apply(s)), restHIGHAtom.apply(s)));
+
+	/**
+	 * stays up
+	 */
+	private static final Function<Integer, CLTLocFormula> staysUp = (s) -> new CLTLocConjunction(restHIGHAtom.apply(s),
+			firstHIGHAtom.apply(s));
 
 	private static final CLTLConstantAtom zero = new CLTLConstantAtom(0);
 
@@ -145,89 +178,68 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public CLTLocFormula visit(MITLINegation formula) {
 		MITLIFormula subf = formula.getChild();
 
-		CLTLocFormula f1 = new CLTLocIff(firstHIGHAtom.apply(formulaIdMap.get(formula)),
+		CLTLocFormula f1 = iffOperator.apply(firstHIGHAtom.apply(formulaIdMap.get(formula)),
 				negationOperator.apply(firstHIGHAtom.apply(formulaIdMap.get(subf))));
 
-		CLTLocFormula f2 = new CLTLocIff(restHIGHAtom.apply(formulaIdMap.get(formula)),
+		CLTLocFormula f2 = iffOperator.apply(restHIGHAtom.apply(formulaIdMap.get(formula)),
 				negationOperator.apply(restHIGHAtom.apply(formulaIdMap.get(subf))));
 		return conjunctionOperator.apply(f1, f2);
-	}
-
-	public CLTLocFormula clocksEventsConstraints(MITLIFormula formula) {
-
-		CLTLocFormula result;
-
-		CLTLHighAtom high = restHighAtom.apply(formula.idFormula());
-		CLTLLowAtom low = new CLTLLowAtom(formula.idFormula());
-		CLTLClock z0 = newz0clock.apply(formula);
-		CLTLClock z1 = newz1clock.apply(formula);
-
-		CLTLocFormula f1 = cltoEqOperator.apply(z0, zero);
-
-		// Formula (2)
-		CLTLocFormula f2 = iffOperator.apply(disjunctionOperator.apply(high, low),
-				disjunctionOperator.apply(cltoEqOperator.apply(z0, zero), cltoEqOperator.apply(z1, zero)));
-
-		// formula (3)
-		CLTLocFormula f3a = new CLTLocImplies(new CLTLocEQRelation(z0, zero),
-				new CLTLocNext(new CLTLocRelease(new CLTLocEQRelation(z1, zero), new CLTLocGERelation(z0, zero))));
-
-		CLTLocFormula f3b = new CLTLocImplies(new CLTLocEQRelation(z1, zero),
-				new CLTLocNext(new CLTLocRelease(new CLTLocEQRelation(z0, zero), new CLTLocGERelation(z1, zero))));
-
-		// Clocks progression
-		CLTLocFormula f4a = conjunctionOperator.apply(
-				globallyOperator.apply(new CLTLocNext(
-						new CLTLocDisjunction(new CLTLocEQRelation(z0, zero), new CLTLocGERelation(z0, zero)))),
-				new CLTLocDisjunction(globallyOperator.apply(new CLTLocEventually(new CLTLocEQRelation(z0, zero))),
-						new CLTLocEventually(globallyOperator
-								.apply(new CLTLocGERelation(z0, new CLTLConstantAtom(formula.maxIntComparedto()))))));
-
-		CLTLocFormula f4b = conjunctionOperator.apply(
-				globallyOperator.apply(new CLTLocNext(
-						new CLTLocDisjunction(new CLTLocEQRelation(z1, zero), new CLTLocGERelation(z1, zero)))),
-				new CLTLocDisjunction(globallyOperator.apply(new CLTLocEventually(new CLTLocEQRelation(z1, zero))),
-						new CLTLocEventually(globallyOperator
-								.apply(new CLTLocGERelation(z1, new CLTLConstantAtom(formula.maxIntComparedto()))))));
-
-		// Clocks non negativeness in the origin
-		CLTLocFormula f5 = conjunctionOperator.apply(new CLTLocGERelation(z0, zero), new CLTLocGERelation(z1, zero));
-
-		result = conjunctionOperator.apply(f1, globallyOperator.apply(conjunctionOperator.apply(f2, f3a, f3b)), f4a,
-				f4b, f5);
-		return result;
-	}
-
-	@Override
-	public CLTLocFormula visit(MITLIFalse formula) {
-		CLTLLowAtom low = new CLTLLowAtom(formula.idFormula());
-		return conjunctionOperator.apply(this.clocksEventsConstraints(formula), low,
-				globallyOperator.apply(negationOperator.apply(restHighAtom.apply(formula.idFormula()))));
-	}
-
-	@Override
-	public CLTLocFormula visit(MITLITrue formula) {
-		return conjunctionOperator.apply(this.clocksEventsConstraints(formula),
-				globallyOperator.apply(restHighAtom.apply(formula.idFormula())));
-	}
-
-	@Override
-	public CLTLocFormula visit(MITLIAtom formula) {
-		return this.clocksEventsConstraints(formula);
 	}
 
 	@Override
 	public CLTLocFormula visit(MITLIUntil formula) {
 
-		// Some alias...
-		MITLIFormula subf1 = formula.getLeftChild();
-		MITLIFormula subf2 = formula.getRightChild();
+		int formulaId = formulaIdMap.get(formula);
+		int leftChildId = formulaIdMap.get(formula.getLeftChild());
+		int rightChildId = formulaIdMap.get(formula.getRightChild());
 
-		CLTLocFormula f1 = iffOperator.apply(restHighAtom.apply(formula.idFormula()),
-				conjunctionOperator.apply(restHighAtom.apply(subf1.idFormula()),
-						new CLTLocUntil(restHighAtom.apply(subf1.idFormula()), restHighAtom.apply(subf2.idFormula()))));
+		CLTLocFormula formulaRESTHIGH = restHIGHAtom.apply(formulaId);
+		CLTLocFormula leftRESTHIGH = restHIGHAtom.apply(leftChildId);
+		CLTLocFormula rightRESTHIGH = restHIGHAtom.apply(rightChildId);
 
-		return conjunctionOperator.apply(this.clocksEventsConstraints(formula), globallyOperator.apply(f1));
+		CLTLocFormula f1 = iffOperator.apply(firstHIGHAtom.apply(formulaId), formulaRESTHIGH);
+
+		CLTLocFormula f2 = conjunctionOperator
+				.apply(iffOperator.apply(formulaRESTHIGH, leftRESTHIGH),
+						disjunctionOperator
+								.apply(rightRESTHIGH,
+										nextOperator.apply(untilOperatior.apply(staysUp.apply(leftChildId),
+												disjunctionOperator.apply(conjunctionOperator
+														.apply(staysUp.apply(leftChildId), rightRESTHIGH),
+														firstHIGHAtom.apply(rightChildId))))
+
+						));
+
+		return conjunctionOperator.apply(f1, f2);
+	}
+
+	@Override
+	public CLTLocFormula visit(MITLIFalse formula) {
+		int formulaId = formulaIdMap.get(formula);
+		
+		CLTLocFormula restLow = restLOWAtom.apply(formulaId);
+		CLTLocFormula restHigh = restHIGHAtom.apply(formulaId);
+		
+		// TODO perche' il globally vale solo per il high e non per il low?
+		return conjunctionOperator.apply(restLow,
+				globallyOperator.apply(negationOperator.apply(restHigh)));
+	}
+
+	@Override
+	public CLTLocFormula visit(MITLITrue formula) {
+		int formulaId = formulaIdMap.get(formula);
+
+		CLTLocFormula restLow = restLOWAtom.apply(formulaId);
+		CLTLocFormula restHigh = restHIGHAtom.apply(formulaId);
+		
+		//TODO perche' non e' detto niente sul restLow
+		return 
+				globallyOperator.apply(restHigh);
+	}
+
+	@Override
+	public CLTLocFormula visit(MITLIAtom formula) {
+		return this.clocksEventsConstraints(formula);
 	}
 
 	@Override
