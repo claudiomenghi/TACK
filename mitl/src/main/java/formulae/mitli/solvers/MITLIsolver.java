@@ -1,20 +1,13 @@
 package formulae.mitli.solvers;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonTokenStream;
 
 import formulae.Formula;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.converters.MITLI2zot;
-import parserHandler.qtlSolverLexer;
-import parserHandler.qtlSolverParser;
 
 public class MITLIsolver {
 	public static void main(String[] args) throws Exception {
@@ -24,11 +17,12 @@ public class MITLIsolver {
 
 		if (args[0].matches("[a-zA-Z][a-zA-Z0-9-]+\\.tl")) {
 
-			ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(args[0]));
-			qtlSolverLexer lexer = new qtlSolverLexer(input);
-			CommonTokenStream tokens = new CommonTokenStream(lexer);
-			qtlSolverParser parser = new qtlSolverParser(tokens);
-			Formula formula = parser.tlparser();
+		//	ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(args[0]));
+		//	qtlSolverLexer lexer = new qtlSolverLexer(input);
+		//	CommonTokenStream tokens = new CommonTokenStream(lexer);
+		//	qtlSolverParser parser = new qtlSolverParser(tokens);
+			Formula formula = null;
+					//parser.tlparser();
 
 			FileOutputStream f0 = null;
 

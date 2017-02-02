@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ta.converter.ConverterTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2017-01-18T16:07:00" hostname="claudios-MacBook-Air.local" time="0.282">
+<testsuite name="ta.converter.ConverterTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2017-02-02T09:33:02" hostname="claudios-MacBook-Air.local" time="0.309">
   <properties/>
-  <testcase name="testObtainedTAContainsAllTheStates" classname="ta.converter.ConverterTest" time="0.225"/>
-  <testcase name="testObtainedTAContainsAllTheTransitions" classname="ta.converter.ConverterTest" time="0.028"/>
-  <testcase name="testInitialState" classname="ta.converter.ConverterTest" time="0.027"/>
+  <testcase name="testObtainedTAContainsAllTheStates" classname="ta.converter.ConverterTest" time="0.234"/>
+  <testcase name="testObtainedTAContainsAllTheTransitions" classname="ta.converter.ConverterTest" time="0.052"/>
+  <testcase name="testInitialState" classname="ta.converter.ConverterTest" time="0.022"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[ANTLR Tool version 4.4 used for code generation does not match the current runtime version 4.6ANTLR Tool version 4.4 used for code generation does not match the current runtime version 4.6]]></system-err>
 </testsuite>
