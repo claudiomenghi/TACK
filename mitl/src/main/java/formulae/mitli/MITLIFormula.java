@@ -6,9 +6,9 @@ import formulae.mitli.visitors.MITLIVisitor;
 public abstract class MITLIFormula extends Formula {
 
 	private int maxIntComparedto = 0;
-	
-	public static final MITLIFormula TRUE=new MITLIAtom("True");
-	public static final MITLIFormula FALSE=new MITLIAtom("True");
+
+	public static final MITLIFormula TRUE = new MITLIAtom("True");
+	public static final MITLIFormula FALSE = new MITLIAtom("True");
 
 	public MITLIFormula(String formula) {
 		super(formula);
@@ -39,7 +39,12 @@ public abstract class MITLIFormula extends Formula {
 	}
 
 	public static MITLIFormula and(MITLIFormula... formulae) {
-		return new MITLIConjunction(formulae);
+
+		MITLIFormula f = formulae[0];
+		for (int i = 1; i < formulae.length; i++) {
+			f = new MITLIConjunction(f, formulae[i]);
+		}
+		return f;
 	}
 
 	public static MITLIFormula U(MITLIFormula f1, MITLIFormula f2) {
@@ -122,7 +127,11 @@ public abstract class MITLIFormula extends Formula {
 
 	// Producers method to build derived boolean CLTL formulae
 	public static MITLIFormula or(MITLIFormula... formulae) {
-		return new MITLIDisjunction(formulae);
+		MITLIFormula f = formulae[0];
+		for (int i = 1; i < formulae.length; i++) {
+			f = new MITLIDisjunction(f, formulae[i]);
+		}
+		return f;
 	}
 
 	public static MITLIFormula implies(MITLIFormula f1, MITLIFormula f2) {

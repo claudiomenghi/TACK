@@ -1,4 +1,4 @@
-package parserHandler;
+package formulae.mitli.solvers;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -11,15 +11,12 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 
 import formulae.Formula;
-import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.visitor.CLTL2ZotHeaderVisitor;
-import formulae.cltloc.visitor.CLTLoc2ZotVisitor;
-import formulae.mitl.MITLFormula;
-import formulae.mitl.visitors.MITL2CLTLocVisitor;
 import formulae.mitli.MITLIFormula;
-import formulae.mitli.visitors.MITLI2CLTLocVisitor;
+import formulae.mitli.converters.MITLI2zot;
+import parserHandler.qtlSolverLexer;
+import parserHandler.qtlSolverParser;
 
-public class qtlsolver {
+public class MITLIsolver {
 	public static void main(String[] args) throws Exception {
 
 		System.out.println("Quantitative - Metric Temporal Logic Solver");
@@ -44,21 +41,9 @@ public class qtlsolver {
 			if (f0 != null) {
 				PrintStream prn = new PrintStream(f0);
 
-				CLTLocFormula equivalentCLTLocFormula = null;
-				String zotHeader = "";
-				zotHeader = zotHeader + new String("(asdf:operate 'asdf:load-op 'ae2zot) (use-package :trio-utils)\n");
-				
-				if (formula instanceof MITLIFormula) {
-					MITLIFormula tmpFormula = (MITLIFormula) formula;
-					equivalentCLTLocFormula = tmpFormula.accept(new MITLI2CLTLocVisitor());
-				}
-				if (formula instanceof MITLFormula) {
-					MITLFormula tmpFormula = (MITLFormula) formula;
-					equivalentCLTLocFormula = tmpFormula.accept(new MITL2CLTLocVisitor());
-					
-				}
-				zotHeader = zotHeader+equivalentCLTLocFormula.accept(new CLTL2ZotHeaderVisitor());
-				String zotEncoding = zotHeader + equivalentCLTLocFormula.accept(new CLTLoc2ZotVisitor());
+				MITLIFormula tmpFormula = (MITLIFormula) formula;
+				String zotEncoding = new MITLI2zot().apply(tmpFormula, 1000);
+
 				prn.println(zotEncoding);
 			} else {
 				System.out.println("Opps...some errors occurred!");
@@ -83,7 +68,6 @@ public class qtlsolver {
 						System.out.print("Solving ...");
 						p.waitFor();
 						System.out.println("finished!");
-						f0 = null;
 
 						try {
 							f1 = new FileInputStream("output.1.txt");
@@ -91,13 +75,6 @@ public class qtlsolver {
 							e.printStackTrace();
 						}
 
-						if (f0 != null) {
-							BufferedReader br = new BufferedReader(new InputStreamReader(f1));
-							System.out.println(br.readLine());
-							br.close();
-						} else {
-							System.out.println("Opps...some errors occurred!");
-						}
 					}
 
 			} catch (FileNotFoundException e) {

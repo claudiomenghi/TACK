@@ -10,6 +10,15 @@ repositories {
 	mavenCentral()    
 }
 
+generateGrammarSource << {
+    println "Copying generated grammar lexer/parser files to main directory."
+    copy {
+        from "${buildDir}/generated-src/antlr/main"
+        into "src/main/java/formulae/mitli/parser"
+    }
+    delete "${buildDir}/generated-src/antlr/main"
+}
+
 sourceSets {
     main {
         java {
@@ -34,7 +43,7 @@ sourceSets {
 dependencies {
  	compile group: 'com.google.guava', name: 'guava', version: '15.0'
     compile 'org.slf4j:slf4j-api:1.7.21'
-	antlr "org.antlr:antlr:3.5.2" 
+	antlr "org.antlr:antlr4:4.5" 
 	compile group: 'org.antlr', name: 'antlr4', version: '4.6'
 	
     testCompile 'junit:junit:4.12'
