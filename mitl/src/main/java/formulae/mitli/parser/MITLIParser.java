@@ -28,11 +28,11 @@ public class MITLIParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, LPAR=4, RPAR=5, LBRA=6, RBRA=7, TRUE=8, FALSE=9, 
-		NEG_OP=10, AND_OP=11, OR_OP=12, IMPL_OP=13, IFF_OP=14, F_OP=15, F_inf_OP=16, 
-		G_OP=17, G_inf_OP=18, P_OP=19, H_OP=20, UNTIL_OP=21, SINCE_OP=22, RELEASE_OP=23, 
-		TRIGGER_OP=24, COUNT_OP=25, LOGIC=26, COLON=27, SEMI=28, INT=29, ID=30, 
-		NEWLINE=31, WS=32, COMMENT=33;
+		T__0=1, LPAR=2, RPAR=3, LBRA=4, RBRA=5, TRUE=6, FALSE=7, NEG_OP=8, AND_OP=9, 
+		OR_OP=10, IMPL_OP=11, IFF_OP=12, F_OP=13, F_inf_OP=14, G_OP=15, G_inf_OP=16, 
+		P_OP=17, H_OP=18, UNTIL_OP=19, SINCE_OP=20, RELEASE_OP=21, TRIGGER_OP=22, 
+		COUNT_OP=23, LOGIC=24, COLON=25, SEMI=26, INT=27, ID=28, NEWLINE=29, WS=30, 
+		COMMENT=31;
 	public static final int
 		RULE_mitli = 0, RULE_logic = 1, RULE_declaration = 2, RULE_fmla = 3, RULE_conjuncts_list = 4;
 	public static final String[] ruleNames = {
@@ -40,17 +40,15 @@ public class MITLIParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "':bound'", "':formula'", "':def'", "'('", "')'", "'['", "']'", 
-		"'true'", "'false'", "'!!'", "'&&'", "'||'", "'->'", "'<->'", null, null, 
-		null, null, null, null, "'U'", "'S'", "'R'", "'T'", "'C'", null, "':'", 
-		"';'"
+		null, "':def'", "'('", "')'", "'['", "']'", "'true'", "'false'", "'!!'", 
+		"'&&'", "'||'", "'->'", "'<->'", null, null, null, null, null, null, "'U'", 
+		"'S'", "'R'", "'T'", "'C'", null, "':'", "';'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, "LPAR", "RPAR", "LBRA", "RBRA", "TRUE", "FALSE", 
-		"NEG_OP", "AND_OP", "OR_OP", "IMPL_OP", "IFF_OP", "F_OP", "F_inf_OP", 
-		"G_OP", "G_inf_OP", "P_OP", "H_OP", "UNTIL_OP", "SINCE_OP", "RELEASE_OP", 
-		"TRIGGER_OP", "COUNT_OP", "LOGIC", "COLON", "SEMI", "INT", "ID", "NEWLINE", 
-		"WS", "COMMENT"
+		null, null, "LPAR", "RPAR", "LBRA", "RBRA", "TRUE", "FALSE", "NEG_OP", 
+		"AND_OP", "OR_OP", "IMPL_OP", "IFF_OP", "F_OP", "F_inf_OP", "G_OP", "G_inf_OP", 
+		"P_OP", "H_OP", "UNTIL_OP", "SINCE_OP", "RELEASE_OP", "TRIGGER_OP", "COUNT_OP", 
+		"LOGIC", "COLON", "SEMI", "INT", "ID", "NEWLINE", "WS", "COMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -102,23 +100,10 @@ public class MITLIParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 	public static class MitliContext extends ParserRuleContext {
-		public LogicContext l;
-		public List<TerminalNode> NEWLINE() { return getTokens(MITLIParser.NEWLINE); }
-		public TerminalNode NEWLINE(int i) {
-			return getToken(MITLIParser.NEWLINE, i);
-		}
-		public TerminalNode INT() { return getToken(MITLIParser.INT, 0); }
+		public MITLIFormula formula;
+		public FmlaContext fmla;
 		public FmlaContext fmla() {
 			return getRuleContext(FmlaContext.class,0);
-		}
-		public LogicContext logic() {
-			return getRuleContext(LogicContext.class,0);
-		}
-		public List<DeclarationContext> declaration() {
-			return getRuleContexts(DeclarationContext.class);
-		}
-		public DeclarationContext declaration(int i) {
-			return getRuleContext(DeclarationContext.class,i);
 		}
 		public MitliContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -137,49 +122,14 @@ public class MITLIParser extends Parser {
 	public final MitliContext mitli() throws RecognitionException {
 		MitliContext _localctx = new MitliContext(_ctx, getState());
 		enterRule(_localctx, 0, RULE_mitli);
-		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(10);
-			((MitliContext)_localctx).l = logic();
-			setState(11);
-			match(NEWLINE);
-			 
-					 	
-			setState(13);
-			match(T__0);
-			setState(14);
-			match(INT);
-			setState(15);
-			match(NEWLINE);
+			((MitliContext)_localctx).fmla = fmla();
 
-							System.out.println("Starting parsing formulae...");
-						
-			setState(20);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==T__2 || _la==NEWLINE) {
-				{
-				{
-				setState(17);
-				declaration();
-				}
-				}
-				setState(22);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			}
-			setState(23);
-			match(T__1);
-			setState(24);
-			fmla();
-							
-						
-								
-						
-			setState(26);
-			match(NEWLINE);
+						 	((MitliContext)_localctx).formula = ((MitliContext)_localctx).fmla.r;
+						 
 			}
 		}
 		catch (RecognitionException re) {
@@ -218,9 +168,9 @@ public class MITLIParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(28);
+			setState(13);
 			match(COLON);
-			setState(29);
+			setState(14);
 			((LogicContext)_localctx).LOGIC = match(LOGIC);
 			 ((LogicContext)_localctx).s =  new String((((LogicContext)_localctx).LOGIC!=null?((LogicContext)_localctx).LOGIC.getText():null)); 
 			}
@@ -261,28 +211,28 @@ public class MITLIParser extends Parser {
 		DeclarationContext _localctx = new DeclarationContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_declaration);
 		try {
-			setState(39);
+			setState(24);
 			switch (_input.LA(1)) {
-			case T__2:
+			case T__0:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(32);
-				match(T__2);
-				setState(33);
+				setState(17);
+				match(T__0);
+				setState(18);
 				((DeclarationContext)_localctx).s = match(ID);
-				setState(34);
+				setState(19);
 				fmla();
 
 							
 							 
-				setState(36);
+				setState(21);
 				match(NEWLINE);
 				}
 				break;
 			case NEWLINE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(38);
+				setState(23);
 				match(NEWLINE);
 				}
 				break;
@@ -302,7 +252,7 @@ public class MITLIParser extends Parser {
 	}
 
 	public static class FmlaContext extends ParserRuleContext {
-		public Formula r;
+		public MITLIFormula r;
 		public FmlaContext fmla;
 		public Token ID;
 		public FmlaContext f1;
@@ -366,29 +316,29 @@ public class MITLIParser extends Parser {
 		FmlaContext _localctx = new FmlaContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_fmla);
 		try {
-			setState(151);
-			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			setState(136);
+			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(41);
+				setState(26);
 				match(LPAR);
-				setState(42);
+				setState(27);
 				((FmlaContext)_localctx).fmla = fmla();
 
 						((FmlaContext)_localctx).r = _localctx.r;
 					
-				setState(44);
+				setState(29);
 				match(RPAR);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(46);
+				setState(31);
 				match(TRUE);
 
-							Formula f = new MITLITrue();
+							MITLIFormula f = new MITLITrue();
 								
 							((FmlaContext)_localctx).r =  f;
 						
@@ -397,10 +347,10 @@ public class MITLIParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(48);
+				setState(33);
 				match(FALSE);
 
-							Formula f = new MITLIFalse();
+							MITLIFormula f = new MITLIFalse();
 								
 							((FmlaContext)_localctx).r =  f;
 						
@@ -409,11 +359,11 @@ public class MITLIParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(50);
+				setState(35);
 				((FmlaContext)_localctx).ID = match(ID);
 					
 							
-								Formula f = new MITLIAtom((((FmlaContext)_localctx).ID!=null?((FmlaContext)_localctx).ID.getText():null));
+								MITLIFormula f = new MITLIAtom((((FmlaContext)_localctx).ID!=null?((FmlaContext)_localctx).ID.getText():null));
 								
 								((FmlaContext)_localctx).r =  f;
 							
@@ -423,16 +373,16 @@ public class MITLIParser extends Parser {
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(52);
+				setState(37);
 				match(LPAR);
-				setState(53);
+				setState(38);
 				match(NEG_OP);
-				setState(54);
+				setState(39);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(55);
+				setState(40);
 				match(RPAR);
 					
-							Formula f = new MITLINegation((MITLIFormula) ((FmlaContext)_localctx).f1.r);
+							MITLIFormula f = new MITLINegation((MITLIFormula) ((FmlaContext)_localctx).f1.r);
 								
 							((FmlaContext)_localctx).r =  f;
 						
@@ -441,23 +391,23 @@ public class MITLIParser extends Parser {
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(58);
+				setState(43);
 				match(LPAR);
-				setState(59);
+				setState(44);
 				match(AND_OP);
-				setState(60);
+				setState(45);
 				((FmlaContext)_localctx).conjuncts_list = conjuncts_list();
-				setState(61);
+				setState(46);
 				match(RPAR);
 					
-							Formula f = null;
-							Formula[] arr = null;
+							MITLIFormula f = null;
+							MITLIFormula[] arr = null;
 							
 							
 								arr = new MITLIFormula[((FmlaContext)_localctx).conjuncts_list.l.size()];
 
 								int i = 0;
-								for (Formula fm: ((FmlaContext)_localctx).conjuncts_list.l)
+								for (MITLIFormula fm: ((FmlaContext)_localctx).conjuncts_list.l)
 									arr[i++] = fm;
 							
 								f = MITLIFormula.and((MITLIFormula[]) arr);
@@ -470,22 +420,22 @@ public class MITLIParser extends Parser {
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(64);
+				setState(49);
 				match(LPAR);
-				setState(65);
+				setState(50);
 				match(OR_OP);
-				setState(66);
+				setState(51);
 				((FmlaContext)_localctx).conjuncts_list = conjuncts_list();
-				setState(67);
+				setState(52);
 				match(RPAR);
 					
-							Formula f = null;
-							Formula[] arr = null;
+							MITLIFormula f = null;
+							MITLIFormula[] arr = null;
 							
 								arr = new MITLIFormula[((FmlaContext)_localctx).conjuncts_list.l.size()];
 
 								int i = 0;
-								for (Formula fm: ((FmlaContext)_localctx).conjuncts_list.l)
+								for (MITLIFormula fm: ((FmlaContext)_localctx).conjuncts_list.l)
 									arr[i++] = fm;
 							
 								f = MITLIFormula.or((MITLIFormula[]) arr);
@@ -498,18 +448,18 @@ public class MITLIParser extends Parser {
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(70);
+				setState(55);
 				match(LPAR);
-				setState(71);
+				setState(56);
 				match(IMPL_OP);
-				setState(72);
+				setState(57);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(73);
+				setState(58);
 				((FmlaContext)_localctx).f2 = fmla();
-				setState(74);
+				setState(59);
 				match(RPAR);
 					
-							Formula f = MITLIFormula.implies((MITLIFormula)((FmlaContext)_localctx).f1.r,(MITLIFormula)((FmlaContext)_localctx).f2.r);	
+							MITLIFormula f = MITLIFormula.implies(((FmlaContext)_localctx).f1.r,((FmlaContext)_localctx).f2.r);	
 								
 							((FmlaContext)_localctx).r =  f;	
 						
@@ -518,18 +468,18 @@ public class MITLIParser extends Parser {
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(77);
+				setState(62);
 				match(LPAR);
-				setState(78);
+				setState(63);
 				match(IFF_OP);
-				setState(79);
+				setState(64);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(80);
+				setState(65);
 				((FmlaContext)_localctx).f2 = fmla();
-				setState(81);
+				setState(66);
 				match(RPAR);
 					
-							Formula f = MITLIFormula.iff((MITLIFormula)((FmlaContext)_localctx).f1.r,(MITLIFormula)((FmlaContext)_localctx).f2.r);
+							MITLIFormula f = MITLIFormula.iff((MITLIFormula)((FmlaContext)_localctx).f1.r,(MITLIFormula)((FmlaContext)_localctx).f2.r);
 								
 							((FmlaContext)_localctx).r =  f;		
 						
@@ -538,20 +488,20 @@ public class MITLIParser extends Parser {
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(84);
+				setState(69);
 				match(LPAR);
-				setState(85);
+				setState(70);
 				((FmlaContext)_localctx).F_OP = match(F_OP);
-				setState(86);
+				setState(71);
 				((FmlaContext)_localctx).a = match(INT);
-				setState(87);
+				setState(72);
 				((FmlaContext)_localctx).b = match(INT);
-				setState(88);
+				setState(73);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(89);
+				setState(74);
 				match(RPAR);
 					
-							Formula f = null;
+							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).F_OP!=null?((FmlaContext)_localctx).F_OP.getText():null));
 							
 								if (s.compareTo("F_ei") == 0 || s.compareTo("F_ii") == 0)
@@ -565,18 +515,18 @@ public class MITLIParser extends Parser {
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(92);
+				setState(77);
 				match(LPAR);
-				setState(93);
+				setState(78);
 				((FmlaContext)_localctx).F_inf_OP = match(F_inf_OP);
-				setState(94);
+				setState(79);
 				((FmlaContext)_localctx).a = match(INT);
-				setState(95);
+				setState(80);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(96);
+				setState(81);
 				match(RPAR);
 					
-							Formula f = null;
+							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).F_inf_OP!=null?((FmlaContext)_localctx).F_inf_OP.getText():null));
 							
 							
@@ -591,20 +541,20 @@ public class MITLIParser extends Parser {
 			case 12:
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(99);
+				setState(84);
 				match(LPAR);
-				setState(100);
+				setState(85);
 				((FmlaContext)_localctx).G_OP = match(G_OP);
-				setState(101);
+				setState(86);
 				((FmlaContext)_localctx).a = match(INT);
-				setState(102);
+				setState(87);
 				((FmlaContext)_localctx).b = match(INT);
-				setState(103);
+				setState(88);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(104);
+				setState(89);
 				match(RPAR);
 					
-							Formula f = null;
+							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).G_OP!=null?((FmlaContext)_localctx).G_OP.getText():null));
 							
 							
@@ -619,18 +569,18 @@ public class MITLIParser extends Parser {
 			case 13:
 				enterOuterAlt(_localctx, 13);
 				{
-				setState(107);
+				setState(92);
 				match(LPAR);
-				setState(108);
+				setState(93);
 				((FmlaContext)_localctx).G_inf_OP = match(G_inf_OP);
-				setState(109);
+				setState(94);
 				((FmlaContext)_localctx).a = match(INT);
-				setState(110);
+				setState(95);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(111);
+				setState(96);
 				match(RPAR);
 					
-							Formula f = null;
+							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).G_inf_OP!=null?((FmlaContext)_localctx).G_inf_OP.getText():null));
 							
 							if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0)
@@ -645,20 +595,20 @@ public class MITLIParser extends Parser {
 			case 14:
 				enterOuterAlt(_localctx, 14);
 				{
-				setState(114);
+				setState(99);
 				match(LPAR);
-				setState(115);
+				setState(100);
 				((FmlaContext)_localctx).P_OP = match(P_OP);
-				setState(116);
+				setState(101);
 				((FmlaContext)_localctx).a = match(INT);
-				setState(117);
+				setState(102);
 				((FmlaContext)_localctx).b = match(INT);
-				setState(118);
+				setState(103);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(119);
+				setState(104);
 				match(RPAR);
 					
-							Formula f = null;
+							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).P_OP!=null?((FmlaContext)_localctx).P_OP.getText():null));
 							
 							
@@ -673,20 +623,20 @@ public class MITLIParser extends Parser {
 			case 15:
 				enterOuterAlt(_localctx, 15);
 				{
-				setState(122);
+				setState(107);
 				match(LPAR);
-				setState(123);
+				setState(108);
 				((FmlaContext)_localctx).H_OP = match(H_OP);
-				setState(124);
+				setState(109);
 				((FmlaContext)_localctx).a = match(INT);
-				setState(125);
+				setState(110);
 				((FmlaContext)_localctx).b = match(INT);
-				setState(126);
+				setState(111);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(127);
+				setState(112);
 				match(RPAR);
 					
-							Formula f = null;
+							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).H_OP!=null?((FmlaContext)_localctx).H_OP.getText():null));
 								if (s.compareTo("H_ei") == 0 || s.compareTo("H_ii") == 0)
 									f = MITLIFormula.H((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null)), Integer.valueOf((((FmlaContext)_localctx).b!=null?((FmlaContext)_localctx).b.getText():null))); 
@@ -699,18 +649,18 @@ public class MITLIParser extends Parser {
 			case 16:
 				enterOuterAlt(_localctx, 16);
 				{
-				setState(130);
+				setState(115);
 				match(LPAR);
-				setState(131);
+				setState(116);
 				match(UNTIL_OP);
-				setState(132);
+				setState(117);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(133);
+				setState(118);
 				((FmlaContext)_localctx).f2 = fmla();
-				setState(134);
+				setState(119);
 				match(RPAR);
 
-							Formula f = null;
+							MITLIFormula f = null;
 								f = MITLIFormula.U((MITLIFormula)((FmlaContext)_localctx).f1.r,(MITLIFormula)((FmlaContext)_localctx).f2.r);
 								
 								
@@ -721,18 +671,18 @@ public class MITLIParser extends Parser {
 			case 17:
 				enterOuterAlt(_localctx, 17);
 				{
-				setState(137);
+				setState(122);
 				match(LPAR);
-				setState(138);
+				setState(123);
 				match(SINCE_OP);
-				setState(139);
+				setState(124);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(140);
+				setState(125);
 				((FmlaContext)_localctx).f2 = fmla();
-				setState(141);
+				setState(126);
 				match(RPAR);
 
-							Formula f = null;
+							MITLIFormula f = null;
 								f = MITLIFormula.S((MITLIFormula)((FmlaContext)_localctx).f1.r,(MITLIFormula)((FmlaContext)_localctx).f2.r);
 							 	
 							((FmlaContext)_localctx).r =  f; 	
@@ -742,18 +692,18 @@ public class MITLIParser extends Parser {
 			case 18:
 				enterOuterAlt(_localctx, 18);
 				{
-				setState(144);
+				setState(129);
 				match(LPAR);
-				setState(145);
+				setState(130);
 				match(RELEASE_OP);
-				setState(146);
+				setState(131);
 				((FmlaContext)_localctx).f1 = fmla();
-				setState(147);
+				setState(132);
 				((FmlaContext)_localctx).f2 = fmla();
-				setState(148);
+				setState(133);
 				match(RPAR);
 
-							Formula f = null;
+							MITLIFormula f = null;
 							 	f = MITLIFormula.R((MITLIFormula)((FmlaContext)_localctx).f1.r,(MITLIFormula)((FmlaContext)_localctx).f2.r);
 							 	
 							((FmlaContext)_localctx).r =  f;
@@ -774,7 +724,7 @@ public class MITLIParser extends Parser {
 	}
 
 	public static class Conjuncts_listContext extends ParserRuleContext {
-		public List<Formula> l;
+		public List<MITLIFormula> l;
 		public FmlaContext fmla;
 		public Conjuncts_listContext conjuncts_list;
 		public FmlaContext fmla() {
@@ -800,20 +750,20 @@ public class MITLIParser extends Parser {
 	public final Conjuncts_listContext conjuncts_list() throws RecognitionException {
 		Conjuncts_listContext _localctx = new Conjuncts_listContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_conjuncts_list);
-		((Conjuncts_listContext)_localctx).l =  new ArrayList<Formula>();
+		((Conjuncts_listContext)_localctx).l =  new ArrayList<MITLIFormula>();
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(153);
+			setState(138);
 			((Conjuncts_listContext)_localctx).fmla = fmla();
-			setState(156);
+			setState(141);
 			switch (_input.LA(1)) {
 			case LPAR:
 			case TRUE:
 			case FALSE:
 			case ID:
 				{
-				setState(154);
+				setState(139);
 				((Conjuncts_listContext)_localctx).conjuncts_list = conjuncts_list();
 				}
 				break;
@@ -847,52 +797,47 @@ public class MITLIParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3#\u00a3\4\2\t\2\4"+
-		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\7\2\25"+
-		"\n\2\f\2\16\2\30\13\2\3\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\4\3\4\3\4"+
-		"\3\4\3\4\3\4\3\4\5\4*\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
-		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3!\u0094\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\4\3\4\3\4"+
+		"\3\4\3\4\3\4\3\4\5\4\33\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
 		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
 		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
 		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
 		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\u009a\n\5\3\6\3\6\3"+
-		"\6\5\6\u009f\n\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n\2\2\u00b1\2\f\3\2\2\2\4\36"+
-		"\3\2\2\2\6)\3\2\2\2\b\u0099\3\2\2\2\n\u009b\3\2\2\2\f\r\5\4\3\2\r\16\7"+
-		"!\2\2\16\17\b\2\1\2\17\20\7\3\2\2\20\21\7\37\2\2\21\22\7!\2\2\22\26\b"+
-		"\2\1\2\23\25\5\6\4\2\24\23\3\2\2\2\25\30\3\2\2\2\26\24\3\2\2\2\26\27\3"+
-		"\2\2\2\27\31\3\2\2\2\30\26\3\2\2\2\31\32\7\4\2\2\32\33\5\b\5\2\33\34\b"+
-		"\2\1\2\34\35\7!\2\2\35\3\3\2\2\2\36\37\7\35\2\2\37 \7\34\2\2 !\b\3\1\2"+
-		"!\5\3\2\2\2\"#\7\5\2\2#$\7 \2\2$%\5\b\5\2%&\b\4\1\2&\'\7!\2\2\'*\3\2\2"+
-		"\2(*\7!\2\2)\"\3\2\2\2)(\3\2\2\2*\7\3\2\2\2+,\7\6\2\2,-\5\b\5\2-.\b\5"+
-		"\1\2./\7\7\2\2/\u009a\3\2\2\2\60\61\7\n\2\2\61\u009a\b\5\1\2\62\63\7\13"+
-		"\2\2\63\u009a\b\5\1\2\64\65\7 \2\2\65\u009a\b\5\1\2\66\67\7\6\2\2\678"+
-		"\7\f\2\289\5\b\5\29:\7\7\2\2:;\b\5\1\2;\u009a\3\2\2\2<=\7\6\2\2=>\7\r"+
-		"\2\2>?\5\n\6\2?@\7\7\2\2@A\b\5\1\2A\u009a\3\2\2\2BC\7\6\2\2CD\7\16\2\2"+
-		"DE\5\n\6\2EF\7\7\2\2FG\b\5\1\2G\u009a\3\2\2\2HI\7\6\2\2IJ\7\17\2\2JK\5"+
-		"\b\5\2KL\5\b\5\2LM\7\7\2\2MN\b\5\1\2N\u009a\3\2\2\2OP\7\6\2\2PQ\7\20\2"+
-		"\2QR\5\b\5\2RS\5\b\5\2ST\7\7\2\2TU\b\5\1\2U\u009a\3\2\2\2VW\7\6\2\2WX"+
-		"\7\21\2\2XY\7\37\2\2YZ\7\37\2\2Z[\5\b\5\2[\\\7\7\2\2\\]\b\5\1\2]\u009a"+
-		"\3\2\2\2^_\7\6\2\2_`\7\22\2\2`a\7\37\2\2ab\5\b\5\2bc\7\7\2\2cd\b\5\1\2"+
-		"d\u009a\3\2\2\2ef\7\6\2\2fg\7\23\2\2gh\7\37\2\2hi\7\37\2\2ij\5\b\5\2j"+
-		"k\7\7\2\2kl\b\5\1\2l\u009a\3\2\2\2mn\7\6\2\2no\7\24\2\2op\7\37\2\2pq\5"+
-		"\b\5\2qr\7\7\2\2rs\b\5\1\2s\u009a\3\2\2\2tu\7\6\2\2uv\7\25\2\2vw\7\37"+
-		"\2\2wx\7\37\2\2xy\5\b\5\2yz\7\7\2\2z{\b\5\1\2{\u009a\3\2\2\2|}\7\6\2\2"+
-		"}~\7\26\2\2~\177\7\37\2\2\177\u0080\7\37\2\2\u0080\u0081\5\b\5\2\u0081"+
-		"\u0082\7\7\2\2\u0082\u0083\b\5\1\2\u0083\u009a\3\2\2\2\u0084\u0085\7\6"+
-		"\2\2\u0085\u0086\7\27\2\2\u0086\u0087\5\b\5\2\u0087\u0088\5\b\5\2\u0088"+
-		"\u0089\7\7\2\2\u0089\u008a\b\5\1\2\u008a\u009a\3\2\2\2\u008b\u008c\7\6"+
-		"\2\2\u008c\u008d\7\30\2\2\u008d\u008e\5\b\5\2\u008e\u008f\5\b\5\2\u008f"+
-		"\u0090\7\7\2\2\u0090\u0091\b\5\1\2\u0091\u009a\3\2\2\2\u0092\u0093\7\6"+
-		"\2\2\u0093\u0094\7\31\2\2\u0094\u0095\5\b\5\2\u0095\u0096\5\b\5\2\u0096"+
-		"\u0097\7\7\2\2\u0097\u0098\b\5\1\2\u0098\u009a\3\2\2\2\u0099+\3\2\2\2"+
-		"\u0099\60\3\2\2\2\u0099\62\3\2\2\2\u0099\64\3\2\2\2\u0099\66\3\2\2\2\u0099"+
-		"<\3\2\2\2\u0099B\3\2\2\2\u0099H\3\2\2\2\u0099O\3\2\2\2\u0099V\3\2\2\2"+
-		"\u0099^\3\2\2\2\u0099e\3\2\2\2\u0099m\3\2\2\2\u0099t\3\2\2\2\u0099|\3"+
-		"\2\2\2\u0099\u0084\3\2\2\2\u0099\u008b\3\2\2\2\u0099\u0092\3\2\2\2\u009a"+
-		"\t\3\2\2\2\u009b\u009e\5\b\5\2\u009c\u009f\5\n\6\2\u009d\u009f\3\2\2\2"+
-		"\u009e\u009c\3\2\2\2\u009e\u009d\3\2\2\2\u009f\u00a0\3\2\2\2\u00a0\u00a1"+
-		"\b\6\1\2\u00a1\13\3\2\2\2\6\26)\u0099\u009e";
+		"\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
+		"\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\u008b\n\5\3\6\3\6"+
+		"\3\6\5\6\u0090\n\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n\2\2\u00a1\2\f\3\2\2\2\4"+
+		"\17\3\2\2\2\6\32\3\2\2\2\b\u008a\3\2\2\2\n\u008c\3\2\2\2\f\r\5\b\5\2\r"+
+		"\16\b\2\1\2\16\3\3\2\2\2\17\20\7\33\2\2\20\21\7\32\2\2\21\22\b\3\1\2\22"+
+		"\5\3\2\2\2\23\24\7\3\2\2\24\25\7\36\2\2\25\26\5\b\5\2\26\27\b\4\1\2\27"+
+		"\30\7\37\2\2\30\33\3\2\2\2\31\33\7\37\2\2\32\23\3\2\2\2\32\31\3\2\2\2"+
+		"\33\7\3\2\2\2\34\35\7\4\2\2\35\36\5\b\5\2\36\37\b\5\1\2\37 \7\5\2\2 \u008b"+
+		"\3\2\2\2!\"\7\b\2\2\"\u008b\b\5\1\2#$\7\t\2\2$\u008b\b\5\1\2%&\7\36\2"+
+		"\2&\u008b\b\5\1\2\'(\7\4\2\2()\7\n\2\2)*\5\b\5\2*+\7\5\2\2+,\b\5\1\2,"+
+		"\u008b\3\2\2\2-.\7\4\2\2./\7\13\2\2/\60\5\n\6\2\60\61\7\5\2\2\61\62\b"+
+		"\5\1\2\62\u008b\3\2\2\2\63\64\7\4\2\2\64\65\7\f\2\2\65\66\5\n\6\2\66\67"+
+		"\7\5\2\2\678\b\5\1\28\u008b\3\2\2\29:\7\4\2\2:;\7\r\2\2;<\5\b\5\2<=\5"+
+		"\b\5\2=>\7\5\2\2>?\b\5\1\2?\u008b\3\2\2\2@A\7\4\2\2AB\7\16\2\2BC\5\b\5"+
+		"\2CD\5\b\5\2DE\7\5\2\2EF\b\5\1\2F\u008b\3\2\2\2GH\7\4\2\2HI\7\17\2\2I"+
+		"J\7\35\2\2JK\7\35\2\2KL\5\b\5\2LM\7\5\2\2MN\b\5\1\2N\u008b\3\2\2\2OP\7"+
+		"\4\2\2PQ\7\20\2\2QR\7\35\2\2RS\5\b\5\2ST\7\5\2\2TU\b\5\1\2U\u008b\3\2"+
+		"\2\2VW\7\4\2\2WX\7\21\2\2XY\7\35\2\2YZ\7\35\2\2Z[\5\b\5\2[\\\7\5\2\2\\"+
+		"]\b\5\1\2]\u008b\3\2\2\2^_\7\4\2\2_`\7\22\2\2`a\7\35\2\2ab\5\b\5\2bc\7"+
+		"\5\2\2cd\b\5\1\2d\u008b\3\2\2\2ef\7\4\2\2fg\7\23\2\2gh\7\35\2\2hi\7\35"+
+		"\2\2ij\5\b\5\2jk\7\5\2\2kl\b\5\1\2l\u008b\3\2\2\2mn\7\4\2\2no\7\24\2\2"+
+		"op\7\35\2\2pq\7\35\2\2qr\5\b\5\2rs\7\5\2\2st\b\5\1\2t\u008b\3\2\2\2uv"+
+		"\7\4\2\2vw\7\25\2\2wx\5\b\5\2xy\5\b\5\2yz\7\5\2\2z{\b\5\1\2{\u008b\3\2"+
+		"\2\2|}\7\4\2\2}~\7\26\2\2~\177\5\b\5\2\177\u0080\5\b\5\2\u0080\u0081\7"+
+		"\5\2\2\u0081\u0082\b\5\1\2\u0082\u008b\3\2\2\2\u0083\u0084\7\4\2\2\u0084"+
+		"\u0085\7\27\2\2\u0085\u0086\5\b\5\2\u0086\u0087\5\b\5\2\u0087\u0088\7"+
+		"\5\2\2\u0088\u0089\b\5\1\2\u0089\u008b\3\2\2\2\u008a\34\3\2\2\2\u008a"+
+		"!\3\2\2\2\u008a#\3\2\2\2\u008a%\3\2\2\2\u008a\'\3\2\2\2\u008a-\3\2\2\2"+
+		"\u008a\63\3\2\2\2\u008a9\3\2\2\2\u008a@\3\2\2\2\u008aG\3\2\2\2\u008aO"+
+		"\3\2\2\2\u008aV\3\2\2\2\u008a^\3\2\2\2\u008ae\3\2\2\2\u008am\3\2\2\2\u008a"+
+		"u\3\2\2\2\u008a|\3\2\2\2\u008a\u0083\3\2\2\2\u008b\t\3\2\2\2\u008c\u008f"+
+		"\5\b\5\2\u008d\u0090\5\n\6\2\u008e\u0090\3\2\2\2\u008f\u008d\3\2\2\2\u008f"+
+		"\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u0092\b\6\1\2\u0092\13\3\2\2"+
+		"\2\5\32\u008a\u008f";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

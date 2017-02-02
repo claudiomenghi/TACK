@@ -1,13 +1,14 @@
 package formulae.mitli.solvers;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
-import formulae.Formula;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.converters.MITLI2zot;
+import formulae.mitli.parser.MITLILexer;
+import formulae.mitli.parser.MITLIParser;
 
 public class MITLIsolver {
 	public static void main(String[] args) throws Exception {
@@ -17,14 +18,19 @@ public class MITLIsolver {
 
 		if (args[0].matches("[a-zA-Z][a-zA-Z0-9-]+\\.tl")) {
 
-		//	ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(args[0]));
-		//	qtlSolverLexer lexer = new qtlSolverLexer(input);
-		//	CommonTokenStream tokens = new CommonTokenStream(lexer);
-		//	qtlSolverParser parser = new qtlSolverParser(tokens);
-			Formula formula = null;
-					//parser.tlparser();
+			ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(args[0]));
+			MITLILexer lexer = new MITLILexer(input);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			MITLIParser parser = new MITLIParser(tokens);
+			parser.setBuildParseTree(true);
+	        MITLIFormula formula= parser.mitli().formula;
 
-			FileOutputStream f0 = null;
+	        String zotEncoding = new MITLI2zot().apply(formula, 1000);
+
+	        System.out.println(zotEncoding);
+/*	        
+	        
+	        FileOutputStream f0 = null;
 
 			try {
 				f0 = new FileOutputStream("output.cltl");
@@ -36,8 +42,7 @@ public class MITLIsolver {
 				PrintStream prn = new PrintStream(f0);
 
 				MITLIFormula tmpFormula = (MITLIFormula) formula;
-				String zotEncoding = new MITLI2zot().apply(tmpFormula, 1000);
-
+				
 				prn.println(zotEncoding);
 			} else {
 				System.out.println("Opps...some errors occurred!");
@@ -74,7 +79,7 @@ public class MITLIsolver {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-
+		*/
 		}
 	}
 }

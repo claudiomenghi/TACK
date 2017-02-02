@@ -13,19 +13,24 @@ import java.io.FileNotFoundException;
 import java.util.Collections;
 }
 
-mitli:	l=logic NEWLINE
-			{ 
-		 	}
-		 	':bound' INT NEWLINE
-			{
-				System.out.println("Starting parsing formulae...");
-			}
-			declaration*
-			':formula' fmla
-			{				
+mitli returns [MITLIFormula formula]:	
+			//l=logic NEWLINE
+			//{ 
+		 	//}
+		 	//':bound' INT NEWLINE
+			//{
+			//	System.out.println("Starting parsing formulae...");
+			//}
+			//declaration*
+			//':formula'
+			 fmla{
+			 	$formula=$fmla.r;
+			 }
+			 ;
+			//{				
 			
 					
-			} NEWLINE;
+			//} NEWLINE;
 	
 
 logic returns [String s]
@@ -41,47 +46,47 @@ declaration: ':def' s=ID
 		| NEWLINE;
 
         
-fmla returns [Formula r]
+fmla returns [MITLIFormula r]
 	:   LPAR fmla{
 		$r=$fmla.r;
 	} RPAR
 		
 	|	TRUE
 		{
-			Formula f = new MITLITrue();
+			MITLIFormula f = new MITLITrue();
 				
 			$r = f;
 		}
 	|	FALSE
 		{
-			Formula f = new MITLIFalse();
+			MITLIFormula f = new MITLIFalse();
 				
 			$r = f;
 		}
 	|   ID  
 		{	
 			
-				Formula f = new MITLIAtom($ID.text);
+				MITLIFormula f = new MITLIAtom($ID.text);
 				
 				$r = f;
 			
 		}
 	|	LPAR NEG_OP f1=fmla RPAR 
 		{	
-			Formula f = new MITLINegation((MITLIFormula) $f1.r);
+			MITLIFormula f = new MITLINegation((MITLIFormula) $f1.r);
 				
 			$r = f;
 		}
 	|   LPAR AND_OP conjuncts_list RPAR
 		{	
-			Formula f = null;
-			Formula[] arr = null;
+			MITLIFormula f = null;
+			MITLIFormula[] arr = null;
 			
 			
 				arr = new MITLIFormula[$conjuncts_list.l.size()];
 
 				int i = 0;
-				for (Formula fm: $conjuncts_list.l)
+				for (MITLIFormula fm: $conjuncts_list.l)
 					arr[i++] = fm;
 			
 				f = MITLIFormula.and((MITLIFormula[]) arr);
@@ -91,13 +96,13 @@ fmla returns [Formula r]
 		}
 	|   LPAR OR_OP conjuncts_list RPAR
 		{	
-			Formula f = null;
-			Formula[] arr = null;
+			MITLIFormula f = null;
+			MITLIFormula[] arr = null;
 			
 				arr = new MITLIFormula[$conjuncts_list.l.size()];
 
 				int i = 0;
-				for (Formula fm: $conjuncts_list.l)
+				for (MITLIFormula fm: $conjuncts_list.l)
 					arr[i++] = fm;
 			
 				f = MITLIFormula.or((MITLIFormula[]) arr);
@@ -107,19 +112,19 @@ fmla returns [Formula r]
 		}
 	|   LPAR IMPL_OP f1=fmla f2=fmla RPAR
 		{	
-			Formula f = MITLIFormula.implies((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);	
+			MITLIFormula f = MITLIFormula.implies($f1.r,$f2.r);	
 				
 			$r = f;	
 		}
 	|   LPAR IFF_OP f1=fmla f2=fmla RPAR
 		{	
-			Formula f = MITLIFormula.iff((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
+			MITLIFormula f = MITLIFormula.iff((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
 				
 			$r = f;		
 		}	
 	|   LPAR F_OP a=INT b=INT f1=fmla RPAR 
 		{	
-			Formula f = null;
+			MITLIFormula f = null;
 			String s = String.valueOf($F_OP.text);
 			
 				if (s.compareTo("F_ei") == 0 || s.compareTo("F_ii") == 0)
@@ -130,7 +135,7 @@ fmla returns [Formula r]
 		}
 	|   LPAR F_inf_OP a=INT f1=fmla RPAR 
 		{	
-			Formula f = null;
+			MITLIFormula f = null;
 			String s = String.valueOf($F_inf_OP.text);
 			
 			
@@ -142,7 +147,7 @@ fmla returns [Formula r]
 		}		
 	|   LPAR G_OP a=INT b=INT f1=fmla RPAR 
 		{	
-			Formula f = null;
+			MITLIFormula f = null;
 			String s = String.valueOf($G_OP.text);
 			
 			
@@ -154,7 +159,7 @@ fmla returns [Formula r]
 		}
 	|   LPAR G_inf_OP a=INT f1=fmla RPAR 
 		{	
-			Formula f = null;
+			MITLIFormula f = null;
 			String s = String.valueOf($G_inf_OP.text);
 			
 			if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0)
@@ -166,7 +171,7 @@ fmla returns [Formula r]
 		}	
 	|   LPAR P_OP a=INT b=INT f1=fmla RPAR 
 		{	
-			Formula f = null;
+			MITLIFormula f = null;
 			String s = String.valueOf($P_OP.text);
 			
 			
@@ -178,7 +183,7 @@ fmla returns [Formula r]
 		}	
 	|   LPAR H_OP a=INT b=INT f1=fmla RPAR 
 		{	
-			Formula f = null;
+			MITLIFormula f = null;
 			String s = String.valueOf($H_OP.text);
 				if (s.compareTo("H_ei") == 0 || s.compareTo("H_ii") == 0)
 					f = MITLIFormula.H((MITLIFormula)$f1.r, Integer.valueOf($a.text), Integer.valueOf($b.text)); 
@@ -188,7 +193,7 @@ fmla returns [Formula r]
 		}								
 	|   LPAR UNTIL_OP f1=fmla f2=fmla RPAR 
 		{
-			Formula f = null;
+			MITLIFormula f = null;
 				f = MITLIFormula.U((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
 				
 				
@@ -196,14 +201,14 @@ fmla returns [Formula r]
 		}
 	|   LPAR SINCE_OP f1=fmla f2=fmla RPAR 
 		{
-			Formula f = null;
+			MITLIFormula f = null;
 				f = MITLIFormula.S((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
 			 	
 			$r = f; 	
 		}		
 	|   LPAR RELEASE_OP f1=fmla f2=fmla RPAR 
 		{
-			Formula f = null;
+			MITLIFormula f = null;
 			 	f = MITLIFormula.R((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
 			 	
 			$r = f;
@@ -213,8 +218,8 @@ fmla returns [Formula r]
     ;
 
 
-conjuncts_list returns [List<Formula> l]
-	@init{$l = new ArrayList<Formula>();}:
+conjuncts_list returns [List<MITLIFormula> l]
+	@init{$l = new ArrayList<MITLIFormula>();}:
 	
 	 fmla (conjuncts_list | )
 		{
