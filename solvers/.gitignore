@@ -8,3 +8,7 @@
 /gradlew
 /gradlew.bat
 gradle/*
+/gradle/
+output.1.txt
+output.dict.txt
+output.smt.txt

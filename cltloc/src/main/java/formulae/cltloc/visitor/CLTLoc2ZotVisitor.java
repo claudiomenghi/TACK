@@ -77,7 +77,7 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocGlobally formula) {
-		return "(alwf " + formula.getChild().accept(this) + ")";
+		return "(alw " + formula.getChild().accept(this) + ")";
 	}
 
 	/**
