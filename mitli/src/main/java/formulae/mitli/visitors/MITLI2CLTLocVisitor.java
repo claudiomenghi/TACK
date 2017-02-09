@@ -9,8 +9,12 @@ import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import com.google.common.base.Preconditions;
 
 import formulae.BinaryFormula;
 import formulae.cltloc.CLTLocFormula;
@@ -56,6 +60,8 @@ import formulae.mitli.MITLITrue;
 import formulae.mitli.MITLIUntil;
 
 public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
+
+	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class.getName());
 
 	/**
 	 * is true in the origin of the time
@@ -146,7 +152,11 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 			"z1_" + formulaIdMap.get(formula));
 
 	public MITLI2CLTLocVisitor(MITLIFormula formula, int maxIntComparedto) {
-
+		
+		
+		Preconditions.checkNotNull(formula, "The formula to be considered cannot be null");
+		
+		LOGGER.log(Level.INFO, "Converting the formula "+formula.strFormula()+" to CLTLoc");
 		Set<MITLIFormula> subformulae = formula.accept(new SubformulaeVisitor());
 		List<MITLIFormula> listSubFormula = new ArrayList<>(subformulae);
 		formulaIdMap = IntStream.range(0, listSubFormula.size()).boxed()
@@ -208,6 +218,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public CLTLocFormula visit(MITLINegation formula) {
 		MITLIFormula subf = formula.getChild();
 
+		
 		CLTLocFormula f1 = IFF.apply(first.apply(formulaIdMap.get(formula)),
 				NEG.apply(first.apply(formulaIdMap.get(subf))));
 

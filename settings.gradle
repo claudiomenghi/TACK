@@ -1,1 +1,1 @@
-include 'cltloc', 'timedAutomata', 'mitli'
+include 'cltloc', 'timedAutomata', 'mitli', 'solvers'

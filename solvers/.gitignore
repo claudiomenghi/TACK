@@ -1,0 +1,10 @@
+/.gradle/
+/build/
+/output.cnf.txt
+/output.hist.txt
+/output.sat.txt
+/output.txt
+/lamp.lisp
+/gradlew
+/gradlew.bat
+gradle/*

@@ -1,4 +1,14 @@
-# qtlsolver
+# MITLI Module
+
+The MITLI module contains 
+* Java classes that describe a MITLI formula
+* Parser for MITLI formulae
+* Satisfiability checker for MITLI
+
+#### Checking MITLI formulae
+
+#### Parsing MITLI formulae
+
 Satisfiability solver for QTL, MITL and other continuous-time temporal logics  (previously hosted as qtlsolver.googlecode.com)
 
 Given a formula of the Quantitative Temporal Logic (QTL) or its subclasses, like Metric Interval Temporal Logic (MITL), the tool produces an equisatisfiable CLTL-over-clocks formula. The obtained formula can be solved by any CLTL-over-clocks solver (e.g., ae2zot).
