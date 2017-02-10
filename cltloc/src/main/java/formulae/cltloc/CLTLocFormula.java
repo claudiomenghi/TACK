@@ -1,5 +1,7 @@
 package formulae.cltloc;
 
+import java.util.Set;
+
 import formulae.Formula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.visitor.CLTLocVisitor;
@@ -13,6 +15,7 @@ public abstract class CLTLocFormula extends Formula {
 		super(formula);
 		
 	}
+	
 	
 	 public abstract <T> T accept(CLTLocVisitor<T> t);
 }

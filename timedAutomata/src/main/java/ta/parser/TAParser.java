@@ -1,5 +1,3 @@
-// Generated from TA.g4 by ANTLR 4.5
-
 package ta.parser;
 
 import java.util.*;

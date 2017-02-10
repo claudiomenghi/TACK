@@ -3,11 +3,21 @@
 The MITLI module contains 
 * Java classes that describe a MITLI formula
 * Parser for MITLI formulae
-* Satisfiability checker for MITLI
 
-#### Checking MITLI formulae
+#### MITLI grammar
+
+* `G_ee a b f`:  globally excluded, excluded, corresponds to the operator `G[a,b] f`, where the `a` and `b` are the lower and the upper bound of the formula and `f` is the sub-furmula
+* `G_ei`  
+* `G_ii` 
+* `G_ie`
+* `G_inf_OP`
+* `G_e+`  
+* `G_i+ a f`: globally included infinite, corresponds to the operator `G[a,+inf] f`, where `a` is the lower bound and `f` is the sub-furmula
+
 
 #### Parsing MITLI formulae
+
+
 
 Satisfiability solver for QTL, MITL and other continuous-time temporal logics  (previously hosted as qtlsolver.googlecode.com)
 

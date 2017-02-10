@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.visitor.CLTLoc2ZotVisitor;
-import formulae.cltloc.visitor.GetAPVisitor;
 import formulae.cltloc.visitor.GetClocksVisitor;
 
 public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
@@ -18,10 +17,6 @@ public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 		Set<CLTLocFormula> clocks=formula.accept(new GetClocksVisitor());
 		clocks.forEach(clock -> builder.append("(define-tvar " + clock.strFormula() + " *real*)\n"));
 
-
-	//	Set<CLTLocFormula> aps=formula.accept(new GetAPVisitor());
-	//	aps.forEach(ap -> builder.append("(define-tvar " + ap.strFormula() + " *real*)\n"));
-		
 		builder.append("(defvar trio-spec (&&"+formula.accept(new CLTLoc2ZotVisitor())+"))\n");
 		
 		builder.append("\n");

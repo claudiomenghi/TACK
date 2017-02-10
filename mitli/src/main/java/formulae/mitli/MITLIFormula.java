@@ -1,5 +1,7 @@
 package formulae.mitli;
 
+import com.google.common.base.Preconditions;
+
 import formulae.Formula;
 import formulae.mitli.visitors.MITLIVisitor;
 
@@ -92,10 +94,13 @@ public abstract class MITLIFormula extends Formula {
 
 	// Globally: F_<a,+oo]
 	public static MITLIFormula G_inf(MITLIFormula f, int a) {
-		if (a == 0)
+		Preconditions.checkNotNull(f, "The formula cannot be null");
+		if (a == 0){
 			return R(new MITLIFalse(), f);
-		else
+		}
+		else{
 			return new MITLIGlobally_AtoInf(f, a);
+		}
 	}
 
 	// Past: P_<0,b]
