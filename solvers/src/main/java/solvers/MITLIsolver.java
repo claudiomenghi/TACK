@@ -40,19 +40,9 @@ public class MITLIsolver {
 			System.out.println("The file " + lispFile + " contains the zot encoding");
 			FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 
-			// Process p1 = r1
-			// .exec("docker run --rm -v $PWD:/usr/src/myapp -w /usr/src/myapp
-			// fmarconi/zot zot " + lispFile);
-
-			// Process p = Runtime.getRuntime().exec("mkdir ciao");
-
-		//	Process p = Runtime.getRuntime()
-			//		.exec(new String[] {"docker", "run", "--rm", "-v", "\"","$PWD", "\"",":/usr/src/myapp", "-w", "/usr/src/myapp", "fmarconi/zot", "zot " + lispFile
-			//				});
-		//	Process p=Runtime.getRuntime().exec("sh ./run_zot.sh "+ lispFile);
-	//		p = Runtime.getRuntime().exec("echo ciao  >> ./output.zot");
-
-		/*	p.waitFor();
+			
+			Process p = Runtime.getRuntime().exec("sh ./run_zot.sh "+lispFile);
+			
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
@@ -62,7 +52,7 @@ public class MITLIsolver {
 				builder.append(line + "\n");
 			}
 
-			System.out.println(builder);
+			System.out.println(builder.toString());
 
 			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
@@ -72,7 +62,7 @@ public class MITLIsolver {
 				builder.append(line + "\n");
 			}
 
-			System.out.println(builder);*/
+			System.out.println(builder.toString());
 
 		} else {
 			System.out.println(
