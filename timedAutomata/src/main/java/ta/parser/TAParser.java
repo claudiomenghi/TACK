@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.6
+// Generated from TA.g4 by ANTLR 4.5
 
 package ta.parser;
 
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class TAParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -292,7 +292,6 @@ public class TAParser extends Parser {
 		enterRule(_localctx, 2, RULE_declaration);
 		try {
 			setState(113);
-			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
@@ -490,7 +489,6 @@ public class TAParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(145);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==LPAR) {
 				{
@@ -568,7 +566,6 @@ public class TAParser extends Parser {
 			setState(147);
 			type();
 			setState(149);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==BITAND) {
 				{
@@ -749,7 +746,6 @@ public class TAParser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << T__13) | (1L << T__15))) != 0) || _la==ID) {
 				{
 				setState(171);
-				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
 				case 1:
 					{
@@ -781,7 +777,6 @@ public class TAParser extends Parser {
 			setState(176);
 			((ProcBodyContext)_localctx).states = states();
 			setState(178);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__14) {
 				{
@@ -791,7 +786,6 @@ public class TAParser extends Parser {
 			}
 
 			setState(181);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__11) {
 				{
@@ -803,7 +797,6 @@ public class TAParser extends Parser {
 			setState(183);
 			((ProcBodyContext)_localctx).init = init();
 			setState(185);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__30) {
 				{
@@ -964,7 +957,6 @@ public class TAParser extends Parser {
 					((VariableIdContext)_localctx).id = (((VariableIdContext)_localctx).ID!=null?((VariableIdContext)_localctx).ID.getText():null);
 
 			setState(215);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==EQ) {
 				{
@@ -1067,7 +1059,6 @@ public class TAParser extends Parser {
 		int _la;
 		try {
 			setState(233);
-			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__34:
 			case T__37:
@@ -1160,7 +1151,6 @@ public class TAParser extends Parser {
 		int _la;
 		try {
 			setState(261);
-			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
@@ -1170,7 +1160,6 @@ public class TAParser extends Parser {
 				setState(236);
 				match(ID);
 				setState(238);
-				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 				case 1:
 					{
@@ -1214,7 +1203,6 @@ public class TAParser extends Parser {
 				setState(250);
 				prefix();
 				setState(259);
-				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case T__7:
 					{
@@ -1347,12 +1335,10 @@ public class TAParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(279);
-			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
 			case 1:
 				{
 				setState(271);
-				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__11) {
 					{
@@ -1362,7 +1348,6 @@ public class TAParser extends Parser {
 				}
 
 				setState(274);
-				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__12) {
 					{
@@ -1376,7 +1361,6 @@ public class TAParser extends Parser {
 			case 2:
 				{
 				setState(277);
-				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__13) {
 					{
@@ -1889,7 +1873,6 @@ public class TAParser extends Parser {
 				if ( _alt==1 ) {
 					{
 					setState(341);
-					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case T__6:
 					case T__7:
@@ -1994,7 +1977,6 @@ public class TAParser extends Parser {
 		int _la;
 		try {
 			setState(414);
-			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,37,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
@@ -2090,7 +2072,6 @@ public class TAParser extends Parser {
 				setState(387);
 				statement();
 				setState(390);
-				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,35,_ctx) ) {
 				case 1:
 					{
@@ -2215,7 +2196,6 @@ public class TAParser extends Parser {
 		int _la;
 		try {
 			setState(433);
-			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__25:
 				enterOuterAlt(_localctx, 1);
@@ -2382,7 +2362,6 @@ public class TAParser extends Parser {
 		enterRule(_localctx, 54, RULE_stateDecl);
 		try {
 			setState(458);
-			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,42,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
@@ -2722,7 +2701,6 @@ public class TAParser extends Parser {
 			setState(516);
 			match(T__4);
 			setState(520);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__32) {
 				{
@@ -2738,7 +2716,6 @@ public class TAParser extends Parser {
 					if(_localctx.guardexp==null) {((TransitionBodyContext)_localctx).guardexp = new Guard(new HashSet<EQCondition>());}
 					
 			setState(526);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__33) {
 				{
@@ -2751,7 +2728,6 @@ public class TAParser extends Parser {
 			}
 
 			setState(531);
-			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__36) {
 				{
@@ -2980,10 +2956,7 @@ public class TAParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==T__34 || _la==T__35) ) {
 				((SyncContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
+			} else {
 				consume();
 			}
 			setState(557);
@@ -3241,13 +3214,11 @@ public class TAParser extends Parser {
 	public static class ExpressionContext extends ParserRuleContext {
 		public Expression exp;
 		public ExpressionContext exp1;
+		public Token op;
 		public Token ID;
 		public Token NAT;
-		public Token op;
 		public ExpressionContext exp2;
 		public ExpressionContext exp3;
-		public TerminalNode ID() { return getToken(TAParser.ID, 0); }
-		public TerminalNode NAT() { return getToken(TAParser.NAT, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
@@ -3258,6 +3229,8 @@ public class TAParser extends Parser {
 		public TerminalNode MINUS() { return getToken(TAParser.MINUS, 0); }
 		public TerminalNode PLUSPLUS() { return getToken(TAParser.PLUSPLUS, 0); }
 		public TerminalNode MINUSMINUS() { return getToken(TAParser.MINUSMINUS, 0); }
+		public TerminalNode ID() { return getToken(TAParser.ID, 0); }
+		public TerminalNode NAT() { return getToken(TAParser.NAT, 0); }
 		public TerminalNode MULT() { return getToken(TAParser.MULT, 0); }
 		public TerminalNode FRACT() { return getToken(TAParser.FRACT, 0); }
 		public TerminalNode MOD() { return getToken(TAParser.MOD, 0); }
@@ -3313,43 +3286,21 @@ public class TAParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(603);
-			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case ID:
-				{
-				setState(591);
-				((ExpressionContext)_localctx).ID = match(ID);
-
-						((ExpressionContext)_localctx).exp = new Identifier((((ExpressionContext)_localctx).ID!=null?((ExpressionContext)_localctx).ID.getText():null));
-					
-				}
-				break;
-			case NAT:
-				{
-				setState(593);
-				((ExpressionContext)_localctx).NAT = match(NAT);
-
-						((ExpressionContext)_localctx).exp = new Value((((ExpressionContext)_localctx).NAT!=null?((ExpressionContext)_localctx).NAT.getText():null));
-					
-				}
-				break;
 			case PLUS:
 			case PLUSPLUS:
 			case MINUSMINUS:
 			case MINUS:
 				{
-				setState(595);
+				setState(591);
 				((ExpressionContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PLUS) | (1L << PLUSPLUS) | (1L << MINUSMINUS) | (1L << MINUS))) != 0)) ) {
 					((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
+				} else {
 					consume();
 				}
-				setState(596);
+				setState(592);
 				((ExpressionContext)_localctx).exp1 = expression(13);
 
 				    	((ExpressionContext)_localctx).exp = new LeftUnaryOperator((((ExpressionContext)_localctx).op!=null?((ExpressionContext)_localctx).op.getText():null), ((ExpressionContext)_localctx).exp1.exp);
@@ -3359,22 +3310,37 @@ public class TAParser extends Parser {
 			case T__34:
 			case T__37:
 				{
-				setState(599);
+				setState(595);
 				((ExpressionContext)_localctx).op = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==T__34 || _la==T__37) ) {
 					((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
+				} else {
 					consume();
 				}
-				setState(600);
+				setState(596);
 				((ExpressionContext)_localctx).exp1 = expression(12);
 
 				    	((ExpressionContext)_localctx).exp = new LeftUnaryOperator((((ExpressionContext)_localctx).op!=null?((ExpressionContext)_localctx).op.getText():null), ((ExpressionContext)_localctx).exp1.exp);
 				    
+				}
+				break;
+			case ID:
+				{
+				setState(599);
+				((ExpressionContext)_localctx).ID = match(ID);
+
+						((ExpressionContext)_localctx).exp = new Identifier((((ExpressionContext)_localctx).ID!=null?((ExpressionContext)_localctx).ID.getText():null));
+					
+				}
+				break;
+			case NAT:
+				{
+				setState(601);
+				((ExpressionContext)_localctx).NAT = match(NAT);
+
+						((ExpressionContext)_localctx).exp = new Value((((ExpressionContext)_localctx).NAT!=null?((ExpressionContext)_localctx).NAT.getText():null));
+					
 				}
 				break;
 			default:
@@ -3390,7 +3356,6 @@ public class TAParser extends Parser {
 					_prevctx = _localctx;
 					{
 					setState(665);
-					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,54,_ctx) ) {
 					case 1:
 						{
@@ -3405,10 +3370,7 @@ public class TAParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MULT) | (1L << FRACT) | (1L << MOD))) != 0)) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
+						} else {
 							consume();
 						}
 						setState(607);
@@ -3432,10 +3394,7 @@ public class TAParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
+						} else {
 							consume();
 						}
 						setState(612);
@@ -3459,10 +3418,7 @@ public class TAParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LE) | (1L << LEQ) | (1L << GEQ) | (1L << GE))) != 0)) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
+						} else {
 							consume();
 						}
 						setState(617);
@@ -3486,10 +3442,7 @@ public class TAParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(_la==EQCOMP || _la==NEQ) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
+						} else {
 							consume();
 						}
 						setState(622);
@@ -3624,10 +3577,7 @@ public class TAParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(((((_la - 39)) & ~0x3f) == 0 && ((1L << (_la - 39)) & ((1L << (T__38 - 39)) | (1L << (T__39 - 39)) | (1L << (T__40 - 39)) | (1L << (EQ - 39)) | (1L << (FRACTEQ - 39)) | (1L << (MODEQ - 39)) | (1L << (PLUSEQ - 39)) | (1L << (MINUSEQ - 39)) | (1L << (COLUMEQ - 39)) | (1L << (MULTEQ - 39)) | (1L << (POWEQ - 39)) | (1L << (BITANDEQ - 39)) | (1L << (BITOREQ - 39)))) != 0)) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
+						} else {
 							consume();
 						}
 						setState(659);
@@ -3650,10 +3600,7 @@ public class TAParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(_la==PLUSPLUS || _la==MINUSMINUS) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
+						} else {
 							consume();
 						}
 
@@ -3711,7 +3658,6 @@ public class TAParser extends Parser {
 		enterRule(_localctx, 82, RULE_assignment);
 		try {
 			setState(682);
-			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,56,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
@@ -3798,7 +3744,6 @@ public class TAParser extends Parser {
 		try {
 			int _alt;
 			setState(695);
-			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__34:
 			case T__37:
@@ -3834,7 +3779,7 @@ public class TAParser extends Parser {
 				}
 
 								_localctx.args.add(((ArgListContext)_localctx).expression.exp);
-								_localctx.args.addAll(((ArgListContext)_localctx).argList.args);
+								_localctx.args.addAll(_localctx.args);
 							
 				}
 				break;
@@ -4112,11 +4057,11 @@ public class TAParser extends Parser {
 		"\u0248\7\5\2\2\u0248\u0249\5R*\2\u0249\u024a\b)\1\2\u024a\u024c\3\2\2"+
 		"\2\u024b\u0247\3\2\2\2\u024c\u024f\3\2\2\2\u024d\u024b\3\2\2\2\u024d\u024e"+
 		"\3\2\2\2\u024eQ\3\2\2\2\u024f\u024d\3\2\2\2\u0250\u0251\b*\1\2\u0251\u0252"+
-		"\7N\2\2\u0252\u025e\b*\1\2\u0253\u0254\7O\2\2\u0254\u025e\b*\1\2\u0255"+
-		"\u0256\t\3\2\2\u0256\u0257\5R*\17\u0257\u0258\b*\1\2\u0258\u025e\3\2\2"+
-		"\2\u0259\u025a\t\4\2\2\u025a\u025b\5R*\16\u025b\u025c\b*\1\2\u025c\u025e"+
-		"\3\2\2\2\u025d\u0250\3\2\2\2\u025d\u0253\3\2\2\2\u025d\u0255\3\2\2\2\u025d"+
-		"\u0259\3\2\2\2\u025e\u029d\3\2\2\2\u025f\u0260\f\r\2\2\u0260\u0261\t\5"+
+		"\t\3\2\2\u0252\u0253\5R*\17\u0253\u0254\b*\1\2\u0254\u025e\3\2\2\2\u0255"+
+		"\u0256\t\4\2\2\u0256\u0257\5R*\16\u0257\u0258\b*\1\2\u0258\u025e\3\2\2"+
+		"\2\u0259\u025a\7N\2\2\u025a\u025e\b*\1\2\u025b\u025c\7O\2\2\u025c\u025e"+
+		"\b*\1\2\u025d\u0250\3\2\2\2\u025d\u0255\3\2\2\2\u025d\u0259\3\2\2\2\u025d"+
+		"\u025b\3\2\2\2\u025e\u029d\3\2\2\2\u025f\u0260\f\r\2\2\u0260\u0261\t\5"+
 		"\2\2\u0261\u0262\5R*\16\u0262\u0263\b*\1\2\u0263\u029c\3\2\2\2\u0264\u0265"+
 		"\f\f\2\2\u0265\u0266\t\6\2\2\u0266\u0267\5R*\r\u0267\u0268\b*\1\2\u0268"+
 		"\u029c\3\2\2\2\u0269\u026a\f\13\2\2\u026a\u026b\t\7\2\2\u026b\u026c\5"+

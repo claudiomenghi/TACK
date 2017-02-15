@@ -2,19 +2,19 @@ process Sender_A {
 
   clock A_c;
   clock B_c,C_c;
-  state  call_check, call_observe, check_eof, ex_jam;
+  state  call_check, call_observe, check_eof, end_jam;
   init   start;
   trans  call_check -> ex_jam {
            guard  A_stop  ==0;
            sync   A_check!;
            assign A_c = 0;
          },
-         call_observe -> call_observe {
+         call_observe -> check_eof {
            guard  B_start  ==0;
            sync   A_check!;
            assign A_c = 0;
          },
-          -> call_observe {
+          -> other_started {
            guard  B_start  ==1;
            sync   A_check!;
            assign A_c = 0;

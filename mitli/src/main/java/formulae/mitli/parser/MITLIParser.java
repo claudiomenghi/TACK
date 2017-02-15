@@ -1,4 +1,4 @@
-
+// Generated from MITLI.g4 by ANTLR 4.5
 
 package formulae.mitli.parser;
 
@@ -561,6 +561,7 @@ public class MITLIParser extends Parser {
 								if (s.compareTo("G_ei") == 0 || s.compareTo("G_ii") == 0){
 									f = MITLIFormula.G((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null)), Integer.valueOf((((FmlaContext)_localctx).b!=null?((FmlaContext)_localctx).b.getText():null))); 
 								}
+								
 								 
 							((FmlaContext)_localctx).r =  f;
 						

@@ -45,9 +45,10 @@ run {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-	
+	compile group: 'com.beust', name: 'jcommander', version: '1.58'
 	 compile project(':cltloc')
 	 compile project(':mitli')
+	 compile project(':timedAutomata')
 	 compile group: 'commons-io', name: 'commons-io', version: '2.4'
 	 compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
  	compile group: 'com.google.guava', name: 'guava', version: '15.0'

@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.6
+// Generated from TA.g4 by ANTLR 4.5
 
 package ta.parser;
 
@@ -23,6 +23,7 @@ import ta.transition.EQAssignement;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 

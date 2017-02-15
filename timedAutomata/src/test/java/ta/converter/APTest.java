@@ -41,13 +41,15 @@ public class APTest {
 		System.out.println(formula);
 		Set<CLTLocAP> atomicPropositions = formula.accept(new GetAPVisitor());
 
+		System.out.println(atomicPropositions);
 		Set<CLTLocAP> expectedSet = new HashSet<>();
 		expectedSet.add(new CLTLocAP("s_start"));
 		expectedSet.add(new CLTLocAP("s_call_check"));
 		expectedSet.add(new CLTLocAP("s_call_observe"));
 		expectedSet.add(new CLTLocAP("s_check_eof"));
-		expectedSet.add(new CLTLocAP("s_end_jam"));
+		expectedSet.add(new CLTLocAP("s_ex_jam"));
 		expectedSet.add(new CLTLocAP("True"));
+		System.out.println(expectedSet);
 		assertEquals(expectedSet, atomicPropositions);
 
 	}

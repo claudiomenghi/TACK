@@ -12,6 +12,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ta.State;
@@ -21,6 +22,7 @@ import ta.parser.TAParser;
 import ta.transition.Transition;
 import ta.SystemDecl;
 
+@Ignore
 public class Example1Test {
 
 	Set<State> states;

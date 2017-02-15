@@ -31,6 +31,7 @@ public class GloballyIncludedInf {
 		assertTrue(formula instanceof MITLIRelease);
 
 		MITLIRelease release = (MITLIRelease) formula;
+		
 		assertTrue(release.getLeftChild().equals(new MITLIFalse()));
 
 		assertTrue(release.getRightChild().equals(new MITLIAtom("a")));

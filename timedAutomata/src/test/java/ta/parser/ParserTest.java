@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ta.State;
@@ -17,6 +18,7 @@ import ta.SystemDecl;
 import ta.TA;
 import ta.transition.Transition;
 
+@Ignore
 public class ParserTest {
 
 	Set<State> states;

@@ -9,6 +9,8 @@ public abstract class CLTLocRelation extends CLTLocFormula implements BinaryForm
 	private final CLTLocFormula subformula1;
 	private final CLTLocFormula subformula2;
 	private final String relation;
+	
+
 	private final int hash;
 	
 
@@ -90,4 +92,8 @@ public abstract class CLTLocRelation extends CLTLocFormula implements BinaryForm
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return subformula1 + this.relation + subformula2;
+	}
 }

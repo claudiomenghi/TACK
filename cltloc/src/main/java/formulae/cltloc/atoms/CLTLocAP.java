@@ -40,8 +40,6 @@ public class CLTLocAP extends CLTLocAtom {
 				return false;
 		} else if (!atomName.equals(other.atomName))
 			return false;
-		if (hash != other.hash)
-			return false;
 		return true;
 	}
 

@@ -139,6 +139,7 @@ fmla returns [MITLIFormula r]
 				if (s.compareTo("G_ei") == 0 || s.compareTo("G_ii") == 0){
 					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), Integer.valueOf($b.text)); 
 				}
+				
 				 
 			$r = f;
 		}

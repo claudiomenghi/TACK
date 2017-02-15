@@ -4,6 +4,8 @@ import formulae.cltloc.visitor.CLTLocVisitor;
 
 public class CLTLConstantAtom extends CLTLocAtom {
 
+	
+
 	private final int value;
 	private final int hash;
 
@@ -42,5 +44,13 @@ public class CLTLConstantAtom extends CLTLocAtom {
 		if (value != other.value)
 			return false;
 		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return  Integer.toString(value);
 	}
 }
