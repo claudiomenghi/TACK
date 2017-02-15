@@ -37,7 +37,7 @@ public class TA {
 	private final Set<Transition> transitions;
 
 	public TA(String name, Set<AP> atomicPropositions, Set<State> states, Set<Transition> transitions,
-			Set<Clock> clocks, State initialState) {
+			State initialState, Set<Clock> clocks) {
 		Preconditions.checkNotNull(states, "The set of the states cannot be null");
 		Preconditions.checkNotNull(clocks, "The set of the clocks cannot be null");
 
@@ -83,6 +83,7 @@ public class TA {
 	 * @return the set of the clocks of the TA
 	 */
 	public Set<Clock> getClocks() {
+		
 		return Collections.unmodifiableSet(clocks);
 	}
 

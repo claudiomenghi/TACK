@@ -14,25 +14,10 @@ import java.util.Collections;
 }
 
 mitli returns [MITLIFormula formula]:	
-			//l=logic NEWLINE
-			//{ 
-		 	//}
-		 	//':bound' INT NEWLINE
-			//{
-			//	System.out.println("Starting parsing formulae...");
-			//}
-			//declaration*
-			//':formula'
 			 fmla{
 			 	$formula=$fmla.r;
-			 }
-			 ;
-			//{				
+			 } ;
 			
-					
-			//} NEWLINE;
-	
-
 logic returns [String s]
 	: COLON LOGIC	{ $s = new String($LOGIC.text); };
 	

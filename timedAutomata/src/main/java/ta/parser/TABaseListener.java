@@ -1,3 +1,4 @@
+// Generated from TA.g4 by ANTLR 4.6
 
 package ta.parser;
 
@@ -12,11 +13,12 @@ import ta.SystemDecl;
 import ta.declarations.Initializer;
 import ta.declarations.Variable;
 import ta.declarations.Variable;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import ta.TA;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 

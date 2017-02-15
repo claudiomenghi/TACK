@@ -1,4 +1,7 @@
 process Sender_A {
+
+  clock A_c;
+  clock B_c,C_c;
   state  call_check, call_observe, check_eof, end_jam;
   init   start;
   trans  call_check -> ex_jam {

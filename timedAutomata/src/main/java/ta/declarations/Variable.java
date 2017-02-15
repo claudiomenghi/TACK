@@ -2,6 +2,7 @@ package ta.declarations;
 
 public class Variable<T>  {
 
+
 	/**
 	 * The identifier
 	 */
@@ -32,6 +33,11 @@ public class Variable<T>  {
 
 	public T getType() {
 		return type;
+	}
+
+	@Override
+	public String toString() {
+		return type+" " + id + "=" + exp ;
 	}
 
 }
