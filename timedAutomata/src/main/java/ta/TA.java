@@ -1,11 +1,14 @@
 package ta;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
+import ta.transition.Transition;
 import ta.visitors.TAVisitor;
 
 public class TA {
@@ -35,6 +38,11 @@ public class TA {
 	 * The transitions of the timed automaton
 	 */
 	private final Set<Transition> transitions;
+	
+	/**
+	 * keeps the outgoint transitions for each state
+	 */
+	private final Map<State, Set<Transition>> outTransitions;
 
 	public TA(String name, Set<AP> atomicPropositions, Set<State> states, Set<Transition> transitions,
 			State initialState, Set<Clock> clocks) {
@@ -51,8 +59,19 @@ public class TA {
 		this.transitions = new HashSet<>(transitions);
 		this.initialState = initialState;
 		this.clocks = clocks;
+		this.outTransitions=new HashMap<>();
+		
+		this.states.forEach(s-> this.outTransitions.put(s, new HashSet<>()));
+		this.transitions.forEach(t ->{ 
+			Preconditions.checkArgument(this.outTransitions.containsKey(t.getSource()), "The state "+t.getSource()+"is not contained in the states of the TA");
+			this.outTransitions.get(t.getSource()).add(t);});
 	}
 
+	public Set<Transition> getOutgoingTransitions(State state){
+		Preconditions.checkNotNull(state, "The state cannot be null");
+		return this.outTransitions.get(state);
+	}
+	
 	public <T> T accept(TAVisitor<T> visitor) {
 		return visitor.visit(this);
 	}

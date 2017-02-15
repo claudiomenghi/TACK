@@ -11,15 +11,14 @@ process Sender_A {
          },
          call_observe -> check_eof {
            guard  B_start  ==0;
+           sync   A_check!;
            assign A_c = 0;
          },
           -> other_started {
            guard  B_start  ==1;
+           sync   A_check!;
            assign A_c = 0;
-         },
-         goto_idle -> end_jam {
-           assign A_c = 0;
-         };
+         }  ;
 }
 
 

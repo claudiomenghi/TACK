@@ -12,29 +12,34 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Before;
 import org.junit.Test;
 
+import ta.Clock;
 import ta.State;
 import ta.SystemDecl;
 import ta.TA;
-import ta.Transition;
+import ta.transition.Transition;
 
 public class ParserClockTest {
 
 	
 	@Test
 	public void testObtainedTAContainsAllTheClocks() throws IOException{
-		ANTLRInputStream input = new ANTLRFileStream(ClassLoader
-				.getSystemResource("ta/Test1.ta").getPath());
-	    TALexer lexer = new TALexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-       
-        TAParser parser = new TAParser(tokens);
-        parser.setBuildParseTree(true);
-        SystemDecl system= parser.ta().systemret;
-        
-        TA ta=system.getTimedAutomata().iterator().next();
-        
-        System.out.println(ta.getClocks());
-     //   assertEquals("The TA does not contains all the transitions of the automaton", transitions, ta.getTransitions());
+		ANTLRInputStream input = new ANTLRFileStream(ClassLoader.getSystemResource("ta/Test1.ta").getPath());
+		TALexer lexer = new TALexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		TAParser parser = new TAParser(tokens);
+		parser.setBuildParseTree(true);
+		SystemDecl system = parser.ta().systemret;
+
+		TA ta = system.getTimedAutomata().iterator().next();
+
+		Set<Clock> clocks = ta.getClocks();
+
+		Set<Clock> expectedSet = new HashSet<>();
+		expectedSet.add(new Clock("A_c"));
+		expectedSet.add(new Clock("B_c"));
+		expectedSet.add(new Clock("C_c"));
+
+		assertEquals(expectedSet, clocks);
 	}
 
 }

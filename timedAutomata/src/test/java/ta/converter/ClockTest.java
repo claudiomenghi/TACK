@@ -11,11 +11,15 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
-import ta.Clock;
+import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.CLTLClock;
+import formulae.cltloc.visitor.GetClocksVisitor;
+import ta.AP;
 import ta.SystemDecl;
 import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.visitors.TA2CLTLoc;
 
 public class ClockTest {
 
@@ -31,12 +35,18 @@ public class ClockTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<Clock> clocks = ta.getClocks();
+		Set<AP> propositionsOfInterest = new HashSet<>();
 
-		Set<Clock> expectedSet = new HashSet<>();
-		expectedSet.add(new Clock("A_c"));
-		expectedSet.add(new Clock("B_c"));
-		expectedSet.add(new Clock("C_c"));
+		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest);
+
+		
+		Set<CLTLClock> clocks = formula.accept(new GetClocksVisitor());
+
+		System.out.println(clocks);
+		Set<CLTLClock> expectedSet = new HashSet<>();
+		expectedSet.add(new CLTLClock("A_c"));
+		expectedSet.add(new CLTLClock("B_c"));
+		expectedSet.add(new CLTLClock("C_c"));
 
 		assertEquals(expectedSet, clocks);
 

@@ -2,13 +2,15 @@ package ta;
 
 import com.google.common.base.Preconditions;
 
+import ta.declarations.Atom;
+
 /**
  * Class that describes a clock
  * 
  * @author Claudio Menghi
  *
  */
-public class Clock {
+public class Clock extends Atom{
 
 	/**
 	 * The name of the class

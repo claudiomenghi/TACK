@@ -1,7 +1,6 @@
 package ta.declarations;
 
-public class Variable<T>  {
-
+public class Variable<T> extends Atom {
 
 	/**
 	 * The identifier
@@ -37,7 +36,7 @@ public class Variable<T>  {
 
 	@Override
 	public String toString() {
-		return type+" " + id + "=" + exp ;
+		return type + " " + id + "=" + exp;
 	}
 
 }

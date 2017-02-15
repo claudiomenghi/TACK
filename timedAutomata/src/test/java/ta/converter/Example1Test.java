@@ -16,9 +16,9 @@ import org.junit.Test;
 
 import ta.State;
 import ta.TA;
-import ta.Transition;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.transition.Transition;
 import ta.SystemDecl;
 
 public class Example1Test {

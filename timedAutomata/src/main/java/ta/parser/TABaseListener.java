@@ -8,7 +8,9 @@ import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
-import ta.Transition;
+import ta.transition.Transition;
+import ta.transition.Guard;
+import ta.transition.EQCondition;
 import ta.SystemDecl;
 import ta.declarations.Initializer;
 import ta.declarations.Variable;
@@ -16,6 +18,8 @@ import ta.declarations.Variable;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
+import ta.transition.Assign;
+import ta.transition.EQAssignement;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -429,6 +433,30 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterConditionList(TAParser.ConditionListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConditionList(TAParser.ConditionListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCondition(TAParser.ConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCondition(TAParser.ConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSync(TAParser.SyncContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -448,6 +476,30 @@ public class TABaseListener implements TAListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssign(TAParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignmentList(TAParser.AssignmentListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignmentList(TAParser.AssignmentListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSimpleassigment(TAParser.SimpleassigmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSimpleassigment(TAParser.SimpleassigmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

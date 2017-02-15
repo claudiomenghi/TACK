@@ -14,7 +14,9 @@ import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
-import ta.Transition;
+import ta.transition.Transition;
+import ta.transition.Guard;
+import ta.transition.EQCondition;
 import ta.SystemDecl;
 import ta.declarations.Initializer;
 import ta.declarations.Variable;
@@ -22,6 +24,8 @@ import ta.declarations.Variable;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
+import ta.transition.Assign;
+import ta.transition.EQAssignement;
 }
 
  ta returns [SystemDecl systemret] @init {
@@ -99,19 +103,17 @@ import ta.TA;
 				 		}}
 				 			);
 				 }
-				 
-	
-	 
 	$timedAutomaton=new TA($ID.text, null, $procBody.stateset, $procBody.transitionsetret, $procBody.initstate, clocks);
 }
 
  ;
 
  procBody returns
- [State initstate, Set<State> stateset, Set<Transition> transitionsetret, Set<Variable> variabledeclret]@init {
+ [State initstate, Set<State> stateset, Set<Transition> transitionsetret, Set<Variable> variabledeclret]
+ @init {
  	$variabledeclret=new HashSet<Variable>();
  	}
-	 :
+ :
  	(
  		functionDecl
  		| variableDecl
@@ -441,16 +443,18 @@ import ta.TA;
  ;
 
  transitionBody returns
- [Expression guardexp, SyncExpression syncexp, Assignement assignexp]
+ [Guard guardexp, SyncExpression syncexp, Assign assignexp]
  :
  	'{'
  	(
- 		guard
- 		{
-		$guardexp=$guard.guardexp;
+ 		guard{
+ 			 $guardexp=$guard.guardexp;
+ 		}
+ 	)?
+ 	{
+		if($guardexp==null) {$guardexp=new Guard(new HashSet<EQCondition>());}
 		}
 
- 	)?
  	(
  		sync
  		{
@@ -459,20 +463,44 @@ import ta.TA;
 
  	)?
  	(
- 		assign
- 		{
-		$assignexp=$assign.assignexp;
+ 		assign{
+ 			$assignexp=$assign.assignexp;
+ 		}
+ 	)? '}'
+ 	{
+		if($assignexp==null){ $assignexp=new Assign(new HashSet<EQAssignement>());}
 		}
 
- 	)? '}'
  ;
 
- guard returns [Expression guardexp]
+ guard returns [Guard guardexp]
  :
- 	'guard' exp1 = expression ';'
+ 	'guard' exp1 = conditionList ';'
  	{
-	$guardexp=$exp1.exp;
+	$guardexp=new Guard($conditionList.conditions);
 }
+
+ ;
+
+ conditionList returns [Set<EQCondition> conditions] @init {
+		$conditions=new HashSet();
+	}
+ :
+ 	(
+ 		condition
+ 		{
+				$conditions.add($condition.conditionret);
+			}
+
+ 	)*
+ ;
+
+ condition returns [EQCondition conditionret]
+ :
+ 	id = ID op = EQCOMP value = NAT
+ 	{
+	 	$conditionret=new EQCondition($id.text ,new Value($value.text));
+	}
 
  ;
 
@@ -489,12 +517,37 @@ import ta.TA;
 
  ;
 
- assign returns [Assignement assignexp]
+ assign returns [Assign assignexp]
  :
- 	'assign' expl = exprList ';'
+ 	'assign' expl = assignmentList ';'
  	{
-	$assignexp=new Assignement($expl.exprListret);
+	$assignexp=new Assign($assignmentList.assignement);
 }
+
+ ;
+
+ assignmentList returns [Set<EQAssignement> assignement] @init {
+	$assignement=new HashSet<>();
+}
+ :
+ 	(
+ 		simpleassigment
+ 		{
+				$assignement.add($simpleassigment.assignementsret);
+			}
+
+ 	)*
+ ;
+
+ simpleassigment returns [EQAssignement assignementsret]
+ :
+ 	(
+ 		id = ID op = EQ nat = NAT
+ 	)
+ 	{$assignementsret=new EQAssignement(
+ 						$id.text,
+ 						new Value($nat.text)
+ 					);}
 
  ;
 

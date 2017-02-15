@@ -15,7 +15,7 @@ import org.junit.Test;
 import ta.State;
 import ta.SystemDecl;
 import ta.TA;
-import ta.Transition;
+import ta.transition.Transition;
 
 public class ParserTest {
 

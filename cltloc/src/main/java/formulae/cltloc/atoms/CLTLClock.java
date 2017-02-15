@@ -6,6 +6,7 @@ import formulae.cltloc.visitor.CLTLocVisitor;
 
 public class CLTLClock extends CLTLocAtom {
 
+	
 	private final int hash;
 	private final String clockName;
 
@@ -24,25 +25,33 @@ public class CLTLClock extends CLTLocAtom {
 		return t.visit(this);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	
+	
 	@Override
 	public int hashCode() {
 		return this.hash;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		CLTLClock other = (CLTLClock) obj;
+		if (clockName == null) {
+			if (other.clockName != null)
+				return false;
+		} else if (!clockName.equals(other.clockName))
+			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return clockName;
+	}
+
 }

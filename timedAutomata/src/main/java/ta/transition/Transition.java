@@ -1,7 +1,8 @@
-package ta;
+package ta.transition;
 
 import com.google.common.base.Preconditions;
 
+import ta.State;
 import ta.expressions.Assignement;
 import ta.expressions.Expression;
 import ta.expressions.SyncExpression;
@@ -10,14 +11,16 @@ public class Transition {
 
 	private final State source;
 	private final State destination;
-	private final Expression guard;
+	private final Guard guard;
 	private final SyncExpression sync;
-	private final Assignement assignement;
+	private final Assign assignement;
 
-	public Transition(State source, State destination, Expression guard, SyncExpression sync, Assignement assignement) {
+	public Transition(State source, State destination, Guard guard, SyncExpression sync, Assign assignement) {
 		Preconditions.checkNotNull(source, "The source of the transition cannot be null");
 		Preconditions.checkNotNull(destination, "The destination of the transition cannot be null");
-
+		Preconditions.checkNotNull(guard, "The guard cannot be null");
+	//	Preconditions.checkNotNull(sync, "The sync cannot be null");
+		Preconditions.checkNotNull(assignement, "The assign cannot be null");
 		this.source = source;
 		this.destination = destination;
 		this.guard = guard;
@@ -69,12 +72,16 @@ public class Transition {
 		return "Transition [source=" + source + ", destination=" + destination + "]";
 	}
 
-	public Expression getGuard() {
+	public Guard getGuard() {
 		return guard;
 	}
 
 	public SyncExpression getSync() {
 		return sync;
+	}
+
+	public Assign getAssignement() {
+		return assignement;
 	}
 
 }

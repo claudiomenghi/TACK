@@ -8,7 +8,9 @@ import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
-import ta.Transition;
+import ta.transition.Transition;
+import ta.transition.Guard;
+import ta.transition.EQCondition;
 import ta.SystemDecl;
 import ta.declarations.Initializer;
 import ta.declarations.Variable;
@@ -16,6 +18,8 @@ import ta.declarations.Variable;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
+import ta.transition.Assign;
+import ta.transition.EQAssignement;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -355,6 +359,26 @@ public interface TAListener extends ParseTreeListener {
 	 */
 	void exitGuard(TAParser.GuardContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TAParser#conditionList}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditionList(TAParser.ConditionListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#conditionList}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditionList(TAParser.ConditionListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TAParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondition(TAParser.ConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondition(TAParser.ConditionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TAParser#sync}.
 	 * @param ctx the parse tree
 	 */
@@ -374,6 +398,26 @@ public interface TAListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssign(TAParser.AssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TAParser#assignmentList}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignmentList(TAParser.AssignmentListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#assignmentList}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignmentList(TAParser.AssignmentListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TAParser#simpleassigment}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimpleassigment(TAParser.SimpleassigmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#simpleassigment}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimpleassigment(TAParser.SimpleassigmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TAParser#exprList}.
 	 * @param ctx the parse tree
