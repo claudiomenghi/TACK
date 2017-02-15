@@ -1,5 +1,7 @@
 package formulae.mitli;
 
+import com.google.common.base.Preconditions;
+
 import formulae.BinaryFormula;
 import formulae.mitli.visitors.MITLIVisitor;
 
@@ -8,8 +10,13 @@ public class MITLIImplies extends MITLIFormula implements BinaryFormula<MITLIFor
 	private final MITLIFormula subformula1;
 	private final MITLIFormula subformula2;
 
+	private final String operator = "IMPL";
+
+	
 	public MITLIImplies(MITLIFormula subformula1, MITLIFormula subformula2) {
-		super(new String("(IMPL " + subformula1.strFormula() + " " + subformula2.strFormula()) + ")");
+		super();
+		Preconditions.checkNotNull(subformula1, "The first subformula cannot be null");
+		Preconditions.checkNotNull(subformula2, "The second subformula cannot be null");
 		this.subformula1 = subformula1;
 		this.subformula2 = subformula2;
 	}
@@ -36,5 +43,13 @@ public class MITLIImplies extends MITLIFormula implements BinaryFormula<MITLIFor
 	@Override
 	public <T> T accept(MITLIVisitor<T> visitor) {
 		return visitor.visit(this);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "(" + this.subformula1 + " " + operator + " " + this.subformula2 + ")";
 	}
 }

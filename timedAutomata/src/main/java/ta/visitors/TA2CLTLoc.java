@@ -12,16 +12,39 @@ import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocImplies;
 import formulae.cltloc.operators.unary.CLTLocGlobally;
 import formulae.cltloc.operators.unary.CLTLocNegation;
-import formulae.cltloc.operators.unary.CLTLocNext;
 import ta.AP;
 import ta.State;
 import ta.TA;
 
 public class TA2CLTLoc {
 
-	private static final BinaryOperator<CLTLocFormula> conjunctionOperator = CLTLocConjunction::new;
-	private static final BinaryOperator<CLTLocFormula> disjunctionOperator = CLTLocDisjunction::new;
-	private static final BinaryOperator<CLTLocFormula> implicationOperator = CLTLocImplies::new;
+	private static final BinaryOperator<CLTLocFormula> conjunctionOperator = (left, right) -> {
+		if (left.equals(CLTLocFormula.TRUE)) {
+			return right;
+		}
+		if (right.equals(CLTLocFormula.TRUE)) {
+			return left;
+		}
+		return new CLTLocConjunction(left, right);
+	};
+
+	private static final BinaryOperator<CLTLocFormula> disjunctionOperator = (left, right) -> {
+		if (left.equals(CLTLocFormula.FALSE)) {
+			return right;
+		}
+		if (right.equals(CLTLocFormula.FALSE)) {
+			return left;
+		}
+		return new CLTLocDisjunction(left, right);
+	};
+
+	private static final BinaryOperator<CLTLocFormula> implicationOperator = (left, right) -> {
+		if (right.equals(CLTLocFormula.TRUE)) {
+			return left;
+		}
+		return new CLTLocImplies(left, right);
+	};
+	
 	private static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
 	private static final UnaryOperator<CLTLocFormula> globallyOperator = CLTLocGlobally::new;
 	private static final UnaryOperator<CLTLocFormula> nextOperator = CLTLocGlobally::new;
@@ -43,8 +66,12 @@ public class TA2CLTLoc {
 
 		return conjunctionOperator.apply(phi2,
 				conjunctionOperator.apply(phi7,
-						globallyOperator.apply(conjunctionOperator.apply(phi1, conjunctionOperator.apply(phi3,
-								conjunctionOperator.apply(phi4, conjunctionOperator.apply(phi5, phi6)))))));
+						globallyOperator.apply(conjunctionOperator.apply(phi1,
+								conjunctionOperator.apply(phi3,
+										// conjunctionOperator.apply(phi4,
+										conjunctionOperator.apply(phi5, phi6)
+								// )
+								)))));
 	}
 
 	private CLTLocFormula getPhi1(TA ta) {
@@ -74,20 +101,23 @@ public class TA2CLTLoc {
 
 	private CLTLocFormula getPhi5(TA ta, Set<AP> propositionsOfInterest) {
 
-		CLTLocFormula phi5StatesSubformula = ta.getStates()
-				.stream().map(
-						(s) -> implicationOperator
-								.apply(state2Ap.apply(s),
-										conjunctionOperator.apply(s.getValid(propositionsOfInterest).stream()
-												.map(ap2CLTLocRESTAp).reduce(conjunctionOperator).orElse(
-														CLTLocFormula.TRUE),
-												s.getValid(propositionsOfInterest).stream()
-														.map((ap) -> negationOperator.apply(ap2CLTLocRESTAp.apply(ap)))
-														.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE))))
+		CLTLocFormula phi5StatesSubformula = ta.getStates().stream()
+				.map((s) -> implicationOperator.apply(state2Ap.apply(s),
+						conjunctionOperator.apply(
+								s.getValid(propositionsOfInterest).stream().map(ap2CLTLocRESTAp)
+										.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE),
+								s.getValid(propositionsOfInterest).stream()
+										.map((ap) -> negationOperator.apply(ap2CLTLocRESTAp.apply(ap)))
+										.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		return globallyOperator.apply(phi5StatesSubformula);
 
+	}
+
+	// TODO fix this
+	private CLTLocFormula getPhi4(TA ta) {
+		return null;
 	}
 
 	private CLTLocFormula getPhi6(TA ta) {

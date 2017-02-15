@@ -1,4 +1,4 @@
-package ta.converter;
+package ta.parser;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +21,7 @@ import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.SystemDecl;
 
-public class ConverterTest {
+public class ParserTest {
 
 	Set<State> states;
 	

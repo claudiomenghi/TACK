@@ -1,5 +1,7 @@
 package formulae.mitli;
 
+import com.google.common.base.Preconditions;
+
 import formulae.UnaryFormula;
 import formulae.mitli.visitors.MITLIVisitor;
 
@@ -8,8 +10,11 @@ public class MITLINegation extends MITLIFormula implements UnaryFormula<MITLIFor
 	// Formula f1 which is argument of the negation (\neg f1)
 	private MITLIFormula subformula;
 
+	private final String operator = "NEG";
+
 	public MITLINegation(MITLIFormula subformula) {
-		super(new String("(NEG " + subformula.strFormula()) + ")");
+
+		Preconditions.checkNotNull(subformula, "The subformula cannot be null");
 		this.subformula = subformula;
 	}
 
@@ -23,4 +28,11 @@ public class MITLINegation extends MITLIFormula implements UnaryFormula<MITLIFor
 		return this.subformula;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "(" + this.operator + this.getChild() + ")";
+	}
 }

@@ -9,9 +9,11 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements TemporizedFormu
 	private final int a;
 	private final int b;
 
+	private final String operator = "G";
+
 	public MITLIGlobally_AtoB(MITLIFormula subformula, int a, int b) {
-		super(subformula,
-				new String("(G " + String.valueOf(a) + " " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
+
+		super(subformula);
 		this.a = a;
 		this.b = b;
 
@@ -41,5 +43,13 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements TemporizedFormu
 	@Override
 	public <T> T accept(MITLIVisitor<T> visitor) {
 		return visitor.visit(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "(" + this.operator + "[" + String.valueOf(a) + "," + String.valueOf(b) + "]" + this.getChild() + ")";
 	}
 }

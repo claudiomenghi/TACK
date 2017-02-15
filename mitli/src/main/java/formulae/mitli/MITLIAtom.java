@@ -4,8 +4,10 @@ import formulae.mitli.visitors.MITLIVisitor;
 
 public class MITLIAtom extends MITLIFormula {
 
+	private final String atomName;
+
 	public MITLIAtom(String atom) {
-		super(atom);
+		this.atomName = atom;
 	}
 
 	@Override

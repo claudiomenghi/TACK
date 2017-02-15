@@ -7,13 +7,15 @@ public class MITLIEventually_AtoB extends MITLIEventually implements TemporizedF
 
 	private final int a, b;
 
+	private final String operator = "F";
+
 	public MITLIEventually_AtoB(MITLIFormula subformula, int a, int b) {
-		super(subformula,
-				new String("(F " + String.valueOf(a) + " " + String.valueOf(b) + " " + subformula.strFormula() + ")"));
+		super(subformula);
 		this.a = a;
 		this.b = b;
 
 		subformula.maxIntComparedto(b - a);
+		this.maxIntComparedto(b);
 	}
 
 	/**
@@ -40,4 +42,11 @@ public class MITLIEventually_AtoB extends MITLIEventually implements TemporizedF
 		return visitor.visit(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "(" + this.operator + "[" + String.valueOf(a) + "," + String.valueOf(b) + "]" + this.getChild() + ")";
+	}
 }

@@ -15,7 +15,7 @@ public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 		builder.append("(asdf:operate 'asdf:load-op 'ae2zot) (use-package :trio-utils)\n");
 		
 		Set<CLTLocFormula> clocks=formula.accept(new GetClocksVisitor());
-		clocks.forEach(clock -> builder.append("(define-tvar " + clock.strFormula() + " *real*)\n"));
+		clocks.forEach(clock -> builder.append("(define-tvar " + clock.toString() + " *real*)\n"));
 
 		builder.append("(defvar trio-spec (&&"+formula.accept(new CLTLoc2ZotVisitor())+"))\n");
 		

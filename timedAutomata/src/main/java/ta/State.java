@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
+import ta.expressions.EmptyExpression;
 import ta.expressions.Expression;
 import ta.visitors.TAVisitor;
 
@@ -14,6 +15,7 @@ public class State extends ModelElement {
 
 	public State(String stateId, Expression invariant) {
 		Preconditions.checkNotNull(stateId, "The id of the state cannot be null");
+		Preconditions.checkNotNull(invariant, "The invariant cannto be null");
 		this.stateId = stateId;
 		this.invariant = invariant;
 	}
@@ -21,7 +23,7 @@ public class State extends ModelElement {
 	public State(String stateId) {
 		Preconditions.checkNotNull(stateId, "The id of the state cannot be null");
 		this.stateId = stateId;
-		this.invariant = null;
+		this.invariant = new EmptyExpression();
 	}
 
 	public String getId() {

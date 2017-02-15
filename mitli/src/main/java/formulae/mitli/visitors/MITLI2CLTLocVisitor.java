@@ -155,7 +155,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		Preconditions.checkNotNull(formula, "The formula to be considered cannot be null");
 
-		LOGGER.log(Level.INFO, "Converting the formula " + formula.strFormula() + " to CLTLoc");
+		LOGGER.log(Level.INFO, "Converting the formula " + formula.toString() + " to CLTLoc");
 		Set<MITLIFormula> subformulae = formula.accept(new SubformulaeVisitor());
 		List<MITLIFormula> listSubFormula = new ArrayList<>(subformulae);
 		formulaIdMap = IntStream.range(0, listSubFormula.size()).boxed()
@@ -376,16 +376,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		CLTLocFormula f1 = IFF.apply(rest.apply(formulaId), Y.apply(rest.apply(formulaId)));
 
-		CLTLocFormula f2 = IFF.apply(
-				rest.apply(formulaId), 
-				AND.apply(
-							rest.apply(leftChildId),
-							S.apply(up.apply(leftChildId), 
-										OR.apply(
-													first.apply(rightChildId), 
-													rest.apply(rightChildId)))));
+		CLTLocFormula f2 = IFF.apply(rest.apply(formulaId), AND.apply(rest.apply(leftChildId),
+				S.apply(up.apply(leftChildId), OR.apply(first.apply(rightChildId), rest.apply(rightChildId)))));
 
-		return AND.apply(this.clocksEventsConstraints(formula), G.apply(AND.apply(f1,f2)));
+		return AND.apply(this.clocksEventsConstraints(formula), G.apply(AND.apply(f1, f2)));
 	}
 
 	/**

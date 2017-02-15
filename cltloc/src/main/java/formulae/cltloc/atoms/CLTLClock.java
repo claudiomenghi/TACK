@@ -1,11 +1,19 @@
 package formulae.cltloc.atoms;
 
+import com.google.common.base.Preconditions;
+
 import formulae.cltloc.visitor.CLTLocVisitor;
 
 public class CLTLClock extends CLTLocAtom {
 
+	private final int hash;
+	private final String clockName;
+
 	public CLTLClock(String name) {
-		super(name);
+		super();
+		Preconditions.checkNotNull(name, "The clock name cannot be null");
+		this.clockName = name;
+		this.hash = clockName.hashCode();
 	}
 
 	/**
@@ -21,10 +29,7 @@ public class CLTLClock extends CLTLocAtom {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result;
-		return result;
+		return this.hash;
 	}
 
 	/**

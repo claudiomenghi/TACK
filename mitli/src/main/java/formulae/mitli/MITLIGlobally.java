@@ -9,8 +9,8 @@ public abstract class MITLIGlobally extends MITLIFormula implements TemporizedFo
 
 	private final MITLIFormula subformula;
 
-	public MITLIGlobally(MITLIFormula subformula, String formulaDescription) {
-		super(formulaDescription);
+	public MITLIGlobally(MITLIFormula subformula) {
+		super();
 		Preconditions.checkNotNull(subformula, "The subformula cannot be null");
 		this.subformula = subformula;
 	}

@@ -1,5 +1,7 @@
 package formulae.mitli;
 
+import com.google.common.base.Preconditions;
+
 import formulae.UnaryFormula;
 import formulae.mitli.TemporizedFormula;
 
@@ -8,8 +10,8 @@ public abstract class MITLIPast extends MITLIFormula implements TemporizedFormul
 
 	private MITLIFormula subformula;
 
-	public MITLIPast(MITLIFormula subformula, String subformulaString) {
-		super(subformulaString);
+	public MITLIPast(MITLIFormula subformula) {
+		Preconditions.checkNotNull(subformula, "The subformula cannot be null");
 		this.subformula = subformula;
 	}
 

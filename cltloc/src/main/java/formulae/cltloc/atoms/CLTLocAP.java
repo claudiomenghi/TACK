@@ -4,8 +4,13 @@ import formulae.cltloc.visitor.CLTLocVisitor;
 
 public class CLTLocAP extends CLTLocAtom {
 
+	private final int hash;
+	private final String atomName;
+
 	public CLTLocAP(String atom) {
-		super(atom);
+		super();
+		this.atomName = atom;
+		this.hash = atomName.hashCode();
 	}
 
 	/**
@@ -16,28 +21,32 @@ public class CLTLocAP extends CLTLocAtom {
 		return t.visit(this);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result;
-		return result;
+		return this.hash;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		CLTLocAP other = (CLTLocAP) obj;
+		if (atomName == null) {
+			if (other.atomName != null)
+				return false;
+		} else if (!atomName.equals(other.atomName))
+			return false;
+		if (hash != other.hash)
+			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return this.atomName;
 	}
 }

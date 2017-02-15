@@ -2,7 +2,7 @@ package formulae.mitli;
 
 import formulae.mitli.visitors.MITLIVisitor;
 
-public class MITLITrue extends MITLIFormula {
+public class MITLITrue extends MITLIAtom {
 	
 	
 	public MITLITrue() {

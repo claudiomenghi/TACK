@@ -12,8 +12,8 @@ public abstract class MITLIFormula extends Formula {
 	public static final MITLIFormula TRUE = new MITLIAtom("True");
 	public static final MITLIFormula FALSE = new MITLIAtom("True");
 
-	public MITLIFormula(String formula) {
-		super(formula);
+	public MITLIFormula() {
+		super();
 
 	}
 
@@ -95,10 +95,9 @@ public abstract class MITLIFormula extends Formula {
 	// Globally: F_<a,+oo]
 	public static MITLIFormula G_inf(MITLIFormula f, int a) {
 		Preconditions.checkNotNull(f, "The formula cannot be null");
-		if (a == 0){
+		if (a == 0) {
 			return R(new MITLIFalse(), f);
-		}
-		else{
+		} else {
 			return new MITLIGlobally_AtoInf(f, a);
 		}
 	}

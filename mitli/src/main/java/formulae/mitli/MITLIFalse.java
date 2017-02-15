@@ -1,7 +1,7 @@
 package formulae.mitli;
 
 import formulae.mitli.visitors.MITLIVisitor;
-public class MITLIFalse extends MITLIFormula {
+public class MITLIFalse extends MITLIAtom {
 
 	public MITLIFalse() {
 		super(new String("FALSE"));

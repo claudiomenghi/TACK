@@ -1,5 +1,7 @@
 package formulae.mitli;
 
+import com.google.common.base.Preconditions;
+
 import formulae.BinaryFormula;
 import formulae.mitli.visitors.MITLIVisitor;
 
@@ -7,12 +9,15 @@ public class MITLIDisjunction extends MITLIFormula implements BinaryFormula<MITL
 
 	private final MITLIFormula leftChild;
 	private final MITLIFormula rightChild;
-	private static final String OP = "OR";
+	private final String operator = "OR";
 
 	public MITLIDisjunction(MITLIFormula leftChild, MITLIFormula rightChild) {
-		super("(" + OP + leftChild + "," + rightChild + ")");
+		super();
+		Preconditions.checkNotNull(leftChild, "The first subformula cannot be null");
+		Preconditions.checkNotNull(rightChild, "The second subformula cannot be null");
 		this.leftChild = leftChild;
 		this.rightChild = rightChild;
+
 	}
 
 	/**
@@ -76,4 +81,11 @@ public class MITLIDisjunction extends MITLIFormula implements BinaryFormula<MITL
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "(" + this.leftChild + " " + operator + " " + this.rightChild + ")";
+	}
 }
