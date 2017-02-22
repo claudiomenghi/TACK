@@ -1,8 +1,8 @@
 package formulae.mitli.converters;
 
 import java.util.function.BiFunction;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import formulae.cltloc.converters.CLTLoc2Zot;
 import formulae.mitli.MITLIFormula;
@@ -10,14 +10,14 @@ import formulae.mitli.visitors.MITLI2CLTLocVisitor;
 
 public class MITLI2zot implements BiFunction<MITLIFormula, Integer, String> {
 
-	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class.getName());
+	private final static Logger LOGGER =Logger.getLogger(MITLI2zot.class);
 	
 	
 	public String apply(MITLIFormula t, Integer i){
 		
-		String zotencoding=new CLTLoc2Zot().apply(
+		String zotencoding=new CLTLoc2Zot(i).apply(
 				(t.accept(new MITLI2CLTLocVisitor(t, i))));
-		LOGGER.log(Level.INFO, "Formula converted in zot");
+		LOGGER.info("Formula converted in zot");
 
 		return zotencoding
 				;

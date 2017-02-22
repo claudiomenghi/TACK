@@ -13,3 +13,4 @@ output.1.txt
 output.dict.txt
 output.smt.txt
 bin/*
+.DS_Store

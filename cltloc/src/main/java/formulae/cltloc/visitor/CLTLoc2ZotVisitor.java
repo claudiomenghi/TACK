@@ -118,7 +118,7 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocRelation formula) {
-		return "([" + formula.getRelation() + "] " + formula.getLeftChild() + " " + formula.getRightChild() + ")";
+		return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " " + formula.getLeftChild().accept(this) + ")";
 	}
 
 	/**
@@ -137,16 +137,20 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 		return "(-P- " + cltLocAP.toString() + ")";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String visit(CLTLClock cltlClock) {
-		// TODO Auto-generated method stub
-		return "";
+		return "(-V- "+cltlClock.toString()+")";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String visit(CLTLConstantAtom cltlConstantAtom) {
-		// TODO Auto-generated method stub
-		return "";
+		return cltlConstantAtom.toString();
 	}
 
 }

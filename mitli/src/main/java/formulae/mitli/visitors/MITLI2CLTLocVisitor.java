@@ -9,10 +9,10 @@ import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.apache.log4j.Logger;
 
 import com.google.common.base.Preconditions;
 
@@ -61,8 +61,8 @@ import formulae.mitli.MITLIUntil;
 
 public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
-	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class.getName());
-	
+	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class);
+
 	public Map<MITLIFormula, Integer> formulaIdMap;
 
 	/**
@@ -146,18 +146,16 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public static final Function<Integer, CLTLocFormula> down = (s) -> new CLTLocConjunction(
 			new CLTLocNegation(first.apply(s)), new CLTLocNegation(rest.apply(s)));
 
-
-
 	public final Function<MITLIFormula, CLTLClock> newz0clock = formula -> new CLTLClock(
-			"z0_" + formulaIdMap.get(formula));
+			"Z0_" + formulaIdMap.get(formula));
 	public final Function<MITLIFormula, CLTLClock> newz1clock = formula -> new CLTLClock(
-			"z1_" + formulaIdMap.get(formula));
+			"Z1_" + formulaIdMap.get(formula));
 
 	public MITLI2CLTLocVisitor(MITLIFormula formula, int maxIntComparedto) {
 
 		Preconditions.checkNotNull(formula, "The formula to be considered cannot be null");
 
-		LOGGER.log(Level.INFO, "Converting the formula " + formula.toString() + " to CLTLoc");
+		LOGGER.info("Converting the formula " + formula.toString() + " to CLTLoc");
 		Set<MITLIFormula> subformulae = formula.accept(new SubformulaeVisitor());
 		List<MITLIFormula> listSubFormula = new ArrayList<>(subformulae);
 		formulaIdMap = IntStream.range(0, listSubFormula.size()).boxed()
@@ -1046,9 +1044,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		CLTLocFormula f1 = EQ.apply(z0, ZERO);
 
-		result=f1;
+		result = f1;
 		// Formula (2)
-		
+
 		CLTLocFormula f2 = IFF.apply(OR.apply(high.apply(idFormula), low.apply(idFormula)),
 				OR.apply(EQ.apply(z0, ZERO), EQ.apply(z1, ZERO)));
 
@@ -1057,9 +1055,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		CLTLocFormula f3b = IMPL.apply(EQ.apply(z1, ZERO), X.apply(R.apply(EQ.apply(z0, ZERO), GE.apply(z1, ZERO))));
 
-		CLTLocFormula f3=AND.apply(f3a, f3b);
-		result=AND.apply(result, G.apply(AND.apply(f2, f3)));
-		
+		CLTLocFormula f3 = AND.apply(f3a, f3b);
+		result = AND.apply(result, G.apply(AND.apply(f2, f3)));
+
 		return result;
 	}
 

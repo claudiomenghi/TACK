@@ -34,14 +34,18 @@ sourceSets {
 }
 
 
-run {
-    if (project.hasProperty("appArgs")) {
-        args Eval.me(appArgs)
-    }
-    classpath sourceSets.main.runtimeClasspath
-  	main = "solvers.MITLIsolver"
-  	args "arg1"
- }
+
+ 
+ 
+ 
+ task solve(type: JavaExec) {
+ classpath = sourceSets.main.runtimeClasspath
+  mainClassName = "solvers.MITLIsover"
+   main = "solvers.MITLIsolver"
+   println "$file    $time"
+   args "$file";
+   args "$time";
+}
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
