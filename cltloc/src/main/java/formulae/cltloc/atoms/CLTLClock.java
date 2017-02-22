@@ -17,14 +17,7 @@ public class CLTLClock extends CLTLocAtom {
 		this.hash = clockName.hashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public <T> T accept(CLTLocVisitor<T> t) {
-		return t.visit(this);
-	}
-
+	
 	
 	
 	@Override
@@ -52,6 +45,14 @@ public class CLTLClock extends CLTLocAtom {
 	@Override
 	public String toString() {
 		return clockName;
+	}
+
+
+
+
+	@Override
+	public <T> T accept(CLTLocVisitor<T> t) {
+		return t.visit(this);
 	}
 
 }

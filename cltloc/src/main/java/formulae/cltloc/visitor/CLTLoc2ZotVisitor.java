@@ -18,7 +18,8 @@ import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.relations.CLTLocRelation;
 
 /**
- * Translates a CLTLoc formula into a Zot formula. Each method specifies how a specific type of formula must be converted.
+ * Translates a CLTLoc formula into a Zot formula. Each method specifies how a
+ * specific type of formula must be converted.
  * 
  * @author Claudio Menghi
  */
@@ -117,8 +118,7 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocRelation formula) {
-		return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " "
-				+ formula.getRightChild().accept(this) + ")";
+		return "([" + formula.getRelation() + "] " + formula.getLeftChild() + " " + formula.getRightChild() + ")";
 	}
 
 	/**
@@ -133,23 +133,20 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String visit(CLTLClock formula){
-		return "(-V- "+formula.toString() + ")";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public String visit(CLTLocAP cltLocAP) {
 		return "(-P- " + cltLocAP.toString() + ")";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
+	public String visit(CLTLClock cltlClock) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
 	@Override
 	public String visit(CLTLConstantAtom cltlConstantAtom) {
-		return cltlConstantAtom.toString();
+		// TODO Auto-generated method stub
+		return "";
 	}
+
 }

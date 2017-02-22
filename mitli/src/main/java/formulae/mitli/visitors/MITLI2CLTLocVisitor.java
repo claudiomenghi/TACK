@@ -62,6 +62,8 @@ import formulae.mitli.MITLIUntil;
 public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class.getName());
+	
+	public Map<MITLIFormula, Integer> formulaIdMap;
 
 	/**
 	 * is true in the origin of the time
@@ -144,7 +146,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public static final Function<Integer, CLTLocFormula> down = (s) -> new CLTLocConjunction(
 			new CLTLocNegation(first.apply(s)), new CLTLocNegation(rest.apply(s)));
 
-	public Map<MITLIFormula, Integer> formulaIdMap;
+
 
 	public final Function<MITLIFormula, CLTLClock> newz0clock = formula -> new CLTLClock(
 			"z0_" + formulaIdMap.get(formula));
@@ -1032,6 +1034,33 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		return new CLTLocDisjunction(f4, f6, f8, G.apply(new CLTLocDisjunction(f1, f2, f7)));
 
+	}
+
+	public CLTLocFormula getckTheta(MITLIFormula formula) {
+		CLTLocFormula result = CLTLocFormula.TRUE;
+
+		int idFormula = formulaIdMap.get(formula);
+
+		CLTLClock z0 = newz0clock.apply(formula);
+		CLTLClock z1 = newz1clock.apply(formula);
+
+		CLTLocFormula f1 = EQ.apply(z0, ZERO);
+
+		result=f1;
+		// Formula (2)
+		
+		CLTLocFormula f2 = IFF.apply(OR.apply(high.apply(idFormula), low.apply(idFormula)),
+				OR.apply(EQ.apply(z0, ZERO), EQ.apply(z1, ZERO)));
+
+		// formula (3)
+		CLTLocFormula f3a = IMPL.apply(EQ.apply(z0, ZERO), X.apply(R.apply(EQ.apply(z1, ZERO), GE.apply(z0, ZERO))));
+
+		CLTLocFormula f3b = IMPL.apply(EQ.apply(z1, ZERO), X.apply(R.apply(EQ.apply(z0, ZERO), GE.apply(z1, ZERO))));
+
+		CLTLocFormula f3=AND.apply(f3a, f3b);
+		result=AND.apply(result, G.apply(AND.apply(f2, f3)));
+		
+		return result;
 	}
 
 	private CLTLocFormula clocksEventsConstraints(MITLIFormula formula) {

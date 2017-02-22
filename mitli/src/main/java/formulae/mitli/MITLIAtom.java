@@ -12,6 +12,9 @@ public class MITLIAtom extends MITLIFormula {
 		this.hash = this.generateHash();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public <T> T accept(MITLIVisitor<T> visitor) {
 		return visitor.visit(this);
@@ -24,11 +27,17 @@ public class MITLIAtom extends MITLIFormula {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return hash;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -44,6 +53,13 @@ public class MITLIAtom extends MITLIFormula {
 		} else if (!atomName.equals(other.atomName))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public String toString(){
+		return this.atomName;
 	}
 
 }

@@ -1,8 +1,9 @@
 package formulae.cltloc.atoms;
 
+import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLocAP extends CLTLocAtom {
+public class CLTLocAP extends CLTLocFormula {
 
 	private final int hash;
 	private final String atomName;

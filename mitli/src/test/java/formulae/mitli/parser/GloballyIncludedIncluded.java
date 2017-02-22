@@ -1,6 +1,5 @@
 package formulae.mitli.parser;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
@@ -11,14 +10,15 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
+import formulae.mitli.MITLIAtom;
 import formulae.mitli.MITLIFormula;
-import formulae.mitli.MITLIGlobally_AtoInf;
+import formulae.mitli.MITLIGlobally_AtoB;
 
-public class GloballyIncludedInf {
+public class GloballyIncludedIncluded {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException {
-		String path = ClassLoader.getSystemResource("formulae/mitli/parser/giinf.mitli").getPath();
+		String path = ClassLoader.getSystemResource("formulae/mitli/parser/gii.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -26,9 +26,12 @@ public class GloballyIncludedInf {
 		MITLIParser parser = new MITLIParser(tokens);
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
-		assertNotNull("The parsed formula cannot be null", formula);
 
-		assertTrue(formula instanceof  MITLIGlobally_AtoInf);
+		assertTrue(formula instanceof MITLIGlobally_AtoB);
+
+		MITLIGlobally_AtoB formularet = (MITLIGlobally_AtoB) formula;
+
+		assertTrue(formularet.getChild().equals(new MITLIAtom("p")));
 	}
 
 }

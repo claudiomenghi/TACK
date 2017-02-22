@@ -2,9 +2,7 @@ package formulae.cltloc.atoms;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLConstantAtom extends CLTLocAtom {
-
-	
+public class CLTLConstantAtom extends CLTLocAtom{
 
 	private final int value;
 	private final int hash;
@@ -17,14 +15,6 @@ public class CLTLConstantAtom extends CLTLocAtom {
 		int result = 1;
 		result = prime * result + value;
 		hash = result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public <T> T accept(CLTLocVisitor<T> t) {
-		return t.visit(this);
 	}
 
 	@Override
@@ -45,12 +35,17 @@ public class CLTLConstantAtom extends CLTLocAtom {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return  Integer.toString(value);
+		return Integer.toString(value);
+	}
+
+	@Override
+	public <T> T accept(CLTLocVisitor<T> t) {
+		return t.visit(this);
 	}
 }

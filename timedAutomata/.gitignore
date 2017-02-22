@@ -5,3 +5,4 @@
 .build/*
 timedAutomata/build/
 build/*
+/build/

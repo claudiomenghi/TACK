@@ -1,6 +1,9 @@
 # Solvers
 
-###Running the *MITLI solver* using gradle
+###Running the *MITLI solver* from IDE
+* run the class `solvers.MITLIsolver`. Specify the file that contains the formula of interest as parameter.
+ 
+###Running the *MITLI solver* using Gradle
 
  
 * execute the command `docker pull fmarconi/zot`

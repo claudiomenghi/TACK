@@ -145,14 +145,7 @@ public interface CLTLocVisitor<T> {
 	 */
 	public T visit(CLTLocDisjunction formula);
 
-	/**
-	 * Visits a CLTLoc clock atom
-	 * 
-	 * @param formula
-	 *            the formula to be visited
-	 * @return an object of type T
-	 */
-	public T visit(CLTLClock formula);
+
 
 	/**
 	 * Visits a CLTLoc atomic proposition atom
@@ -163,13 +156,10 @@ public interface CLTLocVisitor<T> {
 	 */
 	public T visit(CLTLocAP formula);
 
-	/**
-	 * Visits a CLTLoc constants atom
-	 * 
-	 * @param formula
-	 *            the formula to be visited
-	 * @return an object of type T
-	 */
-	public T visit(CLTLConstantAtom formula);
+	public T visit(CLTLClock cltlClock);
+
+	public T visit(CLTLConstantAtom cltlConstantAtom);
+
+
 
 }

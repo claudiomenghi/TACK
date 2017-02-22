@@ -3,7 +3,6 @@ package formulae.cltloc.visitor;
 import java.util.HashSet;
 import java.util.Set;
 
-import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLClock;
 import formulae.cltloc.atoms.CLTLConstantAtom;
 import formulae.cltloc.atoms.CLTLocAP;
@@ -176,17 +175,11 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLClock>> {
 	 */
 	@Override
 	public Set<CLTLClock> visit(CLTLocAP formula) {
-		Set<CLTLClock> formulae = new HashSet<>();
-		return formulae;
+		return new HashSet<>();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Set<CLTLClock> visit(CLTLConstantAtom formula) {
-		Set<CLTLClock> formulae = new HashSet<>();
-		return formulae;
+	public Set<CLTLClock> visit(CLTLConstantAtom cltlConstantAtom) {
+		return new HashSet<>();
 	}
-
 }

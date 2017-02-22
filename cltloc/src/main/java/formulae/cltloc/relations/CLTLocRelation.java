@@ -2,19 +2,20 @@ package formulae.cltloc.relations;
 
 import formulae.BinaryFormula;
 import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.CLTLocAtom;
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public abstract class CLTLocRelation extends CLTLocFormula implements BinaryFormula<CLTLocFormula> {
+public abstract class CLTLocRelation extends CLTLocFormula implements BinaryFormula<CLTLocAtom> {
 
-	private final CLTLocFormula subformula1;
-	private final CLTLocFormula subformula2;
+	private final CLTLocAtom subformula1;
+	private final CLTLocAtom subformula2;
 	private final String relation;
 	
 
 	private final int hash;
 	
 
-	public CLTLocRelation(CLTLocFormula subformula1, CLTLocFormula subformula2, String relation) {
+	public CLTLocRelation(CLTLocAtom subformula1, CLTLocAtom subformula2, String relation) {
 		super();
 		this.subformula1 = subformula1;
 		this.subformula2 = subformula2;
@@ -27,7 +28,7 @@ public abstract class CLTLocRelation extends CLTLocFormula implements BinaryForm
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CLTLocFormula getLeftChild() {
+	public CLTLocAtom getLeftChild() {
 		return subformula1;
 	}
 
@@ -35,7 +36,7 @@ public abstract class CLTLocRelation extends CLTLocFormula implements BinaryForm
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CLTLocFormula getRightChild() {
+	public CLTLocAtom getRightChild() {
 		return subformula2;
 	}
 

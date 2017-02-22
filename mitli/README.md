@@ -6,13 +6,10 @@ The MITLI module contains
 
 #### MITLI grammar
 
-* `G_ee a b f`:  globally excluded, excluded, corresponds to the operator `G[a,b] f`, where the `a` and `b` are the lower and the upper bound of the formula and `f` is the sub-furmula
-* `G_ei`  
-* `G_ii` 
-* `G_ie`
-* `G_inf_OP`
-* `G_e+`  
-* `G_i+ a f`: globally included infinite, corresponds to the operator `G[a,+inf] f`, where `a` is the lower bound and `f` is the sub-furmula
+
+* `G_ei`: globally excluded, included, corresponds to the operator `G(a,b] f`, where the a and b are the lower and the upper bound of the formula and `f` is the sub-furmula;
+* `G_ii`: globally included, excluded, corresponds to the operator `G[a,b] f`, where the `a` and `b` are the lower and the upper bound of the formula and `f` is the sub-furmula;
+* `G_i+ a f`: globally included infinite, corresponds to the operator `G[a,+inf] f`, where `a` is the lower bound and `f` is the sub-furmula;
 
 
 #### Parsing MITLI formulae

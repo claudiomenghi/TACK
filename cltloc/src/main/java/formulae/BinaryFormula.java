@@ -8,7 +8,7 @@ package formulae;
  * @param <T>
  *            the type of the sub-formulae
  */
-public interface BinaryFormula<T extends Formula> {
+public interface BinaryFormula<T> {
 
 	/**
 	 * returns the left child of the formula

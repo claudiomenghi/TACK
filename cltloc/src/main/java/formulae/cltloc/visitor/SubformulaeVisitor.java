@@ -168,18 +168,6 @@ public class SubformulaeVisitor implements CLTLocVisitor<Set<CLTLocFormula>> {
 	@Override
 	public Set<CLTLocFormula> visit(CLTLocRelation formula) {
 		Set<CLTLocFormula> formulae = new HashSet<>();
-		formulae.addAll(formula.getLeftChild().accept(this));
-		formulae.addAll(formula.getRightChild().accept(this));
-		formulae.add(formula);
-		return formulae;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<CLTLocFormula> visit(CLTLClock formula) {
-		Set<CLTLocFormula> formulae = new HashSet<>();
 		formulae.add(formula);
 		return formulae;
 	}
@@ -194,14 +182,14 @@ public class SubformulaeVisitor implements CLTLocVisitor<Set<CLTLocFormula>> {
 		return formulae;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Set<CLTLocFormula> visit(CLTLConstantAtom formula) {
-		Set<CLTLocFormula> formulae = new HashSet<>();
-		formulae.add(formula);
-		return formulae;
+	public Set<CLTLocFormula> visit(CLTLClock cltlClock) {
+		return new HashSet<>();
+	}
+
+	@Override
+	public Set<CLTLocFormula> visit(CLTLConstantAtom cltlConstantAtom) {
+		return new HashSet<>();
 	}
 
 }
