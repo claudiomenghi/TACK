@@ -10,7 +10,7 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 
 	private final CLTLocFormula subformula1;
 	private final CLTLocFormula subformula2;
-	private final String operator = "->";
+	public final String operator = "->";
 	private final int hash;
 	
 

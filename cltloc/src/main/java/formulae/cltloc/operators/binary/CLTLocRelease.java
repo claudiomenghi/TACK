@@ -10,7 +10,7 @@ public class CLTLocRelease extends CLTLocFormula implements BinaryFormula<CLTLoc
 
 	private final CLTLocFormula subformula1;
 	private final CLTLocFormula subformula2;
-	private final String operator = "R";
+	public final String operator = "R";
 	private final int hash;
 	
 

@@ -12,7 +12,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 
 	private final CLTLocFormula subformula1;
 	private final CLTLocFormula subformula2;
-	private final String operator = "||";
+	public final String operator = "||";
 	private final int hash;
 
 	public CLTLocDisjunction(CLTLocFormula subformula1, CLTLocFormula subformula2) {

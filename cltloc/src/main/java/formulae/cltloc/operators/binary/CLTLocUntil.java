@@ -10,7 +10,7 @@ public class CLTLocUntil extends CLTLocFormula implements BinaryFormula<CLTLocFo
 
 	private final CLTLocFormula subformula1;
 	private final CLTLocFormula subformula2;
-	private final String operator = "U";
+	public final String operator = "U";
 	private final int hash;
 
 	public CLTLocUntil(CLTLocFormula subformula1, CLTLocFormula subformula2) {

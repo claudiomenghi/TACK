@@ -13,7 +13,7 @@ public class CLTLocGlobally extends CLTLocFormula implements UnaryFormula<CLTLoc
 	// Formula f1 which is argument of the negation (\neg f1)
 	private CLTLocFormula child;
 
-	private final String operator = "G";
+	public final String operator = "G";
 
 	private final int hash;
 

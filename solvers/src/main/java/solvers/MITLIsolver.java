@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map.Entry;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -15,10 +16,11 @@ import com.google.common.base.Preconditions;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.converters.CLTLoc2Zot;
+import formulae.cltloc.visitor.NicelyIndentToString;
 import formulae.mitli.MITLIFormula;
+import formulae.mitli.converters.MITLI2CLTLoc;
 import formulae.mitli.parser.MITLILexer;
 import formulae.mitli.parser.MITLIParser;
-import formulae.mitli.visitors.MITLI2CLTLocVisitor;
 
 public class MITLIsolver {
 	public static void main(String[] args) throws Exception {
@@ -43,8 +45,11 @@ public class MITLIsolver {
 
 			
 
-			CLTLocFormula cltlocFormula = formula.accept(new MITLI2CLTLocVisitor(formula, Integer.parseInt(args[1])));
+			MITLI2CLTLoc converted=new MITLI2CLTLoc(formula, Integer.parseInt(args[1]));
+			CLTLocFormula cltlocFormula = converted.apply();
 
+			
+			
 			System.out.println("Transforming the MITLI formula in CLTLoc");
 			String cltlocFile;
 			if (args[0].contains(".mitli")) {
@@ -53,7 +58,26 @@ public class MITLIsolver {
 				cltlocFile = args[0].concat(".cltloc");
 			}
 			
-			FileUtils.writeStringToFile(new File(cltlocFile), cltlocFormula.toString());
+			FileUtils.writeStringToFile(new File(cltlocFile), cltlocFormula.accept(new NicelyIndentToString()));
+			
+			
+			
+			StringBuilder vocabularyBuilder=new StringBuilder();
+			
+			for(Entry<Integer, MITLIFormula> entry: converted.getVocabulary().entrySet()){
+				vocabularyBuilder.append(entry.getKey()+": "+entry.getValue()+"\n");
+			}
+			
+			String vocabulary;
+			if (args[0].contains(".mitli")) {
+				vocabulary = args[0].replaceAll(".mitli", ".vocabulary");
+			} else {
+				vocabulary = args[0].concat(".vocabulary");
+			}
+			
+			FileUtils.writeStringToFile(new File(vocabulary), vocabularyBuilder.toString());
+			
+			
 			System.out.println("CLTLoc formula saved in the file " + cltlocFile);
 
 			String zotEncoding = new CLTLoc2Zot(Integer.parseInt(args[1])).apply(cltlocFormula);

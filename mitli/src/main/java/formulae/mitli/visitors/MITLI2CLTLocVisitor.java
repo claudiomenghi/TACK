@@ -3,18 +3,18 @@ package formulae.mitli.visitors;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.log4j.Logger;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import formulae.BinaryFormula;
 import formulae.cltloc.CLTLocFormula;
@@ -63,7 +63,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class);
 
-	public Map<MITLIFormula, Integer> formulaIdMap;
+	public final BiMap<MITLIFormula, Integer> formulaIdMap=HashBiMap.create();
 
 	/**
 	 * is true in the origin of the time
@@ -158,8 +158,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		LOGGER.info("Converting the formula " + formula.toString() + " to CLTLoc");
 		Set<MITLIFormula> subformulae = formula.accept(new SubformulaeVisitor());
 		List<MITLIFormula> listSubFormula = new ArrayList<>(subformulae);
-		formulaIdMap = IntStream.range(0, listSubFormula.size()).boxed()
-				.collect(Collectors.toMap(listSubFormula::get, i -> i));
+		
+		for(int i=0; i<listSubFormula.size(); i++){
+			this.formulaIdMap.put(listSubFormula.get(i), i);
+		}
 
 		this.maxIntComparedto = maxIntComparedto;
 

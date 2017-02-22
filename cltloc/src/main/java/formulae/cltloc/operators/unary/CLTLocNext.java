@@ -11,7 +11,7 @@ public class CLTLocNext extends CLTLocFormula implements UnaryFormula<CLTLocForm
 	// Formula f1 which is argument of the negation (\neg f1)
 	private CLTLocFormula child;
 
-	private final String operator = "X";
+	public final String operator = "X";
 
 	private final int hash;
 	

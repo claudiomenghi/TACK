@@ -14,3 +14,6 @@ output.dict.txt
 output.smt.txt
 bin/*
 .DS_Store
+*.lisp
+*.cltloc
+*.vocabulary

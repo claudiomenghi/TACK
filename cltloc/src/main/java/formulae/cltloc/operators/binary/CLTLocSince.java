@@ -10,7 +10,7 @@ public class CLTLocSince extends CLTLocFormula implements BinaryFormula<CLTLocFo
 
 	private final CLTLocFormula subformula1;
 	private final CLTLocFormula subformula2;
-	private final String operator = "S";
+	public final String operator = "S";
 	private final int hash;
 	
 	public CLTLocSince(CLTLocFormula subformula1, CLTLocFormula subformula2) {
