@@ -1,4 +1,4 @@
-// Generated from MITLI.g4 by ANTLR 4.5
+// Generated from MITLI.g4 by ANTLR 4.6
 
 package formulae.mitli.parser;
 
@@ -11,7 +11,6 @@ import java.io.PrintStream;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

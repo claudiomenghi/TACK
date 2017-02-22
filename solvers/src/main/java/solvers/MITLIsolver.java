@@ -40,11 +40,17 @@ public class MITLIsolver {
 
 			System.out.println("MITLI formula encoded in ZOT");
 
-			String lispFile = args[0].replaceAll(".txt", ".lisp");
+			String lispFile;
+			if (args[0].contains(".mitli")) {
+				lispFile = args[0].replaceAll(".mitli", ".lisp");
+			} else {
+				lispFile = args[0].concat(".lisp");
+			}
+			
 			System.out.println("The file " + lispFile + " contains the zot encoding");
 			FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 
-			Process p = Runtime.getRuntime().exec("sh ./run_zot.sh " + lispFile);
+			Process p = Runtime.getRuntime().exec("sh ./src/main/resources/run_zot.sh " + lispFile);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 

@@ -97,7 +97,7 @@ fmla returns [MITLIFormula r]
 		}
 	|   LPAR IMPL_OP f1=fmla f2=fmla RPAR
 		{	
-			MITLIFormula f = MITLIFormula.implies($f1.r,$f2.r);	
+			MITLIFormula f = MITLIFormula.implies((MITLIFormula) $f1.r, (MITLIFormula)$f2.r);	
 				
 			$r = f;	
 		}
@@ -138,6 +138,12 @@ fmla returns [MITLIFormula r]
 			
 				if (s.compareTo("G_ei") == 0 || s.compareTo("G_ii") == 0){
 					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), Integer.valueOf($b.text)); 
+				}
+				if(s.compareTo("G_ee")==0){
+					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), true, Integer.valueOf($b.text), true); 
+				}
+				if(s.compareTo("G_ie")==0){
+					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), false, Integer.valueOf($b.text), true);
 				}
 				
 				 
@@ -207,16 +213,17 @@ fmla returns [MITLIFormula r]
 conjuncts_list returns [List<MITLIFormula> l]
 	@init{$l = new ArrayList<MITLIFormula>();}:
 	
-	 fmla (conjuncts_list | )
-		{
-			if ($conjuncts_list.l == null)
-				$l.add($fmla.r);
-			else{
-				($conjuncts_list.l).add($fmla.r);
-				$l.addAll($conjuncts_list.l);
+	 fmla{
+	 	$l.add($fmla.r);
+	 } (conjuncts_list{
+			$l.addAll($conjuncts_list.l);
 			}
+	 	
+	 	|
+	 )
+		
 				
-		}
+		
 	;
 	 
 

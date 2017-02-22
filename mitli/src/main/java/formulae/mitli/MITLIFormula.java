@@ -139,6 +139,9 @@ public abstract class MITLIFormula extends Formula {
 	}
 
 	public static MITLIFormula implies(MITLIFormula f1, MITLIFormula f2) {
+		Preconditions.checkNotNull(f1, "The first subformula cannot be null");
+		Preconditions.checkNotNull(f2, "The second subformula cannot be null");
+
 		return new MITLIImplies(f1, f2);
 	}
 
@@ -149,5 +152,130 @@ public abstract class MITLIFormula extends Formula {
 	// Producers method to build derived temporal CLTL formulae
 	public static MITLIFormula R(MITLIFormula f1, MITLIFormula f2) {
 		return new MITLIRelease(f1, f2);
+	}
+
+	public static MITLIFormula G(MITLIFormula f, boolean abopen, int b, boolean dbopen) {
+		if (abopen && dbopen) { // G_(0,b)
+			return new MITLIGlobally_ZerotoB(f, b);
+		} else if (!abopen && dbopen) // G_[0,b)
+			return and(f, G(f, true, b, dbopen));
+
+		else if (abopen && !dbopen)
+			return and(G(f, true, b, true), G(F(f, true, b, true), true, b, true));
+
+		else
+			return and(f, G(f, true, b, false)); // G_[0,b]
+
+	}
+
+	// Eventually: F_<a,+oo)
+	public static MITLIFormula F(MITLIFormula f, int a, boolean aB) {
+
+		MITLIFormula qtlTrue = MITLIFormula.TRUE;
+
+		if (a == 0 && aB == true) // F_(0,+oo)
+			return U(qtlTrue, f);
+
+		else if (a == 0 && aB == true) // F_[0,+oo)
+			return or(f, F(f, 0, true));
+
+		else if (a > 0 && aB == true) // F_(a,+oo)
+			return G(F(f, 0, true), true, a, true);
+
+		else // F_[a,+oo)
+			return G(F(f, 0, true), true, a, true);
+	}
+
+	private static MITLIFormula first(MITLIFormula f) {
+		return U(not(f), f);
+	}
+
+	// Eventually: F_<0,b>
+	public static MITLIFormula F(MITLIFormula f, boolean aB, int b, boolean bB) {
+		if (aB == true && bB == true) { // F_(0,b)
+
+			return new MITLIEventually_ZerotoB(f, b);
+
+		} else if (aB == false && bB == true) // F_[0,b)
+			return or(f, F(f, true, b, bB));
+
+		else if (aB == true && bB == false) // F_(0,b]
+			return or(F(f, true, b, true), and(first(f), G(F(f, true, b, true), true, b, true)));
+
+		else
+			return or(f, F(f, true, b, false)); // F_[0,b]
+
+	}
+
+	public static MITLIFormula F(MITLIFormula f, int a, boolean aB, int b, boolean bB) {
+		if (a == 0)
+			return F(f, aB, b, bB);
+		else {
+			int d = b - a;
+			MITLIFormula fm = f;
+
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+				fm = G(F(fm, 0, true, d, true), 0, true, d, true);
+
+			if (low > 0) {
+				MITLIFormula[] _or = new MITLIFormula[d];
+				int i = 0;
+				for (int j = low; j < upp; j++) {
+					if (j == d)
+						_or[i++] = F(G(F(fm, 0, true, d, true), 0, true, d, true), 0, false, 1, bB);
+					else {
+						MITLIFormula orf = fm;
+						for (int h = j; h > 0; h--)
+							orf = G(F(orf, 0, true, 1, true), 0, true, 1, true);
+						if (i == 0)
+							orf = F(orf, 0, aB, 1, true);
+						else
+							orf = F(orf, 0, false, 1, true);
+
+						_or[i++] = orf;
+					}
+				}
+				MITLIFormula result = _or[0];
+				for (int j = 1; j < d; j++)
+					result = or(result, _or[j]);
+
+				return result;
+			} else
+				return F(fm, 0, aB, d, true);
+
+		}
+
+	}
+
+	public static MITLIFormula G(MITLIFormula f, int a, boolean abopen, int b, boolean dbopen) {
+		if (a == 0)
+			return G(f, abopen, b, dbopen);
+		else {
+
+			/* Following implementation uses native encoding for Globally */
+
+			int d = b - a;
+			MITLIFormula fm = f;
+
+			int low = a;
+			int upp = b;
+			for (; low >= d; low = low - d, upp = upp - d)
+				if (low == a)
+					fm = F(G(fm, 0, abopen, d, dbopen), 0, true, d, true);
+				else
+					fm = F(G(fm, 0, true, d, true), 0, true, d, true);
+
+			if (low > 0) {
+				MITLIFormula orf = fm;
+
+				for (int h = low; h > 0; h--)
+					orf = G(F(orf, 0, true, 1, true), 0, true, 1, true);
+
+				return F(orf, 0, true, 1, true);
+			} else
+				return F(fm, 0, true, 1, true);
+		}
 	}
 }
