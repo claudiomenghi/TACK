@@ -4,13 +4,13 @@ import com.google.common.base.Preconditions;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLClock extends CLTLocAtom {
+public class CLTLocClock extends CLTLocAtom {
 
 	
 	private final int hash;
 	private final String clockName;
 
-	public CLTLClock(String name) {
+	public CLTLocClock(String name) {
 		super();
 		Preconditions.checkNotNull(name, "The clock name cannot be null");
 		this.clockName = name;
@@ -33,7 +33,7 @@ public class CLTLClock extends CLTLocAtom {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CLTLClock other = (CLTLClock) obj;
+		CLTLocClock other = (CLTLocClock) obj;
 		if (clockName == null) {
 			if (other.clockName != null)
 				return false;

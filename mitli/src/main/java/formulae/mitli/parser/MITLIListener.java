@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.FileNotFoundException;
 import java.util.Collections;
+import formulae.mitli.atoms.*;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 

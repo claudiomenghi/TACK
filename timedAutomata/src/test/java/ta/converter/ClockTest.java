@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.atoms.CLTLClock;
+import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import ta.AP;
 import ta.SystemDecl;
@@ -40,13 +40,13 @@ public class ClockTest {
 		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest);
 
 		
-		Set<CLTLClock> clocks = formula.accept(new GetClocksVisitor());
+		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
 
 		System.out.println(clocks);
-		Set<CLTLClock> expectedSet = new HashSet<>();
-		expectedSet.add(new CLTLClock("A_c"));
-		expectedSet.add(new CLTLClock("B_c"));
-		expectedSet.add(new CLTLClock("C_c"));
+		Set<CLTLocClock> expectedSet = new HashSet<>();
+		expectedSet.add(new CLTLocClock("A_c"));
+		expectedSet.add(new CLTLocClock("B_c"));
+		expectedSet.add(new CLTLocClock("C_c"));
 
 		assertEquals(expectedSet, clocks);
 

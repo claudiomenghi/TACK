@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.FileNotFoundException;
 import java.util.Collections;
+import formulae.mitli.atoms.*;
 }
 
 mitli returns [MITLIFormula formula]:	
@@ -51,10 +52,16 @@ fmla returns [MITLIFormula r]
 	|   ID  
 		{	
 			
-				MITLIFormula f = new MITLIAtom($ID.text);
+				MITLIFormula f = new MITLIPropositionalAtom($ID.text);
 				
 				$r = f;
 			
+		}
+	|   ID  OP INT
+		{
+			MITLIFormula f = new MITLIRelationalAtom($ID.text, $OP.text, Integer.parseInt($INT.text));
+				
+				$r = f;
 		}
 	|	LPAR NEG_OP f1=fmla RPAR 
 		{	
@@ -223,15 +230,11 @@ conjuncts_list returns [List<MITLIFormula> l]
 			}
 	 	
 	 	|
-	 )
-		
-				
-		
-	;
+	 );
 	 
 
 
-
+OP: '<' | '>' | '=' | '<=' | '>=';
 
 /* Parenthsis */
 LPAR:   '(';

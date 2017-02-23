@@ -9,8 +9,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.atoms.CLTLClock;
-import formulae.cltloc.atoms.CLTLConstantAtom;
+import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.CLTLocConstantAtom;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -126,7 +126,7 @@ public class TA2CLTLoc {
 
 		Set<Clock> clocks = ta.getClocks();
 		Set<CLTLocFormula> clockFormulae = clocks.stream()
-				.map(c -> new CLTLocGERelation(new CLTLClock(c.getName()), new CLTLConstantAtom(0)))
+				.map(c -> new CLTLocGERelation(new CLTLocClock(c.getName()), new CLTLocConstantAtom(0)))
 				.collect(Collectors.toSet());
 
 		CLTLocFormula clocksGeZero = clockFormulae.stream().reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -152,7 +152,7 @@ public class TA2CLTLoc {
 		CLTLocFormula formula1= CLTLocFormula.TRUE;
 		for (EQCondition c : t.getGuard().getConditions()) {
 				if(clocksId.contains(c.getId())){
-					formula1=conjunctionOperator.apply(formula1, new CLTLocEQRelation(new CLTLClock(c.getId()), new CLTLConstantAtom(Integer.parseInt(c.getValue().value))));
+					formula1=conjunctionOperator.apply(formula1, new CLTLocEQRelation(new CLTLocClock(c.getId()), new CLTLocConstantAtom(Integer.parseInt(c.getValue().value))));
 				}
 		}
 		
@@ -160,7 +160,7 @@ public class TA2CLTLoc {
 		Set<String> s=t.getAssignement().getConditions().stream().map(c -> c.getId()).collect(Collectors.toSet());
 		for (EQAssignement c : t.getAssignement().getConditions()) {
 				if(clocksId.contains(c.getId())){
-					formula2=conjunctionOperator.apply(formula2, new CLTLocEQRelation(new CLTLClock(c.getId()), new CLTLConstantAtom(0)));
+					formula2=conjunctionOperator.apply(formula2, new CLTLocEQRelation(new CLTLocClock(c.getId()), new CLTLocConstantAtom(0)));
 				}
 		}
 		Set<String> diff=new HashSet<>(clocksId);
@@ -168,7 +168,7 @@ public class TA2CLTLoc {
 		
 		CLTLocFormula formula3= CLTLocFormula.TRUE;
 		for(String s2Id: diff){
-			formula3=conjunctionOperator.apply(formula2, new CLTLocGERelation(new CLTLClock(s2Id), new CLTLConstantAtom(0)));
+			formula3=conjunctionOperator.apply(formula2, new CLTLocGERelation(new CLTLocClock(s2Id), new CLTLocConstantAtom(0)));
 		}
 		return conjunctionOperator.apply(formula1, conjunctionOperator.apply(formula2, formula3));
 	}

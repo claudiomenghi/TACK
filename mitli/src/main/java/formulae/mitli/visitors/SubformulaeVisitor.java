@@ -3,13 +3,11 @@ package formulae.mitli.visitors;
 import java.util.HashSet;
 import java.util.Set;
 
-import formulae.mitli.MITLIAtom;
 import formulae.mitli.MITLIConjunction;
 import formulae.mitli.MITLIDisjunction;
 import formulae.mitli.MITLIEventually_AtoB;
 import formulae.mitli.MITLIEventually_AtoInf;
 import formulae.mitli.MITLIEventually_ZerotoB;
-import formulae.mitli.MITLIFalse;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.MITLIGlobally_AtoB;
 import formulae.mitli.MITLIGlobally_AtoInf;
@@ -21,8 +19,11 @@ import formulae.mitli.MITLIPast_AtoB;
 import formulae.mitli.MITLIPast_ZerotoB;
 import formulae.mitli.MITLIRelease;
 import formulae.mitli.MITLISince;
-import formulae.mitli.MITLITrue;
 import formulae.mitli.MITLIUntil;
+import formulae.mitli.atoms.MITLIFalse;
+import formulae.mitli.atoms.MITLIPropositionalAtom;
+import formulae.mitli.atoms.MITLIRelationalAtom;
+import formulae.mitli.atoms.MITLITrue;
 
 public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 
@@ -70,15 +71,7 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 		return formulae;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<MITLIFormula> visit(MITLIAtom formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
-		formulae.add(formula);
-		return formulae;
-	}
+	
 
 	/**
 	 * {@inheritDoc}
@@ -235,6 +228,20 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 		Set<MITLIFormula> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
+		formulae.add(formula);
+		return formulae;
+	}
+
+	@Override
+	public Set<MITLIFormula> visit(MITLIPropositionalAtom formula) {
+		Set<MITLIFormula> formulae = new HashSet<>();
+		formulae.add(formula);
+		return formulae;
+	}
+
+	@Override
+	public Set<MITLIFormula> visit(MITLIRelationalAtom formula) {
+		Set<MITLIFormula> formulae = new HashSet<>();
 		formulae.add(formula);
 		return formulae;
 	}

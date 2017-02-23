@@ -21,14 +21,14 @@ import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.relations.CLTLocRelation;
 
-public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
+public class GetVariablesVisitor implements CLTLocVisitor<Set<CLTLocVariable>> {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocDisjunction formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocDisjunction formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -38,8 +38,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocConjunction formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocConjunction formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -49,8 +49,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocNegation formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocNegation formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getChild().accept(this));
 		return formulae;
 	}
@@ -59,8 +59,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocUntil formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocUntil formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -70,8 +70,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocImplies formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocImplies formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -81,8 +81,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocIff formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocIff formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -92,8 +92,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocSince formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocSince formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -103,8 +103,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocRelease formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocRelease formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -114,8 +114,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocNext formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocNext formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getChild().accept(this));
 		return formulae;
 	}
@@ -124,8 +124,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocGlobally formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocGlobally formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getChild().accept(this));
 		return formulae;
 	}
@@ -134,8 +134,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocEventually formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocEventually formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getChild().accept(this));
 		return formulae;
 	}
@@ -144,8 +144,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocYesterday formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocYesterday formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getChild().accept(this));
 		return formulae;
 	}
@@ -154,8 +154,8 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocRelation formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocRelation formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		return formulae;
@@ -165,33 +165,34 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocClock> visit(CLTLocClock formula) {
-		Set<CLTLocClock> formulae = new HashSet<>();
+	public Set<CLTLocVariable> visit(CLTLocAP formula) {
+		return  new HashSet<>();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<CLTLocVariable> visit(CLTLocClock cltlClock) {
+		return  new HashSet<>();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<CLTLocVariable> visit(CLTLocConstantAtom cltlConstantAtom) {
+		return  new HashSet<>();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<CLTLocVariable> visit(CLTLocVariable formula) {
+		Set<CLTLocVariable> formulae = new HashSet<>();
 		formulae.add(formula);
 		return formulae;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<CLTLocClock> visit(CLTLocAP formula) {
-		return new HashSet<>();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<CLTLocClock> visit(CLTLocConstantAtom cltlConstantAtom) {
-		return new HashSet<>();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<CLTLocClock> visit(CLTLocVariable formula) {
-		return new HashSet<>();
-	}
 }

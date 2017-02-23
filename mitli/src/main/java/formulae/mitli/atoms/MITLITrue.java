@@ -1,14 +1,14 @@
-package formulae.mitli;
+package formulae.mitli.atoms;
 
 import formulae.mitli.visitors.MITLIVisitor;
 
-public class MITLIAtom extends MITLIFormula {
+public class MITLITrue extends MITLIAtom {
 
 	private final String atomName;
 	private final int hash;
 
-	public MITLIAtom(String atom) {
-		this.atomName = atom;
+	public MITLITrue() {
+		this.atomName = new String("TRUE");
 		this.hash = this.generateHash();
 	}
 
@@ -46,7 +46,7 @@ public class MITLIAtom extends MITLIFormula {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MITLIAtom other = (MITLIAtom) obj;
+		MITLITrue other = (MITLITrue) obj;
 		if (atomName == null) {
 			if (other.atomName != null)
 				return false;
@@ -54,11 +54,11 @@ public class MITLIAtom extends MITLIFormula {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toString(){
+	public String toString() {
 		return this.atomName;
 	}
 

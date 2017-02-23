@@ -1,7 +1,8 @@
 package formulae.cltloc.visitor;
 
-import formulae.cltloc.atoms.CLTLClock;
-import formulae.cltloc.atoms.CLTLConstantAtom;
+import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.CLTLocConstantAtom;
+import formulae.cltloc.atoms.CLTLocVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -223,7 +224,7 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	}
 
 	@Override
-	public String visit(CLTLClock cltlClock) {
+	public String visit(CLTLocClock cltlClock) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(cltlClock.toString());
 		
@@ -231,9 +232,17 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	}
 
 	@Override
-	public String visit(CLTLConstantAtom cltlConstantAtom) {
+	public String visit(CLTLocConstantAtom cltlConstantAtom) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(cltlConstantAtom.toString());
+		
+		return finalFormula.toString();
+	}
+
+	@Override
+	public String visit(CLTLocVariable formula) {
+		StringBuilder finalFormula=new StringBuilder();
+		finalFormula.append(formula.toString());
 		
 		return finalFormula.toString();
 	}

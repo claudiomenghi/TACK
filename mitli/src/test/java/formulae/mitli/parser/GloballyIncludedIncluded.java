@@ -10,9 +10,9 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
-import formulae.mitli.MITLIAtom;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.MITLIGlobally_AtoB;
+import formulae.mitli.atoms.MITLIPropositionalAtom;
 
 public class GloballyIncludedIncluded {
 
@@ -31,7 +31,7 @@ public class GloballyIncludedIncluded {
 
 		MITLIGlobally_AtoB formularet = (MITLIGlobally_AtoB) formula;
 
-		assertTrue(formularet.getChild().equals(new MITLIAtom("p")));
+		assertTrue(formularet.getChild().equals(new MITLIPropositionalAtom("p")));
 	}
 
 }

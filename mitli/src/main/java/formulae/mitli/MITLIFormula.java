@@ -3,14 +3,17 @@ package formulae.mitli;
 import com.google.common.base.Preconditions;
 
 import formulae.Formula;
+import formulae.mitli.atoms.MITLIFalse;
+import formulae.mitli.atoms.MITLIPropositionalAtom;
+import formulae.mitli.atoms.MITLITrue;
 import formulae.mitli.visitors.MITLIVisitor;
 
 public abstract class MITLIFormula extends Formula {
 
 	private int maxIntComparedto = 0;
 
-	public static final MITLIFormula TRUE = new MITLIAtom("True");
-	public static final MITLIFormula FALSE = new MITLIAtom("True");
+	public static final MITLIFormula TRUE = new MITLITrue();
+	public static final MITLIFormula FALSE = new MITLIFalse();
 
 	public MITLIFormula() {
 		super();
@@ -33,7 +36,7 @@ public abstract class MITLIFormula extends Formula {
 	// Producers method to build CLTL formulae of the argument formula
 
 	public static MITLIFormula atom(String s) {
-		return new MITLIAtom(s);
+		return new MITLIPropositionalAtom(s);
 	}
 
 	public static MITLIFormula not(MITLIFormula f) {
