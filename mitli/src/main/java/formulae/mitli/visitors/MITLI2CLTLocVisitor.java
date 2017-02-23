@@ -8,7 +8,6 @@ import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
-import java.util.stream.IntStream;
 
 import org.apache.log4j.Logger;
 
@@ -18,10 +17,10 @@ import com.google.common.collect.HashBiMap;
 
 import formulae.BinaryFormula;
 import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocConstantAtom;
-import formulae.cltloc.atoms.CLTLocVariable;
-import formulae.cltloc.atoms.CLTLocAP;
+import formulae.cltloc.atoms.CLTLocSignal;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
@@ -56,7 +55,6 @@ import formulae.mitli.MITLIPast_ZerotoB;
 import formulae.mitli.MITLIRelease;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
-import formulae.mitli.atoms.MITLIAtom;
 import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
@@ -1127,28 +1125,36 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	@Override
 	public CLTLocFormula visit(MITLIRelationalAtom formula) {
+
+		CLTLocFormula f;
 		switch (formula.getOperator()) {
 		case "=":
-			return new CLTLocEQRelation(new CLTLocVariable(formula.getIdentifier()),
+			f = new CLTLocEQRelation(new CLTLocSignal(formula.getIdentifier()),
 					new CLTLocConstantAtom(formula.getValue()));
+			break;
 
 		case "<":
-			return new CLTLocLERelation(new CLTLocVariable(formula.getIdentifier()),
+			f = new CLTLocLERelation(new CLTLocSignal(formula.getIdentifier()),
 					new CLTLocConstantAtom(formula.getValue()));
+			break;
 		case "<=":
-			return new CLTLocLEQRelation(new CLTLocVariable(formula.getIdentifier()),
+			f = new CLTLocLEQRelation(new CLTLocSignal(formula.getIdentifier()),
 					new CLTLocConstantAtom(formula.getValue()));
+			break;
 
 		case ">":
-			return new CLTLocGERelation(new CLTLocVariable(formula.getIdentifier()),
+			f = new CLTLocGERelation(new CLTLocSignal(formula.getIdentifier()),
 					new CLTLocConstantAtom(formula.getValue()));
+			break;
 		case ">=":
-			return new CLTLocGEQRelation(new CLTLocVariable(formula.getIdentifier()),
+			f = new CLTLocGEQRelation(new CLTLocSignal(formula.getIdentifier()),
 					new CLTLocConstantAtom(formula.getValue()));
-
+			break;
+		default:
+			f = CLTLocFormula.TRUE;
 		}
 
-		return null;
+		return IFF.apply(first.apply(this.formulaIdMap.get(formula)), f);
 	}
 
 }

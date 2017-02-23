@@ -3,14 +3,16 @@ package formulae.cltloc.converters;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.base.Preconditions;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocClock;
-import formulae.cltloc.atoms.CLTLocVariable;
+import formulae.cltloc.atoms.CLTLocSignal;
 import formulae.cltloc.visitor.CLTLoc2ZotVisitor;
 import formulae.cltloc.visitor.GetClocksVisitor;
-import formulae.cltloc.visitor.GetVariablesVisitor;
+import formulae.cltloc.visitor.GetSignalVisitor;
 
 public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 
@@ -29,16 +31,22 @@ public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
 		clocks.forEach(clock -> builder.append("(define-tvar " + clock.toString() + " *real*)\n"));
 
-		Set<CLTLocVariable> variables = formula.accept(new GetVariablesVisitor());
+		Set<CLTLocSignal> variables = formula.accept(new GetSignalVisitor());
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *real*)\n"));
+
+		final StringBuilder footerBuilder = new StringBuilder();
+		footerBuilder.append(":signals '("+StringUtils.join(variables, ' ')+")");
+		
 
 		
 		builder.append("(ae2zot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
 				+ ":smt-lib :smt2 \n" + ":logic :QF_UFRDL \n" + ":over-clocks 3 \n" +
-				//":parametric-regions t \n"
+				footerBuilder.toString()+" \n"+
 				")\n");
 
 		builder.append("\n");
+		
+
 		return builder.toString();
 	}
 }

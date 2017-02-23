@@ -30,6 +30,6 @@ sourceSets {
 dependencies {
  	compile group: 'com.google.guava', name: 'guava', version: '15.0'
     compile 'org.slf4j:slf4j-api:1.7.21'
-	
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     testCompile 'junit:junit:4.12'
 }

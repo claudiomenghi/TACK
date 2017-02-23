@@ -4,12 +4,12 @@ import com.google.common.base.Preconditions;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLocVariable extends CLTLocAtom {
+public class CLTLocSignal extends CLTLocAtom {
 
 	private final int hash;
 	private final String variableName;
 
-	public CLTLocVariable(String name) {
+	public CLTLocSignal(String name) {
 		super();
 		Preconditions.checkNotNull(name, "The clock name cannot be null");
 		this.variableName = name;
@@ -29,7 +29,7 @@ public class CLTLocVariable extends CLTLocAtom {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CLTLocVariable other = (CLTLocVariable) obj;
+		CLTLocSignal other = (CLTLocSignal) obj;
 		if (variableName == null) {
 			if (other.variableName != null)
 				return false;
