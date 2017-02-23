@@ -7,4 +7,4 @@
 
  
 * execute the command `docker pull fmarconi/zot`
-* run the command `gradle solve -Pfile='squaredsignal.mitli' -Ptime='1000'`. Where `squaredsignal.mitli` contains the MITLI formula to be verified. This command generates the file `squaredsignal.lisp` that contains the zot encoding of the MITLI formula.
+* run the command `gradle solve -PappArgs="['squaredsignal.mitli', '15']"`. Where `squaredsignal.mitli` contains the MITLI formula to be verified. This command generates the file `squaredsignal.lisp` that contains the zot encoding of the MITLI formula.

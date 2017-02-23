@@ -6,7 +6,8 @@ apply plugin: 'antlr'
 apply plugin:'application'
 
 
-mainClassName="solvers.MITLIsolver"
+
+
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -33,19 +34,17 @@ sourceSets {
     }
 }
 
-
-
  
- 
- 
- task solve(type: JavaExec) {
+ task solve (type: JavaExec){
+main = "solvers.MITLIsolver"
  classpath = sourceSets.main.runtimeClasspath
-  mainClassName = "solvers.MITLIsover"
-   main = "solvers.MITLIsolver"
-   println "$file    $time"
-   args "$file";
-   args "$time";
+  	   	  	 	 	mainClassName = "solvers.MITLIsover"
+    description = "Runs the MITLI framework"
+     if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
 }
+ 
 
 // In this section you declare the dependencies for your production and test code
 dependencies {

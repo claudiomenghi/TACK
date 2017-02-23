@@ -29,30 +29,27 @@ public class MITLIsolver {
 
 	private final MITLIFormula formula;
 	private final PrintStream out;
-	private final String fileOutName;
 	private final int bound;
-	
+
 	private CLTLocFormula cltlocFormula;
 	private Map<Integer, MITLIFormula> vocabulary;
 	private String zotEncoding;
-	
 
-	public MITLIsolver(MITLIFormula formula, PrintStream out, String fileOutName, int bound) {
+	public MITLIsolver(MITLIFormula formula, PrintStream out, int bound) {
 
 		this.formula = formula;
 		this.out = out;
-		this.fileOutName=fileOutName;
-		this.bound=bound;
+		this.bound = bound;
 
 	}
 
 	public boolean solve() throws IOException {
-		
+
 		out.println("Transforming the MITLI formula in CLTLoc");
 		MITLI2CLTLoc converted = new MITLI2CLTLoc(formula, bound);
 		cltlocFormula = converted.apply();
 
-		this.vocabulary=converted.getVocabulary();
+		this.vocabulary = converted.getVocabulary();
 
 		out.println("CLTLoc formula converted ");
 
@@ -60,26 +57,23 @@ public class MITLIsolver {
 
 		out.println("CLTLoc formula encoded in ZOT");
 
-		String lispFile;
-		if (this.fileOutName.contains(".mitli")) {
-			lispFile = this.fileOutName.replaceAll(".mitli", ".lisp");
-		} else {
-			lispFile = this.fileOutName.concat(".lisp");
-		}
+		String lispFile = ".tmp.lisp";
 
 		out.println("Running zot");
 		FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 
 		Process p = Runtime.getRuntime().exec("sh ./run_zot.sh " + lispFile);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		boolean sat = false;
 		
-		boolean sat=false;
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
 		StringBuilder builder = new StringBuilder();
 		String line = "";
 		while ((line = reader.readLine()) != null) {
-			if(line.contains("---SAT---")){
-				sat=true;
+			if (line.contains("---SAT---")) {
+				sat = true;
 			}
 			builder.append(line + "\n");
 		}
@@ -91,10 +85,15 @@ public class MITLIsolver {
 		builder = new StringBuilder();
 		line = "";
 		while ((line = reader.readLine()) != null) {
+			if (line.contains("---SAT---")) {
+				sat = true;
+			}
 			builder.append(line + "\n");
 		}
 
 		out.println(builder.toString());
+
+		
 		
 		try {
 			p.waitFor();
@@ -103,7 +102,7 @@ public class MITLIsolver {
 			e.printStackTrace();
 		}
 		FileUtils.forceDelete(new File(lispFile));
-		
+
 		return sat;
 	}
 
@@ -112,12 +111,12 @@ public class MITLIsolver {
 	}
 
 	public static void main(String[] args) throws Exception {
-		PrintStream out=System.out;
-		
+		PrintStream out = System.out;
+
 		out.println(args[0]);
 		out.println(args[1]);
-		
-		String fileOutName=args[0];
+
+		String fileOutName = args[0];
 		Preconditions.checkArgument(args.length > 1,
 				"you must specify the file that contains the MITLI formula and the bound to be used");
 		Preconditions.checkArgument(Files.exists(Paths.get(args[0])), "The file: " + args[0] + " does not exist");
@@ -137,11 +136,10 @@ public class MITLIsolver {
 			parser.setBuildParseTree(true);
 
 			MITLIFormula formula = parser.mitli().formula;
-			
-			MITLIsolver solver=new MITLIsolver(formula, System.out, args[0], Integer.parseInt(args[1]));
+
+			MITLIsolver solver = new MITLIsolver(formula, System.out, Integer.parseInt(args[1]));
 			solver.solve();
-			
-			
+
 			out.print("************************************************************************************\n");
 			// Writing the CLTLoc formula
 			String cltlocFile;
@@ -151,10 +149,11 @@ public class MITLIsolver {
 				cltlocFile = fileOutName.concat(".cltloc");
 			}
 
-			FileUtils.writeStringToFile(new File(cltlocFile), solver.getCltlocFormula().accept(new NicelyIndentToString()));
+			FileUtils.writeStringToFile(new File(cltlocFile),
+					solver.getCltlocFormula().accept(new NicelyIndentToString()));
 			out.println("CLTLoc formula written in the file " + cltlocFile);
 
-			// Writing the vocabulary 
+			// Writing the vocabulary
 			StringBuilder vocabularyBuilder = new StringBuilder();
 			for (Entry<Integer, MITLIFormula> entry : solver.getVocabulary().entrySet()) {
 				vocabularyBuilder.append(entry.getKey() + ": " + entry.getValue() + "\n");
@@ -168,10 +167,9 @@ public class MITLIsolver {
 			FileUtils.writeStringToFile(new File(vocabulary), vocabularyBuilder.toString());
 			out.println("Vocabulary written in the file " + vocabulary);
 
-			
 			// Writing the zot encoding
-			
-			String zotEncoding=solver.getZotEncoding();
+
+			String zotEncoding = solver.getZotEncoding();
 			String lispFile;
 			if (fileOutName.contains(".mitli")) {
 				lispFile = fileOutName.replaceAll(".mitli", ".lisp");
@@ -180,7 +178,6 @@ public class MITLIsolver {
 			}
 			FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 			out.println("Zot encoding written in the file " + lispFile);
-			
 
 		} else {
 			System.out.println(
