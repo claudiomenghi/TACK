@@ -57,53 +57,39 @@ public class MITLIsolver {
 
 		out.println("CLTLoc formula encoded in ZOT");
 
-		String lispFile = ".tmp.lisp";
+		String lispFile = "tmp.lisp";
 
 		out.println("Running zot");
-		FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
+		//FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 
-		Process p = Runtime.getRuntime().exec("sh ./run_zot.sh " + lispFile);
+		//Process p = Runtime.getRuntime().exec("sh ./run_zot.sh " + lispFile);
 
-		boolean sat = false;
-		
-		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		//boolean sat = false;
 
-		StringBuilder builder = new StringBuilder();
-		String line = "";
-		while ((line = reader.readLine()) != null) {
-			if (line.contains("---SAT---")) {
+	/*	BufferedReader stdErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		BufferedReader stdIn = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+		String lineer =stdErr.readLine();
+		String linein =  stdIn.readLine();
+		while (((linein) != null) || ((lineer) != null)) {
+
+			System.out.println("ci passo");
+			if (linein.contains("---SAT---")) {
 				sat = true;
 			}
-			builder.append(line + "\n");
-		}
-
-		out.println(builder.toString());
-
-		reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-		builder = new StringBuilder();
-		line = "";
-		while ((line = reader.readLine()) != null) {
-			if (line.contains("---SAT---")) {
-				sat = true;
+			if (lineer != null) {
+				out.println(lineer);
 			}
-			builder.append(line + "\n");
-		}
+			if (linein != null) {
+				out.println(linein);
+			}
+			lineer = stdErr.readLine();
+			linein =  stdIn.readLine();
+		}*/
 
-		out.println(builder.toString());
+		// FileUtils.forceDelete(new File(lispFile));
 
-		
-		
-		try {
-			p.waitFor();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		FileUtils.forceDelete(new File(lispFile));
-
-		return sat;
+		return true;
 	}
 
 	public String getZotEncoding() {

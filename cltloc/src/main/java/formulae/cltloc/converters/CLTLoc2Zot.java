@@ -25,7 +25,7 @@ public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 
 	public String apply(CLTLocFormula formula) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("(asdf:operate 'asdf:load-op 'ae2zot)");
+		builder.append("(asdf:operate 'asdf:load-op 'ae2zotdreal)");
 		builder.append("(use-package :trio-utils)\n");
 
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
@@ -35,17 +35,13 @@ public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *real*)\n"));
 
 		final StringBuilder footerBuilder = new StringBuilder();
-		footerBuilder.append(":signals '("+StringUtils.join(variables, ' ')+")");
-		
+		footerBuilder.append(":signals '(" + StringUtils.join(variables, ' ') + ")");
 
-		
-		builder.append("(ae2zot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
-				+ ":smt-lib :smt2 \n" + ":logic :QF_UFRDL \n" + ":over-clocks 3 \n" +
-				footerBuilder.toString()+" \n"+
-				")\n");
+		builder.append("(ae2zotdreal:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
+				+ ":smt-lib :smt2 \n" + ":logic :QF_UFRDL \n" + ":over-clocks 3 \n" + footerBuilder.toString() + " \n"
+				+ ":parametric-regions t \n" + ":gen-symbolic-val nil\n" + ")\n");
 
 		builder.append("\n");
-		
 
 		return builder.toString();
 	}
