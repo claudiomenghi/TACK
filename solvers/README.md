@@ -8,3 +8,4 @@
  
 * execute the command `docker pull fmarconi/zot`
 * run the command `gradle solve -PappArgs="['geesig.mitli', '15']"`. Where `geesig.mitli` contains the MITLI formula to be verified. This command generates the file `geesig.lisp` that contains the zot encoding of the MITLI formula.
+* run the command `sh run_zot.sh geesig.lisp` where `geesig.lisp` is the generated file
