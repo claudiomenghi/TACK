@@ -63,7 +63,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class);
 
-	public final BiMap<MITLIFormula, Integer> formulaIdMap=HashBiMap.create();
+	public final BiMap<MITLIFormula, Integer> formulaIdMap = HashBiMap.create();
 
 	/**
 	 * is true in the origin of the time
@@ -111,7 +111,8 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 * step down (Third shortcut in table 3)
 	 */
 	public static final Function<Integer, CLTLocFormula> low = (s) -> new CLTLocConjunction(
-			new CLTLocYesterday(rest.apply(s)), new CLTLocNegation(rest.apply(s)));
+			new CLTLocNegation(new CLTLocYesterday(new CLTLocNegation(rest.apply(s)))),
+			new CLTLocNegation(rest.apply(s)));
 
 	/**
 	 * step up (second shortcut in table 3)
@@ -158,8 +159,8 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		LOGGER.info("Converting the formula " + formula.toString() + " to CLTLoc");
 		Set<MITLIFormula> subformulae = formula.accept(new SubformulaeVisitor());
 		List<MITLIFormula> listSubFormula = new ArrayList<>(subformulae);
-		
-		for(int i=0; i<listSubFormula.size(); i++){
+
+		for (int i = 0; i < listSubFormula.size(); i++) {
 			this.formulaIdMap.put(listSubFormula.get(i), i);
 		}
 
@@ -495,6 +496,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		CLTLocFormula f3 = IFF.apply(high.apply(idFormula),
 				AND.apply(high.apply(subf), R.apply(low.apply(subf), NEG.apply(AND.apply(low.apply(subf),
 						AND.apply(LEQ.apply(subfz0, upperbound), LEQ.apply(subfz1, upperbound)))))));
+
 
 		return AND.apply(this.clocksEventsConstraints(formula), G.apply(AND.apply(f1, AND.apply(f2, f3))));
 	}
@@ -838,18 +840,22 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		CLTLocFormula f2 = new CLTLocConjunction(_f2[0], Arrays.copyOfRange(_f2, 1, _f2.length));
 
 		// Formula (6)
-		CLTLocFormula f3 = new CLTLocConjunction(_f3[0], Arrays.copyOfRange(_f3, 1, _f3.length));
-		// TODO: why not used?
+		CLTLocFormula f3 = new CLTLocConjunction(_f3[0], Arrays.copyOfRange(_f3, 1, _f3.length)); // TODO:
+																									// why
+																									// not
+																									// used?
 
 		// String f4 = new CLTLocEQRelation( x(0,t), orig);
 		CLTLocFormula f4 = new CLTLocDisjunction(_f1[0], Arrays.copyOfRange(_f1, 1, _f1.length));
 
 		// Positiveness of all clocks in the origin
-		CLTLocFormula f5 = new CLTLocConjunction(_f5[0], Arrays.copyOfRange(_f5, 1, _f5.length));
+		CLTLocFormula f5 = new CLTLocConjunction(_f5[0], Arrays.copyOfRange(_f5, 1, _f5.length)); //
 		// TODO: why not used?
 
-		CLTLocFormula f6 = new CLTLocConjunction(_f6[0], Arrays.copyOfRange(_f6, 1, _f6.length));
-		// TODO: why not used?
+		CLTLocFormula f6 = new CLTLocConjunction(_f6[0], Arrays.copyOfRange(_f6, 1, _f6.length)); // TODO:
+																									// why
+																									// not
+																									// used?
 
 		// strict sequence among clocks
 		CLTLocFormula f7 = new CLTLocConjunction(_f7[0], Arrays.copyOfRange(_f7, 1, _f7.length));
@@ -1032,6 +1038,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		// order of clocks at the origin
 		CLTLocFormula f8 = new CLTLocConjunction(_f8[0], Arrays.copyOfRange(_f8, 1, _f8.length));
 
+	
 		return new CLTLocDisjunction(f4, f6, f8, G.apply(new CLTLocDisjunction(f1, f2, f7)));
 
 	}
@@ -1049,7 +1056,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		result = f1;
 		// Formula (2)
 
-		CLTLocFormula f2 = IFF.apply(OR.apply(high.apply(idFormula), low.apply(idFormula)),
+		CLTLocFormula f2 = IFF.apply(OR.apply(beforeDownNowUp.apply(idFormula), beforeUpNoNowUp.apply(idFormula)),
 				OR.apply(EQ.apply(z0, ZERO), EQ.apply(z1, ZERO)));
 
 		// formula (3)

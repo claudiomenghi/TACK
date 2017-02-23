@@ -118,7 +118,7 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocRelation formula) {
-		return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " " + formula.getLeftChild().accept(this) + ")";
+		return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " " + formula.getRightChild().accept(this) + ")";
 	}
 
 	/**
@@ -134,6 +134,12 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocAP cltLocAP) {
+		if(cltLocAP.equals(CLTLocAP.TRUE)){
+			return "(||  (-P- a) (!!(-P- a)))";
+		}
+		if(cltLocAP.equals(CLTLocAP.FALSE)){
+			return "(&&  (-P- a) (!!(-P- a)))";
+		}
 		return "(-P- " + cltLocAP.toString() + ")";
 	}
 

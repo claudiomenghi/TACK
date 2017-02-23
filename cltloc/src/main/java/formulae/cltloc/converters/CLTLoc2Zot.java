@@ -27,7 +27,10 @@ public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 		Set<CLTLClock> clocks = formula.accept(new GetClocksVisitor());
 		clocks.forEach(clock -> builder.append("(define-tvar " + clock.toString() + " *real*)\n"));
 
-		builder.append("(ae2zot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + "))\n");
+		builder.append("(ae2zot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
+				+ ":smt-lib :smt2 \n" + ":logic :QF_UFRDL \n" + ":over-clocks 3 \n" +
+				//":parametric-regions t \n"
+				")\n");
 
 		builder.append("\n");
 		return builder.toString();

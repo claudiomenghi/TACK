@@ -1,6 +1,5 @@
 package formulae.mitli.converters;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import formulae.cltloc.CLTLocFormula;
@@ -25,8 +24,9 @@ public class MITLI2CLTLoc {
 
 		CLTLocFormula conjunction = CLTLocFormula.TRUE;
 		for (MITLIFormula f : t.accept(new SubformulaeVisitor())) {
-			conjunction=MITLI2CLTLocVisitor.AND.apply(conjunction,
+			conjunction = MITLI2CLTLocVisitor.AND.apply(conjunction,
 					MITLI2CLTLocVisitor.AND.apply(visitor.getckTheta(f), f.accept(visitor)));
+
 		}
 
 		CLTLocFormula formula = MITLI2CLTLocVisitor.AND.apply(init, conjunction);

@@ -136,8 +136,11 @@ fmla returns [MITLIFormula r]
 			String s = String.valueOf($G_OP.text);
 			
 			
-				if (s.compareTo("G_ei") == 0 || s.compareTo("G_ii") == 0){
-					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), Integer.valueOf($b.text)); 
+				if (s.compareTo("G_ei") == 0){
+					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), true, Integer.valueOf($b.text), false); 
+				}
+				if( s.compareTo("G_ii") == 0){
+					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), false,Integer.valueOf($b.text), false); 
 				}
 				if(s.compareTo("G_ee")==0){
 					f = MITLIFormula.G((MITLIFormula)$f1.r, Integer.valueOf($a.text), true, Integer.valueOf($b.text), true); 
