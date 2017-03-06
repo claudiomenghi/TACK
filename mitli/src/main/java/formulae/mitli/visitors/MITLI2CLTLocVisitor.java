@@ -19,8 +19,8 @@ import formulae.BinaryFormula;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
-import formulae.cltloc.atoms.CLTLocConstantAtom;
-import formulae.cltloc.atoms.CLTLocSignal;
+import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
@@ -71,7 +71,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	private static final CLTLocFormula ORIGIN = new CLTLocNegation(new CLTLocYesterday(CLTLocFormula.TRUE));
 
-	private static final CLTLocConstantAtom ZERO = new CLTLocConstantAtom(0);
+	private static final Constant ZERO = new Constant(0);
 
 	private static final CLTLocClock NOW = new CLTLocClock("Now");
 
@@ -85,12 +85,12 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public static final BinaryOperator<CLTLocFormula> R = CLTLocRelease::new;
 	public static final BinaryOperator<CLTLocFormula> IFF = CLTLocIff::new;
 
-	public static final BiFunction<CLTLocClock, CLTLocConstantAtom, CLTLocFormula> EQ = CLTLocEQRelation::new;
+	public static final BiFunction<CLTLocClock, Constant, CLTLocFormula> EQ = CLTLocEQRelation::new;
 
-	public static final BiFunction<CLTLocClock, CLTLocConstantAtom, CLTLocFormula> GE = CLTLocGERelation::new;
-	public static final BiFunction<CLTLocClock, CLTLocConstantAtom, CLTLocFormula> GEQ = CLTLocGEQRelation::new;
-	public static final BiFunction<CLTLocClock, CLTLocConstantAtom, CLTLocFormula> LE = CLTLocLERelation::new;
-	public static final BiFunction<CLTLocClock, CLTLocConstantAtom, CLTLocFormula> LEQ = CLTLocLEQRelation::new;
+	public static final BiFunction<CLTLocClock, Constant, CLTLocFormula> GE = CLTLocGERelation::new;
+	public static final BiFunction<CLTLocClock, Constant, CLTLocFormula> GEQ = CLTLocGEQRelation::new;
+	public static final BiFunction<CLTLocClock, Constant, CLTLocFormula> LE = CLTLocLERelation::new;
+	public static final BiFunction<CLTLocClock, Constant, CLTLocFormula> LEQ = CLTLocLEQRelation::new;
 
 	public static final UnaryOperator<CLTLocFormula> NEG = CLTLocNegation::new;
 	public static final UnaryOperator<CLTLocFormula> F = CLTLocEventually::new;
@@ -308,33 +308,33 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 						OR.apply(AND.apply(upSingularity.apply(formulaId), U.apply(OR.apply(ORIGIN, GE.apply(z0, ZERO)),
 								AND.apply(OR.apply(AND.apply(beforeDownNowUp.apply(childId),
 
-										AND.apply(GE.apply(z0, ZERO), LEQ.apply(z0, new CLTLocConstantAtom(b)))),
+										AND.apply(GE.apply(z0, ZERO), LEQ.apply(z0, new Constant(b)))),
 										rest.apply(childId)), ORIGIN))),
 								AND.apply(NEG.apply(upSingularity.apply(formulaId)),
 										X.apply(U.apply(GE.apply(z0, ZERO),
 												AND.apply(beforeDownNowUp.apply(childId), AND.apply(GE.apply(z0, ZERO),
-														OR.apply(GEQ.apply(z0child, new CLTLocConstantAtom(b)),
-																GEQ.apply(z1child, new CLTLocConstantAtom(b)))))))))),
+														OR.apply(GEQ.apply(z0child, new Constant(b)),
+																GEQ.apply(z1child, new Constant(b)))))))))),
 						AND.apply(NEG.apply(ORIGIN),
 								AND.apply(NEG.apply(first.apply(formulaId)),
 										OR.apply(AND.apply(EQ.apply(z0, ZERO), X.apply(U.apply(GE.apply(z0, ZERO),
 												AND.apply(beforeDownNowUp.apply(childId),
-														AND.apply(EQ.apply(z0, new CLTLocConstantAtom(b)),
-																AND.apply(GE.apply(z0child, new CLTLocConstantAtom(b)),
-																		GE.apply(z1child, new CLTLocConstantAtom(b)))
+														AND.apply(EQ.apply(z0, new Constant(b)),
+																AND.apply(GE.apply(z0child, new Constant(b)),
+																		GE.apply(z1child, new Constant(b)))
 
-														))))), AND.apply(EQ.apply(z1, ZERO), X.apply(U.apply(GE.apply(z1, ZERO), AND.apply(beforeDownNowUp.apply(childId), AND.apply(EQ.apply(z1, new CLTLocConstantAtom(b)), AND.apply(GE.apply(z0child, new CLTLocConstantAtom(b)), GE.apply(z1child, new CLTLocConstantAtom(b)))
+														))))), AND.apply(EQ.apply(z1, ZERO), X.apply(U.apply(GE.apply(z1, ZERO), AND.apply(beforeDownNowUp.apply(childId), AND.apply(EQ.apply(z1, new Constant(b)), AND.apply(GE.apply(z0child, new Constant(b)), GE.apply(z1child, new Constant(b)))
 
 										))))))))
 
 				));
 
 		CLTLocFormula f9 = IMPL.apply(
-				AND.apply(GE.apply(NOW, new CLTLocConstantAtom(b)),
+				AND.apply(GE.apply(NOW, new Constant(b)),
 						AND.apply(beforeDownNowUp.apply(childId),
-								OR.apply(GEQ.apply(z0child, new CLTLocConstantAtom(b)),
-										GEQ.apply(z1child, new CLTLocConstantAtom(b))))),
-				OR.apply(EQ.apply(z0child, new CLTLocConstantAtom(b)), EQ.apply(z1child, new CLTLocConstantAtom(b))));
+								OR.apply(GEQ.apply(z0child, new Constant(b)),
+										GEQ.apply(z1child, new Constant(b))))),
+				OR.apply(EQ.apply(z0child, new Constant(b)), EQ.apply(z1child, new Constant(b))));
 
 		CLTLocFormula f10 = IFF
 				.apply(low.apply(formulaId),
@@ -344,9 +344,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 												childId), OR.apply(
 														new CLTLocConjunction(new CLTLocGERelation(z0, ZERO),
 																new CLTLocLEQRelation(z0,
-																		new CLTLocConstantAtom(formula.upperbound()))),
+																		new Constant(formula.upperbound()))),
 														new CLTLocConjunction(new CLTLocGERelation(z1, ZERO),
-																new CLTLocLEQRelation(z1, new CLTLocConstantAtom(
+																new CLTLocLEQRelation(z1, new Constant(
 																		formula.upperbound()))))))));
 
 		CLTLocFormula f11 = IFF
@@ -355,9 +355,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 								AND.apply(fromNowOnDown.apply(childId),
 										X.apply(U.apply(NEG.apply(beforeDownNowUp.apply(childId)), OR.apply(
 												new CLTLocEQRelation(z0,
-														new CLTLocConstantAtom(
+														new Constant(
 																formula.upperbound())),
-												new CLTLocEQRelation(z1, new CLTLocConstantAtom(formula.upperbound()))
+												new CLTLocEQRelation(z1, new Constant(formula.upperbound()))
 
 										)))
 
@@ -395,7 +395,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		int formulaId = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
 
-		CLTLocConstantAtom a = new CLTLocConstantAtom(formula.lowerbound());
+		Constant a = new Constant(formula.lowerbound());
 
 		CLTLocClock z0 = newz0clock.apply(formula);
 		CLTLocClock z1 = newz1clock.apply(formula);
@@ -446,7 +446,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		int idFormula = formulaIdMap.get(formula);
 		int subf = formulaIdMap.get(formula.getChild());
 
-		CLTLocConstantAtom upperbound = new CLTLocConstantAtom(formula.upperbound());
+		Constant upperbound = new Constant(formula.upperbound());
 
 		CLTLocClock z0 = newz0clock.apply(formula);
 		CLTLocClock z1 = newz1clock.apply(formula);
@@ -509,9 +509,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		int idFormula = formulaIdMap.get(mitliGlobally_AtoB);
 		int childId = formulaIdMap.get(mitliGlobally_AtoB.getChild());
-		CLTLocConstantAtom b = new CLTLocConstantAtom(mitliGlobally_AtoB.upperbound());
-		CLTLocConstantAtom a = new CLTLocConstantAtom(mitliGlobally_AtoB.lowerbound());
-		CLTLocConstantAtom l = new CLTLocConstantAtom(
+		Constant b = new Constant(mitliGlobally_AtoB.upperbound());
+		Constant a = new Constant(mitliGlobally_AtoB.lowerbound());
+		Constant l = new Constant(
 				mitliGlobally_AtoB.upperbound() - mitliGlobally_AtoB.lowerbound());
 
 		int d = 2 * (int) Math.ceil((float) mitliGlobally_AtoB.upperbound()
@@ -613,9 +613,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
-		CLTLocConstantAtom b = new CLTLocConstantAtom(formula.upperbound());
-		CLTLocConstantAtom a = new CLTLocConstantAtom(formula.lowerbound());
-		CLTLocConstantAtom l = new CLTLocConstantAtom(formula.upperbound() - formula.lowerbound());
+		Constant b = new Constant(formula.upperbound());
+		Constant a = new Constant(formula.lowerbound());
+		Constant l = new Constant(formula.upperbound() - formula.lowerbound());
 
 		CLTLocClock subfz0 = newz0clock.apply(formula.getChild());
 		CLTLocClock subfz1 = newz1clock.apply(formula.getChild());
@@ -697,7 +697,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
-		CLTLocConstantAtom a = new CLTLocConstantAtom(formula.lowerbound());
+		Constant a = new Constant(formula.lowerbound());
 
 		CLTLocClock z0 = newz0clock.apply(formula);
 		CLTLocClock z1 = newz1clock.apply(formula);
@@ -733,7 +733,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public CLTLocFormula visit(MITLIPast_ZerotoB formula) {
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
-		CLTLocConstantAtom b = new CLTLocConstantAtom(formula.upperbound());
+		Constant b = new Constant(formula.upperbound());
 
 		CLTLocClock subfz0 = newz0clock.apply(formula.getChild());
 		CLTLocClock subfz1 = newz1clock.apply(formula.getChild());
@@ -787,9 +787,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
-		CLTLocConstantAtom b = new CLTLocConstantAtom(formula.upperbound());
-		CLTLocConstantAtom a = new CLTLocConstantAtom(formula.lowerbound());
-		CLTLocConstantAtom l = new CLTLocConstantAtom(formula.upperbound() - formula.lowerbound());
+		Constant b = new Constant(formula.upperbound());
+		Constant a = new Constant(formula.lowerbound());
+		Constant l = new Constant(formula.upperbound() - formula.lowerbound());
 
 		int upperbound = formula.upperbound();
 		int lowerbound = formula.lowerbound();
@@ -879,9 +879,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	private CLTLocFormula auxiliaryClocksConstraints(MITLIEventually_AtoB formula) {
 
 		int idFormula = formulaIdMap.get(formula);
-		CLTLocConstantAtom b = new CLTLocConstantAtom(formula.upperbound());
-		CLTLocConstantAtom a = new CLTLocConstantAtom(formula.lowerbound());
-		CLTLocConstantAtom l = new CLTLocConstantAtom(formula.upperbound() - formula.lowerbound());
+		Constant b = new Constant(formula.upperbound());
+		Constant a = new Constant(formula.lowerbound());
+		Constant l = new Constant(formula.upperbound() - formula.lowerbound());
 
 		int d = 2 * (int) Math.ceil((float) formula.upperbound() / (formula.upperbound() - formula.lowerbound()));
 		int p = 0;
@@ -969,9 +969,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
-		CLTLocConstantAtom b = new CLTLocConstantAtom(formula.upperbound());
-		CLTLocConstantAtom a = new CLTLocConstantAtom(formula.lowerbound());
-		CLTLocConstantAtom l = new CLTLocConstantAtom(formula.upperbound() - formula.lowerbound());
+		Constant b = new Constant(formula.upperbound());
+		Constant a = new Constant(formula.lowerbound());
+		Constant l = new Constant(formula.upperbound() - formula.lowerbound());
 
 		CLTLocClock x0 = new CLTLocClock("x" + 0 + "_" + idFormula);
 
@@ -1105,11 +1105,11 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 			// Clocks progression
 			CLTLocFormula f4a = AND.apply(G.apply(OR.apply(X.apply(EQ.apply(z0, ZERO)), X.apply(GE.apply(z0, ZERO)))),
 					OR.apply(G.apply(F.apply(EQ.apply(z0, ZERO))),
-							F.apply(G.apply(GE.apply(z0, new CLTLocConstantAtom(maxIntComparedto))))));
+							F.apply(G.apply(GE.apply(z0, new Constant(maxIntComparedto))))));
 
 			CLTLocFormula f4b = AND.apply(G.apply(OR.apply(X.apply(EQ.apply(z1, ZERO)), X.apply(GE.apply(z1, ZERO)))),
 					OR.apply(G.apply(F.apply(EQ.apply(z1, ZERO))),
-							F.apply(G.apply(GE.apply(z1, new CLTLocConstantAtom(maxIntComparedto))))));
+							F.apply(G.apply(GE.apply(z1, new Constant(maxIntComparedto))))));
 
 			// Clocks non negativeness in the origin
 			CLTLocFormula f5 = AND.apply(GEQ.apply(z0, ZERO), GEQ.apply(z1, ZERO));
@@ -1129,26 +1129,26 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		CLTLocFormula f;
 		switch (formula.getOperator()) {
 		case "=":
-			f = new CLTLocEQRelation(new CLTLocSignal(formula.getIdentifier()),
-					new CLTLocConstantAtom(formula.getValue()));
+			f = new CLTLocEQRelation(new Signal(formula.getIdentifier()),
+					new Constant(formula.getValue()));
 			break;
 
 		case "<":
-			f = new CLTLocLERelation(new CLTLocSignal(formula.getIdentifier()),
-					new CLTLocConstantAtom(formula.getValue()));
+			f = new CLTLocLERelation(new Signal(formula.getIdentifier()),
+					new Constant(formula.getValue()));
 			break;
 		case "<=":
-			f = new CLTLocLEQRelation(new CLTLocSignal(formula.getIdentifier()),
-					new CLTLocConstantAtom(formula.getValue()));
+			f = new CLTLocLEQRelation(new Signal(formula.getIdentifier()),
+					new Constant(formula.getValue()));
 			break;
 
 		case ">":
-			f = new CLTLocGERelation(new CLTLocSignal(formula.getIdentifier()),
-					new CLTLocConstantAtom(formula.getValue()));
+			f = new CLTLocGERelation(new Signal(formula.getIdentifier()),
+					new Constant(formula.getValue()));
 			break;
 		case ">=":
-			f = new CLTLocGEQRelation(new CLTLocSignal(formula.getIdentifier()),
-					new CLTLocConstantAtom(formula.getValue()));
+			f = new CLTLocGEQRelation(new Signal(formula.getIdentifier()),
+					new Constant(formula.getValue()));
 			break;
 		default:
 			f = CLTLocFormula.TRUE;

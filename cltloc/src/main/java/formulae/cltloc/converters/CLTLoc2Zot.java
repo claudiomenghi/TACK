@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocClock;
-import formulae.cltloc.atoms.CLTLocSignal;
+import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.visitor.CLTLoc2ZotVisitor;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
@@ -31,7 +31,7 @@ public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
 		clocks.forEach(clock -> builder.append("(define-tvar " + clock.toString() + " *real*)\n"));
 
-		Set<CLTLocSignal> variables = formula.accept(new GetSignalVisitor());
+		Set<Signal> variables = formula.accept(new GetSignalVisitor());
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *real*)\n"));
 
 		final StringBuilder footerBuilder = new StringBuilder();

@@ -14,7 +14,7 @@ import org.junit.Test;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.MITLIGlobally_AtoInf;
 
-public class GloballyExcludedInf {
+public class GloballyExcludedInfTest {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException {

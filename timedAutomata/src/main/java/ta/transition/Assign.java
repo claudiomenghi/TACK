@@ -3,14 +3,16 @@ package ta.transition;
 import java.util.Collections;
 import java.util.Set;
 
-public class Assign {
-	private final Set<EQAssignement> assigments;
+import ta.transition.assignments.Assignment;
 
-	public Assign(Set<EQAssignement> assigments) {
+public class Assign {
+	private final Set<Assignment> assigments;
+
+	public Assign(Set<Assignment> assigments) {
 		this.assigments = assigments;
 	}
 
-	public Set<EQAssignement> getConditions() {
+	public Set<Assignment> getConditions() {
 		return Collections.unmodifiableSet(assigments);
 	}
 }

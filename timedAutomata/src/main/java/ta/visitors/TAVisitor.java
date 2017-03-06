@@ -1,9 +1,9 @@
 package ta.visitors;
 
 import ta.AP;
-import ta.State;
 import ta.TA;
 import ta.expressions.EmptyExpression;
+import ta.state.State;
 
 public interface TAVisitor<T> {
 

@@ -8,9 +8,9 @@ import formulae.cltloc.visitor.CLTLocVisitor;
  * @author Claudio Menghi
  *
  */
-public abstract class CLTLocAtom  {
+public abstract class Atom  {
 
-	public CLTLocAtom() {
+	public Atom() {
 		super();
 	}
 	

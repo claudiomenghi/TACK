@@ -2,10 +2,10 @@ package ta.transition;
 
 import com.google.common.base.Preconditions;
 
-import ta.State;
 import ta.expressions.Assignement;
 import ta.expressions.Expression;
 import ta.expressions.SyncExpression;
+import ta.state.State;
 
 public class Transition {
 

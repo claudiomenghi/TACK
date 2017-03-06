@@ -63,13 +63,13 @@ fmla returns [MITLIFormula r]
 				
 				$r = f;
 		}
-	|	LPAR NEG_OP f1=fmla RPAR 
+	|	 NEG_OP LPAR f1=fmla RPAR 
 		{	
 			MITLIFormula f = new MITLINegation((MITLIFormula) $f1.r);
 				
 			$r = f;
 		}
-	|   LPAR AND_OP conjuncts_list RPAR
+	|    AND_OP  conjuncts_list 
 		{	
 			MITLIFormula f = null;
 			MITLIFormula[] arr = null;
@@ -86,7 +86,7 @@ fmla returns [MITLIFormula r]
 					
 			$r = f;
 		}
-	|   LPAR OR_OP conjuncts_list RPAR
+	|   OR_OP  conjuncts_list 
 		{	
 			MITLIFormula f = null;
 			MITLIFormula[] arr = null;
@@ -102,19 +102,19 @@ fmla returns [MITLIFormula r]
 				
 			$r = f;	
 		}
-	|   LPAR IMPL_OP f1=fmla f2=fmla RPAR
+	|    IMPL_OP LPAR f1=fmla RPAR LPAR f2=fmla RPAR
 		{	
 			MITLIFormula f = MITLIFormula.implies((MITLIFormula) $f1.r, (MITLIFormula)$f2.r);	
 				
 			$r = f;	
 		}
-	|   LPAR IFF_OP f1=fmla f2=fmla RPAR
+	|    IFF_OP LPAR f1=fmla RPAR LPAR f2=fmla RPAR
 		{	
 			MITLIFormula f = MITLIFormula.iff((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
 				
 			$r = f;		
 		}	
-	|   LPAR F_OP a=INT b=INT f1=fmla RPAR 
+	|    F_OP a=INT b=INT LPAR f1=fmla RPAR 
 		{	
 			MITLIFormula f = null;
 			String s = String.valueOf($F_OP.text);
@@ -125,7 +125,7 @@ fmla returns [MITLIFormula r]
 				 
 			$r = f;
 		}
-	|   LPAR F_inf_OP a=INT f1=fmla RPAR 
+	|    F_inf_OP a=INT LPAR f1=fmla RPAR 
 		{	
 			MITLIFormula f = null;
 			String s = String.valueOf($F_inf_OP.text);
@@ -137,7 +137,7 @@ fmla returns [MITLIFormula r]
 				 
 			$r = f;
 		}		
-	|   LPAR G_OP a=INT b=INT f1=fmla RPAR 
+	|    G_OP a=INT b=INT LPAR f1=fmla RPAR 
 		{	
 			MITLIFormula f = null;
 			String s = String.valueOf($G_OP.text);
@@ -159,7 +159,7 @@ fmla returns [MITLIFormula r]
 				 
 			$r = f;
 		}
-	|   LPAR G_inf_OP a=INT f1=fmla RPAR 
+	|    G_inf_OP a=INT LPAR f1=fmla RPAR 
 		{	
 			MITLIFormula f = null;
 			String s = String.valueOf($G_inf_OP.text);
@@ -171,7 +171,7 @@ fmla returns [MITLIFormula r]
 				 
 			$r = f;
 		}	
-	|   LPAR P_OP a=INT b=INT f1=fmla RPAR 
+	|    P_OP a=INT b=INT LPAR f1=fmla RPAR 
 		{	
 			MITLIFormula f = null;
 			String s = String.valueOf($P_OP.text);
@@ -183,7 +183,7 @@ fmla returns [MITLIFormula r]
 				 
 			$r = f;
 		}	
-	|   LPAR H_OP a=INT b=INT f1=fmla RPAR 
+	|    H_OP a=INT b=INT LPAR f1=fmla RPAR 
 		{	
 			MITLIFormula f = null;
 			String s = String.valueOf($H_OP.text);
@@ -193,7 +193,7 @@ fmla returns [MITLIFormula r]
 				 
 			$r = f;
 		}								
-	|   LPAR UNTIL_OP f1=fmla f2=fmla RPAR 
+	|    UNTIL_OP LPAR f1=fmla f2=fmla RPAR 
 		{
 			MITLIFormula f = null;
 				f = MITLIFormula.U((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
@@ -201,14 +201,14 @@ fmla returns [MITLIFormula r]
 				
 			$r = f;
 		}
-	|   LPAR SINCE_OP f1=fmla f2=fmla RPAR 
+	|    SINCE_OP LPAR f1=fmla f2=fmla RPAR 
 		{
 			MITLIFormula f = null;
 				f = MITLIFormula.S((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
 			 	
 			$r = f; 	
 		}		
-	|   LPAR RELEASE_OP f1=fmla f2=fmla RPAR 
+	|    RELEASE_OP LPAR f1=fmla f2=fmla RPAR 
 		{
 			MITLIFormula f = null;
 			 	f = MITLIFormula.R((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);
@@ -223,9 +223,10 @@ fmla returns [MITLIFormula r]
 conjuncts_list returns [List<MITLIFormula> l]
 	@init{$l = new ArrayList<MITLIFormula>();}:
 	
-	 fmla{
+	 LPAR fmla{
 	 	$l.add($fmla.r);
-	 } (conjuncts_list{
+	 } RPAR 
+	 (conjuncts_list{
 			$l.addAll($conjuncts_list.l);
 			}
 	 	
@@ -234,7 +235,8 @@ conjuncts_list returns [List<MITLIFormula> l]
 	 
 
 
-OP: '<' | '>' | '=' | '<=' | '>=';
+OP: '<' | '>' | '==' | '<=' | '>=';
+
 
 /* Parenthsis */
 LPAR:   '(';
@@ -280,8 +282,10 @@ SEMI: ';';
 INT : ('0'..'9')+ ;
 fragment ATOM: 'a'..'z';
 
-ID:  ATOM(ATOM | INT | '_')*;
+fragment ATOMInit: 'a'..'z' | 'A'..'Z';
+
+ID:  ATOMInit(ATOM | INT | '_')*;
 
 NEWLINE:'\r'? '\n' ;
-WS  :   (' '|'\t')+ {skip();} ;
+WS  :   (' '|'\t' | '\n')+ {skip();} ;
 COMMENT: '#'~('\r' | '\n')* {skip();} ;

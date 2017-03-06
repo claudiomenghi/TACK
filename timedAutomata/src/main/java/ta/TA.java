@@ -15,6 +15,7 @@ import com.google.common.base.Preconditions;
 
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.state.State;
 import ta.transition.Transition;
 import ta.visitors.TAVisitor;
 

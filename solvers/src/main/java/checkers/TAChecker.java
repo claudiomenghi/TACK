@@ -1,16 +1,99 @@
 package checkers;
 
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
 
-@Parameters(separators = "=", commandDescription = "Checks a TA")
+import com.google.common.base.Preconditions;
+
+import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.converters.CLTLoc2Zot;
+import formulae.cltloc.operators.binary.CLTLocConjunction;
+import formulae.mitli.MITLIFormula;
+import formulae.mitli.converters.MITLI2CLTLoc;
+import ta.AP;
+import ta.TA;
+import ta.visitors.TA2CLTLoc;
+import zotrunner.ZotRunner;
+
 public class TAChecker {
 
-	@Parameter(names = "-m", required = true, description = "The file containing the TA")
-	public String modelPath;
+	/**
+	 * The timed automaton to be verified
+	 */
+	private final TA ta;
 
-	@Parameter(names = "-f", required = true, description = "The file containing the MITLI formula")
-	public String formulaPath;
-	
-	
+	/**
+	 * The MITLI formula to be considered
+	 */
+	private final MITLIFormula mitliformula;
+
+	/**
+	 * The bound to be considered in the verification
+	 */
+	private final int bound;
+
+	/**
+	 * The stream to be used to write output messages
+	 */
+	private final PrintStream out;
+
+	/**
+	 * 
+	 * @param ta
+	 *            the timed automaton to be verified
+	 * @param mitliformula
+	 *            the MITLI to be considered
+	 * @param bound
+	 *            the bound to be used
+	 * @throws NullPointerException
+	 *             if the timed automaton is null
+	 * @throws NullPointerException
+	 *             if the MITLI formula is null
+	 * @throws IllegalArgumentException
+	 *             if the bound is not grater than zero
+	 */
+	public TAChecker(TA ta, MITLIFormula mitliformula, int bound, PrintStream out) {
+		Preconditions.checkNotNull(ta, "The timed automaton cannot be null");
+		Preconditions.checkNotNull(mitliformula, "The formula of interest cannot be null");
+		Preconditions.checkArgument(bound > 0, "The bound should be grater than of zero");
+
+		this.ta = ta;
+		this.mitliformula = mitliformula;
+		this.bound = bound;
+		this.out = out;
+
+	}
+
+	/**
+	 * checks the timed automaton with respect to the property of interest
+	 * 
+	 * @return true iff the property of interest is satisfied
+	 * 
+	 * @throws IOException
+	 */
+	public boolean check() throws IOException {
+		Set<AP> propositions = new HashSet<>();
+
+		out.println("Converting the TA in CLTLoc");
+		CLTLocFormula taFormula = new TA2CLTLoc().convert(ta, propositions);
+		out.println("TA converted in CLTLoc");
+
+		out.println("Converting the MITLI formula in CLTLoc");
+		CLTLocFormula formula = new MITLI2CLTLoc(mitliformula, this.bound).apply();
+		out.println("MITLI formula converted in CLTLoc");
+
+		out.println("Creating the conjunction of the formulae");
+		CLTLocFormula conjunctionFormula = new CLTLocConjunction(taFormula, formula);
+		out.println("Conjunction of the formulae created");
+
+		out.println("Converting the conjunction in zot");
+		String zotEncoding = new CLTLoc2Zot(bound).apply(conjunctionFormula);
+		out.println("Conjunction converted in zot");
+
+		boolean sat = new ZotRunner(zotEncoding, out).run();
+
+		return sat;
+	}
 }

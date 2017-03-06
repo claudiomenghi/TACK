@@ -2,12 +2,12 @@ package formulae.cltloc.atoms;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLocConstantAtom extends CLTLocAtom{
+public class Constant extends Atom{
 
 	private final int value;
 	private final int hash;
 
-	public CLTLocConstantAtom(int value) {
+	public Constant(int value) {
 		super();
 		this.value = value;
 
@@ -30,7 +30,7 @@ public class CLTLocConstantAtom extends CLTLocAtom{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CLTLocConstantAtom other = (CLTLocConstantAtom) obj;
+		Constant other = (Constant) obj;
 		if (value != other.value)
 			return false;
 		return true;

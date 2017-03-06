@@ -19,7 +19,20 @@ public class EmptyExpression extends Expression {
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
 		return visitor.visit(this);
-		
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "";
+	}
+
+	@Override
+	public int evaluate() {
+		return 1;
 	}
 
 }

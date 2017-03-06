@@ -14,9 +14,11 @@ import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
+import ta.state.*;
 import ta.transition.Transition;
 import ta.transition.Guard;
-import ta.transition.EQCondition;
+import ta.transition.assignments.*;
+import ta.transition.conditions.*;
 import ta.SystemDecl;
 import ta.declarations.Initializer;
 import ta.declarations.Variable;
@@ -25,7 +27,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
-import ta.transition.EQAssignement;
 }
 
  ta returns [SystemDecl systemret] @init {
@@ -259,12 +260,12 @@ import ta.transition.EQAssignement;
 
  commit
  :
- 	'commit' stateList ';'
+ 	'commit' stateList SEMICOLUMN
  ;
 
  urgent
  :
- 	'urgent' stateList ';'
+ 	'urgent' stateList SEMICOLUMN
  ;
 
  stateList
@@ -332,7 +333,6 @@ import ta.transition.EQAssignement;
  		'else' statement
  	)?
  	| 'break' ';'
- 	| 'continue' ';'
  	| 'switch' '(' exprList ')' '{' caseocc+ '}'
  	| 'return' ';'
  	| 'return' expression ';'
@@ -375,12 +375,25 @@ import ta.transition.EQAssignement;
 
  	| ID
  	(
- 		'{' exp = expression '}'
+ 		'{' inv = invariant '}'
  	)
  	{
-		$state=new State($ID.text, $exp.exp);
+ 		if($inv.inv!=null){
+			$state=new State($ID.text, $inv.inv);
+		}
+		else{
+			$state=new State($ID.text, new EmptyInvariant());
+		}	
 	}
 
+ ;
+ 
+ invariant returns [Invariant inv]:
+ 	ID 
+ 	op=(LE | LEQ | GE |GEQ) 
+ 	expression{
+ 		$inv=new ExpInvariant(new Identifier($ID.text), $op.text, $expression.exp);
+ 	}
  ;
 
  init returns [State initstate]
@@ -388,9 +401,8 @@ import ta.transition.EQAssignement;
  	'init' ID ';'
  	{
 	$initstate=new State($ID.text);
-}
-
- ;
+	}
+;
 
  transitions returns [Set<Transition> transitionsret]
  @init {$transitionsret=new HashSet<>();}
@@ -452,7 +464,7 @@ import ta.transition.EQAssignement;
  		}
  	)?
  	{
-		if($guardexp==null) {$guardexp=new Guard(new HashSet<EQCondition>());}
+		if($guardexp==null) {$guardexp=new Guard(new HashSet<Condition>());}
 		}
 
  	(
@@ -468,25 +480,28 @@ import ta.transition.EQAssignement;
  		}
  	)? '}'
  	{
-		if($assignexp==null){ $assignexp=new Assign(new HashSet<EQAssignement>());}
+		if($assignexp==null){ $assignexp=new Assign(new HashSet<Assignment>());}
 		}
 
  ;
 
  guard returns [Guard guardexp]
  :
- 	'guard' exp1 = conditionList ';'
+ 	'guard' exp1 = conditionList SEMICOLUMN
  	{
 	$guardexp=new Guard($conditionList.conditions);
 }
 
  ;
 
- conditionList returns [Set<EQCondition> conditions] @init {
+ conditionList returns [Set<Condition> conditions] @init {
 		$conditions=new HashSet();
 	}
  :
- 	(
+ condition{
+				$conditions.add($condition.conditionret);
+			}
+ 	( COMMA
  		condition
  		{
 				$conditions.add($condition.conditionret);
@@ -495,13 +510,32 @@ import ta.transition.EQAssignement;
  	)*
  ;
 
- condition returns [EQCondition conditionret]
+ condition returns [Condition conditionret]
  :
- 	id = ID op = EQCOMP value = NAT
+ 	id = ID op = EQCOMP  expression
  	{
-	 	$conditionret=new EQCondition($id.text ,new Value($value.text));
+	 	$conditionret=new EQCondition($id.text ,$expression.exp);
 	}
-
+	|
+	id = ID op = GE expression
+ 	{
+	 	$conditionret=new GECondition($id.text , $expression.exp);
+	}
+	|
+	id = ID op = GEQ expression
+ 	{
+	 	$conditionret=new GEQCondition($id.text ,$expression.exp);
+	}
+	|
+	id = ID op = LE expression
+ 	{
+	 	$conditionret=new LECondition($id.text ,$expression.exp);
+	}
+	|
+	id = ID op = LEQ expression
+ 	{
+	 	$conditionret=new LEQCondition($id.text ,$expression.exp);
+	}
  ;
 
  sync returns [SyncExpression syncexp]
@@ -526,25 +560,59 @@ import ta.transition.EQAssignement;
 
  ;
 
- assignmentList returns [Set<EQAssignement> assignement] @init {
+ assignmentList returns [Set<Assignment> assignement] @init {
 	$assignement=new HashSet<>();
 }
  :
- 	(
- 		simpleassigment
+	 (
+	 	variableassignment{
+	 		$assignement.add($variableassignment.assignementsret);
+	 	}
+	 	|
+	 	clockassigment{
+	 		$assignement.add($clockassigment.assignementsret);
+	 	}
+	 ) 
+	 (
+ 		(COMMA clockassigment
  		{
-				$assignement.add($simpleassigment.assignementsret);
-			}
-
+				$assignement.add($clockassigment.assignementsret);
+			})
+		|
+		(COMMA variableassignment
+ 		{
+				$assignement.add($variableassignment.assignementsret);
+		})
  	)*
  ;
 
- simpleassigment returns [EQAssignement assignementsret]
+variableassignment returns [Assignment assignementsret]
+ :
+ 	(
+ 		id = ID op = EQASSIGN exprStatement
+ 	)
+ 	{$assignementsret=new VariableAssignment(
+ 						$id.text,$exprStatement.exp
+ 					);}
+;
+ clockassigment returns [Assignment assignementsret]
+ :
+ 	(
+ 		id = ID op = EQASSIGN nat = NAT
+ 	)
+ 	{$assignementsret=new ClockAssignement(
+ 						$id.text,
+ 						new Value($nat.text)
+ 					);}
+
+ ;
+ 
+ simpleassigment returns [ClockAssignement assignementsret]
  :
  	(
  		id = ID op = EQ nat = NAT
  	)
- 	{$assignementsret=new EQAssignement(
+ 	{$assignementsret=new ClockAssignement(
  						$id.text,
  						new Value($nat.text)
  					);}
@@ -572,6 +640,12 @@ import ta.transition.EQAssignement;
  	)*
  ;
 
+exprStatement returns [Expression exp]: (
+	
+expression{
+	$exp=$expression.exp;
+});
+
  expression returns [Expression exp]
  :
  	ID
@@ -587,7 +661,8 @@ import ta.transition.EQAssignement;
  	| exp1 = expression op =
  	(
  		PLUSPLUS
- 		| MINUSMINUS
+ 		| 
+ 		MINUSMINUS
  	)
  	{
       $exp=new RightUnaryOperator($exp1.exp, $op.text);
@@ -624,15 +699,17 @@ import ta.transition.EQAssignement;
     	$exp=exp;
     }
 
- 	| exp1 = expression op =
- 	(
- 		PLUS
- 		| MINUS
- 	) exp2 = expression
- 	{
+ 	| 	exp1 = expression 
+ 	  	op =(
+ 				PLUS
+ 				| 
+ 				MINUS
+ 			) 
+ 		exp2 = expression
+ 		{
     		BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
-    	$exp=exp;
-    }
+    		$exp=exp;
+    	}
 
  	| exp1 = expression op =
  	(
@@ -784,6 +861,11 @@ import ta.transition.EQAssignement;
  	'!='
  ;
 
+EQASSIGN
+ :
+ 	':='
+ ;
+ 
  EQ
  :
  	'='
@@ -797,8 +879,7 @@ import ta.transition.EQAssignement;
  UNARYOP
  :
  	(
- 		'-'
- 		| '!'
+ 	'!'
  	)
  ;
 
@@ -826,7 +907,7 @@ import ta.transition.EQAssignement;
 
  MINUS
  :
- 	'-'
+ 	'-' 
  ;
 
  MULT
@@ -927,6 +1008,7 @@ import ta.transition.EQAssignement;
  	']'
  ;
 
+SEMICOLUMN: ';' ;
  // IDENTIFIERS
 
  WS
@@ -973,9 +1055,14 @@ import ta.transition.EQAssignement;
  	'\r'? '\n'
  ;
 
- COMMENT
- :
- 	'#' ~( '\r' | '\n' )*
- 	{skip();}
+COMMA: ',';
 
- ;
+COMMENT
+    :   '/*' .*? '*/' -> skip
+    ;
+
+LINE_COMMENT
+    :   '//' ~[\r\n]* -> skip
+    ;
+
+ 

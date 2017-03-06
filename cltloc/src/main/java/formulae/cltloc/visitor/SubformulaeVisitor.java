@@ -5,8 +5,9 @@ import java.util.Set;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocClock;
-import formulae.cltloc.atoms.CLTLocConstantAtom;
-import formulae.cltloc.atoms.CLTLocSignal;
+import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.Signal;
+import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -189,12 +190,17 @@ public class SubformulaeVisitor implements CLTLocVisitor<Set<CLTLocFormula>> {
 	}
 
 	@Override
-	public Set<CLTLocFormula> visit(CLTLocConstantAtom cltlConstantAtom) {
+	public Set<CLTLocFormula> visit(Constant cltlConstantAtom) {
 		return new HashSet<>();
 	}
 
 	@Override
-	public Set<CLTLocFormula> visit(CLTLocSignal formula) {
+	public Set<CLTLocFormula> visit(Signal formula) {
+		return new HashSet<>();
+	}
+
+	@Override
+	public Set<CLTLocFormula> visit(Variable cltLocVariable) {
 		return new HashSet<>();
 	}
 

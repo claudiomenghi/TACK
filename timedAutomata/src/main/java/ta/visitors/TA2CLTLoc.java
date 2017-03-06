@@ -5,31 +5,34 @@ import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Preconditions;
+
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.atoms.CLTLocClock;
-import formulae.cltloc.atoms.CLTLocConstantAtom;
 import formulae.cltloc.atoms.CLTLocAP;
+import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocImplies;
 import formulae.cltloc.operators.unary.CLTLocGlobally;
 import formulae.cltloc.operators.unary.CLTLocNegation;
-import formulae.cltloc.relations.CLTLocEQRelation;
+import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.relations.CLTLocGERelation;
 import ta.AP;
 import ta.Clock;
-import ta.State;
 import ta.TA;
-import ta.transition.EQAssignement;
-import ta.transition.EQCondition;
+import ta.state.State;
 import ta.transition.Transition;
+import ta.transition.conditions.Condition;
 
 public class TA2CLTLoc {
 
 	private static final BinaryOperator<CLTLocFormula> conjunctionOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+
 		if (left.equals(CLTLocFormula.TRUE)) {
 			return right;
 		}
@@ -40,6 +43,8 @@ public class TA2CLTLoc {
 	};
 
 	private static final BinaryOperator<CLTLocFormula> disjunctionOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
 		if (left.equals(CLTLocFormula.FALSE)) {
 			return right;
 		}
@@ -50,6 +55,8 @@ public class TA2CLTLoc {
 	};
 
 	private static final BinaryOperator<CLTLocFormula> implicationOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
 		if (right.equals(CLTLocFormula.TRUE)) {
 			return left;
 		}
@@ -58,7 +65,10 @@ public class TA2CLTLoc {
 
 	private static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
 	private static final UnaryOperator<CLTLocFormula> globallyOperator = CLTLocGlobally::new;
-	private static final UnaryOperator<CLTLocFormula> nextOperator = CLTLocGlobally::new;
+	private static final UnaryOperator<CLTLocFormula> nextOperator = (formula) -> {
+		Preconditions.checkNotNull(formula, "The formula cannot be null");
+		return new CLTLocNext(formula);
+	};
 
 	private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("r_" + ap.getName());
 	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("f_" + ap.getName());
@@ -97,28 +107,40 @@ public class TA2CLTLoc {
 	}
 
 	private CLTLocFormula getPhi3(TA ta) {
-		CLTLocFormula subFormulaPhi3 = ta.getStates().stream()
-				.map(s -> implicationOperator.apply(state2Ap.apply(s),
-						conjunctionOperator.apply(s.getInvariant().accept(new Expression2CLTLoc()),
-								nextOperator.apply(s.getInvariant().accept(new Expression2CLTLoc())))))
-				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
-		return globallyOperator.apply(subFormulaPhi3);
+		if (ta.getStates().size() > 0) {
+			 
+			CLTLocFormula subFormulaPhi3 = ta.getStates().stream()
+					.map(s -> implicationOperator.apply(state2Ap.apply(s),
+							conjunctionOperator.apply(s.getInvariant().accept(new TA2CLTLoc()),
+									nextOperator.apply(s.getInvariant().accept(new TA2CLTLoc())))))
+					.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+			return globallyOperator.apply(subFormulaPhi3);
+		} else {
+
+			return CLTLocFormula.TRUE;
+		}
 	}
 
 	private CLTLocFormula getPhi5(TA ta, Set<AP> propositionsOfInterest) {
 
-		CLTLocFormula phi5StatesSubformula = ta.getStates().stream()
-				.map((s) -> implicationOperator.apply(state2Ap.apply(s),
-						conjunctionOperator.apply(
-								s.getValid(propositionsOfInterest).stream().map(ap2CLTLocRESTAp)
-										.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE),
-								s.getValid(propositionsOfInterest).stream()
-										.map((ap) -> negationOperator.apply(ap2CLTLocRESTAp.apply(ap)))
-										.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE))))
-				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		if (ta.getStates().size() > 0) {
 
-		return globallyOperator.apply(phi5StatesSubformula);
+			CLTLocFormula phi5StatesSubformula = ta.getStates().stream()
+					.map((s) -> implicationOperator.apply(state2Ap.apply(s),
+							conjunctionOperator.apply(
+									s.getValid(propositionsOfInterest).stream().map(ap2CLTLocRESTAp)
+											.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE),
+									s.getValid(propositionsOfInterest).stream()
+											.map((ap) -> negationOperator.apply(ap2CLTLocRESTAp.apply(ap)))
+											.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE))))
+					.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+			return globallyOperator.apply(phi5StatesSubformula);
+		} else {
+
+			return CLTLocFormula.TRUE;
+		}
 
 	}
 
@@ -126,7 +148,7 @@ public class TA2CLTLoc {
 
 		Set<Clock> clocks = ta.getClocks();
 		Set<CLTLocFormula> clockFormulae = clocks.stream()
-				.map(c -> new CLTLocGERelation(new CLTLocClock(c.getName()), new CLTLocConstantAtom(0)))
+				.map(c -> new CLTLocGERelation(new CLTLocClock(c.getName()), new Constant(0)))
 				.collect(Collectors.toSet());
 
 		CLTLocFormula clocksGeZero = clockFormulae.stream().reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -137,38 +159,43 @@ public class TA2CLTLoc {
 				nextOperator
 						.apply(disjunctionOperator.apply(conjunctionOperator.apply(state2Ap.apply(state), clocksGeZero),
 								ta.getOutgoingTransitions(state).stream()
-										.map(t -> conjunctionOperator.apply(
-												this.getClockGuardConditions(t, clocks) 
-												, state2Ap.apply(t.getDestination())))
+										.map(t -> conjunctionOperator.apply(this.getClockGuardConditions(t, clocks),
+												state2Ap.apply(t.getDestination())))
 										.reduce(CLTLocFormula.FALSE, disjunctionOperator)))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		return globallyOperator.apply(ret);
 	}
 
 	private CLTLocFormula getClockGuardConditions(Transition t, Set<Clock> clocks) {
-		Set<String> clocksId=clocks.stream().map(c -> c.getName()).collect(Collectors.toSet());
-		
-		
-		CLTLocFormula formula1= CLTLocFormula.TRUE;
-		for (EQCondition c : t.getGuard().getConditions()) {
-				if(clocksId.contains(c.getId())){
-					formula1=conjunctionOperator.apply(formula1, new CLTLocEQRelation(new CLTLocClock(c.getId()), new CLTLocConstantAtom(Integer.parseInt(c.getValue().value))));
-				}
+		Set<String> clocksId = clocks.stream().map(c -> c.getName()).collect(Collectors.toSet());
+
+		// TODO fix
+		CLTLocFormula formula1 = CLTLocFormula.TRUE;
+		for (Condition c : t.getGuard().getConditions()) {
+			// if(clocksId.contains(c.getId())){
+			// TODO fix
+			// formula1=conjunctionOperator.apply(formula1, new
+			// CLTLocEQRelation(new CLTLocClock(c.getId()), new
+			// CLTLocConstantAtom(Integer.parseInt(c.getValue().value))));
+			// }
 		}
-		
-		CLTLocFormula formula2= CLTLocFormula.TRUE;
-		Set<String> s=t.getAssignement().getConditions().stream().map(c -> c.getId()).collect(Collectors.toSet());
-		for (EQAssignement c : t.getAssignement().getConditions()) {
-				if(clocksId.contains(c.getId())){
-					formula2=conjunctionOperator.apply(formula2, new CLTLocEQRelation(new CLTLocClock(c.getId()), new CLTLocConstantAtom(0)));
-				}
-		}
-		Set<String> diff=new HashSet<>(clocksId);
-		diff.removeAll(s);
-		
-		CLTLocFormula formula3= CLTLocFormula.TRUE;
-		for(String s2Id: diff){
-			formula3=conjunctionOperator.apply(formula2, new CLTLocGERelation(new CLTLocClock(s2Id), new CLTLocConstantAtom(0)));
+
+		CLTLocFormula formula2 = CLTLocFormula.TRUE;
+		// Set<String> s=t.getAssignement().getConditions().stream().map(c ->
+		// c.getId()).collect(Collectors.toSet());
+		// for (Assignement c : t.getAssignement().getConditions()) {
+		// if(clocksId.contains(c.getId())){
+		// formula2=conjunctionOperator.apply(formula2, new CLTLocEQRelation(new
+		// CLTLocClock(c.getId()), new CLTLocConstantAtom(0)));
+		// }
+		// }
+		Set<String> diff = new HashSet<>(clocksId);
+		// diff.removeAll(s);
+
+		CLTLocFormula formula3 = CLTLocFormula.TRUE;
+		for (String s2Id : diff) {
+			formula3 = conjunctionOperator.apply(formula2,
+					new CLTLocGERelation(new CLTLocClock(s2Id), new Constant(0)));
 		}
 		return conjunctionOperator.apply(formula1, conjunctionOperator.apply(formula2, formula3));
 	}

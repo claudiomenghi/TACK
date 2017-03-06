@@ -10,11 +10,10 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
+import formulae.mitli.MITLIEventually;
 import formulae.mitli.MITLIFormula;
-import formulae.mitli.MITLIGlobally_AtoB;
-import formulae.mitli.atoms.MITLIPropositionalAtom;
 
-public class GloballyIncludedIncluded {
+public class GloballyIncludedIncludedTest {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException {
@@ -27,11 +26,11 @@ public class GloballyIncludedIncluded {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		assertTrue(formula instanceof MITLIGlobally_AtoB);
+		System.out.println(formula);
+		
+		assertTrue(formula instanceof MITLIEventually);
 
-		MITLIGlobally_AtoB formularet = (MITLIGlobally_AtoB) formula;
-
-		assertTrue(formularet.getChild().equals(new MITLIPropositionalAtom("p")));
+		
 	}
 
 }

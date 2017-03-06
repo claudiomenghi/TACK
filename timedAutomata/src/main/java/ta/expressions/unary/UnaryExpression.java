@@ -24,4 +24,9 @@ public class UnaryExpression extends Expression {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public int evaluate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

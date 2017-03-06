@@ -14,17 +14,30 @@ public class SystemDecl {
 	 */
 	private Variable<?> declarations;
 	private Set<TA> timedAutomata;
-	
-	public SystemDecl(){
-		timedAutomata=new HashSet<>();
+
+	public SystemDecl() {
+		timedAutomata = new HashSet<>();
 	}
-	
-	public void addTA(TA ta){
+
+	public void addTA(TA ta) {
 		Preconditions.checkNotNull(ta, "The timed automaton cannot be null");
 		this.timedAutomata.add(ta);
 	}
-	
-	public Set<TA> getTimedAutomata(){
+
+	public Set<TA> getTimedAutomata() {
 		return this.timedAutomata;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder=new StringBuilder();
+		
+		builder.append("------ TA ------");
+		timedAutomata.forEach(ta -> builder.append(ta));
+		
+		return builder.toString();
 	}
 }

@@ -5,22 +5,22 @@ import ta.visitors.ExpressionVisitor;
 import ta.visitors.TAVisitor;
 
 public class BinaryExpression<T extends Expression, S extends Expression> extends Expression {
-	
+
 	private final T leftChild;
 	private final S rightChild;
 	private final String operator;
-	
-	public BinaryExpression(T leftChild, String operator, S rightChild){
-		this.leftChild=leftChild;
-		this.rightChild=rightChild;
-		this.operator=operator;
+
+	public BinaryExpression(T leftChild, String operator, S rightChild) {
+		this.leftChild = leftChild;
+		this.rightChild = rightChild;
+		this.operator = operator;
 	}
-	
-	public T getLeftChild(){
+
+	public T getLeftChild() {
 		return this.leftChild;
 	}
-	
-	public S getRightChild(){
+
+	public S getRightChild() {
 		return this.rightChild;
 	}
 
@@ -29,14 +29,35 @@ public class BinaryExpression<T extends Expression, S extends Expression> extend
 	}
 
 	@Override
-	public <T> T accept(TAVisitor<T> visitor) {
+	public <R> R accept(TAVisitor<R> visitor) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		// TODO Auto-generated method stub
-		return null;
+	public <R> R accept(ExpressionVisitor<R> visitor) {
+		return visitor.visit(this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "(" + leftChild + ")" + operator + "(" + rightChild + ")";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int evaluate() {
+		switch (operator) {
+		case "+":
+			return leftChild.evaluate() + rightChild.evaluate();
+			
+		default:
+			throw new IllegalArgumentException("The operator " + operator + " is not a valid operator");
+		}
 	}
 }

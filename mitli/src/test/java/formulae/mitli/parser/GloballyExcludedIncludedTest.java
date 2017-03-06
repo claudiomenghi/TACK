@@ -11,14 +11,14 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
+import formulae.mitli.MITLIConjunction;
 import formulae.mitli.MITLIFormula;
-import formulae.mitli.MITLIGlobally_AtoInf;
 
-public class GloballyIncludedInf {
+public class GloballyExcludedIncludedTest {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException {
-		String path = ClassLoader.getSystemResource("formulae/mitli/parser/giinf.mitli").getPath();
+		String path = ClassLoader.getSystemResource("formulae/mitli/parser/gei.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -28,7 +28,7 @@ public class GloballyIncludedInf {
 		MITLIFormula formula = parser.mitli().formula;
 		assertNotNull("The parsed formula cannot be null", formula);
 
-		assertTrue(formula instanceof  MITLIGlobally_AtoInf);
+		assertTrue(formula instanceof  MITLIConjunction);
 	}
 
 }

@@ -14,7 +14,7 @@ import formulae.mitli.MITLIFormula;
 import formulae.mitli.MITLIGlobally_AtoInf;
 import formulae.mitli.MITLIImplies;
 
-public class Implication {
+public class ImplicationTest {
 
 	@Test
 	public void test() throws FileNotFoundException, IOException {

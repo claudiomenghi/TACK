@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import formulae.cltloc.atoms.CLTLocClock;
-import formulae.cltloc.atoms.CLTLocConstantAtom;
-import formulae.cltloc.atoms.CLTLocSignal;
+import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.Signal;
+import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -181,7 +182,7 @@ public class GetAPVisitor implements CLTLocVisitor<Set<CLTLocAP>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocAP> visit(CLTLocConstantAtom cltlConstantAtom) {
+	public Set<CLTLocAP> visit(Constant cltlConstantAtom) {
 		return  new HashSet<>();
 	}
 
@@ -189,7 +190,15 @@ public class GetAPVisitor implements CLTLocVisitor<Set<CLTLocAP>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<CLTLocAP> visit(CLTLocSignal formula) {
+	public Set<CLTLocAP> visit(Signal formula) {
+		return new HashSet<>();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<CLTLocAP> visit(Variable cltLocVariable) {
 		return new HashSet<>();
 	}
 

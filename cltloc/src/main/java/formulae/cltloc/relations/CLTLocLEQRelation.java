@@ -1,15 +1,16 @@
 package formulae.cltloc.relations;
 
-import formulae.cltloc.atoms.CLTLocConstantAtom;
-import formulae.cltloc.atoms.CLTLocSignal;
+import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.Signal;
+import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.CLTLocClock;
 
 public class CLTLocLEQRelation extends CLTLocRelation{
-	public CLTLocLEQRelation(CLTLocClock subformula1, CLTLocConstantAtom subformula2) {
+	public CLTLocLEQRelation(CLTLocClock subformula1, Constant subformula2) {
 		super(subformula1, subformula2, "<=");
 	}
 	
-	public CLTLocLEQRelation(CLTLocConstantAtom subformula1, CLTLocConstantAtom subformula2) {
+	public CLTLocLEQRelation(Constant subformula1, Constant subformula2) {
 		super(subformula1, subformula2, "<=");
 	}
 	
@@ -17,15 +18,29 @@ public class CLTLocLEQRelation extends CLTLocRelation{
 		super(subformula1, subformula2, "<=");
 	}
 	
-	public CLTLocLEQRelation(CLTLocSignal subformula1, CLTLocConstantAtom subformula2) {
+	public CLTLocLEQRelation(Signal subformula1, Constant subformula2) {
 		super(subformula1, subformula2, "<=");
 	}
 	
-	public CLTLocLEQRelation(CLTLocConstantAtom subformula1, CLTLocSignal subformula2) {
+	public CLTLocLEQRelation(Constant subformula1, Signal subformula2) {
 		super(subformula1, subformula2, "<=");
 	}
 	
-	public CLTLocLEQRelation(CLTLocSignal subformula1, CLTLocSignal subformula2) {
+	public CLTLocLEQRelation(Signal subformula1, Signal subformula2) {
 		super(subformula1, subformula2, "<=");
 	}
+	
+	public CLTLocLEQRelation(Variable subformula1, Constant subformula2) {
+		super(subformula1, subformula2, "<=");
+	}
+	
+	public CLTLocLEQRelation(Constant subformula1, Variable subformula2) {
+		super(subformula1, subformula2, "<=");
+	}
+	
+	public CLTLocLEQRelation(Variable subformula1, Variable subformula2) {
+		super(subformula1, subformula2, "<=");
+	}
+	
+	
 }

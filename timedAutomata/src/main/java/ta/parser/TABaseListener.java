@@ -8,9 +8,11 @@ import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
+import ta.state.*;
 import ta.transition.Transition;
 import ta.transition.Guard;
-import ta.transition.EQCondition;
+import ta.transition.assignments.*;
+import ta.transition.conditions.*;
 import ta.SystemDecl;
 import ta.declarations.Initializer;
 import ta.declarations.Variable;
@@ -19,7 +21,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
-import ta.transition.EQAssignement;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -374,6 +375,18 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterInvariant(TAParser.InvariantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInvariant(TAParser.InvariantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterInit(TAParser.InitContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -494,6 +507,30 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariableassignment(TAParser.VariableassignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableassignment(TAParser.VariableassignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClockassigment(TAParser.ClockassigmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClockassigment(TAParser.ClockassigmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSimpleassigment(TAParser.SimpleassigmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -513,6 +550,18 @@ public class TABaseListener implements TAListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExprList(TAParser.ExprListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExprStatement(TAParser.ExprStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExprStatement(TAParser.ExprStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

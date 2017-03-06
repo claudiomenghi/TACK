@@ -1,16 +1,17 @@
 package formulae.cltloc.relations;
 
-import formulae.cltloc.atoms.CLTLocConstantAtom;
-import formulae.cltloc.atoms.CLTLocSignal;
+import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.Signal;
+import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.CLTLocClock;
 
 public class CLTLocLERelation extends CLTLocRelation{
 
-	public CLTLocLERelation(CLTLocClock subformula1, CLTLocConstantAtom subformula2) {
+	public CLTLocLERelation(CLTLocClock subformula1, Constant subformula2) {
 		super(subformula1, subformula2, "<");
 	}
 	
-	public CLTLocLERelation(CLTLocConstantAtom subformula1, CLTLocConstantAtom subformula2) {
+	public CLTLocLERelation(Constant subformula1, Constant subformula2) {
 		super(subformula1, subformula2, "<");
 	}
 	
@@ -19,15 +20,28 @@ public class CLTLocLERelation extends CLTLocRelation{
 	}
 
 	
-	public CLTLocLERelation(CLTLocSignal subformula1, CLTLocConstantAtom subformula2) {
+	public CLTLocLERelation(Signal subformula1, Constant subformula2) {
 		super(subformula1, subformula2, "<");
 	}
 	
-	public CLTLocLERelation(CLTLocConstantAtom subformula1, CLTLocSignal subformula2) {
+	public CLTLocLERelation(Constant subformula1, Signal subformula2) {
 		super(subformula1, subformula2, "<");
 	}
 	
-	public CLTLocLERelation(CLTLocSignal subformula1, CLTLocSignal subformula2) {
+	public CLTLocLERelation(Signal subformula1, Signal subformula2) {
 		super(subformula1, subformula2, "<");
 	}
+	
+	public CLTLocLERelation(Variable subformula1, Constant subformula2) {
+		super(subformula1, subformula2, "<");
+	}
+	
+	public CLTLocLERelation(Constant subformula1, Variable subformula2) {
+		super(subformula1, subformula2, "<");
+	}
+	
+	public CLTLocLERelation(Variable subformula1, Variable subformula2) {
+		super(subformula1, subformula2, "<");
+	}
+	
 }

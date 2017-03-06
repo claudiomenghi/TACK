@@ -1,9 +1,11 @@
-package ta;
+package ta.state;
 
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
+import ta.AP;
+import ta.ModelElement;
 import ta.expressions.EmptyExpression;
 import ta.expressions.Expression;
 import ta.visitors.TAVisitor;
@@ -11,9 +13,9 @@ import ta.visitors.TAVisitor;
 public class State extends ModelElement {
 
 	private final String stateId;
-	private final Expression invariant;
+	private final Invariant invariant;
 
-	public State(String stateId, Expression invariant) {
+	public State(String stateId, Invariant invariant) {
 		Preconditions.checkNotNull(stateId, "The id of the state cannot be null");
 		Preconditions.checkNotNull(invariant, "The invariant cannto be null");
 		this.stateId = stateId;
@@ -23,7 +25,7 @@ public class State extends ModelElement {
 	public State(String stateId) {
 		Preconditions.checkNotNull(stateId, "The id of the state cannot be null");
 		this.stateId = stateId;
-		this.invariant = new EmptyExpression();
+		this.invariant = new EmptyInvariant();
 	}
 
 	public String getId() {
@@ -60,7 +62,7 @@ public class State extends ModelElement {
 		return true;
 	}
 
-	public Expression getInvariant() {
+	public Invariant getInvariant() {
 		return invariant;
 	}
 

@@ -15,10 +15,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import ta.State;
 import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.state.State;
 import ta.transition.Transition;
 import ta.SystemDecl;
 

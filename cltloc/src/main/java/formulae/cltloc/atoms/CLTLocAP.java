@@ -22,11 +22,17 @@ public class CLTLocAP extends CLTLocFormula {
 		return t.visit(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return this.hash;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

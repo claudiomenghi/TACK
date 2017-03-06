@@ -13,9 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ta.Clock;
-import ta.State;
 import ta.SystemDecl;
 import ta.TA;
+import ta.state.State;
 import ta.transition.Transition;
 
 public class ParserClockTest {

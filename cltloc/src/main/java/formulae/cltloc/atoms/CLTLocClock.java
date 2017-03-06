@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLocClock extends CLTLocAtom {
+public class CLTLocClock extends Atom {
 
 	
 	private final int hash;
