@@ -2,7 +2,7 @@ package ta.visitors;
 
 import ta.expressions.EmptyExpression;
 import ta.expressions.Expression;
-import ta.expressions.binary.BinaryExpression;
+import ta.expressions.binary.BinaryArithmeticExpression;
 
 /**
  * Transformation between an expression and a CLTLoc formula
@@ -16,6 +16,6 @@ public interface ExpressionVisitor<T> {
 
 	T visit(EmptyExpression emptyExpression);
 
-	<R extends Expression, S extends Expression> T visit(BinaryExpression<R, S> binaryExpression);
+	<R extends Expression, S extends Expression> T visit(BinaryArithmeticExpression<R, S> binaryExpression);
 
 }

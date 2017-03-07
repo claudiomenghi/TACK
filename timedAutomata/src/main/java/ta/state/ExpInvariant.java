@@ -1,15 +1,9 @@
 package ta.state;
 
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.atoms.Constant;
-import formulae.cltloc.atoms.Variable;
-import formulae.cltloc.relations.CLTLocGEQRelation;
-import formulae.cltloc.relations.CLTLocGERelation;
-import formulae.cltloc.relations.CLTLocLEQRelation;
-import formulae.cltloc.relations.CLTLocLERelation;
 import ta.expressions.Expression;
 import ta.expressions.Identifier;
-import ta.visitors.TA2CLTLoc;
+import ta.visitors.TA2CLTLocVisitor;
 
 public class ExpInvariant extends Invariant {
 
@@ -27,20 +21,21 @@ public class ExpInvariant extends Invariant {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CLTLocFormula accept(TA2CLTLoc ta2cltLoc) {
+	public CLTLocFormula accept(TA2CLTLocVisitor ta2cltLoc) {
 
-		switch (operator) {
-		case ">":
-			return new CLTLocGERelation(new Variable(id.getId()), new Constant(exp.evaluate()));
-		case ">=":
-			return new CLTLocGEQRelation(new Variable(id.getId()), new Constant(exp.evaluate()));
-		case "<":
-			return new CLTLocLERelation(new Variable(id.getId()), new Constant(exp.evaluate()));
-		case "<=":
-			return new CLTLocLEQRelation(new Variable(id.getId()), new Constant(exp.evaluate()));
+		return ta2cltLoc.visit(this);		
+		
+	}
 
-		default:
-			throw new IllegalArgumentException("Operator: " + operator + " not supported");
-		}
+	public Identifier getId() {
+		return id;
+	}
+
+	public String getOperator() {
+		return operator;
+	}
+
+	public Expression getExp() {
+		return exp;
 	}
 }

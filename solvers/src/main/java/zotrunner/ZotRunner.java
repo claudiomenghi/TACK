@@ -3,6 +3,7 @@ package zotrunner;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
@@ -32,33 +33,30 @@ public class ZotRunner {
 		out.println("Running zot");
 		FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 
-		out.println("Considering the file "+new File(lispFile).getAbsolutePath());
-		Process p = Runtime.getRuntime().exec("sh ./run_zot.sh " + lispFile);
+		out.println("Considering the file " + new File(lispFile).getAbsolutePath());
+		 String[] command = {"/bin/bash", "run_zot.sh", lispFile};
+		ProcessBuilder builder = new ProcessBuilder(command);
+		builder.redirectErrorStream(true);
+		Process p = builder.start();
+
+		// Process p = Runtime.getRuntime().exec("sh ./run_zot.sh " + lispFile);
+
+		InputStream stdout = p.getInputStream();
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
 
 		boolean sat = false;
 
-		BufferedReader stdErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-		BufferedReader stdIn = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-		String lineer = stdErr.readLine();
-		String linein = stdIn.readLine();
-		while ((((linein) != null) || ((lineer) != null)) && p.isAlive()) {
-
-			if (linein != null && linein.contains("---SAT---")) {
-					sat = true;
-				
+		String line;
+		while ((line = reader.readLine()) != null) {
+			if (line.contains("---UNSAT---")) {
+				sat = true;
 			}
-			if (lineer != null) {
-				out.println(lineer);
-			}
-			if (linein != null) {
-				out.println(linein);
-			}
-			lineer = stdErr.readLine();
-			linein = stdIn.readLine();
+			out.println("Stdout: " + line);
 		}
+
 		out.print("Zot ends");
-//		FileUtils.forceDelete(new File(lispFile));
+		// FileUtils.forceDelete(new File(lispFile));
 		return sat;
 	}
 

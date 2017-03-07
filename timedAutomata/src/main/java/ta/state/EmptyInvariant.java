@@ -1,7 +1,7 @@
 package ta.state;
 
 import formulae.cltloc.CLTLocFormula;
-import ta.visitors.TA2CLTLoc;
+import ta.visitors.TA2CLTLocVisitor;
 
 public class EmptyInvariant extends Invariant {
 
@@ -9,8 +9,8 @@ public class EmptyInvariant extends Invariant {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CLTLocFormula accept(TA2CLTLoc ta2cltLoc) {
-		return CLTLocFormula.TRUE;
+	public CLTLocFormula accept(TA2CLTLocVisitor ta2cltLoc) {
+		return ta2cltLoc.visit(this);
 	}
 
 }

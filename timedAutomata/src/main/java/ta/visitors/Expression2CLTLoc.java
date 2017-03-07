@@ -7,7 +7,7 @@ import formulae.cltloc.relations.CLTLocGEQRelation;
 import formulae.cltloc.relations.CLTLocGERelation;
 import ta.expressions.EmptyExpression;
 import ta.expressions.Expression;
-import ta.expressions.binary.BinaryExpression;
+import ta.expressions.binary.BinaryArithmeticExpression;
 
 public class Expression2CLTLoc implements ExpressionVisitor<CLTLocFormula> {
 
@@ -17,7 +17,7 @@ public class Expression2CLTLoc implements ExpressionVisitor<CLTLocFormula> {
 	}
 
 	@Override
-	public <R extends Expression, S extends Expression> CLTLocFormula visit(BinaryExpression<R, S> binaryExpression) {
+	public <R extends Expression, S extends Expression> CLTLocFormula visit(BinaryArithmeticExpression<R, S> binaryExpression) {
 
 		switch (binaryExpression.getOperator()) {
 		case ">":

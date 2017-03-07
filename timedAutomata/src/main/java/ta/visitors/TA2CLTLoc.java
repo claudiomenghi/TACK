@@ -26,8 +26,17 @@ import ta.TA;
 import ta.state.State;
 import ta.transition.Transition;
 import ta.transition.conditions.Condition;
+import ta.transition.guard.ClockConstraint;
 
 public class TA2CLTLoc {
+
+	private CLTLocFormula phi1;
+	private CLTLocFormula phi2;
+	private CLTLocFormula phi3;
+	private CLTLocFormula phi4;
+	private CLTLocFormula phi5;
+	private CLTLocFormula phi6;
+	private CLTLocFormula phi7;
 
 	private static final BinaryOperator<CLTLocFormula> conjunctionOperator = (left, right) -> {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
@@ -58,15 +67,20 @@ public class TA2CLTLoc {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
 		Preconditions.checkNotNull(right, "The right formula cannot be null");
 		if (right.equals(CLTLocFormula.TRUE)) {
-			return left;
+			return CLTLocFormula.TRUE;
 		}
 		return new CLTLocImplies(left, right);
+	};
+
+	public static final Function<ClockConstraint, CLTLocFormula> clockConstraint2CLTLoc = (constraint) -> {
+		return constraint.accept(new TA2CLTLocVisitor());
 	};
 
 	private static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
 	private static final UnaryOperator<CLTLocFormula> globallyOperator = CLTLocGlobally::new;
 	private static final UnaryOperator<CLTLocFormula> nextOperator = (formula) -> {
 		Preconditions.checkNotNull(formula, "The formula cannot be null");
+
 		return new CLTLocNext(formula);
 	};
 
@@ -77,13 +91,13 @@ public class TA2CLTLoc {
 
 	public CLTLocFormula convert(TA ta, Set<AP> propositionsOfInterest) {
 
-		CLTLocFormula phi1 = this.getPhi1(ta);
-		CLTLocFormula phi2 = this.getPhi2(ta);
-		CLTLocFormula phi3 = this.getPhi3(ta);
-		CLTLocFormula phi4 = this.getPhi4(ta);
-		CLTLocFormula phi5 = this.getPhi5(ta, propositionsOfInterest);
-		CLTLocFormula phi6 = this.getPhi6(ta);
-		CLTLocFormula phi7 = this.getPhi7(ta);
+		phi1 = this.getPhi1(ta);
+		phi2 = this.getPhi2(ta);
+		phi3 = this.getPhi3(ta);
+		phi4 = this.getPhi4(ta);
+		phi5 = this.getPhi5(ta, propositionsOfInterest);
+		phi6 = this.getPhi6(ta);
+		phi7 = this.getPhi7(ta);
 
 		return conjunctionOperator.apply(phi2,
 				conjunctionOperator.apply(phi7,
@@ -98,7 +112,7 @@ public class TA2CLTLoc {
 						ta.getStates().stream().filter(s1 -> !s1.equals(s))
 								.map(s1 -> negationOperator.apply(state2Ap.apply(s1))).reduce(conjunctionOperator)
 								.orElse(state2Ap.apply(s))))
-				.reduce(disjunctionOperator).orElse(CLTLocFormula.FALSE);
+				.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE);
 
 	}
 
@@ -109,11 +123,11 @@ public class TA2CLTLoc {
 	private CLTLocFormula getPhi3(TA ta) {
 
 		if (ta.getStates().size() > 0) {
-			 
+
 			CLTLocFormula subFormulaPhi3 = ta.getStates().stream()
 					.map(s -> implicationOperator.apply(state2Ap.apply(s),
-							conjunctionOperator.apply(s.getInvariant().accept(new TA2CLTLoc()),
-									nextOperator.apply(s.getInvariant().accept(new TA2CLTLoc())))))
+							conjunctionOperator.apply(s.getInvariant().accept(new TA2CLTLocVisitor()),
+									nextOperator.apply(s.getInvariant().accept(new TA2CLTLocVisitor())))))
 					.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 			return globallyOperator.apply(subFormulaPhi3);
@@ -147,6 +161,7 @@ public class TA2CLTLoc {
 	private CLTLocFormula getPhi4(TA ta) {
 
 		Set<Clock> clocks = ta.getClocks();
+		System.out.println("Clocks: " + ta.getClocks());
 		Set<CLTLocFormula> clockFormulae = clocks.stream()
 				.map(c -> new CLTLocGERelation(new CLTLocClock(c.getName()), new Constant(0)))
 				.collect(Collectors.toSet());
@@ -169,17 +184,11 @@ public class TA2CLTLoc {
 	private CLTLocFormula getClockGuardConditions(Transition t, Set<Clock> clocks) {
 		Set<String> clocksId = clocks.stream().map(c -> c.getName()).collect(Collectors.toSet());
 
-		// TODO fix
-		CLTLocFormula formula1 = CLTLocFormula.TRUE;
-		for (Condition c : t.getGuard().getConditions()) {
-			// if(clocksId.contains(c.getId())){
-			// TODO fix
-			// formula1=conjunctionOperator.apply(formula1, new
-			// CLTLocEQRelation(new CLTLocClock(c.getId()), new
-			// CLTLocConstantAtom(Integer.parseInt(c.getValue().value))));
-			// }
-		}
-
+		CLTLocFormula formula1 = t.getGuard().getClockConstraints().stream()
+				.map(constraint -> clockConstraint2CLTLoc.apply(constraint))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+		
 		CLTLocFormula formula2 = CLTLocFormula.TRUE;
 		// Set<String> s=t.getAssignement().getConditions().stream().map(c ->
 		// c.getId()).collect(Collectors.toSet());
@@ -193,10 +202,10 @@ public class TA2CLTLoc {
 		// diff.removeAll(s);
 
 		CLTLocFormula formula3 = CLTLocFormula.TRUE;
-		for (String s2Id : diff) {
-			formula3 = conjunctionOperator.apply(formula2,
-					new CLTLocGERelation(new CLTLocClock(s2Id), new Constant(0)));
-		}
+		//for (String s2Id : diff) {
+		//	formula3 = conjunctionOperator.apply(formula2,
+		//			new CLTLocGERelation(new CLTLocClock(s2Id), new Constant(0)));
+		//}
 		return conjunctionOperator.apply(formula1, conjunctionOperator.apply(formula2, formula3));
 	}
 
@@ -211,6 +220,34 @@ public class TA2CLTLoc {
 	private CLTLocFormula getPhi7(TA ta) {
 		return ta.getAtomicPropositions().stream().map(ap2CLTLocFIRSTAp).reduce(CLTLocFormula.TRUE,
 				conjunctionOperator);
+	}
+
+	public CLTLocFormula getPhi1() {
+		return phi1;
+	}
+
+	public CLTLocFormula getPhi2() {
+		return phi2;
+	}
+
+	public CLTLocFormula getPhi3() {
+		return phi3;
+	}
+
+	public CLTLocFormula getPhi4() {
+		return phi4;
+	}
+
+	public CLTLocFormula getPhi5() {
+		return phi5;
+	}
+
+	public CLTLocFormula getPhi6() {
+		return phi6;
+	}
+
+	public CLTLocFormula getPhi7() {
+		return phi7;
 	}
 
 }

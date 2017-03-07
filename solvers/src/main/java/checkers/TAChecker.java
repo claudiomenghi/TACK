@@ -38,6 +38,10 @@ public class TAChecker {
 	 * The stream to be used to write output messages
 	 */
 	private final PrintStream out;
+	
+	private CLTLocFormula taFormula;
+	
+	private CLTLocFormula formula;
 
 	/**
 	 * 
@@ -77,19 +81,26 @@ public class TAChecker {
 		Set<AP> propositions = new HashSet<>();
 
 		out.println("Converting the TA in CLTLoc");
-		CLTLocFormula taFormula = new TA2CLTLoc().convert(ta, propositions);
+		taFormula = new TA2CLTLoc().convert(ta, propositions);
 		out.println("TA converted in CLTLoc");
 
+		out.println(taFormula);
+		
 		out.println("Converting the MITLI formula in CLTLoc");
-		CLTLocFormula formula = new MITLI2CLTLoc(mitliformula, this.bound).apply();
+		MITLI2CLTLoc translator=new MITLI2CLTLoc(mitliformula, this.bound);
+		formula = translator.apply();
 		out.println("MITLI formula converted in CLTLoc");
-
+		//out.println(formula);
+		//out.println(translator.getVocabulary());
+		
 		out.println("Creating the conjunction of the formulae");
 		CLTLocFormula conjunctionFormula = new CLTLocConjunction(taFormula, formula);
 		out.println("Conjunction of the formulae created");
 
 		out.println("Converting the conjunction in zot");
 		String zotEncoding = new CLTLoc2Zot(bound).apply(conjunctionFormula);
+		//out.println(zotEncoding);
+		
 		out.println("Conjunction converted in zot");
 
 		boolean sat = new ZotRunner(zotEncoding, out).run();

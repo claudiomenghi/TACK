@@ -73,6 +73,7 @@ public class TA {
 		this.transitions.forEach(t -> {
 			Preconditions.checkArgument(this.outTransitions.containsKey(t.getSource()),
 					"The state " + t.getSource() + "is not contained in the states of the TA");
+			
 			this.outTransitions.get(t.getSource()).add(t);
 		});
 	}

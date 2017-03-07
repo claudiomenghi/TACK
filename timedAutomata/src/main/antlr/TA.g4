@@ -3,7 +3,11 @@
  */
  grammar TA;
 
- @members {  boolean matchedEOF=false;}
+ @members {  boolean matchedEOF=false;
+ 	
+ 	
+ }
+
 
  @header {
 package ta.parser;
@@ -27,8 +31,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
+import ta.transition.guard.*;
+import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 }
 
+    
  ta returns [SystemDecl systemret] @init {
 	$systemret= new SystemDecl();
 	
@@ -464,7 +471,7 @@ import ta.transition.Assign;
  		}
  	)?
  	{
-		if($guardexp==null) {$guardexp=new Guard(new HashSet<Condition>());}
+		if($guardexp==null) {$guardexp=new Guard(new HashSet<Condition>(), new HashSet<ClockConstraint>());}
 		}
 
  	(
@@ -487,15 +494,70 @@ import ta.transition.Assign;
 
  guard returns [Guard guardexp]
  :
- 	'guard' exp1 = conditionList SEMICOLUMN
+ 	'guard' exp1 = guardconditionList SEMICOLUMN
  	{
-	$guardexp=new Guard($conditionList.conditions);
+	$guardexp=new Guard($guardconditionList.conditions, $guardconditionList.clockconst);
 }
+;
 
+ guardconditionList returns [Set<Condition> conditions, Set<ClockConstraint> clockconst] @init {
+		$conditions=new HashSet<>();
+		$clockconst=new HashSet<>();
+	}
+ :
+ clockconstraint{
+				$clockconst.add($clockconstraint.clockconst);
+			}
+ 	( COMMA
+ 		clockconstraint
+ 		{
+				$clockconst.add($clockconstraint.clockconst);
+			}
+
+ 	)*
  ;
+ 
+clockconstraint returns [ClockConstraint clockconst]:
+	clockconstraintAtom clockconstraintprime {
+		if($clockconstraintprime.clockconst!=null){
+			$clockconst=new BinaryClockConstraint($clockconstraintAtom.atom, $clockconstraintprime.operaror, $clockconstraintprime.clockconst);
+		}
+		else{
+			$clockconst=$clockconstraintAtom.atom;	
+		}
+	}
+		
+;
+
+clockconstraintprime returns [PropositionalLogicOperator operaror, ClockConstraint clockconst]:
+	
+	(op=BIN_PROPOSITIONAL_LOGIC_OPERATOR c2=clockconstraint clockconstraintprime{
+		if($clockconstraintprime.clockconst!=null){
+			$clockconst=new BinaryClockConstraint($c2.clockconst, $clockconstraintprime.operaror, $clockconstraintprime.clockconst);
+			$operaror=PropositionalLogicOperator.parse($op.text);
+		}
+		else{
+				$clockconst=$c2.clockconst;
+				$operaror=PropositionalLogicOperator.parse($op.text);
+		}
+	
+	}
+	)
+	| 
+	
+;
+
+clockconstraintAtom returns [ClockConstraintAtom atom]:
+
+	id = ID op = (EQCOMP | GE | GEQ | LE | LEQ ) value=NAT{
+		$atom=new ClockConstraintAtom(new Clock($id.text), ClockConstraintAtomOperator.parse($op.text), Integer.parseInt($value.text));
+	}
+ 	
+;
+
 
  conditionList returns [Set<Condition> conditions] @init {
-		$conditions=new HashSet();
+		$conditions=new HashSet<>();
 	}
  :
  condition{
@@ -695,7 +757,7 @@ expression{
  		| MOD
  	) exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
@@ -707,7 +769,7 @@ expression{
  			) 
  		exp2 = expression
  		{
-    		BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    		BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     		$exp=exp;
     	}
 
@@ -719,7 +781,7 @@ expression{
  		| LE
  	) exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
@@ -729,37 +791,37 @@ expression{
  		| NEQ
  	) exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
  	| exp1 = expression op = BITAND exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
  	| exp1 = expression op = POW exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
  	| exp1 = expression op = BITOR exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
  	| exp1 = expression op = AND exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
  	| exp1 = expression op = OR exp2 = expression
  	{
-    	BinaryExpression exp=new BinaryExpression($exp1.exp, $op.text ,$exp2.exp);
+    	BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     	$exp=exp;
     }
 
@@ -785,7 +847,7 @@ expression{
  		| MODEQ
  	) exp2 = expression
  	{
-    	$exp=new BinaryExpression($exp1.exp, $op.text, $exp2.exp);
+    	$exp=new BinaryArithmeticExpression($exp1.exp, $op.text, $exp2.exp);
     }
 
  ;
@@ -876,13 +938,6 @@ EQASSIGN
  	'/='
  ;
 
- UNARYOP
- :
- 	(
- 	'!'
- 	)
- ;
-
  // MATH OPERATORS
 
  MODEQ
@@ -956,6 +1011,17 @@ EQASSIGN
  ;
 
  // LOGIC OPERATORS
+
+BIN_PROPOSITIONAL_LOGIC_OPERATOR: AND | OR  ;
+
+
+ NOT
+ :
+ 	(
+ 	'!'
+ 	)
+ ;
+
 
  AND
  :

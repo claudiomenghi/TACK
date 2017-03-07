@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
@@ -30,6 +31,7 @@ public class APTest {
 		TALexer lexer = new TALexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		TAParser parser = new TAParser(tokens);
+		parser.setErrorHandler(new BailErrorStrategy());
 		parser.setBuildParseTree(true);
 		SystemDecl system = parser.ta().systemret;
 

@@ -22,12 +22,12 @@ import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.visitors.TA2CLTLoc;
 
-public class ClockTest {
+public class SefmTATest {
 
 	@Test
 	public void apTest1() throws IOException {
 
-		ANTLRInputStream input = new ANTLRFileStream(ClassLoader.getSystemResource("ta/Test1.ta").getPath());
+		ANTLRInputStream input = new ANTLRFileStream(ClassLoader.getSystemResource("ta/Converter/sefmta.ta").getPath());
 		TALexer lexer = new TALexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		TAParser parser = new TAParser(tokens);
@@ -39,17 +39,17 @@ public class ClockTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 
-		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest);
+		TA2CLTLoc converted=new TA2CLTLoc();
+		CLTLocFormula formula = converted.convert(ta, propositionsOfInterest);
 
+		System.out.println("phi_1="+converted.getPhi1());
+		System.out.println("phi_2="+converted.getPhi2());
+		System.out.println("phi_3="+converted.getPhi3());
+		System.out.println("phi_4="+converted.getPhi4());
+		System.out.println("phi_5="+converted.getPhi5());
+		System.out.println("phi_6="+converted.getPhi6());
+		System.out.println("phi_7="+converted.getPhi7());
 		
-		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
-
-		Set<CLTLocClock> expectedSet = new HashSet<>();
-		expectedSet.add(new CLTLocClock("A_c"));
-		expectedSet.add(new CLTLocClock("B_c"));
-		expectedSet.add(new CLTLocClock("C_c"));
-
-		assertEquals(expectedSet, clocks);
 
 	}
 

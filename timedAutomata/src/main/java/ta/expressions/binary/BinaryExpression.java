@@ -1,16 +1,14 @@
 package ta.expressions.binary;
 
 import ta.expressions.Expression;
-import ta.visitors.ExpressionVisitor;
-import ta.visitors.TAVisitor;
 
-public class BinaryExpression<T extends Expression, S extends Expression> extends Expression {
+public abstract class BinaryExpression<T, O> extends Expression {
 
 	private final T leftChild;
-	private final S rightChild;
-	private final String operator;
+	private final T rightChild;
+	private final O operator;
 
-	public BinaryExpression(T leftChild, String operator, S rightChild) {
+	public BinaryExpression(T leftChild, O operator, T rightChild) {
 		this.leftChild = leftChild;
 		this.rightChild = rightChild;
 		this.operator = operator;
@@ -20,23 +18,12 @@ public class BinaryExpression<T extends Expression, S extends Expression> extend
 		return this.leftChild;
 	}
 
-	public S getRightChild() {
+	public T getRightChild() {
 		return this.rightChild;
 	}
 
-	public String getOperator() {
+	public O getOperator() {
 		return operator;
-	}
-
-	@Override
-	public <R> R accept(TAVisitor<R> visitor) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <R> R accept(ExpressionVisitor<R> visitor) {
-		return visitor.visit(this);
 	}
 
 	/**
@@ -47,17 +34,4 @@ public class BinaryExpression<T extends Expression, S extends Expression> extend
 		return "(" + leftChild + ")" + operator + "(" + rightChild + ")";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int evaluate() {
-		switch (operator) {
-		case "+":
-			return leftChild.evaluate() + rightChild.evaluate();
-			
-		default:
-			throw new IllegalArgumentException("The operator " + operator + " is not a valid operator");
-		}
-	}
 }

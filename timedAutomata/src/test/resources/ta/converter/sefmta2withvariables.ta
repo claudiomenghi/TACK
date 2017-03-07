@@ -1,0 +1,24 @@
+process Example {
+  clock c;
+  int i;
+
+  state  l0, l1{c <= 5 }, l2;
+  init   l0;
+  trans  l0 -> l1 {
+           guard  x <= 0;
+           sync   a!;
+         },
+         l1 -> l2 {
+           sync   b!;
+         },
+         l2 -> l0 {
+           guard  x == 10;
+           sync   c!;
+           assign x:= 0;
+         };
+}
+
+
+ 
+system Example;
+

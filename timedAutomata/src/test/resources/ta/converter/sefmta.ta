@@ -1,0 +1,29 @@
+process Example {
+  clock x;
+   int l0ap=1;
+   int l1ap=0;
+   int l2ap=0;
+  
+  state  l0, l1{x <= 5 }, l2;
+  init   l0;
+  trans  l0 -> l1 {
+           guard  x <= 5;
+           sync   e1!;
+            assign l0ap:= 0, l1ap:= 1;
+           
+         },
+         l1 -> l2 {
+           sync   e2!;
+           assign l1ap:= 0,  l2ap:= 0;
+         },
+         l2 -> l0 {
+           guard  x == 10;
+           sync   e2!;
+           assign x:= 0,  l2ap:= 0,  l0ap:= 0;
+         };
+}
+
+
+ 
+system Example;
+

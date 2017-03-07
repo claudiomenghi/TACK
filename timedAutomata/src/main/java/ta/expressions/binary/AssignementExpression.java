@@ -2,7 +2,7 @@ package ta.expressions.binary;
 
 import ta.expressions.Expression;
 
-public class AssignementExpression extends BinaryExpression<Expression, Expression>{
+public class AssignementExpression extends BinaryArithmeticExpression<Expression, Expression>{
 	
 	
 	public AssignementExpression(Expression exp1,  String operator, Expression exp2){

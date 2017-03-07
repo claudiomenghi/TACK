@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.5
+// Generated from TA.g4 by ANTLR 4.6
 
 package ta.parser;
 
@@ -21,8 +21,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
+import ta.transition.guard.*;
+import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -370,6 +371,46 @@ public interface TAListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitGuard(TAParser.GuardContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TAParser#guardconditionList}.
+	 * @param ctx the parse tree
+	 */
+	void enterGuardconditionList(TAParser.GuardconditionListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#guardconditionList}.
+	 * @param ctx the parse tree
+	 */
+	void exitGuardconditionList(TAParser.GuardconditionListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TAParser#clockconstraint}.
+	 * @param ctx the parse tree
+	 */
+	void enterClockconstraint(TAParser.ClockconstraintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#clockconstraint}.
+	 * @param ctx the parse tree
+	 */
+	void exitClockconstraint(TAParser.ClockconstraintContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TAParser#clockconstraintprime}.
+	 * @param ctx the parse tree
+	 */
+	void enterClockconstraintprime(TAParser.ClockconstraintprimeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#clockconstraintprime}.
+	 * @param ctx the parse tree
+	 */
+	void exitClockconstraintprime(TAParser.ClockconstraintprimeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TAParser#clockconstraintAtom}.
+	 * @param ctx the parse tree
+	 */
+	void enterClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#clockconstraintAtom}.
+	 * @param ctx the parse tree
+	 */
+	void exitClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TAParser#conditionList}.
 	 * @param ctx the parse tree

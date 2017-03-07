@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.5
+// Generated from TA.g4 by ANTLR 4.6
 
 package ta.parser;
 
@@ -21,10 +21,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
+import ta.transition.guard.*;
+import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -442,6 +443,54 @@ public class TABaseListener implements TAListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitGuard(TAParser.GuardContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGuardconditionList(TAParser.GuardconditionListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGuardconditionList(TAParser.GuardconditionListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClockconstraint(TAParser.ClockconstraintContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClockconstraint(TAParser.ClockconstraintContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClockconstraintprime(TAParser.ClockconstraintprimeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClockconstraintprime(TAParser.ClockconstraintprimeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
