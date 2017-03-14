@@ -1,29 +1,35 @@
-// Generated from TA.g4 by ANTLR 4.6
+// Generated from TA.g4 by ANTLR 4.5
 
 package ta.parser;
 
+import java.text.ParseException;
 import java.util.*;
+import ta.declarations.*;
 import ta.expressions.*;
 import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
+import java.util.Map.Entry;
+
 import ta.state.*;
 import ta.transition.Transition;
 import ta.transition.Guard;
 import ta.transition.assignments.*;
-import ta.transition.conditions.*;
 import ta.SystemDecl;
-import ta.declarations.Initializer;
-import ta.declarations.Variable;
-import ta.declarations.Variable;
+import ta.Variable;
+
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
+import ta.transition.sync.*;
 import ta.transition.guard.*;
 import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
+import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator;
+import operators.*;
 
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -141,16 +147,6 @@ public interface TAListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayDecl(TAParser.ArrayDeclContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TAParser#initialiser}.
-	 * @param ctx the parse tree
-	 */
-	void enterInitialiser(TAParser.InitialiserContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TAParser#initialiser}.
-	 * @param ctx the parse tree
-	 */
-	void exitInitialiser(TAParser.InitialiserContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TAParser#type}.
 	 * @param ctx the parse tree
@@ -402,35 +398,15 @@ public interface TAListener extends ParseTreeListener {
 	 */
 	void exitClockconstraintprime(TAParser.ClockconstraintprimeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TAParser#clockconstraintAtom}.
+	 * Enter a parse tree produced by {@link TAParser#constraintAtom}.
 	 * @param ctx the parse tree
 	 */
-	void enterClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx);
+	void enterConstraintAtom(TAParser.ConstraintAtomContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TAParser#clockconstraintAtom}.
+	 * Exit a parse tree produced by {@link TAParser#constraintAtom}.
 	 * @param ctx the parse tree
 	 */
-	void exitClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TAParser#conditionList}.
-	 * @param ctx the parse tree
-	 */
-	void enterConditionList(TAParser.ConditionListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TAParser#conditionList}.
-	 * @param ctx the parse tree
-	 */
-	void exitConditionList(TAParser.ConditionListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TAParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterCondition(TAParser.ConditionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TAParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitCondition(TAParser.ConditionContext ctx);
+	void exitConstraintAtom(TAParser.ConstraintAtomContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TAParser#sync}.
 	 * @param ctx the parse tree
@@ -462,25 +438,15 @@ public interface TAListener extends ParseTreeListener {
 	 */
 	void exitAssignmentList(TAParser.AssignmentListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TAParser#variableassignment}.
+	 * Enter a parse tree produced by {@link TAParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariableassignment(TAParser.VariableassignmentContext ctx);
+	void enterAssignment(TAParser.AssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TAParser#variableassignment}.
+	 * Exit a parse tree produced by {@link TAParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariableassignment(TAParser.VariableassignmentContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TAParser#clockassigment}.
-	 * @param ctx the parse tree
-	 */
-	void enterClockassigment(TAParser.ClockassigmentContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TAParser#clockassigment}.
-	 * @param ctx the parse tree
-	 */
-	void exitClockassigment(TAParser.ClockassigmentContext ctx);
+	void exitAssignment(TAParser.AssignmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TAParser#simpleassigment}.
 	 * @param ctx the parse tree
@@ -522,15 +488,15 @@ public interface TAListener extends ParseTreeListener {
 	 */
 	void exitExpression(TAParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TAParser#assignment}.
+	 * Enter a parse tree produced by {@link TAParser#declarationid}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignment(TAParser.AssignmentContext ctx);
+	void enterDeclarationid(TAParser.DeclarationidContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TAParser#assignment}.
+	 * Exit a parse tree produced by {@link TAParser#declarationid}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignment(TAParser.AssignmentContext ctx);
+	void exitDeclarationid(TAParser.DeclarationidContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TAParser#argList}.
 	 * @param ctx the parse tree

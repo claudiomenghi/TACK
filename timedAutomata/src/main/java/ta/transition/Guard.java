@@ -5,8 +5,8 @@ import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
-import ta.transition.conditions.Condition;
 import ta.transition.guard.ClockConstraint;
+import ta.transition.guard.VariableConstraint;
 
 public class Guard {
 
@@ -15,19 +15,28 @@ public class Guard {
 	 */
 	private final Set<ClockConstraint> clockConstraints;
 
-	private final Set<Condition> conditions;
+	private final Set<VariableConstraint> conditions;
 
-	public Guard(Set<Condition> conditions, Set<ClockConstraint> clockConstraints) {
+	public Guard(Set<VariableConstraint> conditions, Set<ClockConstraint> clockConstraints) {
 		Preconditions.checkNotNull(conditions, "The set of conditions cannot be null");
+		Preconditions.checkNotNull(clockConstraints, "The set of clock constraints be null");
 		this.conditions = conditions;
 		this.clockConstraints = clockConstraints;
 	}
 
-	public Set<Condition> getConditions() {
+	public Set<VariableConstraint> getConditions() {
 		return Collections.unmodifiableSet(conditions);
 	}
 
 	public Set<ClockConstraint> getClockConstraints() {
 		return Collections.unmodifiableSet(clockConstraints);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "clockConstraints=" + clockConstraints + ", variableConstraints=" + conditions + "]";
 	}
 }

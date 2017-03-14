@@ -13,4 +13,11 @@ public class EmptyInvariant extends Invariant {
 		return ta2cltLoc.visit(this);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "";
+	}
 }

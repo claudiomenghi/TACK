@@ -11,6 +11,7 @@ import formulae.cltloc.relations.CLTLocGEQRelation;
 import formulae.cltloc.relations.CLTLocGERelation;
 import formulae.cltloc.relations.CLTLocLEQRelation;
 import formulae.cltloc.relations.CLTLocLERelation;
+import operators.PropositionalLogicOperator;
 import ta.AP;
 import ta.Clock;
 import ta.TA;
@@ -19,9 +20,10 @@ import ta.state.EmptyInvariant;
 import ta.state.ExpInvariant;
 import ta.state.State;
 import ta.transition.guard.BinaryClockConstraint;
+import ta.transition.guard.BinaryVariableConstraint;
 import ta.transition.guard.ClockConstraintAtom;
 import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
-import ta.transition.guard.PropositionalLogicOperator;
+import ta.transition.guard.VariableConstraintAtom;
 
 public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 
@@ -114,6 +116,18 @@ public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 					new Constant(clockConstraintAtom.getValue()));
 		}
 		throw new IllegalArgumentException("Operator: " + clockConstraintAtom.getOperator() + " not supported");
+	}
+
+	@Override
+	public CLTLocFormula visit(VariableConstraintAtom variableConstraintAtom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CLTLocFormula visit(BinaryVariableConstraint binaryVariableConstraint) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

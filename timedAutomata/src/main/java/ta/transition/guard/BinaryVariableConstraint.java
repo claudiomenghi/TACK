@@ -4,19 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import operators.PropositionalLogicOperator;
-import ta.Clock;
+import ta.Variable;
 import ta.expressions.binary.BinaryExpression;
 import ta.visitors.ExpressionVisitor;
 import ta.visitors.TAVisitor;
 
-public class BinaryClockConstraint extends BinaryExpression<ClockConstraint, PropositionalLogicOperator>
-		implements ClockConstraint {
+public class BinaryVariableConstraint extends BinaryExpression<VariableConstraint, PropositionalLogicOperator>
+		implements VariableConstraint {
 
-	public BinaryClockConstraint(ClockConstraint leftChild, PropositionalLogicOperator operator,
-			ClockConstraint rightChild) {
+	public BinaryVariableConstraint(VariableConstraint leftChild, PropositionalLogicOperator operator,
+			VariableConstraint rightChild) {
 		super(leftChild, operator, rightChild);
 	}
-
 
 	@Override
 	public <T> T accept(ExpressionVisitor<T> visitor) {
@@ -30,7 +29,6 @@ public class BinaryClockConstraint extends BinaryExpression<ClockConstraint, Pro
 		return 0;
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -43,10 +41,10 @@ public class BinaryClockConstraint extends BinaryExpression<ClockConstraint, Pro
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<Clock> getClocks() {
-		Set<Clock> clocks = new HashSet<>();
-		clocks.addAll(this.getLeftChild().getClocks());
-		clocks.addAll(this.getRightChild().getClocks());
+	public Set<Variable> getVariables() {
+		Set<Variable> clocks = new HashSet<>();
+		clocks.addAll(this.getLeftChild().getVariables());
+		clocks.addAll(this.getRightChild().getVariables());
 		return clocks;
 	}
 

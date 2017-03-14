@@ -1,4 +1,4 @@
-package ta.converter;
+package ta.parser;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,8 +14,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.atoms.CLTLocAP;
-import formulae.cltloc.visitor.GetAPVisitor;
+import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.visitor.GetClocksVisitor;
 import ta.AP;
 import ta.SystemDecl;
 import ta.TA;
@@ -23,40 +23,35 @@ import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.visitors.TA2CLTLoc;
 
-public class APTest {
+public class ClockTest {
 
-	
-
-	@Ignore
-	@Test
-	public void apTest2() throws IOException {
+	@Ignore @Test
+	public void apTest1() throws IOException {
 
 		ANTLRInputStream input = new ANTLRFileStream(ClassLoader.getSystemResource("ta/Test2.ta").getPath());
 		TALexer lexer = new TALexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		TAParser parser = new TAParser(tokens);
-		parser.setErrorHandler(new BailErrorStrategy());
 		parser.setBuildParseTree(true);
+		parser.setErrorHandler(new BailErrorStrategy());
 		SystemDecl system = parser.ta().systemret;
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
+
 		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest);
 
-		System.out.println(formula);
-		Set<CLTLocAP> atomicPropositions = formula.accept(new GetAPVisitor());
+		
+		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
 
-		System.out.println(atomicPropositions);
-		Set<CLTLocAP> expectedSet = new HashSet<>();
-		expectedSet.add(new CLTLocAP("s_start"));
-		expectedSet.add(new CLTLocAP("s_call_check"));
-		expectedSet.add(new CLTLocAP("s_call_observe"));
-		expectedSet.add(new CLTLocAP("s_check_eof"));
-		expectedSet.add(new CLTLocAP("s_ex_jam"));
-		expectedSet.add(new CLTLocAP("True"));
-		System.out.println(expectedSet);
-		assertEquals(expectedSet, atomicPropositions);
+		Set<CLTLocClock> expectedSet = new HashSet<>();
+		expectedSet.add(new CLTLocClock("A_c"));
+		expectedSet.add(new CLTLocClock("B_c"));
+		expectedSet.add(new CLTLocClock("C_c"));
+
+		assertEquals(expectedSet, clocks);
 
 	}
+
 }

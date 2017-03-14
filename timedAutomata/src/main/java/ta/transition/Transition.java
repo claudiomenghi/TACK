@@ -2,10 +2,8 @@ package ta.transition;
 
 import com.google.common.base.Preconditions;
 
-import ta.expressions.Assignement;
-import ta.expressions.Expression;
-import ta.expressions.SyncExpression;
 import ta.state.State;
+import ta.transition.sync.SyncExpression;
 
 public class Transition {
 
@@ -45,6 +43,9 @@ public class Transition {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -67,9 +68,12 @@ public class Transition {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
-		return "Transition [source=" + source + ", destination=" + destination + "]";
+		return "Transition [source=" + source.getId() + ", destination=" + destination.getId() + ", guard=["+guard.toString()+"], sync="+this.sync+", assign=["+this.assignement+"]]";
 	}
 
 	public Guard getGuard() {

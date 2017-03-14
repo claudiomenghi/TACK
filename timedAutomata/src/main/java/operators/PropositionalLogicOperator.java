@@ -1,4 +1,4 @@
-package ta.transition.guard;
+package operators;
 
 public enum PropositionalLogicOperator {
 	AND("&&"), OR("||"), NOT("!");

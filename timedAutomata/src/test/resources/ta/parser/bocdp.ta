@@ -218,15 +218,6 @@ process Detector_B{
 			wait_call -> ex_Pf{sync B_check?; assign B_res := 0; };
 }
 
-process Observer_A{
-	state compare;
-	init compare;
-	trans 	compare -> compare{guard A_Pf == 1,A_S1 == 0; sync A_observe?; assign A_diff := 1; },
-			compare -> compare{guard A_Pn == 1,A_S2 == 0; sync A_observe?; assign A_diff := 1; },
-			compare -> compare{guard A_Pf == A_S1,
-			A_Pn == A_S2; 
-			sync A_observe?; };
-}
 process Observer_B{
 	state compare;
 	init compare;

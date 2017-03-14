@@ -5,40 +5,60 @@
 
  @members {  boolean matchedEOF=false;
  	
- 	
- }
+ 	 private static Map<String, String> declarations = new HashMap<String, String>();
+ 	  private static Map<String, String> currentTaDeclarations = new HashMap<String, String>();
+ 	  
+ 	   private boolean definedVar(String name){
+ 	    if(!currentTaDeclarations.containsKey(name) && !declarations.containsKey(name)){
+        	return false;
+        }
+        return true;
+    }
+    
+    private void cleanCurrentTA(){
+    	currentTaDeclarations = new HashMap<String, String>();
+    }
 
+    private void addCurrentTADeecl(String name, String type){
+        currentTaDeclarations.put(name, type);
+    }
+ }
 
  @header {
 package ta.parser;
 
+import java.text.ParseException;
 import java.util.*;
+import ta.declarations.*;
 import ta.expressions.*;
 import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
+import java.util.Map.Entry;
+
 import ta.state.*;
 import ta.transition.Transition;
 import ta.transition.Guard;
 import ta.transition.assignments.*;
-import ta.transition.conditions.*;
 import ta.SystemDecl;
-import ta.declarations.Initializer;
-import ta.declarations.Variable;
-import ta.declarations.Variable;
+import ta.Variable;
+
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
+import ta.transition.sync.*;
 import ta.transition.guard.*;
 import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
+import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator;
+import operators.*;
 }
 
-    
  ta returns [SystemDecl systemret] @init {
 	$systemret= new SystemDecl();
-	
+	declarations = new HashMap<String, String>();	
+	currentTaDeclarations = new HashMap<String, String>();
 }
  :
  	(
@@ -56,6 +76,10 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  :
  	functionDecl
  	| variableDecl
+ 	{
+ 		declarations.putAll($variableDecl.variabledeclret);
+ 	}
+
  	| typeDecl
  	| procDecl
  	{
@@ -66,7 +90,7 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 
  instantiation
  :
- 	ID assignment ID LPAR argList RPAR ';'
+ 	ID declarationid ID LPAR argList RPAR ';'
  ;
 
  system
@@ -101,32 +125,96 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  	{
 	
 	 
-	 Set<Variable> variabledeclret=$procBody.variabledeclret;
+	 cleanCurrentTA();
+	 Map<String, String> variabledeclret=$procBody.variabledeclret;
 	 
 	  final Set<Clock> clocks=new HashSet<>();
-				 if(variabledeclret!=null){
-				 		variabledeclret.forEach(v -> {
-				 		if(v.getType()==Clock.class){
-				 			clocks.add(new Clock(v.getId()));
-				 		}}
-				 			);
-				 }
-	$timedAutomaton=new TA($ID.text, null, $procBody.stateset, $procBody.transitionsetret, $procBody.initstate, clocks);
+	  
+	  for(Entry<String, String> entry: variabledeclret.entrySet()){
+	  	if(entry.getValue().equals("clock")){
+	  			clocks.add(new Clock(entry.getKey()));
+			
+	  	}
+	  }
+	for(Entry<String, String> entry: declarations.entrySet()){
+	  	if(entry.getValue().equals("clock")){
+	  			clocks.add(new Clock(entry.getKey()));
+	  	}
+	 }	
+	 
+	 final Set<Variable> variables=new HashSet<>();
+	  
+	  for(Entry<String, String> entry: variabledeclret.entrySet()){
+	  	if(!entry.getValue().equals("clock")){
+	  			variables.add(new Variable(entry.getKey()));
+			
+	  	}
+	  }
+	for(Entry<String, String> entry: declarations.entrySet()){
+	  	if(!entry.getValue().equals("clock")){
+	  			variables.add(new Variable(entry.getKey()));
+	  	}
+	 }	
+	 Set<VariableDecl> variableDeclaration=new HashSet<>();
+	Map<String, Expression> variableinitializationret=$procBody.variableinitializationret;
+	if(variableinitializationret!=null){
+	for(Entry<String,  Expression> entry :variableinitializationret.entrySet()){
+		
+		String type="";
+		if(variabledeclret.containsKey(entry.getKey())){
+			type=variabledeclret.get(entry.getKey());
+		}
+		if(declarations.containsKey(entry.getKey())){
+			type=declarations.get(entry.getKey());
+		}
+	
+		 variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));
+		}
+		
+		}
+		
+		
+		
+	Set<ClockDecl> clockDeclaration=new HashSet<>();
+	Map<String, Value> clockinitializationret=$procBody.clockinitializationret;
+	if(clockinitializationret!=null){
+		for(Entry<String,  Value> entry :clockinitializationret.entrySet()){
+			 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
+		}
+	}
+		
+	$timedAutomaton=new TA($ID.text, null, $procBody.stateset, $procBody.transitionsetret, $procBody.initstate, clocks,variables, variableDeclaration, clockDeclaration);
 }
 
  ;
 
  procBody returns
- [State initstate, Set<State> stateset, Set<Transition> transitionsetret, Set<Variable> variabledeclret]
+ [State initstate, Set<State> stateset, Set<Transition> transitionsetret, Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]
  @init {
- 	$variabledeclret=new HashSet<Variable>();
+ 	$variabledeclret=new HashMap<>();
+ 	$variableinitializationret=new HashMap<>();
+ 	$clockinitializationret=new HashMap<>();
  	}
  :
+ {
+ 		currentTaDeclarations=new  HashMap<String, String>();
+ 	}
+
  	(
  		functionDecl
  		| variableDecl
  		{
-				$variabledeclret.addAll($variableDecl.variabledeclret);
+				$variabledeclret.putAll($variableDecl.variabledeclret);
+				if($variableDecl.variabledeclret!=null){
+					currentTaDeclarations.putAll($variableDecl.variabledeclret);
+				}
+				if($variableDecl.variableinitializationret!=null){
+					$variableinitializationret.putAll($variableDecl.variableinitializationret);
+				}
+				if($variableDecl.clockinitializationret!=null){
+					$clockinitializationret.putAll($variableDecl.clockinitializationret);
+				}
+				
 			}
 
  		| typeDecl
@@ -141,10 +229,10 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  		transitions
  	)?
  	{
-                    	$initstate=$init.initstate;
+ 				    	$initstate=$init.initstate;
                     	$stateset=$states.stateset;
                     	$transitionsetret=$transitions.transitionsret;
-                    }
+              }
 
  ;
 
@@ -152,25 +240,54 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  // VARIABLE DECLARATION
  //********************************************************************************
 
- variableDecl returns [Set<Variable> variabledeclret] @init {
- 	$variabledeclret=new HashSet<Variable>();
+ variableDecl returns
+ [Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]
+ @init {
+ 	$variabledeclret=new HashMap<>();
+ 	$variableinitializationret=new HashMap<>();
+ 	$clockinitializationret=new HashMap<>();
  	}
  :
- 	type arrayDecl* variableId
+ 	type arrayDecl* var1 = variableId
  	{
- 			$variabledeclret.add(new Variable($type.typeret, $variableId.id, $variableId.initializerret));
+ 			if(definedVar($var1.id)){
+ 				
+ 				throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Duplicate variable definition:"+$var1.id);
+		
+ 			}
+ 			$variabledeclret.put($var1.id, $type.text);
+ 			if($var1.exp!=null && !$type.text.equals("clock")){
+ 				$variableinitializationret.put($var1.id, $var1.exp);
+ 			}
+ 			if($var1.exp!=null && $type.text.equals("clock")){
+ 				
+ 				 $clockinitializationret.put($var1.id, (Value) $var1.exp);
+ 			}
+ 			
  	}
 
  	(
- 		',' variableId
+ 		',' varn = variableId
  		{
- 			$variabledeclret.add(new Variable($type.typeret, $variableId.id, $variableId.initializerret)); 		
- 	}
+ 			
+ 			if(definedVar($varn.id)){
+ 				throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Duplicate variable definition:"+$varn.id);
+		
+ 			}
+ 			$variabledeclret.put($varn.id, $type.text);
+ 			System.out.println($type.text);
+ 			if($var1.exp!=null && !$type.text.equals("clock")){
+ 				$variableinitializationret.put($var1.id, $var1.exp);
+ 			}
+ 		 	if($var1.exp!=null && $type.text.equals("clock")){
+				$clockinitializationret.put($var1.id, (Value) $var1.exp);
+ 			}
+ 		}
 
  	)* ';'
  ;
 
- variableId returns [String id, Initializer initializerret]
+ variableId returns [String id, Expression exp]
  :
  	ID
  	{
@@ -178,9 +295,9 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 }
 
  	(
- 		'=' initialiser
+ 		'=' expression
  		{
-		$initializerret=$initialiser.initialiserret;
+		$exp=$expression.exp;
 }
 
  	)?
@@ -191,15 +308,6 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  arrayDecl
  :
  	LBRA expression RBRA
- ;
-
- initialiser returns [Initializer initialiserret]
- :
- 	expression
- 	| '{' initialiser
- 	(
- 		',' initialiser
- 	)* '}'
  ;
 
  type returns [Class typeret]
@@ -394,13 +502,20 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 	}
 
  ;
- 
- invariant returns [Invariant inv]:
- 	ID 
- 	op=(LE | LEQ | GE |GEQ) 
- 	expression{
+
+ invariant returns [Invariant inv]
+ :
+ 	ID op =
+ 	(
+ 		LE
+ 		| LEQ
+ 		| GE
+ 		| GEQ
+ 	) expression
+ 	{
  		$inv=new ExpInvariant(new Identifier($ID.text), $op.text, $expression.exp);
  	}
+
  ;
 
  init returns [State initstate]
@@ -409,7 +524,8 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  	{
 	$initstate=new State($ID.text);
 	}
-;
+
+ ;
 
  transitions returns [Set<Transition> transitionsret]
  @init {$transitionsret=new HashSet<>();}
@@ -466,12 +582,14 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  :
  	'{'
  	(
- 		guard{
+ 		guard
+ 		{
  			 $guardexp=$guard.guardexp;
  		}
+
  	)?
  	{
-		if($guardexp==null) {$guardexp=new Guard(new HashSet<Condition>(), new HashSet<ClockConstraint>());}
+		if($guardexp==null) {$guardexp=new Guard(new HashSet<VariableConstraint>(), new HashSet<ClockConstraint>());}
 		}
 
  	(
@@ -482,12 +600,14 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 
  	)?
  	(
- 		assign{
+ 		assign
+ 		{
  			$assignexp=$assign.assignexp;
  		}
+
  	)? '}'
  	{
-		if($assignexp==null){ $assignexp=new Assign(new HashSet<Assignment>());}
+		if($assignexp==null){ $assignexp=new Assign(new HashSet<ClockAssignement>(), new HashSet<VariableAssignement>());}
 		}
 
  ;
@@ -496,42 +616,71 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
  :
  	'guard' exp1 = guardconditionList SEMICOLUMN
  	{
-	$guardexp=new Guard($guardconditionList.conditions, $guardconditionList.clockconst);
+	$guardexp=new Guard($guardconditionList.variableconst==null? new HashSet<VariableConstraint>() :$guardconditionList.variableconst, $guardconditionList.clockconst==null? new HashSet<ClockConstraint>():$guardconditionList.clockconst);
 }
-;
 
- guardconditionList returns [Set<Condition> conditions, Set<ClockConstraint> clockconst] @init {
-		$conditions=new HashSet<>();
+ ;
+
+ guardconditionList returns
+ [Set<VariableConstraint> variableconst, Set<ClockConstraint> clockconst] @init {
+		$variableconst=new HashSet<>();
 		$clockconst=new HashSet<>();
 	}
  :
- clockconstraint{
-				$clockconst.add($clockconstraint.clockconst);
+ 	clockconstraint
+ 	{
+				if($clockconstraint.clockconst!=null) $clockconst.add($clockconstraint.clockconst) ;
+				if($clockconstraint.variableconst!=null) $variableconst.add($clockconstraint.variableconst);
 			}
- 	( COMMA
- 		clockconstraint
+
+ 	(
+ 		COMMA clockconstraint
  		{
-				$clockconst.add($clockconstraint.clockconst);
+				if($clockconstraint.clockconst!=null) $clockconst.add($clockconstraint.clockconst);
+				if($clockconstraint.variableconst!=null)$variableconst.add($clockconstraint.variableconst) ;
 			}
 
  	)*
  ;
- 
-clockconstraint returns [ClockConstraint clockconst]:
-	clockconstraintAtom clockconstraintprime {
-		if($clockconstraintprime.clockconst!=null){
-			$clockconst=new BinaryClockConstraint($clockconstraintAtom.atom, $clockconstraintprime.operaror, $clockconstraintprime.clockconst);
+
+ clockconstraint returns
+ [ClockConstraint clockconst, VariableConstraint variableconst]
+ :
+ 	constraintAtom clockconstraintprime
+ 	{
+		if($clockconstraintprime.clockconst!=null ){
+			if($constraintAtom.atom!=null){
+				$clockconst=new BinaryClockConstraint($constraintAtom.atom, $clockconstraintprime.operaror, $clockconstraintprime.clockconst);
+			}
+			else{
+				$clockconst=$clockconstraintprime.clockconst;	
+			}
 		}
 		else{
-			$clockconst=$clockconstraintAtom.atom;	
+			$clockconst=$constraintAtom.atom;	
+		}
+		if($clockconstraintprime.variableconst!=null){
+				if($constraintAtom.variableAtom!=null){
+					$variableconst=new BinaryVariableConstraint($constraintAtom.variableAtom, $clockconstraintprime.operaror, $clockconstraintprime.variableconst);
+				}
+				else{
+					$variableconst=$clockconstraintprime.variableconst;
+				}
+		}
+		else{
+			$variableconst=$constraintAtom.variableAtom;
 		}
 	}
-		
-;
 
-clockconstraintprime returns [PropositionalLogicOperator operaror, ClockConstraint clockconst]:
-	
-	(op=BIN_PROPOSITIONAL_LOGIC_OPERATOR c2=clockconstraint clockconstraintprime{
+ ;
+
+ clockconstraintprime returns
+ [PropositionalLogicOperator operaror, ClockConstraint clockconst, VariableConstraint variableconst]
+ :
+ 	(
+ 		op = BIN_PROPOSITIONAL_LOGIC_OPERATOR c2 = clockconstraint
+ 		clockconstraintprime
+ 		{
 		if($clockconstraintprime.clockconst!=null){
 			$clockconst=new BinaryClockConstraint($c2.clockconst, $clockconstraintprime.operaror, $clockconstraintprime.clockconst);
 			$operaror=PropositionalLogicOperator.parse($op.text);
@@ -542,73 +691,53 @@ clockconstraintprime returns [PropositionalLogicOperator operaror, ClockConstrai
 		}
 	
 	}
-	)
-	| 
-	
-;
 
-clockconstraintAtom returns [ClockConstraintAtom atom]:
-
-	id = ID op = (EQCOMP | GE | GEQ | LE | LEQ ) value=NAT{
-		$atom=new ClockConstraintAtom(new Clock($id.text), ClockConstraintAtomOperator.parse($op.text), Integer.parseInt($value.text));
-	}
- 	
-;
-
-
- conditionList returns [Set<Condition> conditions] @init {
-		$conditions=new HashSet<>();
-	}
- :
- condition{
-				$conditions.add($condition.conditionret);
-			}
- 	( COMMA
- 		condition
- 		{
-				$conditions.add($condition.conditionret);
-			}
-
- 	)*
+ 	)
+ 	|
  ;
 
- condition returns [Condition conditionret]
+ constraintAtom returns
+ [ClockConstraintAtom atom, VariableConstraint variableAtom]
  :
- 	id = ID op = EQCOMP  expression
+ 	id = ID op =
+ 	(
+ 		EQCOMP
+ 		| GE
+ 		| GEQ
+ 		| LE
+ 		| LEQ
+ 	) value = NAT
  	{
-	 	$conditionret=new EQCondition($id.text ,$expression.exp);
+		
+		if(declarations==null){
+			throw new InternalError("The set of the declarations cannot be null");	
+		}
+		String identifier=$id.text;
+		if(!declarations.containsKey($id.text) && (currentTaDeclarations==null || !currentTaDeclarations.containsKey($id.text))){
+			throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Variable:"+$id.text+" not defined");
+		}
+		
+		
+		if((declarations.containsKey(identifier))&&(declarations.get(identifier).equals("clock")) || (currentTaDeclarations!=null && currentTaDeclarations.containsKey(identifier))&&(currentTaDeclarations.get(identifier).equals("clock"))){
+			$atom=new ClockConstraintAtom(new Clock($id.text), ClockConstraintAtomOperator.parse($op.text), Integer.parseInt($value.text));
+		}
+		if((declarations.containsKey(identifier))&&(declarations.get(identifier).equals("int")) || (currentTaDeclarations!=null && currentTaDeclarations.containsKey(identifier))&&(currentTaDeclarations.get(identifier).equals("int"))){
+
+			$variableAtom=new VariableConstraintAtom(new Variable($id.text), VariableConstraintAtomOperator.parse($op.text), Integer.parseInt($value.text));
+		}
 	}
-	|
-	id = ID op = GE expression
- 	{
-	 	$conditionret=new GECondition($id.text , $expression.exp);
-	}
-	|
-	id = ID op = GEQ expression
- 	{
-	 	$conditionret=new GEQCondition($id.text ,$expression.exp);
-	}
-	|
-	id = ID op = LE expression
- 	{
-	 	$conditionret=new LECondition($id.text ,$expression.exp);
-	}
-	|
-	id = ID op = LEQ expression
- 	{
-	 	$conditionret=new LEQCondition($id.text ,$expression.exp);
-	}
+
  ;
 
  sync returns [SyncExpression syncexp]
  :
- 	'sync' exp2 = expression op =
+ 	'sync' exp2 = ID op =
  	(
  		'!'
  		| '?'
  	) ';'
  	{
-	$syncexp=new SyncExpression($exp2.exp, $op.text);
+	$syncexp=new SyncExpression($exp2.text, $op.text);
 }
 
  ;
@@ -617,65 +746,106 @@ clockconstraintAtom returns [ClockConstraintAtom atom]:
  :
  	'assign' expl = assignmentList ';'
  	{
-	$assignexp=new Assign($assignmentList.assignement);
+	$assignexp=new Assign($assignmentList.clockassignement, $assignmentList.variableassignement);
 }
 
  ;
 
- assignmentList returns [Set<Assignment> assignement] @init {
-	$assignement=new HashSet<>();
+ assignmentList returns
+ [Set<ClockAssignement> clockassignement, Set<VariableAssignement> variableassignement]
+ @init {
+	$clockassignement=new HashSet<>();
+	$variableassignement=new HashSet<>();
 }
  :
-	 (
-	 	variableassignment{
-	 		$assignement.add($variableassignment.assignementsret);
-	 	}
-	 	|
-	 	clockassigment{
-	 		$assignement.add($clockassigment.assignementsret);
-	 	}
-	 ) 
-	 (
- 		(COMMA clockassigment
+ 	(
+ 		assignment
  		{
-				$assignement.add($clockassigment.assignementsret);
-			})
-		|
-		(COMMA variableassignment
- 		{
-				$assignement.add($variableassignment.assignementsret);
-		})
+	 		if($assignment.clockassignementsret!=null){
+	 			$clockassignement.add($assignment.clockassignementsret);
+	 		}
+	 		if($assignment.variableAssignementret!=null){
+	 			$variableassignement.add($assignment.variableAssignementret);
+	 		}
+	 	}
+
+ 	)
+ 	(
+ 		(
+ 			COMMA assignment
+ 			{
+				if($assignment.clockassignementsret!=null){
+	 			$clockassignement.add($assignment.clockassignementsret);
+	 		}
+	 		if($assignment.variableAssignementret!=null){
+	 			$variableassignement.add($assignment.variableAssignementret);
+	 		}
+		}
+
+ 		)
  	)*
  ;
 
-variableassignment returns [Assignment assignementsret]
+ assignment returns
+ [ClockAssignement clockassignementsret, VariableAssignement variableAssignementret]
  :
  	(
- 		id = ID op = EQASSIGN exprStatement
+ 		id = ID op =
+ 		(
+ 			EQASSIGN
+ 			| EQ
+ 		) nat = NAT
  	)
- 	{$assignementsret=new VariableAssignment(
- 						$id.text,$exprStatement.exp
- 					);}
-;
- clockassigment returns [Assignment assignementsret]
- :
+ 	{
+ 			if(declarations==null){
+			throw new InternalError("The set of the declarations cannot be null");	
+		}
+		String identifier=$id.text;
+		if(!declarations.containsKey($id.text) && (currentTaDeclarations==null || !currentTaDeclarations.containsKey($id.text))){
+			throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Variable:"+$id.text+" not defined");
+		}
+		if((declarations.containsKey(identifier))&&(declarations.get(identifier).equals("clock")) || (currentTaDeclarations!=null && currentTaDeclarations.containsKey(identifier))&&(currentTaDeclarations.get(identifier).equals("clock"))){
+			$clockassignementsret=new ClockAssignement(new Clock($id.text), new Value($nat.text));
+		}
+		if((declarations.containsKey(identifier))&&(declarations.get(identifier).equals("int")) || (currentTaDeclarations!=null && currentTaDeclarations.containsKey(identifier))&&(currentTaDeclarations.get(identifier).equals("int"))){
+			$variableAssignementret=new VariableAssignement(new Variable($id.text), new Value($nat.text));
+		}
+ 	}
+
+ 	|
  	(
- 		id = ID op = EQASSIGN nat = NAT
+ 		id = ID op =
+ 		(
+ 			EQASSIGN
+ 			| EQ
+ 		) exprStatement
  	)
- 	{$assignementsret=new ClockAssignement(
- 						$id.text,
- 						new Value($nat.text)
- 					);}
+ 	{
+ 		if(declarations==null){
+			throw new InternalError("The set of the declarations cannot be null");	
+		}
+		String identifier=$id.text;
+		if(!declarations.containsKey($id.text) && (currentTaDeclarations==null || !currentTaDeclarations.containsKey($id.text))){
+			throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Variable:"+$id.text+" not defined");
+		}
+		if((declarations.containsKey(identifier))&&(declarations.get(identifier).equals("clock")) || (currentTaDeclarations!=null && currentTaDeclarations.containsKey(identifier))&&(currentTaDeclarations.get(identifier).equals("clock"))){
+			throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Clock:"+$id.text+" cannot be assigned to an expression but only to an integer value");
+		}
+		if((declarations.containsKey(identifier))&&(declarations.get(identifier).equals("int")) || (currentTaDeclarations!=null && currentTaDeclarations.containsKey(identifier))&&(currentTaDeclarations.get(identifier).equals("int"))){
+			$variableAssignementret=new VariableAssignement(new Variable($id.text),  $exprStatement.exp);
+		}
+ 		
+ 		}
 
  ;
- 
+
  simpleassigment returns [ClockAssignement assignementsret]
  :
  	(
  		id = ID op = EQ nat = NAT
  	)
  	{$assignementsret=new ClockAssignement(
- 						$id.text,
+ 						new Clock($id.text),
  						new Value($nat.text)
  					);}
 
@@ -702,11 +872,16 @@ variableassignment returns [Assignment assignementsret]
  	)*
  ;
 
-exprStatement returns [Expression exp]: (
-	
-expression{
+ exprStatement returns [Expression exp]
+ :
+ 	(
+ 		expression
+ 		{
 	$exp=$expression.exp;
-});
+}
+
+ 	)
+ ;
 
  expression returns [Expression exp]
  :
@@ -723,8 +898,7 @@ expression{
  	| exp1 = expression op =
  	(
  		PLUSPLUS
- 		| 
- 		MINUSMINUS
+ 		| MINUSMINUS
  	)
  	{
       $exp=new RightUnaryOperator($exp1.exp, $op.text);
@@ -761,14 +935,12 @@ expression{
     	$exp=exp;
     }
 
- 	| 	exp1 = expression 
- 	  	op =(
- 				PLUS
- 				| 
- 				MINUS
- 			) 
- 		exp2 = expression
- 		{
+ 	| exp1 = expression op =
+ 	(
+ 		PLUS
+ 		| MINUS
+ 	) exp2 = expression
+ 	{
     		BinaryArithmeticExpression exp=new BinaryArithmeticExpression($exp1.exp, $op.text ,$exp2.exp);
     		$exp=exp;
     	}
@@ -852,7 +1024,7 @@ expression{
 
  ;
 
- assignment returns [Expression exp]
+ declarationid returns [Expression exp]
  :
  	(
  		ID op = EQ expr = expression
@@ -923,11 +1095,11 @@ expression{
  	'!='
  ;
 
-EQASSIGN
+ EQASSIGN
  :
  	':='
  ;
- 
+
  EQ
  :
  	'='
@@ -962,7 +1134,7 @@ EQASSIGN
 
  MINUS
  :
- 	'-' 
+ 	'-'
  ;
 
  MULT
@@ -1012,16 +1184,18 @@ EQASSIGN
 
  // LOGIC OPERATORS
 
-BIN_PROPOSITIONAL_LOGIC_OPERATOR: AND | OR  ;
-
+ BIN_PROPOSITIONAL_LOGIC_OPERATOR
+ :
+ 	AND
+ 	| OR
+ ;
 
  NOT
  :
  	(
- 	'!'
+ 		'!'
  	)
  ;
-
 
  AND
  :
@@ -1074,7 +1248,10 @@ BIN_PROPOSITIONAL_LOGIC_OPERATOR: AND | OR  ;
  	']'
  ;
 
-SEMICOLUMN: ';' ;
+ SEMICOLUMN
+ :
+ 	';'
+ ;
  // IDENTIFIERS
 
  WS
@@ -1121,14 +1298,19 @@ SEMICOLUMN: ';' ;
  	'\r'? '\n'
  ;
 
-COMMA: ',';
+ COMMA
+ :
+ 	','
+ ;
 
-COMMENT
-    :   '/*' .*? '*/' -> skip
-    ;
+ COMMENT
+ :
+ 	'/*' .*? '*/' -> skip
+ ;
 
-LINE_COMMENT
-    :   '//' ~[\r\n]* -> skip
-    ;
+ LINE_COMMENT
+ :
+ 	'//' ~[\r\n]* -> skip
+ ;
 
  

@@ -17,16 +17,6 @@ public class ExpInvariant extends Invariant {
 		this.operator = operator;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public CLTLocFormula accept(TA2CLTLocVisitor ta2cltLoc) {
-
-		return ta2cltLoc.visit(this);		
-		
-	}
-
 	public Identifier getId() {
 		return id;
 	}
@@ -38,4 +28,23 @@ public class ExpInvariant extends Invariant {
 	public Expression getExp() {
 		return exp;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public CLTLocFormula accept(TA2CLTLocVisitor ta2cltLoc) {
+
+		return ta2cltLoc.visit(this);
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "invariant="+id + operator + exp;
+	}
+
 }

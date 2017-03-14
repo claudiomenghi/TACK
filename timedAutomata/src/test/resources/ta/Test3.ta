@@ -1,0 +1,61 @@
+int A_c, A_Pf, A_Pn, A_S1, A_S2,  A_start, A_stop;
+ 
+int B_Pf, B_Pn, B_S1, B_S2,
+  B_start, B_stop;
+ 
+chan A_frame, A_reset, A_new_Pn;
+int A_msg, A_no, A_eof, A_T4;
+ 
+chan B_frame, B_reset, B_new_Pn;
+int B_msg, B_no, B_eof, B_T4;
+ 
+chan A_check;
+int A_err, A_res;
+ 
+chan B_check;
+int B_err, B_res;
+ 
+chan A_observe;
+int A_diff;
+ 
+chan B_observe;
+int B_diff;
+ 
+chan one, zero;
+
+
+process Sender_A {
+
+  clock A_c;
+  clock B_c,C_c;
+  int A_stop,B_start;
+  state  call_check, call_observe, check_eof, ex_jam;
+  init   start;
+  trans  call_check -> ex_jam {
+           guard  A_stop  ==0;
+           sync   A_check!;
+           assign A_c = 0;
+         },
+         call_observe -> call_observe {
+           guard  B_start  ==0;
+           sync   A_check!;
+           assign A_c = 0;
+         },
+          -> call_observe {
+           guard  B_start  ==1;
+           sync   A_check!;
+           assign A_c = 0;
+         }  ;
+}
+
+
+
+ 
+system Sender_A, Sender_B, 
+  Frame_Generator_A, Frame_Generator_B,
+  Detector_A, Detector_B,
+  Observer_A, Observer_B,
+  Bus;
+ 
+
+

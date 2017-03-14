@@ -2,13 +2,14 @@ package ta;
 
 import com.google.common.base.Preconditions;
 
+
 /**
  * Class that describes a clock
  * 
  * @author Claudio Menghi
  *
  */
-public class Clock{
+public class Variable {
 
 	/**
 	 * The name of the class
@@ -25,7 +26,7 @@ public class Clock{
 	 * @throws NullPointerException
 	 *             if the name is null
 	 */
-	public Clock(String name) {
+	public Variable(String name) {
 		Preconditions.checkNotNull(name, "The name of the clock cannot be null");
 		this.name = name;
 		this.hash = name.hashCode();
@@ -59,7 +60,7 @@ public class Clock{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Clock other = (Clock) obj;
+		Variable other = (Variable) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;

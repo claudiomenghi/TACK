@@ -32,9 +32,12 @@ public class State extends ModelElement {
 		return stateId;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
-		return "State [stateId=" + stateId + "]";
+		return "State [id=" + stateId + (this.invariant instanceof EmptyInvariant ? "" : ", " + this.invariant) + "]";
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package ta.parser;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -11,15 +11,14 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
-import ta.Clock;
 import ta.SystemDecl;
 import ta.TA;
+import ta.Variable;
 
-public class ParserClockTest {
+public class ParserVariablesTest {
 
-	
 	@Test
-	public void testObtainedTAContainsAllTheClocks() throws IOException{
+	public void testObtainedTAContainsAllTheVariables() throws IOException {
 		ANTLRInputStream input = new ANTLRFileStream(ClassLoader.getSystemResource("ta/Test2.ta").getPath());
 		TALexer lexer = new TALexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -29,14 +28,10 @@ public class ParserClockTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<Clock> clocks = ta.getClocks();
-
-		Set<Clock> expectedSet = new HashSet<>();
-		expectedSet.add(new Clock("A_c"));
-		expectedSet.add(new Clock("B_c"));
-		expectedSet.add(new Clock("C_c"));
-
-		assertEquals(expectedSet, clocks);
+		Set<Variable> variables = new HashSet<>();
+		variables.add(new Variable("B_start"));
+		variables.add(new Variable("A_stop"));
+		assertTrue("The parsed TA must contain all the variables", ta.getVariables().equals(variables));
 	}
 
 }

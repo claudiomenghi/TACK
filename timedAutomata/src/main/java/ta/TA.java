@@ -13,6 +13,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import com.google.common.base.Preconditions;
 
+import ta.declarations.ClockDecl;
+import ta.declarations.VariableDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.state.State;
@@ -21,10 +23,14 @@ import ta.visitors.TAVisitor;
 
 public class TA {
 
+	private final Set<VariableDecl> variableDeclaration;
+	
+	private final Set<ClockDecl> clockDeclarations;
+	
 	/**
 	 * The name of the timed automaton
 	 */
-	private final String name;
+	private final String identifier;
 
 	/**
 	 * The initial state of the timed automaton
@@ -42,6 +48,8 @@ public class TA {
 	private final Set<State> states;
 
 	private final Set<Clock> clocks;
+	
+	private final Set<Variable> variables;
 	/**
 	 * The transitions of the timed automaton
 	 */
@@ -52,12 +60,13 @@ public class TA {
 	 */
 	private final Map<State, Set<Transition>> outTransitions;
 
-	public TA(String name, Set<AP> atomicPropositions, Set<State> states, Set<Transition> transitions,
-			State initialState, Set<Clock> clocks) {
+	public TA(String identifier, Set<AP> atomicPropositions, Set<State> states, Set<Transition> transitions,
+			State initialState, Set<Clock> clocks, Set<Variable> variables, Set<VariableDecl> variableDeclaration, Set<ClockDecl> clockDeclarations) {
 		Preconditions.checkNotNull(states, "The set of the states cannot be null");
 		Preconditions.checkNotNull(clocks, "The set of the clocks cannot be null");
+		Preconditions.checkNotNull(variables, "The set of the variables cannot be null");
 
-		this.name = name;
+		this.identifier = identifier;
 		if (atomicPropositions != null) {
 			this.atomicPropositions = new HashSet<>(atomicPropositions);
 		} else {
@@ -68,6 +77,7 @@ public class TA {
 		this.initialState = initialState;
 		this.clocks = clocks;
 		this.outTransitions = new HashMap<>();
+		this.variables=variables;
 
 		this.states.forEach(s -> this.outTransitions.put(s, new HashSet<>()));
 		this.transitions.forEach(t -> {
@@ -76,6 +86,13 @@ public class TA {
 			
 			this.outTransitions.get(t.getSource()).add(t);
 		});
+		
+		this.variableDeclaration=variableDeclaration;
+		this.clockDeclarations=clockDeclarations;
+	}
+
+	public Set<Variable> getVariables() {
+		return variables;
 	}
 
 	public Set<Transition> getOutgoingTransitions(State state) {
@@ -103,8 +120,8 @@ public class TA {
 		return initialState;
 	}
 
-	public String getName() {
-		return name;
+	public String getIdentifier() {
+		return identifier;
 	}
 
 	/**
@@ -117,13 +134,45 @@ public class TA {
 		return Collections.unmodifiableSet(clocks);
 	}
 
+	public Set<VariableDecl>  getDeclarations(){
+		return this.variableDeclaration;
+	}
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "TA [atomicPropositions=" + atomicPropositions + ", states=" + states + ", transitions=" + transitions
-				+ ", clocks=" + this.clocks + "]";
+		
+		StringBuilder builder=new StringBuilder();
+		builder.append( "-----------------------------TIMED AUTOMATON----------------------------- \n");
+		
+		builder.append( "TA \n");
+		builder.append("id: \n");
+		builder.append("\t"+this.identifier+"\n");
+		builder.append("clocks: \n");
+		builder.append("\t");
+		this.clocks.forEach(c -> builder.append(c+",\t"));
+		builder.append("\n");
+		builder.append("variables: \n");
+		builder.append("\t");
+		this.variables.forEach(c -> builder.append(c+",\t"));
+		builder.append("\n");
+		builder.append( "initialstate \n");
+		builder.append("\t"+this.getInitialState()+"\n");
+		builder.append( "states \n");
+		this.states.forEach(s -> builder.append("\t"+s+",\n"));
+		builder.append( "transitions \n");
+		this.transitions.forEach(t -> builder.append("\t"+t+",\n"));
+		builder.append( "--------------------------\n");
+		builder.append( "DECLARATION \n");
+		builder.append( "variables \n");
+		this.variableDeclaration.forEach(v -> builder.append("\t"+v+",\n"));
+		builder.append( "clocks \n");
+		
+		this.clockDeclarations.forEach(v -> builder.append("\t"+v+",\n"));
+		
+		builder.append( "-------------------------------------------------------------------------------- \n");
+		return builder.toString();
 	}
 
 	public static TA parse(String filePath) throws IOException {

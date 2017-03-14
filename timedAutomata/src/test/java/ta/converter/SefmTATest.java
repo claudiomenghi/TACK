@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import formulae.cltloc.CLTLocFormula;
@@ -24,6 +25,7 @@ import ta.visitors.TA2CLTLoc;
 
 public class SefmTATest {
 
+	@Ignore
 	@Test
 	public void apTest1() throws IOException {
 

@@ -5,14 +5,14 @@ import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
-import ta.declarations.Variable;
+import ta.declarations.VariableDecl;
 
 public class SystemDecl {
 
 	/**
 	 * contains the variable declaration
 	 */
-	private Variable<?> declarations;
+	private Set<VariableDecl> declarations;
 	private Set<TA> timedAutomata;
 
 	public SystemDecl() {

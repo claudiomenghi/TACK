@@ -25,8 +25,8 @@ import ta.Clock;
 import ta.TA;
 import ta.state.State;
 import ta.transition.Transition;
-import ta.transition.conditions.Condition;
 import ta.transition.guard.ClockConstraint;
+import ta.transition.guard.VariableConstraintAtom;
 
 public class TA2CLTLoc {
 

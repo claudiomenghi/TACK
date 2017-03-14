@@ -5,7 +5,9 @@ import ta.TA;
 import ta.expressions.EmptyExpression;
 import ta.state.State;
 import ta.transition.guard.BinaryClockConstraint;
+import ta.transition.guard.BinaryVariableConstraint;
 import ta.transition.guard.ClockConstraintAtom;
+import ta.transition.guard.VariableConstraintAtom;
 
 public interface TAVisitor<T> {
 
@@ -20,6 +22,10 @@ public interface TAVisitor<T> {
 	public T visit(BinaryClockConstraint binaryClockConstraint);
 
 	public T visit(ClockConstraintAtom clockConstraintAtom);
+
+	public T visit(VariableConstraintAtom variableConstraintAtom);
+
+	public T visit(BinaryVariableConstraint binaryVariableConstraint);
 	
 	
 

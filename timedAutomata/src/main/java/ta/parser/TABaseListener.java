@@ -1,31 +1,37 @@
-// Generated from TA.g4 by ANTLR 4.6
+// Generated from TA.g4 by ANTLR 4.5
 
 package ta.parser;
 
+import java.text.ParseException;
 import java.util.*;
+import ta.declarations.*;
 import ta.expressions.*;
 import ta.expressions.binary.*;
 import ta.expressions.unary.*;
 import ta.expressions.ternary.*;
 import ta.*;
+import java.util.Map.Entry;
+
 import ta.state.*;
 import ta.transition.Transition;
 import ta.transition.Guard;
 import ta.transition.assignments.*;
-import ta.transition.conditions.*;
 import ta.SystemDecl;
-import ta.declarations.Initializer;
-import ta.declarations.Variable;
-import ta.declarations.Variable;
+import ta.Variable;
+
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ta.TA;
 import ta.transition.Assign;
+import ta.transition.sync.*;
 import ta.transition.guard.*;
 import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
+import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator;
+import operators.*;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -167,18 +173,6 @@ public class TABaseListener implements TAListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayDecl(TAParser.ArrayDeclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInitialiser(TAParser.InitialiserContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInitialiser(TAParser.InitialiserContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -484,37 +478,13 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx) { }
+	@Override public void enterConstraintAtom(TAParser.ConstraintAtomContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClockconstraintAtom(TAParser.ClockconstraintAtomContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConditionList(TAParser.ConditionListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConditionList(TAParser.ConditionListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCondition(TAParser.ConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCondition(TAParser.ConditionContext ctx) { }
+	@Override public void exitConstraintAtom(TAParser.ConstraintAtomContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -556,25 +526,13 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableassignment(TAParser.VariableassignmentContext ctx) { }
+	@Override public void enterAssignment(TAParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariableassignment(TAParser.VariableassignmentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterClockassigment(TAParser.ClockassigmentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClockassigment(TAParser.ClockassigmentContext ctx) { }
+	@Override public void exitAssignment(TAParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -628,13 +586,13 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignment(TAParser.AssignmentContext ctx) { }
+	@Override public void enterDeclarationid(TAParser.DeclarationidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignment(TAParser.AssignmentContext ctx) { }
+	@Override public void exitDeclarationid(TAParser.DeclarationidContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
