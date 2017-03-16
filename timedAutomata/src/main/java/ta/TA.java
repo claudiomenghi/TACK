@@ -15,6 +15,7 @@ import com.google.common.base.Preconditions;
 
 import ta.declarations.ClockDecl;
 import ta.declarations.VariableDecl;
+import ta.expressions.Value;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.state.State;
@@ -95,6 +96,16 @@ public class TA {
 		return variables;
 	}
 
+	
+	public Value getInitialValue(Variable v){
+		
+		for(VariableDecl i: this.variableDeclaration){
+			if(i.getId().equals(v.getName())){
+				return new Value(Integer.toString(i.getExp().evaluate()));
+			}
+		}
+		return new Value(Integer.toString(0));
+	}
 	public Set<Transition> getOutgoingTransitions(State state) {
 		Preconditions.checkNotNull(state, "The state cannot be null");
 		return this.outTransitions.get(state);

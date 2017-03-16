@@ -13,22 +13,35 @@ import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
+import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.unary.CLTLocGlobally;
 import formulae.cltloc.operators.unary.CLTLocNegation;
 import formulae.cltloc.operators.unary.CLTLocNext;
-import formulae.cltloc.relations.CLTLocGERelation;
+import formulae.cltloc.relations.CLTLocRelation;
+import formulae.cltloc.relations.Relation;
 import ta.AP;
 import ta.Clock;
 import ta.TA;
+import ta.Variable;
+import ta.VariableAssignementAP;
 import ta.state.State;
 import ta.transition.Transition;
 import ta.transition.guard.ClockConstraint;
-import ta.transition.guard.VariableConstraintAtom;
 
 public class TA2CLTLoc {
+
+	private CLTLocFormula variable1;
+	private CLTLocFormula variable2;
+	private CLTLocFormula variable3;
+
+	private CLTLocFormula clock1;
+	private CLTLocFormula clock2;
+	private CLTLocFormula clock3;
 
 	private CLTLocFormula phi1;
 	private CLTLocFormula phi2;
@@ -38,7 +51,9 @@ public class TA2CLTLoc {
 	private CLTLocFormula phi6;
 	private CLTLocFormula phi7;
 
-	private static final BinaryOperator<CLTLocFormula> conjunctionOperator = (left, right) -> {
+	private static final Constant zero = new Constant(0);
+
+	public static final BinaryOperator<CLTLocFormula> conjunctionOperator = (left, right) -> {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
 		Preconditions.checkNotNull(right, "The right formula cannot be null");
 
@@ -51,7 +66,7 @@ public class TA2CLTLoc {
 		return new CLTLocConjunction(left, right);
 	};
 
-	private static final BinaryOperator<CLTLocFormula> disjunctionOperator = (left, right) -> {
+	public static final BinaryOperator<CLTLocFormula> disjunctionOperator = (left, right) -> {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
 		Preconditions.checkNotNull(right, "The right formula cannot be null");
 		if (left.equals(CLTLocFormula.FALSE)) {
@@ -63,7 +78,7 @@ public class TA2CLTLoc {
 		return new CLTLocDisjunction(left, right);
 	};
 
-	private static final BinaryOperator<CLTLocFormula> implicationOperator = (left, right) -> {
+	public static final BinaryOperator<CLTLocFormula> implicationOperator = (left, right) -> {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
 		Preconditions.checkNotNull(right, "The right formula cannot be null");
 		if (right.equals(CLTLocFormula.TRUE)) {
@@ -76,43 +91,170 @@ public class TA2CLTLoc {
 		return constraint.accept(new TA2CLTLocVisitor());
 	};
 
-	private static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
-	private static final UnaryOperator<CLTLocFormula> globallyOperator = CLTLocGlobally::new;
-	private static final UnaryOperator<CLTLocFormula> nextOperator = (formula) -> {
+	public static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
+	public static final UnaryOperator<CLTLocFormula> globallyOperator = CLTLocGlobally::new;
+	public static final UnaryOperator<CLTLocFormula> nextOperator = (formula) -> {
 		Preconditions.checkNotNull(formula, "The formula cannot be null");
 
 		return new CLTLocNext(formula);
 	};
 
-	private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("r_" + ap.getName());
-	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("f_" + ap.getName());
+	private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
+	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
 
 	private static final Function<State, CLTLocFormula> state2Ap = (s) -> new CLTLocAP("s_" + s.getId());
 
-	public CLTLocFormula convert(TA ta, Set<AP> propositionsOfInterest) {
+	public CLTLocFormula convert(TA ta, Set<AP> propositionsOfInterest, boolean integer) {
+
+		this.variable1 = this.getVariable1(ta);
+		this.variable2 = this.getVariable2(ta);
+		this.variable3 = this.getVariable3(ta);
+
+		CLTLocFormula variableconst = conjunctionOperator.apply(this.variable1,
+				conjunctionOperator.apply(this.variable2, this.variable3));
+
+		this.clock1 = this.getClock1(ta);
+		this.clock2 = this.getClock2(ta);
+		this.clock3 = this.getClock3(ta);
+
+		CLTLocFormula clockconst = conjunctionOperator.apply(this.clock1,
+				conjunctionOperator.apply(this.clock2, this.clock3));
 
 		phi1 = this.getPhi1(ta);
 		phi2 = this.getPhi2(ta);
 		phi3 = this.getPhi3(ta);
 		phi4 = this.getPhi4(ta);
-		phi5 = this.getPhi5(ta, propositionsOfInterest);
-		phi6 = this.getPhi6(ta);
-		phi7 = this.getPhi7(ta);
+		phi5 = this.getPhi5(ta, propositionsOfInterest, integer);
+		phi6 = this.getPhi6(ta, propositionsOfInterest, integer);
+		phi7 = this.getPhi7(ta, propositionsOfInterest, integer);
 
-		return conjunctionOperator.apply(phi2,
-				conjunctionOperator.apply(phi7,
-						globallyOperator.apply(conjunctionOperator.apply(phi1, conjunctionOperator.apply(phi3,
-								conjunctionOperator.apply(phi4, conjunctionOperator.apply(phi5, phi6)))))));
+		return conjunctionOperator.apply(variableconst,
+				conjunctionOperator.apply(clockconst,
+						conjunctionOperator.apply(phi2, conjunctionOperator.apply(phi7,
+								conjunctionOperator.apply(phi5, globallyOperator.apply(conjunctionOperator.apply(phi1,
+										conjunctionOperator.apply(phi3, conjunctionOperator.apply(phi4, phi6)))))))));
+	}
+
+	private CLTLocFormula getVariable1(TA ta) {
+
+		Set<Variable> variables = ta.getVariables();
+
+		CLTLocFormula ret = variables.stream()
+				.map(c -> (CLTLocFormula) new CLTLocRelease(
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"), new Constant(1),
+								Relation.EQ),
+						new CLTLocConjunction(
+								new CLTLocRelation(
+										new formulae.cltloc.atoms.Variable(c.getName() + "_v"), new Constant(0),
+										Relation.EQ),
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "0"),
+										new Constant(ta.getInitialValue(c).value), Relation.EQ))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return ret;
+	}
+
+	private CLTLocFormula getVariable2(TA ta) {
+
+		Set<Variable> variables = ta.getVariables();
+
+		CLTLocFormula ret = variables.stream().map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+				new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"), new Constant(0),
+						Relation.EQ),
+				new CLTLocNext(new CLTLocRelease(
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"), new Constant(1),
+								Relation.EQ),
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"),
+										new Constant(0), Relation.EQ),
+								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(c.getName() + "0"))))))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return ret;
+	}
+
+	private CLTLocFormula getVariable3(TA ta) {
+
+		Set<Variable> variables = ta.getVariables();
+
+		CLTLocFormula ret = variables.stream().map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+				new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"), new Constant(1),
+						Relation.EQ),
+				new CLTLocNext(new CLTLocRelease(
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"), new Constant(0),
+								Relation.EQ),
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"),
+										new Constant(1), Relation.EQ),
+								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(c.getName() + "1"))))))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return ret;
+	}
+
+	private CLTLocFormula getClock2(TA ta) {
+
+		Set<Clock> clocks = ta.getClocks();
+
+		CLTLocFormula ret = clocks.stream()
+				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+						new CLTLocRelation(new CLTLocClock(c.getName() + "0"), zero, Relation.EQ),
+						new CLTLocNext(new CLTLocRelease(
+								new CLTLocRelation(new CLTLocClock(c.getName() + "1"), zero, Relation.EQ),
+								new CLTLocConjunction(
+										new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"), zero,
+												Relation.EQ),
+										new CLTLocRelation(new CLTLocClock(c.getName() + "0"), zero, Relation.GE)))))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return ret;
+	}
+
+	private CLTLocFormula getClock3(TA ta) {
+
+		Set<Clock> clocks = ta.getClocks();
+
+		CLTLocFormula ret = clocks.stream()
+				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+						new CLTLocRelation(new CLTLocClock(c.getName() + "1"), zero, Relation.EQ), new CLTLocNext(
+								new CLTLocRelease(
+										new CLTLocRelation(new CLTLocClock(c.getName() + "0"), zero,
+												Relation.EQ),
+										new CLTLocConjunction(
+												new CLTLocRelation(
+														new formulae.cltloc.atoms.Variable(c.getName() + "_v"),
+														new Constant(1), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock(c.getName() + "1"), zero,
+														Relation.GE)))))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return ret;
+	}
+
+	private CLTLocFormula getClock1(TA ta) {
+
+		Set<Clock> clocks = ta.getClocks();
+
+		CLTLocFormula ret = clocks.stream()
+				.map(c -> (CLTLocFormula) new CLTLocRelease(
+						new CLTLocRelation(new CLTLocClock(c.getName() + "1"), new Constant(0), Relation.EQ),
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getName() + "_v"),
+										new Constant(0), Relation.EQ),
+								new CLTLocRelation(new CLTLocClock(c.getName() + "0"), new Constant(0), Relation.GE))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return ret;
 	}
 
 	private CLTLocFormula getPhi1(TA ta) {
 
-		return ta.getStates().stream()
+		return new CLTLocGlobally(ta.getStates().stream()
 				.map(s -> implicationOperator.apply(state2Ap.apply(s),
 						ta.getStates().stream().filter(s1 -> !s1.equals(s))
 								.map(s1 -> negationOperator.apply(state2Ap.apply(s1))).reduce(conjunctionOperator)
 								.orElse(state2Ap.apply(s))))
-				.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE);
+				.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE));
 
 	}
 
@@ -124,10 +266,11 @@ public class TA2CLTLoc {
 
 		if (ta.getStates().size() > 0) {
 
-			CLTLocFormula subFormulaPhi3 = ta.getStates().stream()
-					.map(s -> implicationOperator.apply(state2Ap.apply(s),
-							conjunctionOperator.apply(s.getInvariant().accept(new TA2CLTLocVisitor()),
-									nextOperator.apply(s.getInvariant().accept(new TA2CLTLocVisitor())))))
+			CLTLocFormula subFormulaPhi3 = ta.getStates().stream().map(
+					s -> s.getInvariant().accept(new TA2CLTLocVisitor()).equals(CLTLocFormula.TRUE) ? CLTLocFormula.TRUE
+							: implicationOperator.apply(state2Ap.apply(s),
+									conjunctionOperator.apply(s.getInvariant().accept(new TA2CLTLocVisitor()),
+											nextOperator.apply(s.getInvariant().accept(new TA2CLTLocVisitor())))))
 					.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 			return globallyOperator.apply(subFormulaPhi3);
@@ -137,89 +280,202 @@ public class TA2CLTLoc {
 		}
 	}
 
-	private CLTLocFormula getPhi5(TA ta, Set<AP> propositionsOfInterest) {
+	private CLTLocFormula getPhi5(TA ta, Set<AP> propositionsOfInterest, boolean assignement) {
 
-		if (ta.getStates().size() > 0) {
+		if (assignement) {
+			CLTLocFormula phi5StatesSubformula = propositionsOfInterest.stream().map(ap -> {
+				VariableAssignementAP tmp = (VariableAssignementAP) ap;
 
-			CLTLocFormula phi5StatesSubformula = ta.getStates().stream()
-					.map((s) -> implicationOperator.apply(state2Ap.apply(s),
-							conjunctionOperator.apply(
-									s.getValid(propositionsOfInterest).stream().map(ap2CLTLocRESTAp)
-											.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE),
-									s.getValid(propositionsOfInterest).stream()
-											.map((ap) -> negationOperator.apply(ap2CLTLocRESTAp.apply(ap)))
-											.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE))))
-					.reduce(CLTLocFormula.TRUE, conjunctionOperator);
-			return globallyOperator.apply(phi5StatesSubformula);
+				return (CLTLocFormula) new CLTLocIff(
+						new CLTLocAP(
+								"H_" + tmp.getEncodingSymbol()),
+						new CLTLocDisjunction(
+								new CLTLocConjunction(
+										new CLTLocRelation(
+												new formulae.cltloc.atoms.Variable(tmp.getVariable().getName() + "_v"),
+												new Constant(0), Relation.EQ),
+										new CLTLocRelation(
+												new formulae.cltloc.atoms.Variable(tmp.getVariable().getName() + "0"),
+												new Constant(tmp.getValue().value), Relation.EQ)),
+								new CLTLocConjunction(
+										new CLTLocRelation(
+												new formulae.cltloc.atoms.Variable(tmp.getVariable().getName() + "_v"),
+												new Constant(1), Relation.EQ),
+										new CLTLocRelation(
+												new formulae.cltloc.atoms.Variable(tmp.getVariable().getName() + "1"),
+												new Constant(tmp.getValue().value), Relation.EQ))));
+			}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+			return new CLTLocGlobally(phi5StatesSubformula);
 		} else {
+			if (ta.getStates().size() > 0) {
 
-			return CLTLocFormula.TRUE;
+				CLTLocFormula phi5StatesSubformula = ta.getStates().stream()
+						.map((s) -> implicationOperator.apply(state2Ap.apply(s),
+								conjunctionOperator.apply(
+										s.getValid(propositionsOfInterest).stream().map(ap2CLTLocRESTAp)
+												.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE),
+										s.getValid(propositionsOfInterest).stream()
+												.map((ap) -> negationOperator.apply(ap2CLTLocRESTAp.apply(ap)))
+												.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE))))
+						.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+				return globallyOperator.apply(phi5StatesSubformula);
+			} else {
+
+				return CLTLocFormula.TRUE;
+			}
 		}
-
 	}
 
 	private CLTLocFormula getPhi4(TA ta) {
 
 		Set<Clock> clocks = ta.getClocks();
-		System.out.println("Clocks: " + ta.getClocks());
-		Set<CLTLocFormula> clockFormulae = clocks.stream()
-				.map(c -> new CLTLocGERelation(new CLTLocClock(c.getName()), new Constant(0)))
+		Set<CLTLocFormula> clockFormulae = clocks.stream().map(
+				c -> new CLTLocDisjunction(
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable("c_v"), new Constant(0),
+										Relation.EQ),
+								new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)),
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable("c_v"),
+										new Constant(1), Relation.EQ),
+								new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.GE))))
 				.collect(Collectors.toSet());
 
 		CLTLocFormula clocksGeZero = clockFormulae.stream().reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
-		CLTLocFormula ret = ta.getStates().stream().map(state ->
+		Set<Variable> variables = ta.getVariables();
+		Set<CLTLocFormula> keepConstantVariables = variables.stream()
+				.map(v -> new CLTLocDisjunction(
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(v.getName() + "_v"),
+										new Constant(0), Relation.EQ),
+								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(v.getName() + "0"))),
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(v.getName() + "_v"),
+										new Constant(1), Relation.EQ),
+								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(v.getName() + "1")))))
+				.collect(Collectors.toSet());
 
-		implicationOperator.apply(state2Ap.apply(state),
-				nextOperator
-						.apply(disjunctionOperator.apply(conjunctionOperator.apply(state2Ap.apply(state), clocksGeZero),
+		CLTLocFormula keepConstantVariablesFormula = keepConstantVariables.stream().reduce(CLTLocFormula.TRUE,
+				conjunctionOperator);
+
+		CLTLocFormula ret = ta.getStates().stream()
+				.map(state -> implicationOperator.apply(state2Ap.apply(state),
+						nextOperator.apply(disjunctionOperator.apply(
+								conjunctionOperator
+										.apply(state2Ap.apply(state),
+												conjunctionOperator.apply(clocksGeZero, keepConstantVariablesFormula)),
 								ta.getOutgoingTransitions(state).stream()
-										.map(t -> conjunctionOperator.apply(this.getClockGuardConditions(t, clocks),
-												state2Ap.apply(t.getDestination())))
+										.map(t -> conjunctionOperator.apply(state2Ap.apply(t.getDestination()),
+												conjunctionOperator.apply(this.getGuardConditions(t, variables, clocks),
+														this.getAssignConditions(t, variables, clocks))))
 										.reduce(CLTLocFormula.FALSE, disjunctionOperator)))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		return globallyOperator.apply(ret);
 	}
 
-	private CLTLocFormula getClockGuardConditions(Transition t, Set<Clock> clocks) {
-		Set<String> clocksId = clocks.stream().map(c -> c.getName()).collect(Collectors.toSet());
+	private CLTLocFormula getGuardConditions(Transition t, Set<Variable> variables, Set<Clock> clocks) {
 
 		CLTLocFormula formula1 = t.getGuard().getClockConstraints().stream()
 				.map(constraint -> clockConstraint2CLTLoc.apply(constraint))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		
-		
-		CLTLocFormula formula2 = CLTLocFormula.TRUE;
-		// Set<String> s=t.getAssignement().getConditions().stream().map(c ->
-		// c.getId()).collect(Collectors.toSet());
-		// for (Assignement c : t.getAssignement().getConditions()) {
-		// if(clocksId.contains(c.getId())){
-		// formula2=conjunctionOperator.apply(formula2, new CLTLocEQRelation(new
-		// CLTLocClock(c.getId()), new CLTLocConstantAtom(0)));
-		// }
-		// }
-		Set<String> diff = new HashSet<>(clocksId);
-		// diff.removeAll(s);
 
-		CLTLocFormula formula3 = CLTLocFormula.TRUE;
-		//for (String s2Id : diff) {
-		//	formula3 = conjunctionOperator.apply(formula2,
-		//			new CLTLocGERelation(new CLTLocClock(s2Id), new Constant(0)));
-		//}
-		return conjunctionOperator.apply(formula1, conjunctionOperator.apply(formula2, formula3));
+		CLTLocFormula formula2 = t.getGuard().getConditions().stream().map(c -> c.accept(new TA2CLTLocVisitor()))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return conjunctionOperator.apply(formula1, formula2);
 	}
 
-	private CLTLocFormula getPhi6(TA ta) {
-		Function<AP, CLTLocFormula> phi6Subformula = (a) -> implicationOperator.apply(ap2CLTLocRESTAp.apply(a),
-				negationOperator.apply(ap2CLTLocFIRSTAp.apply(a)));
-		CLTLocFormula andSubformula = ta.getAtomicPropositions().stream().map(phi6Subformula).reduce(CLTLocFormula.TRUE,
+	private CLTLocFormula getAssignConditions(Transition t, Set<Variable> variables, Set<Clock> clocks) {
+		Set<String> clocksId = clocks.stream().map(c -> c.getName()).collect(Collectors.toSet());
+		Set<String> assignedClocks = t.getAssignement().getClockassigments().stream().map(c -> c.getClock().getName())
+				.collect(Collectors.toSet());
+		Set<String> notAssignedClocks = new HashSet<>(clocksId);
+		notAssignedClocks.removeAll(assignedClocks);
+
+		CLTLocFormula notAssignedClocksCLTLoc = notAssignedClocks
+				.stream().map(
+						c -> (CLTLocFormula) new CLTLocDisjunction(
+								new CLTLocConjunction(
+										new CLTLocRelation(new formulae.cltloc.atoms.Variable(c + "_v"),
+												new Constant(0), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock(c + "0"), new Constant(0), Relation.GE)),
+								new CLTLocConjunction(
+										new CLTLocRelation(new formulae.cltloc.atoms.Variable(c + "_v"),
+												new Constant(1), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock(c + "1"), new Constant(0), Relation.GE))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		CLTLocFormula assignedClocksCLTLoc = t.getAssignement().getClockassigments().stream().map(c ->
+
+		(CLTLocFormula) new CLTLocDisjunction(
+				new CLTLocConjunction(
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(c + "_v"), new Constant(0), Relation.EQ),
+						new CLTLocRelation(new CLTLocClock(c + "0"), new Constant(c.getValue().value), Relation.EQ)),
+				new CLTLocConjunction(
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(c + "_v"), new Constant(1), Relation.EQ),
+						new CLTLocRelation(new CLTLocClock(c + "1"), new Constant(c.getValue().value), Relation.EQ))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		Set<String> variableId = variables.stream().map(c -> c.getName()).collect(Collectors.toSet());
+		Set<String> assignedVariables = t.getAssignement().getVariableassigments().stream()
+				.map(c -> c.getVariable().getName()).collect(Collectors.toSet());
+		Set<String> notAssignedVariables = new HashSet<>(variableId);
+		notAssignedVariables.removeAll(assignedVariables);
+
+		CLTLocFormula notAssignedVariablesCLTLoc = notAssignedVariables
+				.stream().map(
+						c -> (CLTLocFormula) new CLTLocDisjunction(
+								new CLTLocConjunction(
+										new CLTLocRelation(new formulae.cltloc.atoms.Variable(c + "_v"),
+												new Constant(0), Relation.EQ),
+										new KeepVariableConstant(new formulae.cltloc.atoms.Variable(c + "0"))),
+								new CLTLocConjunction(
+										new CLTLocRelation(
+												new formulae.cltloc.atoms.Variable(c + "_v"), new Constant(1),
+												Relation.EQ),
+										new KeepVariableConstant(new formulae.cltloc.atoms.Variable(c + "1")))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		CLTLocFormula assignedVariablesCLTLoc = t.getAssignement().getVariableassigments().stream()
+				.map(c -> (CLTLocFormula) new CLTLocDisjunction(
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getVariable().getName() + "_v"),
+										new Constant(0), Relation.EQ),
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getVariable().getName() + "0"),
+										new Constant(c.getValue().evaluate()), Relation.EQ)),
+						new CLTLocConjunction(
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getVariable().getName() + "_v"),
+										new Constant(1), Relation.EQ),
+								new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getVariable().getName() + "1"),
+										new Constant(c.getValue().evaluate()), Relation.EQ))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return conjunctionOperator.apply(notAssignedClocksCLTLoc, conjunctionOperator.apply(assignedClocksCLTLoc,
+				conjunctionOperator.apply(notAssignedVariablesCLTLoc, assignedVariablesCLTLoc)));
+	}
+
+	private CLTLocFormula getPhi6(TA ta, Set<AP> propositionsOfInterest, boolean assignement) {
+		Function<AP, CLTLocFormula> phi6Subformula = (a) -> a.accept(new TA2CLTLocVisitor());
+
+		CLTLocFormula andSubformula = propositionsOfInterest.stream().map(phi6Subformula).reduce(CLTLocFormula.TRUE,
 				conjunctionOperator);
 		return globallyOperator.apply(andSubformula);
 	}
 
-	private CLTLocFormula getPhi7(TA ta) {
-		return ta.getAtomicPropositions().stream().map(ap2CLTLocFIRSTAp).reduce(CLTLocFormula.TRUE,
-				conjunctionOperator);
+	private CLTLocFormula getPhi7(TA ta, Set<AP> propositionsOfInterest, boolean assignement) {
+		if (assignement) {
+
+			return propositionsOfInterest.stream().map( ap->{
+					VariableAssignementAP tmp=(VariableAssignementAP)ap;
+					return ap2CLTLocFIRSTAp.apply(new AP(tmp.getEncodingSymbol()));
+				}).reduce(CLTLocFormula.TRUE,
+					conjunctionOperator);
+		} else {
+			return propositionsOfInterest.stream().map(ap2CLTLocFIRSTAp).reduce(CLTLocFormula.TRUE,
+					conjunctionOperator);
+		}
 	}
 
 	public CLTLocFormula getPhi1() {
@@ -250,4 +506,27 @@ public class TA2CLTLoc {
 		return phi7;
 	}
 
+	public CLTLocFormula getClock1() {
+		return clock1;
+	}
+
+	public CLTLocFormula getClock2() {
+		return clock2;
+	}
+
+	public CLTLocFormula getClock3() {
+		return clock3;
+	}
+
+	public CLTLocFormula getVariable1() {
+		return variable1;
+	}
+
+	public CLTLocFormula getVariable2() {
+		return variable2;
+	}
+
+	public CLTLocFormula getVariable3() {
+		return variable3;
+	}
 }

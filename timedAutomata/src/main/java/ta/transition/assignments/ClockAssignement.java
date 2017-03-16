@@ -2,8 +2,11 @@ package ta.transition.assignments;
 
 import com.google.common.base.Preconditions;
 
+import formulae.cltloc.CLTLocFormula;
 import ta.Clock;
 import ta.expressions.Value;
+import ta.visitors.TA2CLTLocVisitor;
+import ta.visitors.TAVisitor;
 
 public class ClockAssignement extends Assignment {
 	private final Clock clock;
@@ -67,5 +70,9 @@ public class ClockAssignement extends Assignment {
 	@Override
 	public String toString() {
 		return clock + "=" + value;
+	}
+
+	 public  <R> R accept(TAVisitor<R> visitor){
+		return visitor.visit(this);
 	}
 }

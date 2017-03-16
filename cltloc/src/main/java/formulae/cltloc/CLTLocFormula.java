@@ -6,14 +6,13 @@ import formulae.cltloc.visitor.CLTLocVisitor;
 
 public abstract class CLTLocFormula extends Formula {
 
-	public static final CLTLocFormula TRUE=new CLTLocAP("True");
-	public static final CLTLocFormula FALSE=new CLTLocAP("False");
-	
+	public static final CLTLocFormula TRUE = new CLTLocAP("True");
+	public static final CLTLocFormula FALSE = new CLTLocAP("False");
+
 	public CLTLocFormula() {
 		super();
-		
+
 	}
-	
-	
-	 public abstract <T> T accept(CLTLocVisitor<T> t);
+
+	public abstract <T> T accept(CLTLocVisitor<T> t);
 }

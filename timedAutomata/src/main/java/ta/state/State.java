@@ -6,8 +6,6 @@ import com.google.common.base.Preconditions;
 
 import ta.AP;
 import ta.ModelElement;
-import ta.expressions.EmptyExpression;
-import ta.expressions.Expression;
 import ta.visitors.TAVisitor;
 
 public class State extends ModelElement {

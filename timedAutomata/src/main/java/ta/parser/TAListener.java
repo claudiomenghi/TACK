@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.5
+// Generated from TA.g4 by ANTLR 4.6
 
 package ta.parser;
 
@@ -29,7 +29,6 @@ import ta.transition.guard.ClockConstraintAtom.ClockConstraintAtomOperator;
 import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator;
 import operators.*;
 
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

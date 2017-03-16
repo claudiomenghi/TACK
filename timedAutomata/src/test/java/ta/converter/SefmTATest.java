@@ -42,7 +42,7 @@ public class SefmTATest {
 		Set<AP> propositionsOfInterest = new HashSet<>();
 
 		TA2CLTLoc converted=new TA2CLTLoc();
-		CLTLocFormula formula = converted.convert(ta, propositionsOfInterest);
+		CLTLocFormula formula = converted.convert(ta, propositionsOfInterest, true);
 
 		System.out.println("phi_1="+converted.getPhi1());
 		System.out.println("phi_2="+converted.getPhi2());

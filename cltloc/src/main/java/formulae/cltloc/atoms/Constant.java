@@ -2,18 +2,28 @@ package formulae.cltloc.atoms;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class Constant extends Atom{
+public class Constant extends Atom {
 
-	private final int value;
+	private final String value;
 	private final int hash;
 
 	public Constant(int value) {
+		super();
+		this.value = Integer.toString(value);
+
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + this.value.hashCode();
+		hash = result;
+	}
+
+	public Constant(String value) {
 		super();
 		this.value = value;
 
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + value;
+		result = prime * result + value.hashCode();
 		hash = result;
 	}
 
@@ -31,7 +41,7 @@ public class Constant extends Atom{
 		if (getClass() != obj.getClass())
 			return false;
 		Constant other = (Constant) obj;
-		if (value != other.value)
+		if (!value.equals(other.value))
 			return false;
 		return true;
 	}
@@ -41,7 +51,7 @@ public class Constant extends Atom{
 	 */
 	@Override
 	public String toString() {
-		return Integer.toString(value);
+		return value;
 	}
 
 	@Override

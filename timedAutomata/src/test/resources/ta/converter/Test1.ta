@@ -1,0 +1,16 @@
+clock c;
+ 
+process Sender_A {
+  int i=0;
+  state  state_1{c<15},  state_2;
+  init   state_1;
+  trans  state_1 -> state_2 {
+           assign i = 2;
+         },
+         state_2 -> state_1 {
+           assign i = 3;
+         };
+}
+
+system Sender_A;
+

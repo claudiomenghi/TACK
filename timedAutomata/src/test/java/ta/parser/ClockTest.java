@@ -40,7 +40,7 @@ public class ClockTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 
-		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest);
+		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest, true);
 
 		
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());

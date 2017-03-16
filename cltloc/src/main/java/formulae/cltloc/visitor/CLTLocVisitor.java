@@ -2,6 +2,7 @@ package formulae.cltloc.visitor;
 
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.CLTLocAP;
@@ -163,5 +164,7 @@ public interface CLTLocVisitor<T> {
 	public T visit(Signal formula);
 
 	public T visit(Variable cltLocVariable);
+
+	public T visit(KeepVariableConstant keepVariableConstant);
 
 }

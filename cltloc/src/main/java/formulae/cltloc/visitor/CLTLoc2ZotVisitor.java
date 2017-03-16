@@ -2,6 +2,7 @@ package formulae.cltloc.visitor;
 
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.CLTLocAP;
@@ -175,5 +176,10 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	@Override
 	public String visit(Variable formula) {
 		return "(-V- "+formula.toString()+")";
+	}
+
+	@Override
+	public String visit(KeepVariableConstant keepVariableConstant) {
+		return "( X("+keepVariableConstant.getVariable() + ") ="+keepVariableConstant.getVariable()+" )";
 	}
 }

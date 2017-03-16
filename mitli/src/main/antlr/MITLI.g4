@@ -119,10 +119,18 @@ fmla returns [MITLIFormula r]
 			MITLIFormula f = null;
 			String s = String.valueOf($F_OP.text);
 			
-				if (s.compareTo("F_ei") == 0 || s.compareTo("F_ii") == 0)
-					f = MITLIFormula.F((MITLIFormula)$f1.r, Integer.valueOf($a.text), Integer.valueOf($b.text));  
-			
-				 
+				if (s.compareTo("F_ei") == 0){
+					f = MITLIFormula.F((MITLIFormula)$f1.r, Integer.valueOf($a.text), true, Integer.valueOf($b.text), false); 
+				}
+				if( s.compareTo("F_ii") == 0){
+					f = MITLIFormula.F((MITLIFormula)$f1.r, Integer.valueOf($a.text), false,Integer.valueOf($b.text), false); 
+				}
+				if(s.compareTo("F_ee")==0){
+					f = MITLIFormula.F((MITLIFormula)$f1.r, Integer.valueOf($a.text), true, Integer.valueOf($b.text), true); 
+				}
+				if(s.compareTo("F_ie")==0){
+					f = MITLIFormula.F((MITLIFormula)$f1.r, Integer.valueOf($a.text), false, Integer.valueOf($b.text), true);
+				}
 			$r = f;
 		}
 	|    F_inf_OP a=INT LPAR f1=fmla RPAR 

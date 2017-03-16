@@ -46,6 +46,7 @@ public class MITLIsolver {
 	public boolean solve() throws IOException {
 
 		out.println("Transforming the MITLI formula in CLTLoc");
+		out.println("Formula: "+formula);
 		MITLI2CLTLoc converted = new MITLI2CLTLoc(formula, bound);
 		cltlocFormula = converted.apply();
 

@@ -42,7 +42,7 @@ public class APTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
-		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest);
+		CLTLocFormula formula = new TA2CLTLoc().convert(ta, propositionsOfInterest, true);
 
 		System.out.println(formula);
 		Set<CLTLocAP> atomicPropositions = formula.accept(new GetAPVisitor());

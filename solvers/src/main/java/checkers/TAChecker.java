@@ -81,7 +81,7 @@ public class TAChecker {
 		Set<AP> propositions = new HashSet<>();
 
 		out.println("Converting the TA in CLTLoc");
-		taFormula = new TA2CLTLoc().convert(ta, propositions);
+		taFormula = new TA2CLTLoc().convert(ta, propositions, true);
 		out.println("TA converted in CLTLoc");
 
 		out.println(taFormula);

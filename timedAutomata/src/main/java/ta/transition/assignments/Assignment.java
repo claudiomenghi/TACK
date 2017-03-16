@@ -1,5 +1,8 @@
 package ta.transition.assignments;
 
-public class Assignment {
+import ta.visitors.TAVisitor;
+
+public abstract class Assignment {
+	
 	
 }
