@@ -65,7 +65,7 @@ fmla returns [MITLIFormula r]
 		}
 	|	 NEG_OP LPAR f1=fmla RPAR 
 		{	
-			MITLIFormula f = new MITLINegation((MITLIFormula) $f1.r);
+			MITLIFormula f = MITLIFormula.not((MITLIFormula) $f1.r);
 				
 			$r = f;
 		}
@@ -139,8 +139,14 @@ fmla returns [MITLIFormula r]
 			String s = String.valueOf($F_inf_OP.text);
 			
 			
-				if (s.compareTo("F_e+") == 0 || s.compareTo("F_i+") == 0)
+				if (s.compareTo("F_e+") == 0){
 					f = MITLIFormula.F_inf((MITLIFormula)$f1.r, Integer.valueOf($a.text));  
+				}
+				if(s.compareTo("F_i+") == 0){
+					f = 
+						MITLIFormula.or($f1.r,
+						MITLIFormula.F_inf((MITLIFormula)$f1.r, Integer.valueOf($a.text)));  	
+				}
 			
 				 
 			$r = f;
@@ -172,11 +178,9 @@ fmla returns [MITLIFormula r]
 			MITLIFormula f = null;
 			String s = String.valueOf($G_inf_OP.text);
 			
-			if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0)
+			if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0){
 					f = MITLIFormula.G_inf((MITLIFormula)$f1.r, Integer.valueOf($a.text)); 
-			
-			
-				 
+					}
 			$r = f;
 		}	
 	|    P_OP a=INT b=INT LPAR f1=fmla RPAR 
@@ -256,7 +260,7 @@ TRUE: 'true';
 FALSE: 'false';
 
 /* Boolean connectives*/
-NEG_OP:	'!!';
+NEG_OP:	'!';
 AND_OP:	'&&';
 OR_OP:	'||';
 IMPL_OP: '->';

@@ -1,0 +1,21 @@
+process Example1 {
+   clock x;
+   
+   state  l0, l1{x <= 5 }, l2;
+    init   l0;
+   trans  l0 -> l1 {
+           guard  x <= 5;
+           sync   e1!;
+                  
+         },
+         l1 -> l2 {
+           sync   e2!;
+         },
+         l2 -> l0 {
+           guard  x == 10;
+           sync   e2!;
+           assign x:= 0;
+         };
+}
+
+system Example1;

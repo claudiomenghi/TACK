@@ -14,11 +14,12 @@ import org.junit.Test;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.parser.MITLILexer;
 import formulae.mitli.parser.MITLIParser;
+import zotrunner.ZotException;
 
 public class APSigTest {
 
 	@Test
-	public void test() throws FileNotFoundException, IOException {
+	public void test() throws FileNotFoundException, IOException, ZotException {
 		String path = ClassLoader.getSystemResource("solvers/apsig.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));

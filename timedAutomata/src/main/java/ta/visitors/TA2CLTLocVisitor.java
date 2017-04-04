@@ -13,6 +13,7 @@ import formulae.cltloc.relations.CLTLocRelation;
 import formulae.cltloc.relations.Relation;
 import operators.PropositionalLogicOperator;
 import ta.AP;
+import ta.Clock;
 import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.EmptyExpression;
@@ -30,6 +31,12 @@ public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 
 	private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
 	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
+
+	private TA ta;
+
+	public TA2CLTLocVisitor(TA ta) {
+		this.ta = ta;
+	}
 
 	@Override
 	public CLTLocFormula visit(TA ta) {
@@ -60,23 +67,94 @@ public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 	}
 
 	public CLTLocFormula visit(ExpInvariant expInvariant) {
+		
+		String prefix=(ta.getClocks().contains(new Clock(expInvariant.getId().getId())))? ta.getIdentifier() + ".": "";
+		
+		formulae.cltloc.relations.Relation relation;
+		
 		switch (expInvariant.getOperator()) {
 		case ">":
-			return new CLTLocRelation(new CLTLocClock(expInvariant.getId().getId()),
-					new Constant(expInvariant.getExp().evaluate()), Relation.GE);
+			 relation=Relation.GE;
+			 break;
 		case ">=":
-			return new CLTLocRelation(new CLTLocClock(expInvariant.getId().getId()),
-					new Constant(expInvariant.getExp().evaluate()), Relation.GEQ);
+			 relation=Relation.GEQ;
+			 break;
 		case "<":
-			return new CLTLocRelation(new CLTLocClock(expInvariant.getId().getId()),
-					new Constant(expInvariant.getExp().evaluate()), Relation.LE);
+			 relation= Relation.LE;
+			 break;
 		case "<=":
-			return new CLTLocRelation(new CLTLocClock(expInvariant.getId().getId()),
-					new Constant(expInvariant.getExp().evaluate()), Relation.LEQ);
-
+			 relation= Relation.LEQ;
+			 break;
 		default:
 			throw new IllegalArgumentException("Operator: " + expInvariant.getOperator() + " not supported");
 		}
+		return new CLTLocRelation(
+				new CLTLocClock(prefix+ expInvariant.getId().getId()),
+				new Constant(expInvariant.getExp().evaluate()), relation);
+	
+	}
+	
+public CLTLocFormula visit(ExpInvariant expInvariant,  State state) {
+		
+		String prefix=(ta.getClocks().contains(new Clock(expInvariant.getId().getId())))? ta.getIdentifier() + ".": "";
+		
+		formulae.cltloc.relations.Relation relation;
+		
+		switch (expInvariant.getOperator()) {
+		case ">":
+			 relation=Relation.GE;
+			 break;
+		case ">=":
+			 relation=Relation.GEQ;
+			 break;
+		case "<":
+			 relation= Relation.LE;
+			 break;
+		case "<=":
+			 relation= Relation.LEQ;
+			 break;
+		default:
+			throw new IllegalArgumentException("Operator: " + expInvariant.getOperator() + " not supported");
+		}
+		
+		CLTLocFormula tmp= new CLTLocDisjunction(
+		TA2CLTLoc.conjunctionOperator.apply(
+				TA2CLTLoc.conjunctionOperator.apply(
+				new CLTLocRelation(
+								new Variable(prefix+ expInvariant.getId().getId()+"_v"),
+								new Constant(0), Relation.EQ)
+						,
+				new CLTLocRelation(
+						new CLTLocClock(prefix+ expInvariant.getId().getId()+"0"),
+						new Constant(expInvariant.getExp().evaluate()), relation)
+				)
+				,
+				TA2CLTLoc.nextOperator.apply(
+						
+						new CLTLocRelation(
+								new CLTLocClock(prefix+ expInvariant.getId().getId()+"0"),
+								new Constant(expInvariant.getExp().evaluate()), relation)
+						)),
+		TA2CLTLoc.conjunctionOperator.apply(
+				TA2CLTLoc.conjunctionOperator.apply(
+				new CLTLocRelation(
+								new Variable(prefix+ expInvariant.getId().getId()+"_v"),
+								new Constant(1), Relation.EQ)
+						,
+				new CLTLocRelation(
+						new CLTLocClock(prefix+ expInvariant.getId().getId()+"1"),
+						new Constant(expInvariant.getExp().evaluate()), relation)
+				)
+				,
+				TA2CLTLoc.nextOperator.apply(
+						new CLTLocRelation(
+								new CLTLocClock(prefix+ expInvariant.getId().getId()+"1"),
+								new Constant(expInvariant.getExp().evaluate()), relation)
+						))
+		);
+
+
+	return tmp;
 	}
 
 	public CLTLocFormula visit(EmptyInvariant emptyInvariant) {
@@ -103,37 +181,99 @@ public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 	@Override
 	public CLTLocFormula visit(ClockConstraintAtom clockConstraintAtom) {
 
-		Relation rel = Relation.parse(ClockConstraintAtomOperator.EQ.toString());
+		Relation rel = Relation.parse(clockConstraintAtom.getOperator().toString());
 
-		return new CLTLocDisjunction(
-				new CLTLocConjunction(
-						new CLTLocRelation(new Variable(clockConstraintAtom.getClock().getName() + "_v"),
-								new Constant("1"), Relation.EQ),
-						new CLTLocRelation(new CLTLocClock(clockConstraintAtom.getClock().getName() + "1"),
-								new Constant(clockConstraintAtom.getValue()), rel)),
-				new CLTLocConjunction(
-						new CLTLocRelation(new Variable(clockConstraintAtom.getClock().getName() + "_v"),
-								new Constant("0"), Relation.EQ),
-						new CLTLocRelation(new CLTLocClock(clockConstraintAtom.getClock().getName()+ "0"),
-								new Constant(clockConstraintAtom.getValue()), rel)));
-
+		if (ta.getClocks().contains(clockConstraintAtom.getClock())) {
+			return new CLTLocDisjunction(
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable(
+											ta.getIdentifier() + "." + clockConstraintAtom.getClock().getName() + "_v"),
+									new Constant("0"), Relation.EQ),
+							new CLTLocRelation(
+									new CLTLocClock(ta.getIdentifier() + "." + clockConstraintAtom.getClock().getName()
+											+ "0"),
+									new Constant(clockConstraintAtom.getValue()), rel)),
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable(
+											ta.getIdentifier() + "." + clockConstraintAtom.getClock().getName() + "_v"),
+									new Constant("1"), Relation.EQ),
+							new CLTLocRelation(
+									new CLTLocClock(
+											ta.getIdentifier() + "." + clockConstraintAtom.getClock().getName() + "1"),
+									new Constant(clockConstraintAtom.getValue()), rel)));
+		} else {
+			String prefix = "";
+			return new CLTLocDisjunction(
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable(prefix  
+											+ clockConstraintAtom.getClock().getName() + "_v"),
+									new Constant("0"), Relation.EQ),
+							new CLTLocRelation(
+									new CLTLocClock(prefix  
+											+ clockConstraintAtom.getClock().getName() + "0"),
+									new Constant(clockConstraintAtom.getValue()), rel)),
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable(prefix 
+											+ clockConstraintAtom.getClock().getName() + "_v"),
+									new Constant("1"), Relation.EQ),
+							new CLTLocRelation(
+									new CLTLocClock(prefix  
+											+ clockConstraintAtom.getClock().getName() + "1"),
+									new Constant(clockConstraintAtom.getValue()), rel)));
+		}
 	}
 
 	@Override
 	public CLTLocFormula visit(VariableConstraintAtom variableConstraintAtom) {
 		Relation rel = Relation.parse(ClockConstraintAtomOperator.EQ.toString());
 
-		return new CLTLocDisjunction(
-				new CLTLocConjunction(
-						new CLTLocRelation(new Variable(variableConstraintAtom.getVariable().getName() + "_v"),
-								new Constant("1"), Relation.EQ),
-						new CLTLocRelation(new Variable(variableConstraintAtom.getVariable().getName() + "1"),
-								new Constant(variableConstraintAtom.getValue()), rel)),
-				new CLTLocConjunction(
-						new CLTLocRelation(new Variable(variableConstraintAtom.getVariable().getName() + "_v"),
-								new Constant("0"), Relation.EQ),
-						new CLTLocRelation(new Variable(variableConstraintAtom.getVariable().getName()+ "0"),
-								new Constant(variableConstraintAtom.getValue()), rel)));
+		if (ta.getVariables().contains(variableConstraintAtom.getVariable())) {
+			return new CLTLocDisjunction(
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable(ta.getIdentifier() + "."
+											+ variableConstraintAtom.getVariable().getName() + "_v"),
+									new Constant("1"), Relation.EQ),
+							new CLTLocRelation(new Variable(
+									ta.getIdentifier() + "." + variableConstraintAtom.getVariable().getName() + "1"),
+									new Constant(
+											variableConstraintAtom.getValue()),
+									rel)),
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable(ta.getIdentifier() + "."
+											+ variableConstraintAtom.getVariable().getName() + "_v"),
+									new Constant("0"), Relation.EQ),
+							new CLTLocRelation(
+									new Variable(ta.getIdentifier() + "."
+											+ variableConstraintAtom.getVariable().getName() + "0"),
+									new Constant(variableConstraintAtom.getValue()), rel)));
+		}
+		else{
+			String prefix = "";
+			return new CLTLocDisjunction(
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable(prefix 
+											+ variableConstraintAtom.getVariable().getName() + "_v"),
+									new Constant("1"), Relation.EQ),
+							new CLTLocRelation(new Variable(
+									prefix + variableConstraintAtom.getVariable().getName() + "1"),
+									new Constant(
+											variableConstraintAtom.getValue()),
+									rel)),
+					new CLTLocConjunction(
+							new CLTLocRelation(
+									new Variable( variableConstraintAtom.getVariable().getName() + "_v"),
+									new Constant("0"), Relation.EQ),
+							new CLTLocRelation(
+									new Variable( variableConstraintAtom.getVariable().getName() + "0"),
+									new Constant(variableConstraintAtom.getValue()), rel)));
+		}
 	}
 
 	@Override
@@ -152,7 +292,8 @@ public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 
 	@Override
 	public CLTLocFormula visit(ClockAssignement clockAssignement) {
-		 return new CLTLocRelation(new CLTLocClock(clockAssignement.getClock().getName()), new Constant(clockAssignement.getValue().value), Relation.GE);
+		return new CLTLocRelation(new CLTLocClock(clockAssignement.getClock().getName()),
+				new Constant(clockAssignement.getValue().value), Relation.GE);
 
 	}
 

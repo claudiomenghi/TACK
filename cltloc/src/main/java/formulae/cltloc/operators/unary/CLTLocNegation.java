@@ -51,8 +51,8 @@ public class CLTLocNegation extends CLTLocFormula implements UnaryFormula<CLTLoc
 	private int hashComputation() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((child == null) ? 0 : child.hashCode());
-		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
+		result = prime * result + child.hashCode();
+		result = prime * result +  operator.hashCode();
 		return result;
 	}
 

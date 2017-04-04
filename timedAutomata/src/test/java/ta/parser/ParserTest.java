@@ -80,7 +80,7 @@ public class ParserTest {
         SystemDecl system= parser.ta().systemret;
         
         TA ta=system.getTimedAutomata().iterator().next();
-        assertEquals("The initial state is correct", new State("start"), ta.getInitialState());
+        assertEquals("The initial state is correct", new State("Sender_A.start"), ta.getInitialState());
 	}
 	
 	@Test

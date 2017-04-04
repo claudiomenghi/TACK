@@ -1,5 +1,8 @@
 package formulae.mitli;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.common.base.Preconditions;
 
 import formulae.BinaryFormula;
@@ -52,4 +55,16 @@ public class MITLIImplies extends MITLIFormula implements BinaryFormula<MITLIFor
 	public String toString() {
 		return "(" + this.subformula1 + " " + operator + " " + this.subformula2 + ")";
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<MITLIFormula> getChildren() {
+		Set<MITLIFormula> formulae=new HashSet<>();
+		formulae.add(subformula1);
+		formulae.add(subformula2);
+		return formulae;
+	}
+	
 }

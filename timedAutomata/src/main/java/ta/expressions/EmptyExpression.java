@@ -32,7 +32,7 @@ public class EmptyExpression extends Expression {
 
 	@Override
 	public int evaluate() {
-		return 1;
+		return 0;
 	}
 
 }

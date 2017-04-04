@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import formulae.mitli.MITLIEventually;
 import formulae.mitli.MITLIFormula;
+import formulae.mitli.MITLIGlobally_AtoB;
 
 public class GloballyIncludedIncludedTest {
 
@@ -28,7 +29,7 @@ public class GloballyIncludedIncludedTest {
 
 		System.out.println(formula);
 		
-		assertTrue(formula instanceof MITLIEventually);
+		assertTrue(formula instanceof MITLIGlobally_AtoB);
 
 		
 	}

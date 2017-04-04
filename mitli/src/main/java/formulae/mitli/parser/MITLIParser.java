@@ -42,7 +42,7 @@ public class MITLIParser extends Parser {
 
 	private static final String[] _LITERAL_NAMES = {
 		null, "':def'", null, "'('", "')'", "'['", "']'", "'true'", "'false'", 
-		"'!!'", "'&&'", "'||'", "'->'", "'<->'", null, null, null, null, null, 
+		"'!'", "'&&'", "'||'", "'->'", "'<->'", null, null, null, null, null, 
 		null, "'U'", "'S'", "'R'", "'T'", "'C'", null, "':'", "';'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
@@ -410,7 +410,7 @@ public class MITLIParser extends Parser {
 				setState(44);
 				match(RPAR);
 					
-							MITLIFormula f = new MITLINegation((MITLIFormula) ((FmlaContext)_localctx).f1.r);
+							MITLIFormula f = MITLIFormula.not((MITLIFormula) ((FmlaContext)_localctx).f1.r);
 								
 							((FmlaContext)_localctx).r =  f;
 						
@@ -566,8 +566,14 @@ public class MITLIParser extends Parser {
 							String s = String.valueOf((((FmlaContext)_localctx).F_inf_OP!=null?((FmlaContext)_localctx).F_inf_OP.getText():null));
 							
 							
-								if (s.compareTo("F_e+") == 0 || s.compareTo("F_i+") == 0)
+								if (s.compareTo("F_e+") == 0){
 									f = MITLIFormula.F_inf((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null)));  
+								}
+								if(s.compareTo("F_i+") == 0){
+									f = 
+										MITLIFormula.or(((FmlaContext)_localctx).f1.r,
+										MITLIFormula.F_inf((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null))));  	
+								}
 							
 								 
 							((FmlaContext)_localctx).r =  f;
@@ -629,11 +635,9 @@ public class MITLIParser extends Parser {
 							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).G_inf_OP!=null?((FmlaContext)_localctx).G_inf_OP.getText():null));
 							
-							if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0)
+							if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0){
 									f = MITLIFormula.G_inf((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null))); 
-							
-							
-								 
+									}
 							((FmlaContext)_localctx).r =  f;
 						
 				}

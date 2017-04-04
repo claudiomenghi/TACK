@@ -28,7 +28,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		super();
 		this.subformula1 = subformula1;
 		if (formulae.length > 1) {
-			this.subformula2 = new CLTLocConjunction(formulae[0], Arrays.copyOfRange(formulae, 1, formulae.length));
+			this.subformula2 = new CLTLocDisjunction(formulae[0], Arrays.copyOfRange(formulae, 1, formulae.length));
 		} else {
 			this.subformula2 = formulae[0];
 		}

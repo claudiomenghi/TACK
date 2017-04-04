@@ -1,7 +1,5 @@
 package formulae;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Contains a generic formula
  * 

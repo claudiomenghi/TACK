@@ -1,5 +1,8 @@
 package formulae.mitli;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.common.base.Preconditions;
 
 import formulae.UnaryFormula;
@@ -22,5 +25,15 @@ public abstract class MITLIPast extends MITLIFormula implements TemporizedFormul
 	@Override
 	public MITLIFormula getChild() {
 		return this.subformula;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<MITLIFormula> getChildren() {
+		Set<MITLIFormula> formulae=new HashSet<>();
+		formulae.add(subformula);
+		return formulae;
 	}
 }

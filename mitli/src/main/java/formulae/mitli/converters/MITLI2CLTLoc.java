@@ -1,8 +1,23 @@
 package formulae.mitli.converters;
 
+import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.BiMap;
 
 import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.operators.unary.CLTLocGlobally;
+import formulae.cltloc.operators.unary.CLTLocNext;
+import formulae.cltloc.relations.CLTLocEQRelation;
+import formulae.cltloc.relations.CLTLocGEQRelation;
+import formulae.cltloc.relations.CLTLocGERelation;
+import formulae.cltloc.visitor.CLTLoc2StringVisitor;
+import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.visitors.MITLI2CLTLocVisitor;
 import formulae.mitli.visitors.SubformulaeVisitor;
@@ -10,33 +25,104 @@ import formulae.mitli.visitors.SubformulaeVisitor;
 public class MITLI2CLTLoc {
 
 	private final MITLI2CLTLocVisitor visitor;
-	private final MITLIFormula t;
+	private final MITLIFormula formula;
 
-	public MITLI2CLTLoc(MITLIFormula t, Integer i) {
-		this.t = t;
-		this.visitor = new MITLI2CLTLocVisitor(t, i);
+	private boolean converted = false;
+	private final Map<MITLIFormula, CLTLocFormula> generatedFormulaMap;
+	private final Map<MITLIFormula, CLTLocFormula> clockcontraintFormulaMap;
+
+	private final Map<MITLIFormula, MITLIFormula> parentRelation;
+
+	public MITLI2CLTLoc(MITLIFormula formula, Integer i) {
+		this.formula = formula;
+		this.visitor = new MITLI2CLTLocVisitor(formula, i);
+		this.generatedFormulaMap = new HashMap<>();
+		this.clockcontraintFormulaMap = new HashMap<>();
+		this.parentRelation = new HashMap<>();
+
+	}
+
+	private void populateParentRelation(MITLIFormula f) {
+		Set<MITLIFormula> chidren = f.getChildren();
+		chidren.forEach(c -> parentRelation.put(c, f));
+
+		chidren.forEach(c -> this.populateParentRelation(c));
 
 	}
 
 	public CLTLocFormula apply() {
 
-		CLTLocFormula init = MITLI2CLTLocVisitor.first.apply(visitor.formulaIdMap.get(t));
+		this.populateParentRelation(formula);
+
+		CLTLocFormula init = MITLI2CLTLocVisitor.first.apply(visitor.formulaIdMap.get(formula));
 
 		CLTLocFormula conjunction = CLTLocFormula.TRUE;
-		for (MITLIFormula f : t.accept(new SubformulaeVisitor())) {
-			conjunction = MITLI2CLTLocVisitor.AND.apply(conjunction,
-					MITLI2CLTLocVisitor.AND.apply(visitor.getckTheta(f), f.accept(visitor)));
+		for (MITLIFormula f : formula.accept(new SubformulaeVisitor())) {
 
+			CLTLocFormula f1 = visitor.getckTheta(f, parentRelation);
+		//	f1=CLTLocFormula.TRUE;
+			CLTLocFormula f2 = f.accept(visitor);
+			
+			CLTLocFormula formula = MITLI2CLTLocVisitor.AND.apply(f1, f2);
+			this.generatedFormulaMap.put(f, f1);
+			this.clockcontraintFormulaMap.put(f, f2);
+			
+			
+			
+			conjunction = CLTLocFormula.getAnd( conjunction, formula);
+		
 		}
 
-		CLTLocFormula formula = MITLI2CLTLocVisitor.AND.apply(init, conjunction);
+		
+		CLTLocFormula nowConstraint=
+				CLTLocFormula.getAnd(
+						new CLTLocEQRelation(new CLTLocClock("Now"), new Constant(0)),
+						new CLTLocNext(new CLTLocGlobally(new CLTLocGERelation(new CLTLocClock("Now"), new Constant(0))))
+						);
+		
 
-		return formula;
+		Set<CLTLocClock> clocks = conjunction.accept(new GetClocksVisitor());
+		
+		CLTLocFormula clockConstraint=CLTLocFormula.TRUE;
+		
+		for(CLTLocClock clock:  clocks){
+			clockConstraint=CLTLocFormula.getAnd(clockConstraint, new CLTLocGEQRelation(clock, new Constant(0)));
+		}
+				
+				
+		CLTLocFormula formula = CLTLocFormula.getAnd( nowConstraint, clockConstraint, init, conjunction);
+
+		converted = true;
+		return MITLI2CLTLocVisitor.Y.apply(formula);
 
 	}
 
-	public Map<Integer, MITLIFormula> getVocabulary() {
+	public CLTLocFormula getTheta(MITLIFormula f) {
+
+		Preconditions.checkArgument(converted, "Run the converter before getting the expression");
+		Preconditions.checkArgument(this.clockcontraintFormulaMap.containsKey(f),
+				"The formula must be a subformula of the original formula");
+		return this.clockcontraintFormulaMap.get(f);
+	}
+
+	public BiMap<Integer, MITLIFormula> getVocabulary() {
 		return this.visitor.formulaIdMap.inverse();
+	}
+
+	public void printFancy(PrintStream fancyprint) {
+		generatedFormulaMap.entrySet().forEach(e -> {
+
+			fancyprint.println("---");
+			fancyprint.println("Subformula: " + this.visitor.formulaIdMap.get(e.getKey()) + "\t" + e.getKey());
+			fancyprint.println("---Clock constraint");
+			fancyprint.println(e.getValue().accept(new CLTLoc2StringVisitor()).getKey());
+			fancyprint.println("---Subformula");
+			fancyprint.println(
+					clockcontraintFormulaMap.get(e.getKey()).accept(new CLTLoc2StringVisitor()).getKey() + "\n");
+
+		}
+
+		);
 	}
 
 }

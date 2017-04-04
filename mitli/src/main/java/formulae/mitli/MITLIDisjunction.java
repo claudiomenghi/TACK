@@ -1,5 +1,8 @@
 package formulae.mitli;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.common.base.Preconditions;
 
 import formulae.BinaryFormula;
@@ -87,5 +90,16 @@ public class MITLIDisjunction extends MITLIFormula implements BinaryFormula<MITL
 	@Override
 	public String toString() {
 		return "(" + this.leftChild + " " + operator + " " + this.rightChild + ")";
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<MITLIFormula> getChildren() {
+		Set<MITLIFormula> formulae=new HashSet<>();
+		formulae.add(leftChild);
+		formulae.add(rightChild);
+		return formulae;
 	}
 }

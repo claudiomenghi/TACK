@@ -7,7 +7,7 @@
  	
  	 private static Map<String, String> declarations = new HashMap<String, String>();
  	  private static Map<String, String> currentTaDeclarations = new HashMap<String, String>();
- 	  
+ 	  private static String currentProc;
  	   private boolean definedVar(String name){
  	    if(!currentTaDeclarations.containsKey(name) && !declarations.containsKey(name)){
         	return false;
@@ -55,29 +55,64 @@ import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator
 import operators.*;
 }
 
- ta returns [SystemDecl systemret] @init {
-	$systemret= new SystemDecl();
+ ta returns [SystemDecl systemret] @init { 
+	Set<TA> timedAutomata=new HashSet<>();
 	declarations = new HashMap<String, String>();	
 	currentTaDeclarations = new HashMap<String, String>();
+	  Set<VariableDecl> variableDeclaration=new HashSet<>();
+	  Set<ClockDecl> clockDeclaration=new HashSet<>();
+	  Map<String, String> variabledeclret=new HashMap<>();
+	  Map<String, Expression> variableinitializationret=new HashMap<>();
+	   Map<String, Value> clockinitializationret=new HashMap<>();
+	  
 }
  :
  	(
  		dec = declaration
  		{
 			if($declaration.timedAutomaton!=null){
-				$systemret.addTA($declaration.timedAutomaton);
+				if($declaration.timedAutomaton!=null) timedAutomata.add($declaration.timedAutomaton);
+				if($declaration.variableinitializationret!=null) variableinitializationret.putAll($declaration.variableinitializationret);
+				if($declaration.clockinitializationret!=null) clockinitializationret.putAll($declaration.clockinitializationret);
+				if($declaration.variabledeclret!=null) variabledeclret.putAll($declaration.variabledeclret);
 			}			
 		}
 
  	)* instantiation* system+ EOF
+ 	{
+ 		if(variableinitializationret!=null){
+				for(Entry<String,  Expression> entry :variableinitializationret.entrySet()){
+				
+				String type="";
+				if(variabledeclret.containsKey(entry.getKey())){
+					type=variabledeclret.get(entry.getKey());
+				}
+				if(declarations.containsKey(entry.getKey())){
+					type=declarations.get(entry.getKey());
+				}
+			
+				 variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));
+				}
+		}
+		if(clockinitializationret!=null){
+			for(Entry<String,  Value> entry :clockinitializationret.entrySet()){
+				 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
+			}
+		}
+ 		$systemret= new SystemDecl(timedAutomata, clockDeclaration, variableDeclaration);
+	
+ 	}
  ;
 
- declaration returns [TA timedAutomaton]
+ declaration returns [TA timedAutomaton, Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]
  :
  	functionDecl
  	| variableDecl
  	{
  		declarations.putAll($variableDecl.variabledeclret);
+ 		$variabledeclret=$variableDecl.variabledeclret;
+ 		$variableinitializationret=$variableDecl.variableinitializationret;
+ 		$clockinitializationret=$variableDecl.clockinitializationret;
  	}
 
  	| typeDecl
@@ -121,10 +156,11 @@ import operators.*;
 
  procDecl returns [TA timedAutomaton]
  :
- 	'process' ID parameterList '{' procBody '}'
+ 	'process' ID{currentProc=$ID.text;} parameterList '{' procBody '}'
  	{
 	
-	 
+	
+	 String taID=$ID.text;
 	 cleanCurrentTA();
 	 Map<String, String> variabledeclret=$procBody.variabledeclret;
 	 
@@ -136,25 +172,16 @@ import operators.*;
 			
 	  	}
 	  }
-	for(Entry<String, String> entry: declarations.entrySet()){
-	  	if(entry.getValue().equals("clock")){
-	  			clocks.add(new Clock(entry.getKey()));
-	  	}
-	 }	
+
 	 
 	 final Set<Variable> variables=new HashSet<>();
 	  
 	  for(Entry<String, String> entry: variabledeclret.entrySet()){
 	  	if(!entry.getValue().equals("clock")){
 	  			variables.add(new Variable(entry.getKey()));
-			
 	  	}
 	  }
-	for(Entry<String, String> entry: declarations.entrySet()){
-	  	if(!entry.getValue().equals("clock")){
-	  			variables.add(new Variable(entry.getKey()));
-	  	}
-	 }	
+	
 	 Set<VariableDecl> variableDeclaration=new HashSet<>();
 	Map<String, Expression> variableinitializationret=$procBody.variableinitializationret;
 	if(variableinitializationret!=null){
@@ -170,13 +197,13 @@ import operators.*;
 	
 		 variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));
 		}
-		
-		}
+	}
 		
 		
 		
 	Set<ClockDecl> clockDeclaration=new HashSet<>();
 	Map<String, Value> clockinitializationret=$procBody.clockinitializationret;
+	
 	if(clockinitializationret!=null){
 		for(Entry<String,  Value> entry :clockinitializationret.entrySet()){
 			 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
@@ -187,6 +214,7 @@ import operators.*;
 }
 
  ;
+
 
  procBody returns
  [State initstate, Set<State> stateset, Set<Transition> transitionsetret, Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]
@@ -215,6 +243,7 @@ import operators.*;
 					$clockinitializationret.putAll($variableDecl.clockinitializationret);
 				}
 				
+			
 			}
 
  		| typeDecl
@@ -232,8 +261,7 @@ import operators.*;
  				    	$initstate=$init.initstate;
                     	$stateset=$states.stateset;
                     	$transitionsetret=$transitions.transitionsret;
-              }
-
+    }
  ;
 
  //********************************************************************************
@@ -256,15 +284,24 @@ import operators.*;
 		
  			}
  			$variabledeclret.put($var1.id, $type.text);
- 			if($var1.exp!=null && !$type.text.equals("clock")){
- 				$variableinitializationret.put($var1.id, $var1.exp);
+ 			if(!$type.text.equals("clock")){
+ 				if($var1.exp!=null){
+ 					$variableinitializationret.put($var1.id, $var1.exp);
+ 				}
+ 				else{
+ 					$variableinitializationret.put($var1.id, new EmptyExpression());
+ 				}
  			}
- 			if($var1.exp!=null && $type.text.equals("clock")){
- 				
- 				 $clockinitializationret.put($var1.id, (Value) $var1.exp);
+ 			if( $type.text.equals("clock")){
+ 				if($var1.exp!=null){
+ 				 	$clockinitializationret.put($var1.id, (Value) $var1.exp);
+ 				 }
+ 				 else{
+ 				 	$clockinitializationret.put($var1.id, new Value("0"));
+ 				 }
  			}
+ 		}
  			
- 	}
 
  	(
  		',' varn = variableId
@@ -275,7 +312,6 @@ import operators.*;
 		
  			}
  			$variabledeclret.put($varn.id, $type.text);
- 			System.out.println($type.text);
  			if($var1.exp!=null && !$type.text.equals("clock")){
  				$variableinitializationret.put($var1.id, $var1.exp);
  			}

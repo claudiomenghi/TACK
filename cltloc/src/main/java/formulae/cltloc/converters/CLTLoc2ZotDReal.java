@@ -16,11 +16,11 @@ import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
 
-public class CLTLoc2Zot implements Function<CLTLocFormula, String> {
+public class CLTLoc2ZotDReal implements Function<CLTLocFormula, String> {
 
 	private final int bound;
 
-	public CLTLoc2Zot(int bound) {
+	public CLTLoc2ZotDReal(int bound) {
 		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
 		this.bound = bound;
 	}

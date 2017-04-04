@@ -2,6 +2,8 @@ package ta.transition.sync;
 
 import com.google.common.base.Preconditions;
 
+import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator;
+
 public class SyncExpression {
 
 	private final String event;
@@ -29,5 +31,28 @@ public class SyncExpression {
 	@Override
 	public String toString() {
 		return event + operator;
+	}
+	
+	
+	public enum Operator {
+		SEND("?"), RECEIVED("!");
+
+		private final String operaor;
+
+		private Operator(String operator) {
+			this.operaor = operator;
+		}
+
+		public static Operator parse(String value){
+			switch(value){
+				case "?": return Operator.SEND;
+				case "!": return Operator.RECEIVED;
+				default:
+					throw new IllegalArgumentException("Operator "+value+" not present");
+			}
+		}
+		public String toString() {
+			return this.operaor;
+		}
 	}
 }

@@ -1,6 +1,7 @@
-clock c;
+
  
 process Sender_A {
+	clock c;
   int i=0;
   state  state_1{c<15},  state_2;
   init   state_1;

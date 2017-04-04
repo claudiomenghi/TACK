@@ -180,6 +180,6 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 
 	@Override
 	public String visit(KeepVariableConstant keepVariableConstant) {
-		return "( X("+keepVariableConstant.getVariable() + ") ="+keepVariableConstant.getVariable()+" )";
+		return "([=] (next (-V- "+keepVariableConstant.getVariable() + "))  (-V- "+keepVariableConstant.getVariable()+") )";
 	}
 }

@@ -1,7 +1,11 @@
 package formulae.mitli.atoms;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.common.base.Preconditions;
 
+import formulae.mitli.MITLIFormula;
 import formulae.mitli.visitors.MITLIVisitor;
 
 public class MITLIRelationalAtom extends MITLIAtom {
@@ -90,6 +94,15 @@ public class MITLIRelationalAtom extends MITLIAtom {
 	@Override
 	public String toString() {
 		return "("+identifier+" "+operator+" "+ value+")";
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<MITLIFormula> getChildren() {
+		Set<MITLIFormula> formulae=new HashSet<>();
+		return formulae;
 	}
 
 }

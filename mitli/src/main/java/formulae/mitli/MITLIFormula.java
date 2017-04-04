@@ -1,5 +1,7 @@
 package formulae.mitli;
 
+import java.util.Set;
+
 import com.google.common.base.Preconditions;
 
 import formulae.Formula;
@@ -20,6 +22,8 @@ public abstract class MITLIFormula extends Formula {
 
 	}
 
+	public abstract Set<MITLIFormula> getChildren();
+	
 	public abstract <T> T accept(MITLIVisitor<T> visitor);
 
 	public int maxIntComparedto() {
@@ -40,6 +44,9 @@ public abstract class MITLIFormula extends Formula {
 	}
 
 	public static MITLIFormula not(MITLIFormula f) {
+		if(f instanceof MITLINegation){
+			return ((MITLINegation) f).getChild();
+		}
 		return new MITLINegation(f);
 	}
 
@@ -104,7 +111,60 @@ public abstract class MITLIFormula extends Formula {
 			return new MITLIGlobally_AtoInf(f, a);
 		}
 	}
+	public static MITLIFormula G(MITLIFormula f, boolean abopen, int b, boolean dbopen) {
+		if (abopen && dbopen) { // G_(0,b)
+			return new MITLIGlobally_ZerotoB(f, b);
+		} else if (!abopen && dbopen) // G_[0,b)
+			return and(f, G(f, true, b, dbopen));
 
+		else if (abopen && !dbopen)
+			return and(G(f, true, b, true), G(F(f, true, b, true), true, b, true));
+
+		else
+			return and(f, G(f, true, b, false)); // G_[0,b]
+
+	}
+
+
+	public static MITLIFormula G(MITLIFormula f, int a, boolean abopen, int b, boolean dbopen) {
+		if (a == 0){
+			return G(f, abopen, b, dbopen);
+		}
+		else {
+
+			/* Following implementation uses native encoding for Globally */
+
+			// distance between the upper bound and the lower
+			int distance = b - a;
+			
+			MITLIFormula fm = f;
+
+			int low = a;
+			int upp = b;
+			// shifts the formula using the distance every time
+			for (; low >= distance; low = low - distance, upp = upp - distance){
+				if (low == a){
+					fm = F(G(fm, 0, abopen, distance, dbopen), 0, true, distance, true);
+				}
+				else{
+					fm = F(G(fm, 0, true, distance, true), 0, true, distance, true);
+				}
+			}
+
+			if (low > 0) {
+				MITLIFormula orf = fm;
+
+				for (int h = low; h > 0; h--){
+					orf = F(G(orf, 0, true, 1, true), 0, true, 1, true);
+				}
+					
+				return G(orf, 0, true, 1, true);
+			} else{
+				return G(fm, 0, true, 1, true);
+			}
+		}
+	}
+	
 	// Past: P_<0,b]
 	public static MITLIFormula P(MITLIFormula f, int b) {
 		return new MITLIPast_ZerotoB(f, b);
@@ -157,20 +217,7 @@ public abstract class MITLIFormula extends Formula {
 		return new MITLIRelease(f1, f2);
 	}
 
-	public static MITLIFormula G(MITLIFormula f, boolean abopen, int b, boolean dbopen) {
-		if (abopen && dbopen) { // G_(0,b)
-			return new MITLIGlobally_ZerotoB(f, b);
-		} else if (!abopen && dbopen) // G_[0,b)
-			return and(f, G(f, true, b, dbopen));
-
-		else if (abopen && !dbopen)
-			return and(G(f, true, b, true), G(F(f, true, b, true), true, b, true));
-
-		else
-			return and(f, G(f, true, b, false)); // G_[0,b]
-
-	}
-
+	
 	// Eventually: F_<a,+oo)
 	public static MITLIFormula F(MITLIFormula f, int a, boolean aB) {
 
@@ -196,7 +243,7 @@ public abstract class MITLIFormula extends Formula {
 	// Eventually: F_<0,b>
 	public static MITLIFormula F(MITLIFormula f, boolean aB, int b, boolean bB) {
 		if (aB == true && bB == true) { // F_(0,b)
-
+		
 			return new MITLIEventually_ZerotoB(f, b);
 
 		} else if (aB == false && bB == true) // F_[0,b)
@@ -211,8 +258,9 @@ public abstract class MITLIFormula extends Formula {
 	}
 
 	public static MITLIFormula F(MITLIFormula f, int a, boolean aB, int b, boolean bB) {
-		if (a == 0)
+		if (a == 0){
 			return F(f, aB, b, bB);
+		}
 		else {
 			int d = b - a;
 			MITLIFormula fm = f;
@@ -248,37 +296,6 @@ public abstract class MITLIFormula extends Formula {
 			} else
 				return F(fm, 0, aB, d, true);
 
-		}
-
-	}
-
-	public static MITLIFormula G(MITLIFormula f, int a, boolean abopen, int b, boolean dbopen) {
-		if (a == 0)
-			return G(f, abopen, b, dbopen);
-		else {
-
-			/* Following implementation uses native encoding for Globally */
-
-			int d = b - a;
-			MITLIFormula fm = f;
-
-			int low = a;
-			int upp = b;
-			for (; low >= d; low = low - d, upp = upp - d)
-				if (low == a)
-					fm = F(G(fm, 0, abopen, d, dbopen), 0, true, d, true);
-				else
-					fm = F(G(fm, 0, true, d, true), 0, true, d, true);
-
-			if (low > 0) {
-				MITLIFormula orf = fm;
-
-				for (int h = low; h > 0; h--)
-					orf = G(F(orf, 0, true, 1, true), 0, true, 1, true);
-
-				return F(orf, 0, true, 1, true);
-			} else
-				return F(fm, 0, true, 1, true);
 		}
 	}
 }

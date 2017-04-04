@@ -27,7 +27,7 @@ public class ZotRunner {
 		this.out = out;
 	}
 
-	public boolean run() throws IOException {
+	public boolean run() throws IOException, ZotException {
 		String lispFile = "tmp.zot";
 
 		out.println("Running zot");
@@ -45,14 +45,23 @@ public class ZotRunner {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
 
-		boolean sat = false;
+		boolean sat = true;
 
+		boolean resultfound=false;
 		String line;
 		while ((line = reader.readLine()) != null) {
 			if (line.contains("---UNSAT---")) {
+				sat = false;
+				resultfound=true;
+			}
+			if (line.contains("---SAT---")) {
 				sat = true;
+				resultfound=true;
 			}
 			out.println("Stdout: " + line);
+		}
+		if(!resultfound){
+			throw new ZotException("ZOT: There are compilation problems");
 		}
 
 		out.print("Zot ends");

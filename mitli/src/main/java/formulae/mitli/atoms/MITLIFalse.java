@@ -1,5 +1,9 @@
 package formulae.mitli.atoms;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import formulae.mitli.MITLIFormula;
 import formulae.mitli.visitors.MITLIVisitor;
 
 public class MITLIFalse extends MITLIAtom {
@@ -59,7 +63,14 @@ public class MITLIFalse extends MITLIAtom {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		return this.atomName;
+		return "("+this.atomName+")";
 	}
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<MITLIFormula> getChildren() {
+		Set<MITLIFormula> formulae=new HashSet<>();
+		return formulae;
+	}
 }

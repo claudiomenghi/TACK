@@ -1,7 +1,5 @@
 package formulae.cltloc.operators.binary;
 
-import java.util.Arrays;
-
 import com.google.common.base.Preconditions;
 
 import formulae.BinaryFormula;
@@ -24,16 +22,7 @@ public class CLTLocConjunction extends CLTLocFormula implements BinaryFormula<CL
 		this.hash = this.hashComputation();
 	}
 
-	public CLTLocConjunction(CLTLocFormula subformula1, CLTLocFormula... formulae) {
-		super();
-		this.subformula1 = subformula1;
-		if (formulae.length > 1) {
-			this.subformula2 = new CLTLocConjunction(formulae[0], Arrays.copyOfRange(formulae, 1, formulae.length));
-		} else {
-			this.subformula2 = formulae[0];
-		}
-		this.hash = this.hashComputation();
-	}
+	
 
 	/**
 	 * {@inheritDoc}

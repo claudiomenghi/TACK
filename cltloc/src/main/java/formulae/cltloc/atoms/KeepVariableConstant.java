@@ -53,7 +53,7 @@ public class KeepVariableConstant extends CLTLocFormula {
 	
 	@Override
 	public String toString() {
-		return "( X("  + variable + ") = "+ variable+" )";
+		return "X("  + variable + ") = "+ variable;
 	}
 
 }

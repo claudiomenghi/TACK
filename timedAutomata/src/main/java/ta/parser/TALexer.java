@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.6
+// Generated from TA.g4 by ANTLR 4.5
 
 package ta.parser;
 
@@ -40,7 +40,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class TALexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -136,7 +136,7 @@ public class TALexer extends Lexer {
 	 	
 	 	 private static Map<String, String> declarations = new HashMap<String, String>();
 	 	  private static Map<String, String> currentTaDeclarations = new HashMap<String, String>();
-	 	  
+	 	  private static String currentProc;
 	 	   private boolean definedVar(String name){
 	 	    if(!currentTaDeclarations.containsKey(name) && !declarations.containsKey(name)){
 	        	return false;

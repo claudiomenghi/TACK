@@ -17,4 +17,6 @@ public class MITLIPast_ZerotoB extends MITLIPast_AtoB {
 	public <T> T accept(MITLIVisitor<T> visitor) {
 		return visitor.visit(this);
 	}
+	
+	
 }

@@ -1,10 +1,8 @@
 package solvers;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,12 +16,12 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.base.Preconditions;
 
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.converters.CLTLoc2Zot;
 import formulae.cltloc.visitor.NicelyIndentToString;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.converters.MITLI2CLTLoc;
 import formulae.mitli.parser.MITLILexer;
 import formulae.mitli.parser.MITLIParser;
+import zotrunner.ZotException;
 
 public class MITLIsolver {
 
@@ -43,27 +41,19 @@ public class MITLIsolver {
 
 	}
 
-	public boolean solve() throws IOException {
+	public boolean solve() throws IOException, ZotException {
 
 		out.println("Transforming the MITLI formula in CLTLoc");
-		out.println("Formula: "+formula);
+		out.println("Formula: " + formula);
 		MITLI2CLTLoc converted = new MITLI2CLTLoc(formula, bound);
+
 		cltlocFormula = converted.apply();
+		converted.printFancy(out);
 
 		this.vocabulary = converted.getVocabulary();
 
-		out.println("CLTLoc formula converted ");
+		return new CLTLocsolver(cltlocFormula, out, bound).solve();
 
-		zotEncoding = new CLTLoc2Zot(bound).apply(cltlocFormula);
-
-		out.println("CLTLoc formula encoded in ZOT");
-
-		String lispFile = "tmp.lisp";
-
-		out.println("Running zot");
-		
-
-		return true;
 	}
 
 	public String getZotEncoding() {

@@ -1,0 +1,1 @@
+G (! ( P1.sender_transm && P2.sender_transm && P1.x >= 52 ))

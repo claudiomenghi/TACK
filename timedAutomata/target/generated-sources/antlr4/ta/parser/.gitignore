@@ -2,3 +2,11 @@
 /TABaseListener.java
 /TAListener.java
 /TAParser.java
+/TAXML.tokens
+/TAXMLBaseListener.java
+/TAXMLLexer.java
+/TAXMLLexer.tokens
+/TAXMLListener.java
+/TAXMLParser.java
+/TALexer.java
+/TALexer.tokens

@@ -12,3 +12,6 @@
 
 
 # Developer corner
+
+
+* run a single class test `gradle test --tests classname` where classname is the class containing the tests

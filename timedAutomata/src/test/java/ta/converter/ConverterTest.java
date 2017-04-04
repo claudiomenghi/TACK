@@ -54,7 +54,7 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi1 = converter.getVariable1();
 
@@ -83,15 +83,15 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi2 = converter.getVariable2();
 
 		CLTLocFormula expectedphi2 = new CLTLocGlobally(new CLTLocImplies(
 				new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-				new CLTLocNext(new CLTLocRelease(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
+				new CLTLocRelease(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
 						new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-								new KeepVariableConstant(new Variable("i0")))))));
+								new KeepVariableConstant(new Variable("i0"))))));
 
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi2.equals(phi2)));
@@ -113,15 +113,15 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi2 = converter.getVariable3();
 
 		CLTLocFormula expectedphi2 = new CLTLocGlobally(new CLTLocImplies(
 				new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-				new CLTLocNext(new CLTLocRelease(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
+				new CLTLocRelease(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
 						new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-								new KeepVariableConstant(new Variable("i1")))))));
+								new KeepVariableConstant(new Variable("i1"))))));
 
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi2.equals(phi2)));
@@ -143,14 +143,15 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi1 = converter.getClock1();
 
 		CLTLocFormula expectedphi1 = new CLTLocRelease(
-				new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.EQ),
-				new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ),
-						new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)));
+				new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.EQ),
+				new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+						new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)));
+		
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi1.equals(phi1)));
 
@@ -171,17 +172,17 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi2 = converter.getClock2();
 
 		CLTLocFormula expectedphi2 = new CLTLocGlobally(
-				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.EQ),
+				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.EQ),
 						new CLTLocNext(new CLTLocRelease(
-								new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.EQ),
+								new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.EQ),
 								new CLTLocConjunction(
-										new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE))))));
+										new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE))))));
 
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi2.equals(phi2)));
@@ -203,17 +204,17 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi3 = converter.getClock3();
 
 		CLTLocFormula expectedphi3 = new CLTLocGlobally(
-				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.EQ),
+				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.EQ),
 						new CLTLocNext(new CLTLocRelease(
-								new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.EQ),
+								new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.EQ),
 								new CLTLocConjunction(
-										new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.GE))))));
+										new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.GE))))));
 
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi3.equals(phi3)));
@@ -235,17 +236,17 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi1 = converter.getPhi1();
 
 		CLTLocFormula expectedphi1 = new CLTLocGlobally(new CLTLocConjunction(
-				new CLTLocImplies(new CLTLocAP("s_state_1"), new CLTLocNegation(new CLTLocAP("s_state_2"))),
-				new CLTLocImplies(new CLTLocAP("s_state_2"), new CLTLocNegation(new CLTLocAP("s_state_1")))));
+				new CLTLocImplies(new CLTLocAP("Sender_A.state_1"), new CLTLocNegation(new CLTLocAP("Sender_A.state_2"))),
+				new CLTLocImplies(new CLTLocAP("Sender_A.state_2"), new CLTLocNegation(new CLTLocAP("Sender_A.state_1")))));
 
 		CLTLocFormula expectedphi2 = new CLTLocGlobally(new CLTLocConjunction(
-				new CLTLocImplies(new CLTLocAP("s_state_2"), new CLTLocNegation(new CLTLocAP("s_state_1"))),
-				new CLTLocImplies(new CLTLocAP("s_state_1"), new CLTLocNegation(new CLTLocAP("s_state_2")))));
+				new CLTLocImplies(new CLTLocAP("Sender_A.state_2"), new CLTLocNegation(new CLTLocAP("Sender_A.state_1"))),
+				new CLTLocImplies(new CLTLocAP("Sender_A.state_1"), new CLTLocNegation(new CLTLocAP("Sender_A.state_2")))));
 
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi1.equals(phi1) || expectedphi2.equals(phi1)));
@@ -267,11 +268,13 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi2 = converter.getPhi2();
 
-		CLTLocFormula expectedphi2 = new CLTLocAP("s_state_1");
+		CLTLocFormula expectedphi2 = 
+				CLTLocFormula.getAnd(new CLTLocAP("Sender_A.state_1"), CLTLocFormula.getAnd(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new Variable("Sender_A.i0"), new Constant(0), Relation.EQ)));
+
 
 		assertTrue("The initial state should be correct", (expectedphi2.equals(phi2)));
 
@@ -292,14 +295,31 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi3 = converter.getPhi3();
 
-		CLTLocFormula expectedphi3 = new CLTLocGlobally(new CLTLocImplies(new CLTLocAP("s_state_1"),
-				new CLTLocConjunction(new CLTLocRelation(new CLTLocClock("c"), new Constant("15"), Relation.LE),
-						new CLTLocNext(new CLTLocRelation(new CLTLocClock("c"), new Constant("15"), Relation.LE)))));
+		CLTLocFormula expectedphi3 = new CLTLocGlobally(new CLTLocImplies(new CLTLocAP("Sender_A.state_1"),
+				new CLTLocDisjunction(
+						new CLTLocConjunction(
+								new CLTLocConjunction(
+								new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant("0"), Relation.EQ)
+								,
+						new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant("15"), Relation.LE)),
+								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant("15"), Relation.LE)))
+						, 
+						new CLTLocConjunction(
+								new CLTLocConjunction(
+								new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant("1"), Relation.EQ)
+								,
+						new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant("15"), Relation.LE)),
+								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant("15"), Relation.LE)))
+										
+										)
+				));
 
+		
+		
 		assertTrue("The invariant must be added as formulae", (expectedphi3.equals(phi3)));
 
 	}
@@ -319,46 +339,57 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi4 = converter.getPhi4();
 
 		CLTLocFormula expectedphi4 = new CLTLocGlobally(new CLTLocConjunction(new CLTLocImplies(
-				new CLTLocAP("s_state_2"),
-				new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("s_state_2"),
+				new CLTLocAP("Sender_A.state_2"),
+				new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("Sender_A.state_2"),
 						new CLTLocConjunction(
 								new CLTLocDisjunction(new CLTLocConjunction(
-										new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)),
+										new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)),
 										new CLTLocConjunction(
-												new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ),
-												new CLTLocRelation(new CLTLocClock("c1"), new Constant(0),
+												new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0),
 														Relation.GE))),
 								new CLTLocDisjunction(
 										new CLTLocConjunction(
-												new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-												new KeepVariableConstant(new Variable("i0"))),
+												new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ),
+												new KeepVariableConstant(new Variable("Sender_A.i0"))),
 										new CLTLocConjunction(
-												new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-												new KeepVariableConstant(new Variable("i1"))
+												new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ),
+												new KeepVariableConstant(new Variable("Sender_A.i1"))
 
-										)))), new CLTLocConjunction(new CLTLocAP("s_state_1"), new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)), new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.GE))), new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new Variable("i0"), new Constant(3), Relation.EQ)), new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new Variable("i1"), new Constant(3), Relation.EQ)))))))), new CLTLocImplies(new CLTLocAP("s_state_1"), new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("s_state_1"), new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)), new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.GE))), new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ), new KeepVariableConstant(new Variable("i0"))), new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ), new KeepVariableConstant(new Variable("i1"))
+										)))), new CLTLocConjunction(new CLTLocAP("Sender_A.state_1"), 
+												new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ), 
+														new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)), 
+														new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ), 
+																new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.GE))), 
+														new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ), 
+																new CLTLocRelation(new Variable("Sender_A.i1"), new Constant(3), Relation.EQ)), 
+																new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ), 
+																		new CLTLocRelation(new Variable("Sender_A.i0"), new Constant(3), Relation.EQ)))))))), 
+				new CLTLocImplies(new CLTLocAP("Sender_A.state_1"), new CLTLocNext(new CLTLocDisjunction(
+						new CLTLocConjunction(new CLTLocAP("Sender_A.state_1"), new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)), new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.GE))), new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ), new KeepVariableConstant(new Variable("Sender_A.i0"))), new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ), new KeepVariableConstant(new Variable("Sender_A.i1"))
 
-		)))), new CLTLocConjunction(new CLTLocAP("s_state_2"),
+		)))), new CLTLocConjunction(new CLTLocAP("Sender_A.state_2"),
 				new CLTLocConjunction(
 						new CLTLocDisjunction(
 								new CLTLocConjunction(
-										new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)),
-								new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(1),
+										new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)),
+								new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1),
 										Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.GE))),
+										new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.GE))),
 						new CLTLocDisjunction(new CLTLocConjunction(
-								new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-								new CLTLocRelation(new Variable("i0"), new Constant(2), Relation.EQ)),
+								new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ),
+								new CLTLocRelation(new Variable("Sender_A.i1"), new Constant(2), Relation.EQ)),
 								new CLTLocConjunction(
-										new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-										new CLTLocRelation(new Variable("i1"), new Constant(2), Relation.EQ))))))))));
+										new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ),
+										new CLTLocRelation(new Variable("Sender_A.i0"), new Constant(2), Relation.EQ))))))))));
+
 
 		assertTrue("The transition relation must be encored correclty", (expectedphi4.equals(phi4)));
 	}
@@ -378,7 +409,7 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi5 = converter.getPhi5();
 
@@ -404,7 +435,7 @@ public class ConverterTest {
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		propositionsOfInterest.add(new VariableAssignementAP("0", new ta.Variable("i"), new Value("2")));
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi6 = converter.getPhi6();
 
@@ -431,7 +462,7 @@ public class ConverterTest {
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		propositionsOfInterest.add(new VariableAssignementAP("0", new ta.Variable("i"), new Value("2")));
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi7 = converter.getPhi7();
 
@@ -457,7 +488,7 @@ public class ConverterTest {
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		propositionsOfInterest.add(new VariableAssignementAP("0", new ta.Variable("i"), new Value("2")));
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi5 = converter.getPhi5();
 
@@ -487,20 +518,106 @@ public class ConverterTest {
 
 		Set<AP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, true);
 
 		CLTLocFormula phi4 = converter.getPhi4();
 
 		CLTLocFormula expectedphi4 = new CLTLocGlobally(new CLTLocConjunction(new CLTLocImplies(
-				new CLTLocAP("s_state_2"),
-				new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("s_state_2"),
+				new CLTLocAP("Sender_A.state_2"),
+				new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("Sender_A.state_2"),
 						new CLTLocConjunction(
 								new CLTLocDisjunction(new CLTLocConjunction(
-										new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)),
+										new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)),
 										new CLTLocConjunction(
-												new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ),
-												new CLTLocRelation(new CLTLocClock("c1"), new Constant(0),
+												new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0),
+														Relation.GE))),
+								new CLTLocDisjunction(
+										new CLTLocConjunction(
+												new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ),
+												new KeepVariableConstant(new Variable("Sender_A.i0"))),
+										new CLTLocConjunction(
+												new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ),
+												new KeepVariableConstant(new Variable("Sender_A.i1"))
+
+										)))), new CLTLocConjunction(new CLTLocAP("Sender_A.state_1"), new CLTLocConjunction(new CLTLocDisjunction(
+												new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)), 
+												
+												new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new CLTLocClock("Sender_A.c1"), 
+														new Constant(0), Relation.GE))), new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ), 
+																new CLTLocRelation(new Variable("Sender_A.i1"), new Constant(3), Relation.EQ)), new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new Variable("Sender_A.i0"), new Constant(3), Relation.EQ)))
+
+				))))), new CLTLocImplies(new CLTLocAP("Sender_A.state_1"), new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("Sender_A.state_1"), 
+						new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ), 
+								new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)), 
+								new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ), 
+										new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.GE))), 
+								new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ), 
+										new KeepVariableConstant(new Variable("Sender_A.i0"))), new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ), new KeepVariableConstant(new Variable("Sender_A.i1"))
+
+		))
+
+		)), new CLTLocConjunction(new CLTLocAP("Sender_A.state_2"),
+				new CLTLocConjunction(
+						new CLTLocDisjunction(
+								new CLTLocConjunction(
+										new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ),
+										new CLTLocRelation(new Variable("Sender_A.i1"), new Constant(1), Relation.EQ)),
+								new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0),
+										Relation.EQ),
+										new CLTLocRelation(new Variable("Sender_A.i0"), new Constant(1), Relation.EQ))),
+						new CLTLocConjunction(
+								new CLTLocDisjunction(
+										new CLTLocConjunction(
+												new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0),
+														Relation.GE)),
+										new CLTLocConjunction(
+												new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0),
+														Relation.GE))),
+								new CLTLocDisjunction(new CLTLocConjunction(
+										new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(0), Relation.EQ),
+										new CLTLocRelation(new Variable("Sender_A.i1"), new Constant(2), Relation.EQ)),
+										new CLTLocConjunction(
+												new CLTLocRelation(new Variable("Sender_A.i_v"), new Constant(1), Relation.EQ),
+												new CLTLocRelation(new Variable("Sender_A.i0"), new Constant(2),
+														Relation.EQ)))))))))));
+
+		
+		assertTrue("The transition relation must be encored correclty", (expectedphi4.equals(phi4)));
+	}
+	
+	@Test
+	public void testModelTest3() throws IOException {
+
+		ANTLRInputStream input = new ANTLRFileStream(ClassLoader.getSystemResource("ta/converter/Test3.ta").getPath());
+		TALexer lexer = new TALexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		TAParser parser = new TAParser(tokens);
+		parser.setErrorHandler(new BailErrorStrategy());
+		parser.setBuildParseTree(true);
+		SystemDecl system = parser.ta().systemret;
+
+		TA ta = system.getTimedAutomata().iterator().next();
+
+		Set<AP> propositionsOfInterest = new HashSet<>();
+		TA2CLTLoc converter = new TA2CLTLoc();
+		converter.convert(system, ta, propositionsOfInterest, true);
+
+		CLTLocFormula phi4 = converter.getPhi4();
+
+		CLTLocFormula expectedphi4 = new CLTLocGlobally(new CLTLocConjunction(new CLTLocImplies(
+				new CLTLocAP("Sender_A.state_2"),
+				new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("Sender_A.state_2"),
+						new CLTLocConjunction(
+								new CLTLocDisjunction(new CLTLocConjunction(
+										new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+										new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)),
+										new CLTLocConjunction(
+												new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0),
 														Relation.GE))),
 								new CLTLocDisjunction(
 										new CLTLocConjunction(
@@ -510,13 +627,24 @@ public class ConverterTest {
 												new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
 												new KeepVariableConstant(new Variable("i1"))
 
-										)))), new CLTLocConjunction(new CLTLocAP("s_state_1"), new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)), new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.GE))), new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new Variable("i0"), new Constant(3), Relation.EQ)), new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new Variable("i1"), new Constant(3), Relation.EQ)))
+										)))), new CLTLocConjunction(new CLTLocAP("Sender_A.state_1"), new CLTLocConjunction(new CLTLocDisjunction(
+												new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)), 
+												
+												new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new CLTLocClock("Sender_A.c1"), 
+														new Constant(0), Relation.GE))), new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ), 
+																new CLTLocRelation(new Variable("i1"), new Constant(3), Relation.EQ)), new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new Variable("i0"), new Constant(3), Relation.EQ)))
 
-				))))), new CLTLocImplies(new CLTLocAP("s_state_1"), new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("s_state_1"), new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new CLTLocClock("c0"), new Constant(0), Relation.GE)), new CLTLocConjunction(new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ), new CLTLocRelation(new CLTLocClock("c1"), new Constant(0), Relation.GE))), new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ), new KeepVariableConstant(new Variable("i0"))), new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ), new KeepVariableConstant(new Variable("i1"))
+				))))), new CLTLocImplies(new CLTLocAP("Sender_A.state_1"), new CLTLocNext(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocAP("Sender_A.state_1"), 
+						new CLTLocConjunction(new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ), 
+								new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0), Relation.GE)), 
+								new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ), 
+										new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0), Relation.GE))), 
+								new CLTLocDisjunction(new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ), 
+										new KeepVariableConstant(new Variable("i0"))), new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ), new KeepVariableConstant(new Variable("i1"))
 
 		))
 
-		)), new CLTLocConjunction(new CLTLocAP("s_state_2"),
+		)), new CLTLocConjunction(new CLTLocAP("Sender_A.state_2"),
 				new CLTLocConjunction(
 						new CLTLocDisjunction(
 								new CLTLocConjunction(
@@ -528,21 +656,22 @@ public class ConverterTest {
 						new CLTLocConjunction(
 								new CLTLocDisjunction(
 										new CLTLocConjunction(
-												new CLTLocRelation(new Variable("c_v"), new Constant(0), Relation.EQ),
-												new CLTLocRelation(new CLTLocClock("c0"), new Constant(0),
+												new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(0), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock("Sender_A.c0"), new Constant(0),
 														Relation.GE)),
 										new CLTLocConjunction(
-												new CLTLocRelation(new Variable("c_v"), new Constant(1), Relation.EQ),
-												new CLTLocRelation(new CLTLocClock("c1"), new Constant(0),
+												new CLTLocRelation(new Variable("Sender_A.c_v"), new Constant(1), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock("Sender_A.c1"), new Constant(0),
 														Relation.GE))),
 								new CLTLocDisjunction(new CLTLocConjunction(
 										new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-										new CLTLocRelation(new Variable("i0"), new Constant(2), Relation.EQ)),
+										new CLTLocRelation(new Variable("i1"), new Constant(2), Relation.EQ)),
 										new CLTLocConjunction(
 												new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-												new CLTLocRelation(new Variable("i1"), new Constant(2),
+												new CLTLocRelation(new Variable("i0"), new Constant(2),
 														Relation.EQ)))))))))));
 
+		
 		assertTrue("The transition relation must be encored correclty", (expectedphi4.equals(phi4)));
 	}
 }
