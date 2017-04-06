@@ -11,6 +11,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import formulae.cltloc.CLTLocFormula;
@@ -44,14 +45,15 @@ public class ATVAExample2Test {
 	private TA ta;
 	private SystemDecl system;
 
-	private final static CLTLocClock clock0 = new CLTLocClock("Example2.x0");
-	private final static CLTLocClock clock1 = new CLTLocClock("Example2.x1");
-	private final static formulae.cltloc.atoms.Variable xv = new formulae.cltloc.atoms.Variable("Example2.x_v");
+	private final static CLTLocClock clock0 = new CLTLocClock("Example2_x0");
+	private final static CLTLocClock clock1 = new CLTLocClock("Example2_x1");
+	private final static formulae.cltloc.atoms.Variable xv = new formulae.cltloc.atoms.Variable("Example2_x_v");
 
-	private final CLTLocFormula expectedclock1 = new CLTLocRelease(
-			new CLTLocRelation(clock1, new Constant(0), Relation.EQ),
-			CLTLocFormula.getAnd(new CLTLocRelation(xv, new Constant(0), Relation.EQ),
-					new CLTLocRelation(clock0, new Constant(0), Relation.GE)));
+	private final CLTLocFormula expectedclock1 = CLTLocFormula.getAnd(
+			new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
+			CLTLocFormula.getAnd(
+					new CLTLocRelation(clock1, new Constant(0), Relation.GE)),
+			new CLTLocRelation(xv, new Constant(0), Relation.EQ));
 
 	private final CLTLocFormula expectedclock2 = CLTLocFormula
 			.G(new CLTLocImplies(new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
@@ -65,39 +67,39 @@ public class ATVAExample2Test {
 							CLTLocFormula.getAnd(new CLTLocRelation(xv, new Constant(1), Relation.EQ),
 									new CLTLocRelation(clock1, new Constant(0), Relation.GE))))));
 
-	private final CLTLocFormula expectedVariable1 = new CLTLocRelease(
-			new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-			CLTLocFormula.getAnd(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-					new CLTLocRelation(new Variable("i0"), new Constant(0), Relation.EQ)));
-	private final CLTLocFormula expectedVariable2 = new CLTLocGlobally(
-			new CLTLocImplies(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-					new CLTLocRelease(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-							new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-									new KeepVariableConstant(new Variable("i0"))))));
-	private final CLTLocFormula expectedVariable3 = new CLTLocGlobally(
-			new CLTLocImplies(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-					new CLTLocRelease(new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ),
-							new CLTLocConjunction(new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ),
-									new KeepVariableConstant(new Variable("i1"))))));
-
+	private final CLTLocFormula expectedVariable1 = CLTLocFormula.getAnd(
+			new CLTLocRelation(new Variable("Example2_i0"), new Constant(0), Relation.EQ),
+			
+			CLTLocFormula.getAnd(
+					new CLTLocRelation(new Variable("Example2_i1"), new Constant(0), Relation.GE),
+					new CLTLocRelation(new Variable("Example2_i_v"), new Constant(0), Relation.EQ)
+					));
+	
 	private final CLTLocFormula expectedphi1 = CLTLocFormula
-			.G(CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocImplies(new CLTLocAP("Example2.l0"),
-					CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example2.l1")),
-							CLTLocFormula.getNeg(new CLTLocAP("Example2.l2")))),
+			.G(
+					CLTLocFormula.getAnd(
+					CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocImplies(new CLTLocAP("Example2_l0"),
+					CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example2_l1")),
+							CLTLocFormula.getNeg(new CLTLocAP("Example2_l2")))),
 
-					new CLTLocImplies(new CLTLocAP("Example2.l1"),
-							CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example2.l0")),
-									CLTLocFormula.getNeg(new CLTLocAP("Example2.l2"))))),
-					new CLTLocImplies(new CLTLocAP("Example2.l2"),
-							CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example2.l0")),
-									CLTLocFormula.getNeg(new CLTLocAP("Example2.l1"))))));
+					new CLTLocImplies(new CLTLocAP("Example2_l1"),
+							CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example2_l0")),
+									CLTLocFormula.getNeg(new CLTLocAP("Example2_l2"))))),
+					new CLTLocImplies(new CLTLocAP("Example2_l2"),
+							CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example2_l0")),
+									CLTLocFormula.getNeg(new CLTLocAP("Example2_l1"))))),
+					CLTLocFormula.getOr(
+							CLTLocFormula.getOr(new CLTLocAP("Example2_l0"), new CLTLocAP("Example2_l1")),
+							new CLTLocAP("Example2_l2"))
+							)
+					);
 
-	private final CLTLocFormula expectedphi2 = new CLTLocConjunction(new CLTLocAP("Example2.l0"),
-			new CLTLocConjunction(new CLTLocRelation(new Variable("Example2.i_v"), new Constant(0), Relation.EQ),
-					new CLTLocRelation(new Variable("Example2.i0"), new Constant(0), Relation.EQ)));
+	private final CLTLocFormula expectedphi2 = new CLTLocConjunction(new CLTLocAP("Example2_l0"),
+			new CLTLocConjunction(new CLTLocRelation(new Variable("Example2_i_v"), new Constant(0), Relation.EQ),
+					new CLTLocRelation(new Variable("Example2_i0"), new Constant(0), Relation.EQ)));
 
 	private final CLTLocFormula expectedphi3 = new CLTLocGlobally(
-			new CLTLocImplies(new CLTLocAP("Example2.l1"), new CLTLocDisjunction(
+			new CLTLocImplies(new CLTLocAP("Example2_l1"), new CLTLocDisjunction(
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocRelation(xv, new Constant(0), Relation.EQ),
 
 							new CLTLocRelation(clock0, new Constant(5), Relation.LEQ)),
@@ -109,85 +111,85 @@ public class ATVAExample2Test {
 
 	
 	private final CLTLocFormula transLocation0=
-			new CLTLocImplies(new CLTLocAP("Example2.l0"), 
+			new CLTLocImplies(new CLTLocAP("Example2_l0"), 
 					new CLTLocNext(
 							new CLTLocDisjunction(
 										new CLTLocConjunction(
-												new CLTLocAP("Example2.l0")
+												new CLTLocAP("Example2_l0")
 												,
 												new CLTLocConjunction(
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(0), Relation.GE)																
+																new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(0), Relation.GE)																
 																)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(0), Relation.GE)																
+																new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(0), Relation.GE)																
 																)
 														)
 													,
 													new CLTLocDisjunction(
 															new CLTLocConjunction(
-																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(0), Relation.EQ)
+																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(0), Relation.EQ)
 																	, 
-																	new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i0"))																
+																	new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i0"))																
 																	)
 															,
 															new CLTLocConjunction(
-																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(1), Relation.EQ)
+																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(1), Relation.EQ)
 																	, 
-																	new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i1"))																
+																	new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i1"))																
 																	)
 															)
 													)
 										),
 										new CLTLocConjunction(
-												new CLTLocAP("Example2.l1")
+												new CLTLocAP("Example2_l1")
 												,
 												new CLTLocConjunction(
 															new CLTLocDisjunction(
 																	new CLTLocConjunction(
-																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 																		, 
-																		new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(5), Relation.LEQ)
+																		new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(5), Relation.LEQ)
 																	)
 																	,
 																	new CLTLocConjunction(
-																			new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																			new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																			, 
-																			new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(5), Relation.LEQ)
+																			new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(5), Relation.LEQ)
 																	)
 															)
 															,
 															new CLTLocConjunction(
 															new CLTLocDisjunction(
 																	new CLTLocConjunction(
-																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 																		, 
-																		new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(0), Relation.GE)
+																		new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(0), Relation.GE)
 																	)
 																	,
 																	new CLTLocConjunction(
-																			new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																			new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																			, 
-																			new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(0), Relation.GE)
+																			new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(0), Relation.GE)
 																	)
 															),
 														new CLTLocDisjunction(
 																new CLTLocConjunction(
-																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(0), Relation.EQ)
+																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(0), Relation.EQ)
 																		, 
-																		new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i0"))																
+																		new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i0"))																
 																		)
 																,
 																new CLTLocConjunction(
-																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(1), Relation.EQ)
+																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(1), Relation.EQ)
 																		, 
-																		new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i1"))																
+																		new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i1"))																
 																		)
 																)
 														)
@@ -199,71 +201,71 @@ public class ATVAExample2Test {
 					);
 			
 	private final CLTLocFormula transLocation1=
-			new CLTLocImplies(new CLTLocAP("Example2.l1"), 
+			new CLTLocImplies(new CLTLocAP("Example2_l1"), 
 					new CLTLocNext(
 							new CLTLocDisjunction(
 										new CLTLocConjunction(
-												new CLTLocAP("Example2.l1")
+												new CLTLocAP("Example2_l1")
 												,
 												new CLTLocConjunction(
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(0), Relation.GE)																
+																new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(0), Relation.GE)																
 																)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(0), Relation.GE)																
+																new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(0), Relation.GE)																
 																)
 														)
 												,
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(0), Relation.EQ)
 																, 
-																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i0"))																
+																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i0"))																
 																)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(1), Relation.EQ)
 																, 
-																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i1"))																
+																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i1"))																
 																)
 														)
 												)
 											)
 										,
 										new CLTLocConjunction(
-												new CLTLocAP("Example2.l2")
+												new CLTLocAP("Example2_l2")
 												,
 												new CLTLocConjunction(
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-															new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+															new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 															, 
-															new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(0), Relation.GE)
+															new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(0), Relation.GE)
 														)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(0), Relation.GE)
+																new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(0), Relation.GE)
 														)
 												),
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(0), Relation.EQ)
 																, 
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i1"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i1"), new Constant(1), Relation.EQ)
 																)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(1), Relation.EQ)
 																, 
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i0"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i0"), new Constant(1), Relation.EQ)
 																)
 														)
 												)
@@ -273,37 +275,37 @@ public class ATVAExample2Test {
 					);
 	
 	private final CLTLocFormula transLocation2=
-			new CLTLocImplies(new CLTLocAP("Example2.l2"), 
+			new CLTLocImplies(new CLTLocAP("Example2_l2"), 
 					new CLTLocNext(
 							new CLTLocDisjunction(
 										new CLTLocConjunction(
-												new CLTLocAP("Example2.l2")
+												new CLTLocAP("Example2_l2")
 												,
 												new CLTLocConjunction(
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(0), Relation.GE)																
+																new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(0), Relation.GE)																
 																)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(0), Relation.GE)																
+																new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(0), Relation.GE)																
 																)
 														),
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(0), Relation.EQ)
 																, 
-																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i0"))																
+																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i0"))																
 																)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(1), Relation.EQ)
 																, 
-																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2.i1"))																
+																new KeepVariableConstant(new formulae.cltloc.atoms.Variable("Example2_i1"))																
 																)
 														)
 												
@@ -311,52 +313,52 @@ public class ATVAExample2Test {
 												)
 										,
 										new CLTLocConjunction(
-												new CLTLocAP("Example2.l0")
+												new CLTLocAP("Example2_l0")
 												,
 												new CLTLocConjunction(
 												
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-															new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+															new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 															, 
-															new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(10), Relation.EQ)
+															new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(10), Relation.EQ)
 														)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																, 
-																new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(10), Relation.EQ)
+																new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(10), Relation.EQ)
 														)
 												),
 												new CLTLocConjunction(
 													new CLTLocDisjunction(
 															new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(0), Relation.EQ)
 																, 
-																		new CLTLocRelation(new CLTLocClock("Example2.x1"), new Constant(0), Relation.EQ)
+																		new CLTLocRelation(new CLTLocClock("Example2_x1"), new Constant(0), Relation.EQ)
 																		
 															)
 															,
 															new CLTLocConjunction(
-																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.x_v"), new Constant(1), Relation.EQ)
+																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_x_v"), new Constant(1), Relation.EQ)
 																	, 
-																			new CLTLocRelation(new CLTLocClock("Example2.x0"), new Constant(0), Relation.EQ)
+																			new CLTLocRelation(new CLTLocClock("Example2_x0"), new Constant(0), Relation.EQ)
 																			
 															)
 													)
 												,
 												new CLTLocDisjunction(
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(0), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(0), Relation.EQ)
 																, 
-																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i1"), new Constant(1), Relation.EQ)
+																	new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i1"), new Constant(1), Relation.EQ)
 																	
 																)
 														,
 														new CLTLocConjunction(
-																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i_v"), new Constant(1), Relation.EQ)
+																new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i_v"), new Constant(1), Relation.EQ)
 																, 
-																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2.i0"), new Constant(1), Relation.EQ)
+																		new CLTLocRelation(new formulae.cltloc.atoms.Variable("Example2_i0"), new Constant(1), Relation.EQ)
 																
 														)
 												)
@@ -380,14 +382,14 @@ public class ATVAExample2Test {
 							,
 							new CLTLocDisjunction(
 									new CLTLocConjunction(
-											new CLTLocRelation(new Variable("i_v"), new Constant(0), Relation.EQ)
+											new CLTLocRelation(new Variable("Example2_i_v"), new Constant(0), Relation.EQ)
 											, 
-											new CLTLocRelation(new Variable("i0"), new Constant(0), Relation.EQ)
+											new CLTLocRelation(new Variable("Example2_i0"), new Constant(0), Relation.EQ)
 											),
 									new CLTLocConjunction(
-											new CLTLocRelation(new Variable("i_v"), new Constant(1), Relation.EQ)
+											new CLTLocRelation(new Variable("Example2_i_v"), new Constant(1), Relation.EQ)
 											, 
-											new CLTLocRelation(new Variable("i1"), new Constant(0), Relation.EQ)
+											new CLTLocRelation(new Variable("Example2_i1"), new Constant(0), Relation.EQ)
 											)
 									)
 							)
@@ -426,19 +428,7 @@ public class ATVAExample2Test {
 
 	}
 
-	@Test
-	public void testVariable2() throws IOException {
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-		ta2cltloc.convert(system, ta, new HashSet<>(), true);
-		assertEquals("Variable 1 formula generated correctly", expectedVariable2, ta2cltloc.getVariable2());
-	}
-
-	@Test
-	public void testVariable3() throws IOException {
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-		ta2cltloc.convert(system, ta, new HashSet<>(), true);
-		assertEquals("Variable 1 formula generated correctly", expectedVariable3, ta2cltloc.getVariable3());
-	}
+	
 
 	@Test
 	public void testClock1() throws IOException {
@@ -482,6 +472,7 @@ public class ATVAExample2Test {
 		assertEquals("Variable 1 formula generated correctly", expectedphi3, ta2cltloc.getPhi3());
 	}
 
+	@Ignore
 	@Test
 	public void testPhi4() throws IOException {
 		
@@ -503,6 +494,7 @@ public class ATVAExample2Test {
 				new VariableAssignementAP("0", new ta.Variable("i"), new Value("0")));
 		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
 		ta2cltloc.convert(system, ta, ap, true);
+		
 		assertEquals("Variable 1 formula generated correctly", expectedphi5, ta2cltloc.getPhi5());
 	}
 	

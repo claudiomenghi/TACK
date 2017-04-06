@@ -1,0 +1,15 @@
+process Example2 {
+   clock x;
+   int i;
+   state  l0, l1, l2;
+    init   l0;
+   trans  l0 -> l1 {
+           sync   e1!;
+         },
+          l1 -> l2 {
+           sync   e2!;
+           assign i=1;
+         };
+}
+
+system Example2;

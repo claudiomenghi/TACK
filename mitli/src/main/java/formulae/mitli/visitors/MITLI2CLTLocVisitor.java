@@ -162,9 +162,8 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		Preconditions.checkNotNull(formula, "The formula to be considered cannot be null");
 
 		LOGGER.info("Converting the formula " + formula.toString() + " to CLTLoc");
-		Set<MITLIFormula> subformulae = formula.accept(new SubformulaeVisitor());
-		List<MITLIFormula> listSubFormula = new ArrayList<>(subformulae);
-
+		List<MITLIFormula> listSubFormula = formula.accept(new SubformulaeVisitor());
+		
 		for (int i = 0; i < listSubFormula.size(); i++) {
 			this.formulaIdMap.put(listSubFormula.get(i), i);
 		}

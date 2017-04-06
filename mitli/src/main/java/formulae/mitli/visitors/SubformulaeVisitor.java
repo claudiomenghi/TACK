@@ -1,7 +1,7 @@
 package formulae.mitli.visitors;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import formulae.mitli.MITLIConjunction;
 import formulae.mitli.MITLIDisjunction;
@@ -25,14 +25,14 @@ import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
 import formulae.mitli.atoms.MITLITrue;
 
-public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
+public class SubformulaeVisitor implements MITLIVisitor<List<MITLIFormula>> {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIDisjunction formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIDisjunction formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		formulae.add(formula);
@@ -43,8 +43,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIFalse formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIFalse formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.add(formula);
 		return formulae;
 	}
@@ -53,8 +53,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLITrue formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLITrue formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.add(formula);
 		return formulae;
 	}
@@ -63,8 +63,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIConjunction formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIConjunction formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		formulae.add(formula);
@@ -77,8 +77,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLINegation formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLINegation formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -88,8 +88,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIUntil formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIUntil formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		formulae.add(formula);
@@ -100,8 +100,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIImplies formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIImplies formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		formulae.add(formula);
@@ -112,8 +112,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIIff formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIIff formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		formulae.add(formula);
@@ -124,8 +124,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLISince formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLISince formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		formulae.add(formula);
@@ -136,8 +136,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIGlobally_AtoInf formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIGlobally_AtoInf formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -147,8 +147,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIGlobally_AtoB formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIGlobally_AtoB formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -158,8 +158,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIGlobally_ZerotoB formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIGlobally_ZerotoB formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -169,8 +169,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIEventually_AtoB formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIEventually_AtoB formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -180,8 +180,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIEventually_AtoInf formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIEventually_AtoInf formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -191,8 +191,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIEventually_ZerotoB formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIEventually_ZerotoB formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -202,8 +202,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIPast_AtoB formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIPast_AtoB formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -213,8 +213,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIPast_ZerotoB formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIPast_ZerotoB formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getChild().accept(this));
 		formulae.add(formula);
 		return formulae;
@@ -224,8 +224,8 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<MITLIFormula> visit(MITLIRelease formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIRelease formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.addAll(formula.getLeftChild().accept(this));
 		formulae.addAll(formula.getRightChild().accept(this));
 		formulae.add(formula);
@@ -233,15 +233,15 @@ public class SubformulaeVisitor implements MITLIVisitor<Set<MITLIFormula>> {
 	}
 
 	@Override
-	public Set<MITLIFormula> visit(MITLIPropositionalAtom formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIPropositionalAtom formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.add(formula);
 		return formulae;
 	}
 
 	@Override
-	public Set<MITLIFormula> visit(MITLIRelationalAtom formula) {
-		Set<MITLIFormula> formulae = new HashSet<>();
+	public List<MITLIFormula> visit(MITLIRelationalAtom formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
 		formulae.add(formula);
 		return formulae;
 	}

@@ -48,6 +48,7 @@ public class ZotRunner {
 		boolean sat = true;
 
 		boolean resultfound=false;
+		
 		String line;
 		while ((line = reader.readLine()) != null) {
 			if (line.contains("---UNSAT---")) {
@@ -58,7 +59,9 @@ public class ZotRunner {
 				sat = true;
 				resultfound=true;
 			}
-			out.println("Stdout: " + line);
+			if(resultfound){
+				out.println("Stdout: " + line);
+			}
 		}
 		if(!resultfound){
 			throw new ZotException("ZOT: There are compilation problems");
