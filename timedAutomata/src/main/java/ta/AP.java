@@ -6,6 +6,8 @@ import ta.visitors.TAVisitor;
 
 public class AP extends ModelElement{
 
+	
+
 	private final String name;
 	
 	public AP(String name){
@@ -20,5 +22,13 @@ public class AP extends ModelElement{
 	@Override
 	public <T> T accept(TAVisitor<T> t) {
 		return t.visit(this);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return name;
 	}
 }

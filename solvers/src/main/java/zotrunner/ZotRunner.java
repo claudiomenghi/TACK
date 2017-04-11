@@ -15,6 +15,10 @@ public class ZotRunner {
 
 	private final String zotEncoding;
 	private final PrintStream out;
+	
+	private double checkingtime;
+	
+	private double checkingspace;
 
 	/**
 	 * 
@@ -59,6 +63,21 @@ public class ZotRunner {
 				sat = true;
 				resultfound=true;
 			}
+			if(line.contains(" seconds of total run time")){
+				out.println(line);
+				out.println(new String("   ").length());
+				out.println(line.indexOf(" seconds of total run time"));
+				String extracted=line.substring(new String("   ").length()-1, line.indexOf(" seconds of total run time"));
+				out.println(extracted);
+				this.checkingtime=
+						Double.parseDouble(extracted);
+			}
+			if(line.contains(" bytes consed")){
+				this.checkingtime=
+						Double.parseDouble(
+								line.substring(new String("   ").length()-1, line.indexOf(" bytes consed")).replace(",", ""));
+			}
+					    
 			if(resultfound){
 				out.println("Stdout: " + line);
 			}
@@ -70,6 +89,14 @@ public class ZotRunner {
 		out.print("Zot ends");
 		// FileUtils.forceDelete(new File(lispFile));
 		return sat;
+	}
+	
+	public double getCheckingtime() {
+		return checkingtime;
+	}
+
+	public double getCheckingspace() {
+		return checkingspace;
 	}
 
 }

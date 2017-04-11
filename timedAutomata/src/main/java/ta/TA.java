@@ -1,9 +1,11 @@
 package ta;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +29,9 @@ public class TA {
 	private final Set<VariableDecl> variableDeclaration;
 
 	private final Set<ClockDecl> clockDeclarations;
+	
+	
+	private List<String> actions;
 
 	/**
 	 * The name of the timed automaton
@@ -85,17 +90,20 @@ public class TA {
 		this.allclocks = new HashSet<>();
 		this.allVariables = new HashSet<>();
 
+		this.actions=new ArrayList<>();
 		this.states.forEach(s -> this.outTransitions.put(s, new HashSet<>()));
 		this.transitions.forEach(t -> {
 			Preconditions.checkArgument(this.outTransitions.containsKey(t.getSource()),
 					"The state " + t.getSource() + "is not contained in the states of the TA");
-
+			
 			this.outTransitions.get(t.getSource()).add(t);
 			t.getGuard().getClockConstraints().forEach(c -> allclocks.addAll(c.getClocks()));
 			t.getAssignement().getClockassigments().forEach(c -> allclocks.add(c.getClock()));
 			t.getGuard().getConditions().forEach(g -> allVariables.addAll(g.getVariables()));
 			t.getAssignement().getVariableassigments().forEach(v -> allVariables.add(v.getVariable()));
-
+			if(t.getSync()!=null && t.getSync().getEvent()!=null){
+				this.actions.add(t.getSync().getEvent());
+			}
 		});
 
 		this.variableDeclaration = variableDeclaration;
@@ -215,5 +223,9 @@ public class TA {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 		return ta;
+	}
+
+	public List<String> getActions() {
+		return Collections.unmodifiableList(actions);
 	}
 }

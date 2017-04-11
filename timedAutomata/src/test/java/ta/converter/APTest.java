@@ -16,7 +16,7 @@ import org.junit.Test;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.visitor.GetAPVisitor;
-import ta.AP;
+import ta.StateAP;
 import ta.SystemDecl;
 import ta.TA;
 import ta.parser.TALexer;
@@ -41,8 +41,8 @@ public class APTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
-		CLTLocFormula formula = new TA2CLTLoc().convert(system, ta, propositionsOfInterest, true);
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
+		CLTLocFormula formula = new TA2CLTLoc().convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		System.out.println(formula);
 		Set<CLTLocAP> atomicPropositions = formula.accept(new GetAPVisitor());

@@ -29,7 +29,7 @@ import formulae.cltloc.operators.unary.CLTLocNegation;
 import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.relations.CLTLocRelation;
 import formulae.cltloc.relations.Relation;
-import ta.AP;
+import ta.StateAP;
 import ta.SystemDecl;
 import ta.TA;
 import ta.VariableAssignementAP;
@@ -53,9 +53,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi1 = converter.getVariable1();
 
@@ -87,9 +87,10 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
+		
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi1 = converter.getClock1();
 
@@ -117,9 +118,10 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
+		
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi2 = converter.getClock2();
 
@@ -149,9 +151,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi3 = converter.getClock3();
 
@@ -181,9 +183,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi1 = converter.getPhi1();
 
@@ -233,9 +235,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi2 = converter.getPhi2();
 
@@ -260,9 +262,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi3 = converter.getPhi3();
 
@@ -305,9 +307,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi4 = converter.getPhi4();
 
@@ -514,9 +516,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi5 = converter.getPhi5();
 
@@ -539,10 +541,10 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<VariableAssignementAP> propositionsOfInterest = new HashSet<>();
 		propositionsOfInterest.add(new VariableAssignementAP("0", new ta.Variable("i"), new Value("2")));
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, new HashSet<>(), propositionsOfInterest);
 
 		CLTLocFormula phi6 = converter.getPhi6();
 
@@ -566,10 +568,10 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<VariableAssignementAP> propositionsOfInterest = new HashSet<>();
 		propositionsOfInterest.add(new VariableAssignementAP("0", new ta.Variable("i"), new Value("2")));
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta,  new HashSet<>(), propositionsOfInterest);
 
 		CLTLocFormula phi7 = converter.getPhi7();
 
@@ -594,10 +596,10 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<VariableAssignementAP> propositionsOfInterest = new HashSet<>();
 		propositionsOfInterest.add(new VariableAssignementAP("0", new ta.Variable("i"), new Value("2")));
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, new HashSet<>(), propositionsOfInterest);
 
 		CLTLocFormula phi5 = converter.getPhi5();
 
@@ -626,9 +628,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<VariableAssignementAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta,  new HashSet<>(), propositionsOfInterest);
 
 		CLTLocFormula phi4 = converter.getPhi4();
 
@@ -714,9 +716,9 @@ public class ConverterTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		TA2CLTLoc converter = new TA2CLTLoc();
-		converter.convert(system, ta, propositionsOfInterest, true);
+		converter.convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		CLTLocFormula phi4 = converter.getPhi4();
 

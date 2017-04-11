@@ -10,6 +10,8 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+import org.omg.Messaging.SyncScopeHelper;
+
 import com.google.common.base.Preconditions;
 
 import formulae.cltloc.CLTLocFormula;
@@ -42,19 +44,23 @@ import ta.transition.guard.ClockConstraint;
 
 public class TA2CLTLoc {
 
-	private CLTLocFormula variable1;
+	protected CLTLocFormula variable1;
 
-	private CLTLocFormula clock1;
-	private CLTLocFormula clock2;
-	private CLTLocFormula clock3;
+	protected CLTLocFormula clock1;
+	protected CLTLocFormula clock2;
+	protected CLTLocFormula clock3;
 
-	private CLTLocFormula phi1;
-	private CLTLocFormula phi2;
-	private CLTLocFormula phi3;
-	private CLTLocFormula phi4;
-	private CLTLocFormula phi5;
-	private CLTLocFormula phi6;
-	private CLTLocFormula phi7;
+	protected CLTLocFormula phi1;
+	protected CLTLocFormula phi2;
+	protected CLTLocFormula phi3;
+	protected CLTLocFormula phi4;
+	protected CLTLocFormula phi5;
+	protected CLTLocFormula phi6;
+	protected CLTLocFormula phi7;
+	
+	protected CLTLocFormula network1;
+	protected CLTLocFormula network2;
+	protected CLTLocFormula network3;
 
 	private static final Constant zero = new Constant(0);
 
@@ -65,11 +71,32 @@ public class TA2CLTLoc {
 		if (left.equals(CLTLocFormula.TRUE)) {
 			return right;
 		}
+		if (left.equals(CLTLocFormula.FALSE)) {
+			return left;
+		}
 		if (right.equals(CLTLocFormula.TRUE)) {
 			return left;
 		}
+		if (right.equals(CLTLocFormula.FALSE)) {
+			return right;
+		}
 		return new CLTLocConjunction(left, right);
 	};
+	
+	
+	public static final BinaryOperator<CLTLocFormula> iffOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+
+		if(left.equals(CLTLocFormula.TRUE)){
+			return right;
+		}
+		if(right.equals(CLTLocFormula.TRUE)){
+			return left;
+		}
+		return new CLTLocIff(left, right);
+	};
+	
 
 	public static final BinaryOperator<CLTLocFormula> disjunctionOperator = (left, right) -> {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
@@ -97,7 +124,14 @@ public class TA2CLTLoc {
 	};
 
 	public static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
-	public static final UnaryOperator<CLTLocFormula> globallyOperator = CLTLocGlobally::new;
+	public static final UnaryOperator<CLTLocFormula> globallyOperator = (formula) ->
+	{
+		if(formula.equals(CLTLocFormula.TRUE)){
+			return formula;
+		}
+		return new CLTLocGlobally(formula);
+	};
+	
 	public static final UnaryOperator<CLTLocFormula> nextOperator = (formula) -> {
 		Preconditions.checkNotNull(formula, "The formula cannot be null");
 
@@ -110,10 +144,43 @@ public class TA2CLTLoc {
 	private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
 	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
 
-	private static final Function<Entry<TA, State>, CLTLocFormula> state2Ap = (s) -> new CLTLocAP(
+	protected static final Function<Entry<TA, State>, CLTLocFormula> state2Ap = (s) -> new CLTLocAP(
 			s.getKey().getIdentifier() + "_" + s.getValue().getId());
 
-	public CLTLocFormula convert(SystemDecl system, TA ta, Set<AP> propositionsOfInterest, boolean integer) {
+	protected static final Function<Entry<TA, String>, CLTLocFormula> sendEvent2Ap = (s) -> new CLTLocAP(
+			s.getKey().getIdentifier() + "_?" + s.getValue());
+	
+	protected static final Function<Entry<TA, String>, CLTLocFormula> receiveEvent2Ap = (s) -> new CLTLocAP(
+			s.getKey().getIdentifier() + "_!" + s.getValue());
+	
+	
+	protected static final BinaryOperator<CLTLocFormula> xorOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+
+		if(left.equals(CLTLocFormula.FALSE)){
+			return right;
+		}
+		
+		if(right.equals(CLTLocFormula.FALSE)){
+			return left;
+		}
+		
+		return CLTLocFormula.getOr(
+					CLTLocFormula.getAnd(
+						left,
+						negationOperator.apply(right)
+					), 
+					CLTLocFormula.getAnd(
+						negationOperator.apply(left),
+						right
+					)
+			);
+	};
+	
+	
+	
+	public CLTLocFormula convert(SystemDecl system, TA ta, Set<StateAP> propositionsOfInterest, Set<VariableAssignementAP> atomicpropositionsVariable) {
 
 		this.variable1=this.getVariable1(ta);
 		
@@ -132,19 +199,21 @@ public class TA2CLTLoc {
 		this.phi3 = this.getPhi3(ta);
 		
 		this.phi4 = this.getPhi4(system, ta);
-		this.phi5 = this.getPhi5(ta, propositionsOfInterest, integer);
-		this.phi6 = this.getPhi6(ta, propositionsOfInterest, integer);
-		this.phi7 = this.getPhi7(ta, propositionsOfInterest, integer);
-		
-		CLTLocFormula taFormula = CLTLocFormula.getAnd(phi1, phi2, phi3, phi4, phi5, phi6, phi7);
+		this.phi5 = this.getPhi5(ta, propositionsOfInterest, atomicpropositionsVariable);
+		this.phi6 = this.getPhi6(ta, propositionsOfInterest, atomicpropositionsVariable);
+		this.phi7 = this.getPhi7(ta, propositionsOfInterest, atomicpropositionsVariable);
+
+
+		CLTLocFormula taFormula = CLTLocFormula.getAnd(this.phi1, this.phi2, this.phi3, this.phi4, this.phi5, this.phi6, this.phi7);
 
 
 		return Y.apply(CLTLocFormula.getAnd(variableconst, clockconst, taFormula));
 	
 	}
+	
+	
 
-
-	private CLTLocFormula getVariable1(TA ta) {
+protected CLTLocFormula getVariable1(TA ta) {
 
 		CLTLocFormula f1 = 
 				ta.getVariables().stream().map( 
@@ -164,7 +233,7 @@ public class TA2CLTLoc {
 	
 
 
-	private CLTLocFormula getClock2(SystemDecl system, TA ta) {
+	protected CLTLocFormula getClock2(SystemDecl system, TA ta) {
 
 		Set<Clock> clocks = ta.getClocks();
 
@@ -197,7 +266,7 @@ public class TA2CLTLoc {
 		return CLTLocFormula.getAnd(f1, f2);
 	}
 
-	private CLTLocFormula getClock3(SystemDecl system, TA ta) {
+	protected CLTLocFormula getClock3(SystemDecl system, TA ta) {
 
 		Set<Clock> clocks = ta.getClocks();
 
@@ -232,7 +301,7 @@ public class TA2CLTLoc {
 	}
 
 	
-	private CLTLocFormula getClock1(SystemDecl system, TA ta) {
+	protected CLTLocFormula getClock1(SystemDecl system, TA ta) {
 
 		Set<Clock> clocks = ta.getClocks();
 
@@ -253,7 +322,7 @@ public class TA2CLTLoc {
 	
 	
 	
-	private CLTLocFormula getPhi1(SystemDecl system, TA ta) {
+	protected CLTLocFormula getPhi1(SystemDecl system, TA ta) {
 
 		CLTLocFormula f1 = ta.getStates().stream().map(s -> implicationOperator.apply(
 				state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, s)),
@@ -269,7 +338,7 @@ public class TA2CLTLoc {
 		return new CLTLocGlobally(CLTLocFormula.getAnd(f1,  f2));
 	}
 
-	private CLTLocFormula getPhi2(TA ta) {
+	protected CLTLocFormula getPhi2(TA ta) {
 
 		// the automaton is in its initial statate
 		CLTLocFormula initState = state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, ta.getInitialState()));
@@ -288,7 +357,7 @@ public class TA2CLTLoc {
 		return CLTLocFormula.getAnd(initState, initAssignment);
 	}
 
-	private CLTLocFormula getPhi3(TA ta) {
+	protected CLTLocFormula getPhi3(TA ta) {
 
 		if (ta.getStates().size() > 0) {
 
@@ -313,15 +382,11 @@ public class TA2CLTLoc {
 		}
 	}
 
-	private CLTLocFormula getPhi5(TA ta, Set<AP> propositionsOfInterest, boolean assignement) {
+	protected CLTLocFormula getPhi5(TA ta, Set<StateAP> propositionsOfInterest,  Set<VariableAssignementAP> atomicpropositionsVariable) {
 
 		 
-		if (assignement) {
-			CLTLocFormula phi5StatesSubformula = propositionsOfInterest.stream().map(ap -> {
-				
-				
-				if(ap instanceof VariableAssignementAP){
-					VariableAssignementAP tmp = (VariableAssignementAP) ap;
+		CLTLocFormula phi5StatesSubformula = atomicpropositionsVariable.stream().map(ap -> {
+				VariableAssignementAP tmp = (VariableAssignementAP) ap;
 				return (CLTLocFormula) new CLTLocIff(
 						new CLTLocAP(
 								"H_" + tmp.getEncodingSymbol()),
@@ -340,40 +405,36 @@ public class TA2CLTLoc {
 										new CLTLocRelation(
 												new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "1"),
 												new Constant(tmp.getValue().value), Relation.EQ))));
-				}
-				else{
-					
-					 return (CLTLocFormula) 
-							new CLTLocIff(
-									new CLTLocAP(ap.getName()), 
-							new CLTLocAP(
-							"H_" +ap.getName()));
-				}
+				
 			}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 			
-			return new CLTLocGlobally(phi5StatesSubformula);
-		} else {
-			if (ta.getStates().size() > 0) {
+		
+		CLTLocFormula phi5StatesSubformulab=ta.getStates().stream()
+				.map((s) -> 
+				{
+					
+					Set<StateAP> propositionsOfs=propositionsOfInterest.stream().filter(ap -> ap.getAutomata().equals(ta.getIdentifier())).collect(Collectors.toSet()); 
+					if(s.getValid(propositionsOfs).isEmpty()){
+						return CLTLocFormula.TRUE;
+					}
+					else{
+					 return iffOperator.apply(
+							state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, s)),
+									s.getValid(propositionsOfs).stream().map(ap -> (CLTLocFormula) new CLTLocAP(
+											"H_" + ap.getEncodingSymbol()))
+									.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE)
+									);
+					}
+				}
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+		return globallyOperator.apply(CLTLocFormula.getAnd(phi5StatesSubformula, phi5StatesSubformulab));
 
 				
-				CLTLocFormula phi5StatesSubformula = ta.getStates().stream()
-						.map((s) -> implicationOperator.apply(state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, s)),
-								conjunctionOperator.apply(
-										s.getValid(propositionsOfInterest).stream().map(ap2CLTLocRESTAp)
-												.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE),
-										s.getValid(propositionsOfInterest).stream()
-												.map((ap) -> negationOperator.apply(ap2CLTLocRESTAp.apply(ap)))
-												.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE))))
-						.reduce(CLTLocFormula.TRUE, conjunctionOperator);
-				return globallyOperator.apply(phi5StatesSubformula);
-			} else {
-
-				return CLTLocFormula.TRUE;
-			}
-		}
+		
 	}
 
-	private CLTLocFormula getPhi4(SystemDecl system, TA ta) {
+	protected CLTLocFormula getPhi4(SystemDecl system, TA ta) {
 
 
 		CLTLocFormula ret = ta.getStates().stream().map(state -> (CLTLocFormula) 
@@ -626,25 +687,26 @@ public class TA2CLTLoc {
 						assignedVariablesCLTLoc);
 	}
 
-	private CLTLocFormula getPhi6(TA ta, Set<AP> propositionsOfInterest, boolean assignement) {
+	protected CLTLocFormula getPhi6(TA ta, Set<StateAP> propositionsOfInterest,Set<VariableAssignementAP> atomicpropositionsVariable) {
 		Function<AP, CLTLocFormula> phi6Subformula = (a) -> a.accept(new TA2CLTLocVisitor(ta));
 
 		CLTLocFormula andSubformula = propositionsOfInterest.stream().map(phi6Subformula).reduce(CLTLocFormula.TRUE,
 				conjunctionOperator);
-		return globallyOperator.apply(andSubformula);
+		
+		
+		CLTLocFormula andSubformula2 = atomicpropositionsVariable.stream().map(phi6Subformula).reduce(CLTLocFormula.TRUE,
+				conjunctionOperator);
+		
+		
+		
+		return globallyOperator.apply(CLTLocFormula.getAnd(andSubformula,andSubformula2));
 	}
 
-	private CLTLocFormula getPhi7(TA ta, Set<AP> propositionsOfInterest, boolean assignement) {
+	protected CLTLocFormula getPhi7(TA ta, Set<StateAP> propositionsOfInterest,Set<VariableAssignementAP> atomicpropositionsVariable) {
 		
-		final Set<String> namesOfStates=ta.getStates().stream().map(s -> s.getId()).collect(Collectors.toSet());
 		
-		if (assignement) {
-
-			return propositionsOfInterest.stream().map(ap -> {
-				if(ap instanceof VariableAssignementAP){
+		CLTLocFormula f1=atomicpropositionsVariable.stream().map(ap -> {
 				VariableAssignementAP tmp = (VariableAssignementAP) ap;
-				
-				
 				if(ta.getInitialValue(new Variable(tmp.getVariable().getName())).equals(tmp.getValue())){
 					return ap2CLTLocFIRSTAp.apply(new AP(tmp.getEncodingSymbol()));
 				}
@@ -652,26 +714,27 @@ public class TA2CLTLoc {
 					return TA2CLTLoc.negationOperator.apply(
 							ap2CLTLocFIRSTAp.apply(new AP(tmp.getEncodingSymbol())));
 				}
-				
-				
 				}
-				else{
-
-					if(ap instanceof StateAP &&
-							ta.getIdentifier().equals(((StateAP)ap).getAutomata())
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+				
+				
+				
+			
+	
+		CLTLocFormula f2=propositionsOfInterest.stream().map( ap ->{
+			
+					if(	ta.getIdentifier().equals(ap.getAutomata())
 							&& 
-							ta.getInitialState().getId().equals(((StateAP)ap).getState())){
-						return ap2CLTLocFIRSTAp.apply(new AP(ap.getName())); 
+							ta.getInitialState().getId().equals(ap.getState())){
+						return ap2CLTLocFIRSTAp.apply(new AP(ap.getEncodingSymbol())); 
 					}
 					else{
 						return CLTLocFormula.TRUE;
 					}
-				}
 			}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		} else {
-			return propositionsOfInterest.stream().map(ap2CLTLocFIRSTAp).reduce(CLTLocFormula.TRUE,
-					conjunctionOperator);
-		}
+		
+		
+		return CLTLocFormula.getAnd(f1, f2);
 	}
 
 	public CLTLocFormula getPhi1() {
@@ -721,17 +784,35 @@ public class TA2CLTLoc {
 
 	public void printFancy(PrintStream fancyprint) {
 		fancyprint.println("variable1: " + this.variable1);
-
+		fancyprint.flush();
 		fancyprint.println("clock1: " + this.clock1);
+		fancyprint.flush();
 		fancyprint.println("clock2: " + this.clock2);
+		fancyprint.flush();
 		fancyprint.println("clock3: " + this.clock3);
+		fancyprint.flush();
 
 		fancyprint.println("phi1: " + this.phi1);
+		fancyprint.flush();
 		fancyprint.println("phi2: " + this.phi2);
+		fancyprint.flush();
 		fancyprint.println("phi3: " + this.phi3);
+		fancyprint.flush();
 		fancyprint.println("phi4: " + this.phi4);
+		fancyprint.flush();
 		fancyprint.println("phi5: " + this.phi5);
+		fancyprint.flush();
 		fancyprint.println("phi6: " + this.phi6);
+		fancyprint.flush();
 		fancyprint.println("phi7: " + this.phi7);
+		fancyprint.flush();
+
+		fancyprint.println("network1: " + this.network1);
+		fancyprint.flush();
+		fancyprint.println("network2: " + this.network2);
+		fancyprint.flush();
+		fancyprint.println("network3: " + this.network3);
+		fancyprint.flush();
+		
 	}
 }

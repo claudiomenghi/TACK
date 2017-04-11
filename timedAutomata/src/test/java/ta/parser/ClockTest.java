@@ -16,11 +16,9 @@ import org.junit.Test;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.visitor.GetClocksVisitor;
-import ta.AP;
+import ta.StateAP;
 import ta.SystemDecl;
 import ta.TA;
-import ta.parser.TALexer;
-import ta.parser.TAParser;
 import ta.visitors.TA2CLTLoc;
 
 public class ClockTest {
@@ -38,9 +36,9 @@ public class ClockTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		Set<AP> propositionsOfInterest = new HashSet<>();
+		Set<StateAP> propositionsOfInterest = new HashSet<>();
 
-		CLTLocFormula formula = new TA2CLTLoc().convert(system, ta, propositionsOfInterest, true);
+		CLTLocFormula formula = new TA2CLTLoc().convert(system, ta, propositionsOfInterest, new HashSet<>());
 
 		
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());

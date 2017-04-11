@@ -24,6 +24,10 @@ public class MITLIPropositionalAtom extends MITLIAtom {
 		return visitor.visit(this);
 	}
 
+	public String getAtomName() {
+		return atomName;
+	}
+
 	private int generateHash() {
 		final int prime = 31;
 		int result = 1;

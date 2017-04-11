@@ -3,9 +3,11 @@ package checkers;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.BiMap;
 
 import formulae.cltloc.CLTLocFormula;
@@ -26,18 +28,37 @@ import formulae.mitli.visitors.GetRelationalAtomsVisitor;
 import solvers.CLTLocsolver;
 import ta.StateAP;
 import ta.SystemDecl;
-import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.Value;
-import ta.visitors.TA2CLTLoc;
+import ta.visitors.TANetwork2CLTLoc;
 import zotrunner.ZotException;
 
-public class TAChecker extends SystemChecker{
+public class SystemChecker  {
 
 	/**
-	 * The timed automaton to be verified
+	 * The MITLI formula to be considered
 	 */
-	private final TA ta;
+	protected final MITLIFormula mitliformula;
+
+	/**
+	 * The bound to be considered in the verification
+	 */
+	protected final int bound;
+
+	/**
+	 * The stream to be used to write output messages
+	 */
+	protected final PrintStream out;
+
+	protected CLTLocFormula taFormula;
+
+	protected CLTLocFormula formula;
+
+	protected final SystemDecl system;
+	
+	private double checkingtime;
+	
+	private double checkingspace;
 	
 	/**
 	 * 
@@ -54,12 +75,19 @@ public class TAChecker extends SystemChecker{
 	 * @throws IllegalArgumentException
 	 *             if the bound is not grater than zero
 	 */
-	public TAChecker( SystemDecl system, TA ta, MITLIFormula mitliformula, int bound, PrintStream out) {
-		super(system, mitliformula, bound, out);
-		Preconditions.checkNotNull(ta, "The timed automaton cannot be null");
-		this.ta = ta;
+	public SystemChecker( SystemDecl system, MITLIFormula mitliformula, int bound, PrintStream out) {
+		Preconditions.checkNotNull(mitliformula, "The formula of interest cannot be null");
+		Preconditions.checkArgument(bound > 0, "The bound should be grater than of zero");
+
+		this.system=system;
+		this.mitliformula = mitliformula;
+		this.bound = bound;
+		this.out = out;
+
 	}
+
 	
+
 	/**
 	 * checks the timed automaton with respect to the property of interest
 	 * 
@@ -70,6 +98,9 @@ public class TAChecker extends SystemChecker{
 	 */
 	public boolean check() throws IOException, ZotException {
 
+		
+		Stopwatch timer = Stopwatch.createUnstarted();
+		timer.start();
 		out.println("************************************************");
 		out.println("************************************************");
 		out.println("MITLI formula:  " + mitliformula);
@@ -90,9 +121,11 @@ public class TAChecker extends SystemChecker{
 						new ta.Variable(a.getIdentifier()), new Value(Integer.toString(a.getValue()))))
 				.collect(Collectors.toSet());
 		
+		
 		Set<MITLIPropositionalAtom> propositionalAtoms = mitliformula.accept(new GetPropositionalAtomsVisitor());
 		Set<StateAP> atomicpropositions=
-				propositionalAtoms.stream().map(a ->  new StateAP(Integer.toString(vocabular.get(a)),a.getAtomName().substring(0, a.getAtomName().indexOf("_")),a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()))).collect(Collectors.toSet());
+				propositionalAtoms.stream().map(a ->  
+				new StateAP(Integer.toString(vocabular.get(a)),a.getAtomName().substring(0, a.getAtomName().indexOf("_")), a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()))).collect(Collectors.toSet());
 				
 		out.println("------------------");
 		out.println("CLTLoc encoding");
@@ -118,8 +151,9 @@ public class TAChecker extends SystemChecker{
 		out.println("************************************************");
 		out.println("************************************************");
 		out.println("Converting the TA in CLTLoc");
-		TA2CLTLoc converter = new TA2CLTLoc();
-		taFormula = converter.convert(system, ta, atomicpropositions, atomicpropositionsVariable);
+		
+		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		taFormula = converter.convert(system,  atomicpropositions, atomicpropositionsVariable);
 		out.println("TA converted in CLTLoc");
 
 		converter.printFancy(out);
@@ -151,10 +185,32 @@ public class TAChecker extends SystemChecker{
 		CLTLocFormula conjunctionFormula = new CLTLocConjunction(taFormula, formula);
 		out.println("Conjunction of the formulae created");
 
+		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, bound);
+		boolean sat = cltlocSolver.solve();
+		this.checkingtime=cltlocSolver.getCheckingtime();
+		this.checkingspace=cltlocSolver.getCheckingspace();
 
-		boolean sat = new CLTLocsolver(conjunctionFormula, out, bound).solve();
-
+		timer.stop();
+		//checkingtime=timer.elapsed(TimeUnit.SECONDS);
 		return sat ? false : true;
 	}
-}
 
+	public CLTLocFormula getTAEncoding() {
+		return taFormula;
+	}
+
+	public SystemDecl getSystem() {
+		return system;
+	}
+	public CLTLocFormula getFormulaEncoding() {
+		return formula;
+	}
+
+	public double getCheckingtime() {
+		return checkingtime;
+	}
+
+	public double getCheckingspace() {
+		return checkingspace;
+	}
+}

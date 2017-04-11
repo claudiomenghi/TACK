@@ -1,11 +1,12 @@
 package ta.state;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
-import ta.AP;
 import ta.ModelElement;
+import ta.StateAP;
 import ta.visitors.TAVisitor;
 
 public class State extends ModelElement {
@@ -80,7 +81,14 @@ public class State extends ModelElement {
 	 *            the set of atomic propositions to be evaluated
 	 * @return the set of atomic propositions true in the state
 	 */
-	public Set<AP> getValid(Set<AP> ap) {
-		return ap;
+	public Set<StateAP> getValid(Set<StateAP> ap) {
+		Set<StateAP> apret=new HashSet<>();
+		ap.forEach(a -> {
+			if(a.getState().equals(this.stateId)){
+				apret.add(a);
+			}
+			
+		});
+		return apret;
 	}
 }

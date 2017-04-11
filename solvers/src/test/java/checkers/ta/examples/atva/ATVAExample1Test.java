@@ -1,7 +1,5 @@
 package checkers.ta.examples.atva;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -10,7 +8,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import ta.SystemDecl;
-import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
 
@@ -26,8 +23,8 @@ public class ATVAExample1Test {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		TA ta = system.getTimedAutomata().iterator().next();
-		
+		system.getTimedAutomata().iterator().next();
+
 		System.out.println(system);
 
 	}
