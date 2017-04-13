@@ -296,7 +296,7 @@ fragment ATOM: 'a'..'z';
 
 fragment ATOMInit: 'a'..'z' | 'A'..'Z';
 
-ID:  ATOMInit(ATOM | INT | '_' | '.')*;
+ID:  ATOMInit (ATOMInit | INT | '_' | '.')*;
 
 NEWLINE:'\r'? '\n' ;
 WS  :   (' '|'\t' | '\n')+ {skip();} ;

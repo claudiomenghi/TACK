@@ -241,12 +241,14 @@ public class TAParser extends Parser {
 					setState(94);
 					((TaContext)_localctx).dec = ((TaContext)_localctx).declaration = declaration();
 
-								if(((TaContext)_localctx).declaration.timedAutomaton!=null){
+
 									if(((TaContext)_localctx).declaration.timedAutomaton!=null) timedAutomata.add(((TaContext)_localctx).declaration.timedAutomaton);
 									if(((TaContext)_localctx).declaration.variableinitializationret!=null) variableinitializationret.putAll(((TaContext)_localctx).declaration.variableinitializationret);
-									if(((TaContext)_localctx).declaration.clockinitializationret!=null) clockinitializationret.putAll(((TaContext)_localctx).declaration.clockinitializationret);
+									if(((TaContext)_localctx).declaration.clockinitializationret!=null){
+										clockinitializationret.putAll(((TaContext)_localctx).declaration.clockinitializationret);
+									}
 									if(((TaContext)_localctx).declaration.variabledeclret!=null) variabledeclret.putAll(((TaContext)_localctx).declaration.variabledeclret);
-								}			
+								
 							
 					}
 					} 
@@ -286,6 +288,7 @@ public class TAParser extends Parser {
 			setState(113);
 			match(EOF);
 
+			 		
 			 		if(variableinitializationret!=null){
 							for(Entry<String,  Expression> entry :variableinitializationret.entrySet()){
 							
@@ -305,7 +308,8 @@ public class TAParser extends Parser {
 							 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
 						}
 					}
-			 		((TaContext)_localctx).systemret =  new SystemDecl(timedAutomata, clockDeclaration, variableDeclaration);
+				
+					((TaContext)_localctx).systemret =  new SystemDecl(timedAutomata, clockDeclaration, variableDeclaration);
 				
 			 	
 			}
@@ -377,6 +381,7 @@ public class TAParser extends Parser {
 				 		((DeclarationContext)_localctx).variabledeclret = ((DeclarationContext)_localctx).variableDecl.variabledeclret;
 				 		((DeclarationContext)_localctx).variableinitializationret = ((DeclarationContext)_localctx).variableDecl.variableinitializationret;
 				 		((DeclarationContext)_localctx).clockinitializationret = ((DeclarationContext)_localctx).variableDecl.clockinitializationret;
+				 	
 				 	
 				}
 				break;
@@ -879,6 +884,7 @@ public class TAParser extends Parser {
 					setState(180);
 					((ProcBodyContext)_localctx).variableDecl = variableDecl();
 
+
 									_localctx.variabledeclret.putAll(((ProcBodyContext)_localctx).variableDecl.variabledeclret);
 									if(((ProcBodyContext)_localctx).variableDecl.variabledeclret!=null){
 										currentTaDeclarations.putAll(((ProcBodyContext)_localctx).variableDecl.variabledeclret);
@@ -1062,11 +1068,11 @@ public class TAParser extends Parser {
 						
 				 			}
 				 			_localctx.variabledeclret.put(((VariableDeclContext)_localctx).varn.id, (((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null));
-				 			if(((VariableDeclContext)_localctx).var1.exp!=null && !(((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
-				 				_localctx.variableinitializationret.put(((VariableDeclContext)_localctx).var1.id, ((VariableDeclContext)_localctx).var1.exp);
+				 			if(((VariableDeclContext)_localctx).varn.exp!=null && !(((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
+				 				_localctx.variableinitializationret.put(((VariableDeclContext)_localctx).varn.id, ((VariableDeclContext)_localctx).varn.exp);
 				 			}
-				 		 	if(((VariableDeclContext)_localctx).var1.exp!=null && (((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
-								_localctx.clockinitializationret.put(((VariableDeclContext)_localctx).var1.id, (Value) ((VariableDeclContext)_localctx).var1.exp);
+				 		 	if(((VariableDeclContext)_localctx).varn.exp!=null && (((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
+								_localctx.clockinitializationret.put(((VariableDeclContext)_localctx).varn.id, (Value) ((VariableDeclContext)_localctx).varn.exp);
 				 			}
 				 		
 				}

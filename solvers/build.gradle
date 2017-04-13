@@ -44,6 +44,11 @@ main = "solvers.MITLIsolver"
         args Eval.me(appArgs)
     }
 }
+
+test {
+	jvmArgs "-Xmx8g"
+    jvmArgs "-XX:MaxPermSize=2g"
+}
  
 
 // In this section you declare the dependencies for your production and test code

@@ -1,4 +1,4 @@
-package checkers.ta.csmacd;
+package checkers.ta.fischer;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ import ta.parser.TALexer;
 import ta.parser.TAParser;
 import zotrunner.ZotException;
 
-public class CSMACDScalabilityTest {
+public class FischerScalabilityTest {
 
 	
 	private final int bound=12;
@@ -33,13 +33,15 @@ public class CSMACDScalabilityTest {
 	public void test1() throws IOException, ZotException {
 	
 		
-		File file=new File("scalabilityresults.txt");
+		System.out.println("Starting the Fischer scalability test ");
+		File file=new File("FisherScalabilityresults.txt");
 		
 		FileWriter fileWriter=new FileWriter(file, false);
 		for(int i=2; i<=10; i++){
 			fileWriter=new FileWriter(file, true);
 			System.out.println("i: "+i);
-			String path = ClassLoader.getSystemResource("checkers/ta/csmacd/"+i+".q").getPath();
+			String path = (i<10) ? ClassLoader.getSystemResource("checkers/ta/fischer/fischer_input_0"+i+".q").getPath():
+				ClassLoader.getSystemResource("checkers/ta/fischer/fischer_input_"+i+".q").getPath();
 	
 			ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 			MITLILexer lexer = new MITLILexer(input);
@@ -49,7 +51,8 @@ public class CSMACDScalabilityTest {
 			MITLIFormula formula = parser.mitli().formula;
 	
 			ANTLRInputStream tainput = new ANTLRFileStream(
-					ClassLoader.getSystemResource("checkers/ta/csmacd/"+i+".ta").getPath());
+					(i<10) ? ClassLoader.getSystemResource("checkers/ta/fischer/fischer_input_0"+i+".ta").getPath() :
+						ClassLoader.getSystemResource("checkers/ta/fischer/fischer_input_"+i+".ta").getPath());
 			TALexer talexer = new TALexer(tainput);
 			CommonTokenStream tatokens = new CommonTokenStream(talexer);
 			TAParser taparser = new TAParser(tatokens);
@@ -61,7 +64,7 @@ public class CSMACDScalabilityTest {
 			boolean result = checker.check();
 			fileWriter.write(i+"\t"+checker.getCheckingtime()+"\t"+checker.getCheckingspace()+"\n");
 			System.out.println(i+"\t"+checker.getCheckingtime()+"\t"+checker.getCheckingspace()+"\n");
-			assertFalse(result);
+			assertTrue(result);
 			fileWriter.close();
 		}
 		

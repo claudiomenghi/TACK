@@ -16,9 +16,9 @@ public class ZotRunner {
 	private final String zotEncoding;
 	private final PrintStream out;
 	
-	private double checkingtime;
+	private float checkingtime;
 	
-	private double checkingspace;
+	private long checkingspace;
 
 	/**
 	 * 
@@ -67,15 +67,15 @@ public class ZotRunner {
 				out.println(line);
 				out.println(new String("   ").length());
 				out.println(line.indexOf(" seconds of total run time"));
-				String extracted=line.substring(new String("   ").length()-1, line.indexOf(" seconds of total run time"));
+				String extracted=line.substring(new String("   ").length()-1, line.indexOf(" seconds of total run time")).replace(",", "");
 				out.println(extracted);
 				this.checkingtime=
-						Double.parseDouble(extracted);
+						Float.parseFloat(extracted);
 			}
 			if(line.contains(" bytes consed")){
-				this.checkingtime=
-						Double.parseDouble(
-								line.substring(new String("   ").length()-1, line.indexOf(" bytes consed")).replace(",", ""));
+				this.checkingspace=
+						Long.parseLong(
+								line.substring(new String("   ").length()-1, line.indexOf(" bytes consed")).replace(",", ""))/100000;
 			}
 					    
 			if(resultfound){
@@ -91,11 +91,11 @@ public class ZotRunner {
 		return sat;
 	}
 	
-	public double getCheckingtime() {
+	public float getCheckingtime() {
 		return checkingtime;
 	}
 
-	public double getCheckingspace() {
+	public long getCheckingspace() {
 		return checkingspace;
 	}
 

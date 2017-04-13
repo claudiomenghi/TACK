@@ -70,16 +70,19 @@ import operators.*;
  	(
  		dec = declaration
  		{
-			if($declaration.timedAutomaton!=null){
+
 				if($declaration.timedAutomaton!=null) timedAutomata.add($declaration.timedAutomaton);
 				if($declaration.variableinitializationret!=null) variableinitializationret.putAll($declaration.variableinitializationret);
-				if($declaration.clockinitializationret!=null) clockinitializationret.putAll($declaration.clockinitializationret);
+				if($declaration.clockinitializationret!=null){
+					clockinitializationret.putAll($declaration.clockinitializationret);
+				}
 				if($declaration.variabledeclret!=null) variabledeclret.putAll($declaration.variabledeclret);
-			}			
+			
 		}
 
  	)* instantiation* system+ EOF
  	{
+ 		
  		if(variableinitializationret!=null){
 				for(Entry<String,  Expression> entry :variableinitializationret.entrySet()){
 				
@@ -99,7 +102,8 @@ import operators.*;
 				 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
 			}
 		}
- 		$systemret= new SystemDecl(timedAutomata, clockDeclaration, variableDeclaration);
+	
+		$systemret= new SystemDecl(timedAutomata, clockDeclaration, variableDeclaration);
 	
  	}
  ;
@@ -113,6 +117,7 @@ import operators.*;
  		$variabledeclret=$variableDecl.variabledeclret;
  		$variableinitializationret=$variableDecl.variableinitializationret;
  		$clockinitializationret=$variableDecl.clockinitializationret;
+ 	
  	}
 
  	| typeDecl
@@ -232,6 +237,7 @@ import operators.*;
  		functionDecl
  		| variableDecl
  		{
+
 				$variabledeclret.putAll($variableDecl.variabledeclret);
 				if($variableDecl.variabledeclret!=null){
 					currentTaDeclarations.putAll($variableDecl.variabledeclret);
@@ -312,11 +318,11 @@ import operators.*;
 		
  			}
  			$variabledeclret.put($varn.id, $type.text);
- 			if($var1.exp!=null && !$type.text.equals("clock")){
- 				$variableinitializationret.put($var1.id, $var1.exp);
+ 			if($varn.exp!=null && !$type.text.equals("clock")){
+ 				$variableinitializationret.put($varn.id, $varn.exp);
  			}
- 		 	if($var1.exp!=null && $type.text.equals("clock")){
-				$clockinitializationret.put($var1.id, (Value) $var1.exp);
+ 		 	if($varn.exp!=null && $type.text.equals("clock")){
+				$clockinitializationret.put($varn.id, (Value) $varn.exp);
  			}
  		}
 

@@ -4,39 +4,70 @@ import java.io.PrintStream;
 import java.util.AbstractMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
 
 import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepVariableConstant;
+import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
+import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocRelease;
+import formulae.cltloc.operators.unary.CLTLocGlobally;
+import formulae.cltloc.operators.unary.CLTLocNext;
+import formulae.cltloc.relations.CLTLocRelation;
+import formulae.cltloc.relations.Relation;
+import ta.Clock;
 import ta.StateAP;
 import ta.SystemDecl;
 import ta.TA;
+import ta.Variable;
 import ta.VariableAssignementAP;
+import ta.state.State;
+import ta.transition.Transition;
 
 public class TANetwork2CLTLoc extends TA2CLTLoc {
 
-
+	
 	
 	public CLTLocFormula convert(SystemDecl system, Set<StateAP> propositionsOfInterest, Set<VariableAssignementAP> atomicpropositionsVariable) {
 
-		this.variable1=system.getTimedAutomata().stream().map(ta ->
+		this.variable1=
+				conjunctionOperator.apply(
+						this.getVariable1(system)
+						, 
+				system.getTimedAutomata().stream().map(ta ->
 					(CLTLocFormula) this.getVariable1(ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
 		
 		CLTLocFormula variableconst = this.variable1;
 
 		
-		this.clock1 =system.getTimedAutomata().stream().map(ta ->
+		this.clock1 =
+				conjunctionOperator.apply(
+						this.getClock1(system)
+						, 
+				system.getTimedAutomata().stream().map(ta ->
 						this.getClock1(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
 		
-		this.clock2 = system.getTimedAutomata().stream().map(ta ->
+		this.clock2 = 
+				conjunctionOperator.apply(
+						this.getClock2(system)
+						, 
+				system.getTimedAutomata().stream().map(ta ->
 						this.getClock2(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
 		
-		this.clock3 = system.getTimedAutomata().stream().map(ta ->
+		this.clock3 = 
+				conjunctionOperator.apply(
+						this.getClock3(system)
+						, 
+				system.getTimedAutomata().stream().map(ta ->
 						this.getClock3(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
 		
 		
 		CLTLocFormula clockconst = 
@@ -64,12 +95,11 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		
 		this.phi6 = system.getTimedAutomata().stream().map(ta ->
 						this.getPhi6(ta, propositionsOfInterest, atomicpropositionsVariable)
-				).reduce(CLTLocFormula.FALSE, conjunctionOperator);
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		
 		this.phi7 = system.getTimedAutomata().stream().map(ta ->
 						this.getPhi7(ta, propositionsOfInterest, atomicpropositionsVariable)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-
 
 		CLTLocFormula taFormula = CLTLocFormula.getAnd(this.phi1, this.phi2, this.phi3, this.phi4, this.phi5, this.phi6, this.phi7);
 
@@ -79,6 +109,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		this.network2=this.getNetwork2(system);
 		this.network3=this.getNetwork3(system);
 
+		
 		CLTLocFormula network = 
 				CLTLocFormula.getAnd( this.network1,this.network2, this.network3);
 		
@@ -89,7 +120,111 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 	}
 	
 	
+	protected CLTLocFormula getVariable1(SystemDecl system) {
+
+		Set<Variable> variables=system.getVariableDeclaration().stream().map(c -> (Variable) new Variable(c.getId())).collect(Collectors.toSet());
+
+		CLTLocFormula f1 = 
+				variables.stream().map( 
+				v ->{
+				return (CLTLocFormula) 
+						CLTLocFormula.getAnd(
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "0"), new Constant(0), Relation.EQ),
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "1"), new Constant(0), Relation.GE),					
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "_v"), new Constant(0), Relation.EQ)
+						);
+				}
+			).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return f1;
+	}
 	
+	protected CLTLocFormula getClock1(SystemDecl system) {
+
+		Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock) new Clock(c.getId())).collect(Collectors.toSet());
+
+		CLTLocFormula f0 = clocks.stream().map(c -> {
+			return (CLTLocFormula) 
+					CLTLocFormula.getAnd(
+					new CLTLocRelation(new CLTLocClock( c.getName() + "0"), new Constant(0), Relation.EQ),
+					new CLTLocRelation(new CLTLocClock( c.getName() + "1"), new Constant(0), Relation.GE),					
+					new CLTLocRelation(new formulae.cltloc.atoms.Variable( c.getName() + "_v"), new Constant(0), Relation.EQ)
+					);
+					
+		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+		return f0;
+	}
+
+	
+	protected CLTLocFormula getClock2(SystemDecl system) {
+
+		Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock) new Clock(c.getId())).collect(Collectors.toSet());
+
+
+		CLTLocFormula f1 = clocks.stream().map(c -> {
+			String prefix = "";
+			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
+					new CLTLocNext(new CLTLocRelease(
+							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
+							new CLTLocConjunction(
+									new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getName() + "_v"),
+											zero, Relation.EQ),
+									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero,
+											Relation.GE))))));
+		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		CLTLocFormula f2 = system.getClockDeclarations().stream()
+				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+						new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero, Relation.EQ), new CLTLocNext(
+								new CLTLocRelease(
+										new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
+												Relation.EQ),
+										new CLTLocConjunction(
+												new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getId() + "_v"),
+														zero, Relation.EQ),
+												new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
+														Relation.GE)))))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return CLTLocFormula.getAnd(f1, f2);
+	}
+
+	protected CLTLocFormula getClock3(SystemDecl system) {
+
+		Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock) new Clock(c.getId())).collect(Collectors.toSet());
+
+
+		CLTLocFormula f1 = clocks.stream().map(c -> {
+			String prefix ="";
+			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
+					new CLTLocNext(new CLTLocRelease(
+							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
+							new CLTLocConjunction(
+									new CLTLocRelation(
+											new formulae.cltloc.atoms.Variable(prefix + c.getName() + "_v"),
+											new Constant(1), Relation.EQ),
+									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero,
+											Relation.GE))))));
+		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		CLTLocFormula f2 = system.getClockDeclarations().stream()
+				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+						new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero, Relation.EQ), new CLTLocNext(
+								new CLTLocRelease(
+										new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
+												Relation.EQ),
+										new CLTLocConjunction(
+												new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getId() + "_v"),
+														new Constant(1), Relation.EQ),
+												new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
+														Relation.GE)))))))
+				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+
+		return CLTLocFormula.getAnd(f1, f2);
+	}
 	
 	private CLTLocFormula getNetwork1(SystemDecl system){
 	
@@ -98,6 +233,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		CLTLocFormula ret=
 				
 				CLTLocFormula.getOr(
+				// only one send
 				tas.stream().map(ta -> 
 						(CLTLocFormula) ta.getActions().stream().map(
 								event -> sendEvent2Ap.apply(
@@ -105,6 +241,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 										)
 								).reduce(CLTLocFormula.FALSE, xorOperator)
 						).reduce(CLTLocFormula.FALSE, xorOperator),
+				// or no sends
 				tas.stream().map(ta ->  
 					(CLTLocFormula) ta.getActions().stream().map(
 							event -> sendEvent2Ap.apply(
@@ -114,7 +251,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 					).reduce(CLTLocFormula.FALSE, xorOperator)
 				);
 		
-		return ret;
+		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
 	}
 	
 	private CLTLocFormula getNetwork2(SystemDecl system){
@@ -140,7 +277,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 					).reduce(CLTLocFormula.FALSE, xorOperator)
 				);
 		
-		return ret;
+		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
 	}
 
 private CLTLocFormula getNetwork3(SystemDecl system){
@@ -194,8 +331,7 @@ private CLTLocFormula getNetwork3(SystemDecl system){
 	
 	
 	
-	
-	
+
 
 	
 

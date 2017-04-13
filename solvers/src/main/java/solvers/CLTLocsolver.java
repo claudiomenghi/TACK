@@ -15,9 +15,9 @@ public class CLTLocsolver {
 	private final int bound;
 
 
-	private double checkingtime;
+	private float checkingtime;
 	
-	private double checkingspace;
+	private long checkingspace;
 	
 	public CLTLocsolver(CLTLocFormula formula, PrintStream out, int bound) {
 
@@ -45,11 +45,11 @@ public class CLTLocsolver {
 		return sat;
 	}
 
-	public double getCheckingtime() {
+	public float getCheckingtime() {
 		return checkingtime;
 	}
 
-	public double getCheckingspace() {
+	public long getCheckingspace() {
 		return checkingspace;
 	}
 }

@@ -3,7 +3,6 @@ package checkers;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
@@ -56,9 +55,9 @@ public class SystemChecker  {
 
 	protected final SystemDecl system;
 	
-	private double checkingtime;
+	private float checkingtime;
 	
-	private double checkingspace;
+	private long checkingspace;
 	
 	/**
 	 * 
@@ -124,8 +123,17 @@ public class SystemChecker  {
 		
 		Set<MITLIPropositionalAtom> propositionalAtoms = mitliformula.accept(new GetPropositionalAtomsVisitor());
 		Set<StateAP> atomicpropositions=
-				propositionalAtoms.stream().map(a ->  
-				new StateAP(Integer.toString(vocabular.get(a)),a.getAtomName().substring(0, a.getAtomName().indexOf("_")), a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()))).collect(Collectors.toSet());
+				propositionalAtoms.stream().map(a ->  {
+				if(!vocabular.containsKey(a)){
+					throw new IllegalArgumentException("The proposition "+a+ "is not contained in the alphabet of the vocabulary");
+				}
+				if( a.getAtomName().indexOf("_")==-1){
+					throw new IllegalArgumentException("A state proposition  must have the form state_ap");
+							
+				}
+				return new StateAP(Integer.toString(vocabular.get(a)),a.getAtomName().substring(0, a.getAtomName().indexOf("_")), a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()));
+				}		
+				).collect(Collectors.toSet());
 				
 		out.println("------------------");
 		out.println("CLTLoc encoding");
@@ -206,11 +214,11 @@ public class SystemChecker  {
 		return formula;
 	}
 
-	public double getCheckingtime() {
+	public float getCheckingtime() {
 		return checkingtime;
 	}
 
-	public double getCheckingspace() {
+	public long getCheckingspace() {
 		return checkingspace;
 	}
 }
