@@ -1,20 +1,27 @@
 package ta.visitors;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.AbstractMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
+import com.google.common.io.ByteStreams;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
@@ -42,6 +49,10 @@ import ta.transition.guard.ClockConstraint;
 
 public class TA2CLTLoc {
 
+
+	protected final File statisticsFile;
+	protected PrintWriter writer;
+	
 	protected static final Constant zero = new Constant(0);
 
 	protected CLTLocFormula variable1;
@@ -62,6 +73,7 @@ public class TA2CLTLoc {
 	protected CLTLocFormula network2;
 	protected CLTLocFormula network3;
 
+	protected long conversionTime=0;
 	
 	public static final BinaryOperator<CLTLocFormula> conjunctionOperator = (left, right) -> {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
@@ -140,7 +152,7 @@ public class TA2CLTLoc {
 	public static final UnaryOperator<CLTLocFormula> Y = CLTLocYesterday::new;
 
 
-	private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
+	//private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
 	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
 
 	protected static final Function<Entry<TA, State>, CLTLocFormula> state2Ap = (s) -> new CLTLocAP(
@@ -177,31 +189,100 @@ public class TA2CLTLoc {
 			);
 	};
 	
+	public TA2CLTLoc(){
+		this.statisticsFile=new File("TA2CLTLocstatistics.txt");
+		try {
+			writer = new PrintWriter(statisticsFile);
+		} catch (FileNotFoundException e) {
+			writer =new PrintWriter(ByteStreams.nullOutputStream());
+			e.printStackTrace();
+		}
+	}
 	
+	
+	/**
+	 * returns the convertion time in milliseconds
+	 * @return the convertion time in milliseconds
+	 */
+	public long convertionTime(){
+		return this.conversionTime;
+	}
 	
 	public CLTLocFormula convert(SystemDecl system, TA ta, Set<StateAP> propositionsOfInterest, Set<VariableAssignementAP> atomicpropositionsVariable) {
 
+		Stopwatch testTimer = Stopwatch.createUnstarted();
+
+		testTimer.start();
 		this.variable1=this.getVariable1(ta);
+		testTimer.stop();
+		writer.write("variable1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
 		
 		CLTLocFormula variableconst = this.variable1;
 
+		testTimer.reset();
+		testTimer.start();
 		this.clock1 = this.getClock1(system, ta);
+		writer.write("clock1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
 		this.clock2 = this.getClock2(system, ta);
+		writer.write("clock2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
 		this.clock3 = this.getClock3(system, ta);
+		writer.write("clock3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
 		CLTLocFormula clockconst = 
 				CLTLocFormula.getAnd( this.clock1,this.clock2, this.clock3);
 
+		testTimer.reset();
+		testTimer.start();
 		this.phi1 = this.getPhi1(system, ta);
-		this.phi2 = this.getPhi2(ta);
-		this.phi3 = this.getPhi3(ta);
+		writer.write("phi1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
+		this.phi2 = this.getPhi2(ta);
+		writer.write("phi2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
+		this.phi3 = this.getPhi3(ta);
+		writer.write("phi3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
 		this.phi4 = this.getPhi4(system, ta);
+		writer.write("phi4: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
 		this.phi5 = this.getPhi5(ta, propositionsOfInterest, atomicpropositionsVariable);
+		writer.write("phi5: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
 		this.phi6 = this.getPhi6(ta, propositionsOfInterest, atomicpropositionsVariable);
+		writer.write("phi6: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
 		this.phi7 = this.getPhi7(ta, propositionsOfInterest, atomicpropositionsVariable);
-
+		writer.write("phi7: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 
 		CLTLocFormula taFormula = CLTLocFormula.getAnd(this.phi1, this.phi2, this.phi3, this.phi4, this.phi5, this.phi6, this.phi7);
 
@@ -219,9 +300,9 @@ protected CLTLocFormula getVariable1(TA ta) {
 				v ->{
 				return (CLTLocFormula) 
 						CLTLocFormula.getAnd(
-						new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "0"), new Constant(0), Relation.EQ),
-						new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "1"), new Constant(0), Relation.GE),					
-						new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "_v"), new Constant(0), Relation.EQ)
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "_0"), new Constant(0), Relation.EQ),
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "_1"), new Constant(0), Relation.GE),					
+						new CLTLocNegation(new CLTLocSelector(ta.getIdentifier() + "_" + v.getName() + "_v"))
 						);
 				}
 			).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -239,26 +320,24 @@ protected CLTLocFormula getVariable1(TA ta) {
 		CLTLocFormula f1 = clocks.stream().map(c -> {
 			String prefix = ta.getIdentifier() + "_";
 			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(
-							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
+							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ),
 							new CLTLocConjunction(
-									new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getName() + "_v"),
-											zero, Relation.EQ),
-									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero,
+									new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")),
+									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero,
 											Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		CLTLocFormula f2 = system.getClockDeclarations().stream()
 				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-						new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero, Relation.EQ), new CLTLocNext(
+						new CLTLocRelation(new CLTLocClock(c.getId() + "_0"), zero, Relation.EQ), new CLTLocNext(
 								new CLTLocRelease(
-										new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
+										new CLTLocRelation(new CLTLocClock(c.getId() + "_1"), zero,
 												Relation.EQ),
 										new CLTLocConjunction(
-												new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getId() + "_v"),
-														zero, Relation.EQ),
-												new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
+												new CLTLocNegation(new CLTLocSelector(c.getId() + "_v")),
+												new CLTLocRelation(new CLTLocClock(c.getId() + "_0"), zero,
 														Relation.GE)))))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
@@ -272,27 +351,24 @@ protected CLTLocFormula getVariable1(TA ta) {
 		CLTLocFormula f1 = clocks.stream().map(c -> {
 			String prefix = ta.getIdentifier() + "_";
 			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(
-							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
+							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ),
 							new CLTLocConjunction(
-									new CLTLocRelation(
-											new formulae.cltloc.atoms.Variable(prefix + c.getName() + "_v"),
-											new Constant(1), Relation.EQ),
-									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero,
+											new CLTLocSelector(prefix + c.getName() + "_v"),
+									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero,
 											Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		CLTLocFormula f2 = system.getClockDeclarations().stream()
 				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-						new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero, Relation.EQ), new CLTLocNext(
+						new CLTLocRelation(new CLTLocClock(c.getId() + "_1"), zero, Relation.EQ), new CLTLocNext(
 								new CLTLocRelease(
-										new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
+										new CLTLocRelation(new CLTLocClock(c.getId() + "_0"), zero,
 												Relation.EQ),
 										new CLTLocConjunction(
-												new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getId() + "_v"),
-														new Constant(1), Relation.EQ),
-												new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
+												new CLTLocSelector(c.getId() + "_v"),
+												new CLTLocRelation(new CLTLocClock(c.getId() + "_1"), zero,
 														Relation.GE)))))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
@@ -308,9 +384,9 @@ protected CLTLocFormula getVariable1(TA ta) {
 			String prefix = ta.getIdentifier() + "_";
 			return (CLTLocFormula) 
 					CLTLocFormula.getAnd(
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), new Constant(0), Relation.EQ),
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), new Constant(0), Relation.GE),					
-					new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getName() + "_v"), new Constant(0), Relation.EQ)
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), new Constant(0), Relation.EQ),
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), new Constant(0), Relation.GE),					
+					new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v"))
 					);
 					
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -346,9 +422,8 @@ protected CLTLocFormula getVariable1(TA ta) {
 		CLTLocFormula initAssignment = ta.getVariables().stream().map(v -> (CLTLocFormula)
 
 		CLTLocFormula.getAnd(
-				new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "_v"),
-						new Constant(0), Relation.EQ),
-				new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "0"),
+				new CLTLocNegation(new CLTLocSelector(ta.getIdentifier() + "_" + v.getName() + "_v")),
+				new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "_0"),
 						new Constant(ta.getInitialValue(v).value), Relation.EQ))
 
 		).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -379,6 +454,7 @@ protected CLTLocFormula getVariable1(TA ta) {
 
 			return CLTLocFormula.TRUE;
 		}
+		
 	}
 	
 	protected CLTLocFormula getPhi4(SystemDecl system, TA ta) {
@@ -403,6 +479,7 @@ protected CLTLocFormula getVariable1(TA ta) {
 		
 
 		return globallyOperator.apply(ret);
+		
 		 
 	}
 
@@ -414,13 +491,11 @@ protected CLTLocFormula getVariable1(TA ta) {
 			String prefix = ta.getClocks().contains(c)? ta.getIdentifier() + "_": "";
 			return new CLTLocDisjunction(
 					new CLTLocConjunction(
-							new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getName()+"_v"), new Constant(0),
-									Relation.EQ),
-							new CLTLocRelation(new CLTLocClock(prefix + c.getName()+"0"), new Constant(0), Relation.GE)),
+							new CLTLocNegation(new CLTLocSelector(prefix + c.getName()+"_v")),
+							new CLTLocRelation(new CLTLocClock(prefix + c.getName()+"_0"), new Constant(0), Relation.GE)),
 					new CLTLocConjunction(
-							new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getName()+"_v"), new Constant(1),
-									Relation.EQ),
-							new CLTLocRelation(new CLTLocClock(prefix + c.getName()+ "1"), new Constant(0), Relation.GE)));
+							new CLTLocSelector(prefix + c.getName()+"_v"),
+							new CLTLocRelation(new CLTLocClock(prefix + c.getName()+ "_1"), new Constant(0), Relation.GE)));
 		}).collect(Collectors.toSet());
 
 
@@ -435,15 +510,15 @@ protected CLTLocFormula getVariable1(TA ta) {
 					
 					return new CLTLocDisjunction(
 						CLTLocFormula.getAnd(
-								new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + v.getName() + "_v"),new Constant(0), Relation.EQ),
-								nextOperator.apply(	new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix+ v.getName() + "_v"),new Constant(0), Relation.EQ)),
-								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + v.getName() + "0"))
+								new CLTLocNegation(new CLTLocSelector(prefix + v.getName() + "_v")),
+								nextOperator.apply(new CLTLocNegation(new formulae.cltloc.atoms.CLTLocSelector(prefix+ v.getName() + "_v"))),
+								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + v.getName() + "_0"))
 								
 								),
 						CLTLocFormula.getAnd(
-								new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix+ v.getName() + "_v"),new Constant(1), Relation.EQ),
-								nextOperator.apply(	new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + "_" + v.getName() + "_v"),new Constant(1), Relation.EQ)),
-								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + "_" + v.getName() + "1"))
+								new formulae.cltloc.atoms.CLTLocSelector(prefix+ v.getName() + "_v"),
+								nextOperator.apply(new CLTLocSelector(prefix  + v.getName() + "_v")),
+								new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + v.getName() + "_1"))
 						));})
 				.collect(Collectors.toSet());
 
@@ -486,26 +561,22 @@ protected CLTLocFormula getVariable1(TA ta) {
 					
 					return (CLTLocFormula) new CLTLocDisjunction(
 								new CLTLocConjunction(
-										new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(0),
-												Relation.EQ),
+										new CLTLocNegation(new CLTLocSelector(prefix + c + "_v")),
 										new CLTLocNext(
 												new CLTLocConjunction(
-														new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(0),
-																Relation.EQ),
-														new CLTLocRelation(new CLTLocClock(prefix + c + "0"), new Constant(0), Relation.GE)
+														new CLTLocNegation(new CLTLocSelector(prefix + c + "_v")),
+														new CLTLocRelation(new CLTLocClock(prefix + c + "_0"), new Constant(0), Relation.GE)
 												)
 										)
 										
 								)
 								,
 								new CLTLocConjunction(
-										new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(1),
-												Relation.EQ),
+										new CLTLocSelector(prefix + c + "_v"),
 										new CLTLocNext(
 												new CLTLocConjunction(
-														new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(1),
-																Relation.EQ),
-														new CLTLocRelation(new CLTLocClock(prefix + c + "1"), new Constant(0), Relation.GE)
+														new CLTLocSelector(prefix + c + "_v"),
+														new CLTLocRelation(new CLTLocClock(prefix + c + "_1"), new Constant(0), Relation.GE)
 												)
 										)
 								)
@@ -517,24 +588,20 @@ protected CLTLocFormula getVariable1(TA ta) {
 			String prefix = ta.getClocks().contains(c.getClock()) ? ta.getIdentifier() + "_" : "";
 			return (CLTLocFormula) new CLTLocDisjunction(
 					new CLTLocConjunction(
-							new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getClock().getName() + "_v"), new Constant(0),
-									Relation.EQ),
+							new CLTLocNegation(new CLTLocSelector(prefix + c.getClock().getName() + "_v")),
 							new CLTLocNext(
 									new CLTLocConjunction(
-											new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getClock().getName() + "_v"), new Constant(1),
-													Relation.EQ),
-											new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "1"), new Constant(0), Relation.GE)
+											new CLTLocSelector(prefix + c.getClock().getName() + "_v"),
+											new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"), new Constant(0), Relation.GE)
 									)
 							)
 					),
 					new CLTLocConjunction(
-							new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getClock().getName() + "_v"), new Constant(1),
-									Relation.EQ),
+							new CLTLocSelector(prefix + c.getClock().getName() + "_v"),
 							new CLTLocNext(
 									new CLTLocConjunction(
-											new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getClock().getName() + "_v"), new Constant(0),
-													Relation.EQ),
-											new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "0"), new Constant(0), Relation.GE)
+											new CLTLocNegation(new CLTLocSelector(prefix + c.getClock().getName() + "_v")),
+											new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"), new Constant(0), Relation.GE)
 									)
 							)
 					)
@@ -552,17 +619,13 @@ protected CLTLocFormula getVariable1(TA ta) {
 			String prefix = ta.getVariables().contains(new Variable(c)) ? ta.getIdentifier() + "_" : "";
 			return (CLTLocFormula) new CLTLocDisjunction(
 					CLTLocFormula.getAnd(
-							new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(0),
-									Relation.EQ),
-							new CLTLocNext(new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(0),
-									Relation.EQ)),
-							new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + c + "0"))),
+							new CLTLocNegation(new CLTLocSelector(prefix + c + "_v")),
+							new CLTLocNext(new CLTLocNegation(new CLTLocSelector(prefix + c + "_v"))),
+							new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + c + "_0"))),
 					CLTLocFormula.getAnd(
-							new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(1),
-									Relation.EQ),
-							new CLTLocNext(new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c + "_v"), new Constant(1),
-									Relation.EQ)),
-							new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + c + "1"))));
+							new CLTLocSelector(prefix + c + "_v"),
+							new CLTLocNext(new CLTLocSelector(prefix + c + "_v")),
+							new KeepVariableConstant(new formulae.cltloc.atoms.Variable(prefix + c + "_1"))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 
@@ -571,27 +634,22 @@ protected CLTLocFormula getVariable1(TA ta) {
 
 			return (CLTLocFormula) new CLTLocDisjunction(
 				CLTLocFormula.getAnd(
-						new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "_v"),
-								new Constant(0), Relation.EQ),
+						new CLTLocNegation(new CLTLocSelector(prefix + c.getVariable().getName() + "_v")),
 						new CLTLocNext(
 								CLTLocFormula.getAnd(
-										new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "_v"),
-													new Constant(1), Relation.EQ),
-										new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "1"),
+										new CLTLocSelector(prefix + c.getVariable().getName() + "_v"),
+										new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "_1"),
 												new Constant(c.getValue().evaluate()), Relation.EQ)
 									)
 							)
 						)
 				,
 				  CLTLocFormula.getAnd(
-							new CLTLocRelation(
-									new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "_v"),
-									new Constant(1), Relation.EQ),
+						  new CLTLocSelector(prefix + c.getVariable().getName() + "_v"),
 							new CLTLocNext(
 									CLTLocFormula.getAnd(
-											new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "_v"),
-														new Constant(0), Relation.EQ),
-											new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "0"),
+											new CLTLocNegation(new CLTLocSelector(prefix + c.getVariable().getName() + "_v")),
+											new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getVariable().getName() + "_0"),
 													new Constant(c.getValue().evaluate()), Relation.EQ)
 										)
 								)
@@ -619,18 +677,15 @@ protected CLTLocFormula getVariable1(TA ta) {
 								"H_" + tmp.getEncodingSymbol()),
 						new CLTLocDisjunction(
 								new CLTLocConjunction(
+										new CLTLocNegation(
+												new CLTLocSelector(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "_v")),
 										new CLTLocRelation(
-												new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "_v"),
-												new Constant(0), Relation.EQ),
-										new CLTLocRelation(
-												new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "0"),
+												new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "_0"),
 												new Constant(tmp.getValue().value), Relation.EQ)),
 								new CLTLocConjunction(
+												new CLTLocSelector(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "_v"),
 										new CLTLocRelation(
-												new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "_v"),
-												new Constant(1), Relation.EQ),
-										new CLTLocRelation(
-												new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "1"),
+												new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_"+tmp.getVariable().getName() + "_1"),
 												new Constant(tmp.getValue().value), Relation.EQ))));
 				
 			}).reduce(CLTLocFormula.TRUE, conjunctionOperator);

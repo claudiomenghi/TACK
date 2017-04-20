@@ -16,6 +16,7 @@ import org.junit.Test;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Variable;
@@ -60,10 +61,10 @@ public class ConverterTest {
 		CLTLocFormula phi1 = converter.getVariable1();
 
 		CLTLocFormula expectedphi1 = new CLTLocConjunction(
-				new CLTLocRelation(new Variable("Sender_A_i0"), new Constant(0), Relation.EQ),
+				new CLTLocRelation(new Variable("Sender_A_i_0"), new Constant(0), Relation.EQ),
 				new CLTLocConjunction(
-						new CLTLocRelation(new Variable("Sender_A_i1"), new Constant(0), Relation.GE),
-						new CLTLocRelation(new Variable("Sender_A_i_v"), new Constant(0), Relation.EQ)
+						new CLTLocRelation(new Variable("Sender_A_i_1"), new Constant(0), Relation.GE),
+						new CLTLocNegation(new CLTLocSelector("Sender_A_i_v"))
 				)
 			);
 
@@ -95,11 +96,12 @@ public class ConverterTest {
 		CLTLocFormula phi1 = converter.getClock1();
 
 		CLTLocFormula expectedphi1 = new CLTLocConjunction(
-				new CLTLocRelation(new CLTLocClock("Sender_A_c0"), new Constant(0), Relation.EQ),
-				new CLTLocConjunction(new CLTLocRelation(new CLTLocClock("Sender_A_c1"), new Constant(0), Relation.GE),
-						new CLTLocRelation(new Variable("Sender_A_c_v"), new Constant(0), Relation.EQ)));
+				new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant(0), Relation.EQ),
+				new CLTLocConjunction(new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant(0), Relation.GE),
+						new CLTLocNegation(new CLTLocSelector("Sender_A_c_v"))));
 		
-		
+		System.out.println(expectedphi1);
+		System.out.println(phi1);
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi1.equals(phi1)));
 
@@ -126,12 +128,12 @@ public class ConverterTest {
 		CLTLocFormula phi2 = converter.getClock2();
 
 		CLTLocFormula expectedphi2 = new CLTLocGlobally(
-				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("Sender_A_c0"), new Constant(0), Relation.EQ),
+				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant(0), Relation.EQ),
 						new CLTLocNext(new CLTLocRelease(
-								new CLTLocRelation(new CLTLocClock("Sender_A_c1"), new Constant(0), Relation.EQ),
+								new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant(0), Relation.EQ),
 								new CLTLocConjunction(
-										new CLTLocRelation(new Variable("Sender_A_c_v"), new Constant(0), Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("Sender_A_c0"), new Constant(0), Relation.GE))))));
+										new CLTLocNegation(new CLTLocSelector("Sender_A_c_v")),
+										new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant(0), Relation.GE))))));
 
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi2.equals(phi2)));
@@ -158,12 +160,12 @@ public class ConverterTest {
 		CLTLocFormula phi3 = converter.getClock3();
 
 		CLTLocFormula expectedphi3 = new CLTLocGlobally(
-				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("Sender_A_c1"), new Constant(0), Relation.EQ),
+				new CLTLocImplies(new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant(0), Relation.EQ),
 						new CLTLocNext(new CLTLocRelease(
-								new CLTLocRelation(new CLTLocClock("Sender_A_c0"), new Constant(0), Relation.EQ),
+								new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant(0), Relation.EQ),
 								new CLTLocConjunction(
-										new CLTLocRelation(new Variable("Sender_A_c_v"), new Constant(1), Relation.EQ),
-										new CLTLocRelation(new CLTLocClock("Sender_A_c1"), new Constant(0), Relation.GE))))));
+										new CLTLocSelector("Sender_A_c_v"),
+										new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant(0), Relation.GE))))));
 
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi3.equals(phi3)));
@@ -242,7 +244,8 @@ public class ConverterTest {
 		CLTLocFormula phi2 = converter.getPhi2();
 
 		CLTLocFormula expectedphi2 = 
-				CLTLocFormula.getAnd(new CLTLocAP("Sender_A_state_1"), CLTLocFormula.getAnd(new CLTLocRelation(new Variable("Sender_A_i_v"), new Constant(0), Relation.EQ), new CLTLocRelation(new Variable("Sender_A_i0"), new Constant(0), Relation.EQ)));
+				CLTLocFormula.getAnd(new CLTLocAP("Sender_A_state_1"), CLTLocFormula.getAnd(
+						new CLTLocNegation(new CLTLocSelector("Sender_A_i_v")), new CLTLocRelation(new Variable("Sender_A_i_0"), new Constant(0), Relation.EQ)));
 
 
 		assertTrue("The initial state should be correct", (expectedphi2.equals(phi2)));
@@ -272,17 +275,17 @@ public class ConverterTest {
 				new CLTLocDisjunction(
 						new CLTLocConjunction(
 								new CLTLocConjunction(
-								new CLTLocRelation(new Variable("Sender_A_c_v"), new Constant("0"), Relation.EQ)
+								new CLTLocNegation(new CLTLocSelector("Sender_A_c_v"))
 								,
-						new CLTLocRelation(new CLTLocClock("Sender_A_c0"), new Constant("15"), Relation.LE)),
-								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A_c0"), new Constant("15"), Relation.LE)))
+						new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant("15"), Relation.LE)),
+								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant("15"), Relation.LE)))
 						, 
 						new CLTLocConjunction(
 								new CLTLocConjunction(
-								new CLTLocRelation(new Variable("Sender_A_c_v"), new Constant("1"), Relation.EQ)
+								new CLTLocSelector("Sender_A_c_v")
 								,
-						new CLTLocRelation(new CLTLocClock("Sender_A_c1"), new Constant("15"), Relation.LE)),
-								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A_c1"), new Constant("15"), Relation.LE)))
+						new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant("15"), Relation.LE)),
+								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant("15"), Relation.LE)))
 										
 										)
 				));
@@ -522,7 +525,7 @@ public class ConverterTest {
 
 		CLTLocFormula phi5 = converter.getPhi5();
 
-		CLTLocFormula expectedphi5 = new CLTLocGlobally(CLTLocFormula.TRUE);
+		CLTLocFormula expectedphi5 = CLTLocFormula.TRUE;
 
 		assertTrue("The transition relation must be encored correclty", (expectedphi5.equals(phi5)));
 
@@ -605,10 +608,12 @@ public class ConverterTest {
 
 		CLTLocFormula expectedphi5 = new CLTLocGlobally(new CLTLocIff(new CLTLocAP("H_0"),
 				new CLTLocDisjunction(
-						new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A_i_v"), new Constant(0), Relation.EQ),
-								new CLTLocRelation(new Variable("Sender_A_i0"), new Constant(2), Relation.EQ)),
-						new CLTLocConjunction(new CLTLocRelation(new Variable("Sender_A_i_v"), new Constant(1), Relation.EQ),
-								new CLTLocRelation(new Variable("Sender_A_i1"), new Constant(2), Relation.EQ)))));
+						new CLTLocConjunction(
+								new CLTLocNegation(new CLTLocSelector("Sender_A_i_v")),
+								new CLTLocRelation(new Variable("Sender_A_i_0"), new Constant(2), Relation.EQ)),
+						new CLTLocConjunction(
+								new CLTLocSelector("Sender_A_i_v"),
+								new CLTLocRelation(new Variable("Sender_A_i_1"), new Constant(2), Relation.EQ)))));
 
 		assertTrue("The transition relation must be encored correclty", (expectedphi5.equals(phi5)));
 

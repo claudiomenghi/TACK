@@ -6,19 +6,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.ProcessBuilder.Redirect;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Stopwatch;
+
+import checkers.output.OutputSpaceParser;
 
 public class ZotRunner {
 
 	private final String zotEncoding;
 	private final PrintStream out;
-	
+
+	private long satTime;
+
+	private double checkingspace;
+
 	private float checkingtime;
 	
-	private long checkingspace;
 
 	/**
 	 * 
@@ -38,65 +46,67 @@ public class ZotRunner {
 		FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 
 		out.println("Considering the file " + new File(lispFile).getAbsolutePath());
-		 String[] command = {"/bin/bash", "run_zot.sh", lispFile};
+		String[] command = { "/bin/bash", "run_zot.sh", lispFile };
+
+		Stopwatch timer = Stopwatch.createUnstarted();
+		timer.start();
 		ProcessBuilder builder = new ProcessBuilder(command);
 		builder.redirectErrorStream(true);
 		Process p = builder.start();
-
-		// Process p = Runtime.getRuntime().exec("sh ./run_zot.sh " + lispFile);
-
+		
 		InputStream stdout = p.getInputStream();
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
 
 		boolean sat = true;
 
-		boolean resultfound=false;
-		
+		boolean resultfound = false;
+
 		String line;
 		while ((line = reader.readLine()) != null) {
 			if (line.contains("---UNSAT---")) {
 				sat = false;
-				resultfound=true;
+				resultfound = true;
 			}
 			if (line.contains("---SAT---")) {
 				sat = true;
-				resultfound=true;
+				resultfound = true;
 			}
-			if(line.contains(" seconds of total run time")){
-				out.println(line);
-				out.println(new String("   ").length());
-				out.println(line.indexOf(" seconds of total run time"));
-				String extracted=line.substring(new String("   ").length()-1, line.indexOf(" seconds of total run time")).replace(",", "");
-				out.println(extracted);
-				this.checkingtime=
-						Float.parseFloat(extracted);
+			String resultTime=" seconds of real time";
+			if (line.contains(resultTime)) {
+				String extracted = line
+						.substring(new String("   ").length() - 1, line.indexOf(resultTime))
+						.replace(",", "");
+				this.satTime =
+						(long) (Float.parseFloat(extracted) * 1000.0);
 			}
-			if(line.contains(" bytes consed")){
-				this.checkingspace=
-						Long.parseLong(
-								line.substring(new String("   ").length()-1, line.indexOf(" bytes consed")).replace(",", ""))/100000;
+			if (line.contains(" bytes consed")) {
+				this.checkingspace = new OutputSpaceParser().getSpace();
 			}
-					    
-			if(resultfound){
+
+			if (resultfound) {
 				out.println("Stdout: " + line);
 			}
 		}
-		if(!resultfound){
+		if (!resultfound) {
 			throw new ZotException("ZOT: There are compilation problems");
 		}
 
 		out.print("Zot ends");
-		// FileUtils.forceDelete(new File(lispFile));
+		timer.stop();
+		this.checkingtime=timer.elapsed(TimeUnit.MILLISECONDS);
+		
 		return sat;
 	}
-	
+
+	public long getSatTime() {
+		return satTime;
+	}
+
+	public double getCheckingspace() {
+		return checkingspace;
+	}
 	public float getCheckingtime() {
 		return checkingtime;
 	}
-
-	public long getCheckingspace() {
-		return checkingspace;
-	}
-
 }

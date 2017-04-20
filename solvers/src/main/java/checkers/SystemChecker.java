@@ -3,6 +3,7 @@ package checkers;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
@@ -57,8 +58,24 @@ public class SystemChecker  {
 	
 	private float checkingtime;
 	
-	private long checkingspace;
+	private double checkingspace;
 	
+	private long mitli2cltlocTime=0;
+	
+	private long ta2clclocTime=0;
+	
+	
+	private long cltloc2zotTime=0;
+	
+	private long sattime=0;
+	
+	
+	public long getCltloc2zotTime() {
+		return cltloc2zotTime;
+	}
+
+
+
 	/**
 	 * 
 	 * @param ta
@@ -87,6 +104,18 @@ public class SystemChecker  {
 
 	
 
+	public long getMitli2cltlocTime() {
+		return mitli2cltlocTime;
+	}
+
+
+
+	public long getTa2clclocTime() {
+		return ta2clclocTime;
+	}
+
+
+
 	/**
 	 * checks the timed automaton with respect to the property of interest
 	 * 
@@ -112,7 +141,9 @@ public class SystemChecker  {
 		out.println("**  MITLI FORMULA CLTLoc ENCODING                **");
 		translator.printFancy(out);
 		out.println("************************************************");
-
+		timer.stop();
+		mitli2cltlocTime=timer.elapsed(TimeUnit.MILLISECONDS);
+		
 		BiMap<MITLIFormula, Integer> vocabular = translator.getVocabulary().inverse();
 		Set<MITLIRelationalAtom> atoms = mitliformula.accept(new GetRelationalAtomsVisitor());
 		Set<VariableAssignementAP> atomicpropositionsVariable = atoms.stream()
@@ -160,12 +191,16 @@ public class SystemChecker  {
 		out.println("************************************************");
 		out.println("Converting the TA in CLTLoc");
 		
+		timer.reset();
+		timer.start();
 		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
 		taFormula = converter.convert(system,  atomicpropositions, atomicpropositionsVariable);
 		out.println("TA converted in CLTLoc");
 
 		converter.printFancy(out);
-
+		timer.stop();
+		this.ta2clclocTime=timer.elapsed(TimeUnit.MILLISECONDS);
+		
 		out.println("-------------INFO");
 
 		final StringBuilder builder = new StringBuilder();
@@ -185,7 +220,7 @@ public class SystemChecker  {
 
 		out.println(builder.toString());
 		out.println("************************************************");
-
+		
 		// out.println(formula);
 		// out.println(translator.getVocabulary());
 
@@ -195,11 +230,11 @@ public class SystemChecker  {
 
 		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, bound);
 		boolean sat = cltlocSolver.solve();
-		this.checkingtime=cltlocSolver.getCheckingtime();
+		this.sattime=cltlocSolver.getSattime();
 		this.checkingspace=cltlocSolver.getCheckingspace();
 
-		timer.stop();
-		//checkingtime=timer.elapsed(TimeUnit.SECONDS);
+		this.cltloc2zotTime=cltlocSolver.getCltloc2zottime();
+		this.checkingtime=cltlocSolver.getCheckingtime();
 		return sat ? false : true;
 	}
 
@@ -214,11 +249,25 @@ public class SystemChecker  {
 		return formula;
 	}
 
-	public float getCheckingtime() {
+	public float getCheckingTime() {
 		return checkingtime;
 	}
 
-	public long getCheckingspace() {
+	public long getSattime() {
+		return sattime;
+	}
+
+
+
+	public double getCheckingspace() {
 		return checkingspace;
+	}
+	
+	public void printCheckingStatistics(){
+		out.println("********* CHECHER STATISTICS ********* ");
+		out.println("mitli2cltloc: "+this.mitli2cltlocTime);
+		out.println("ta2cltloc: "+this.ta2clclocTime);
+		out.println("sat: "+this.checkingtime);
+		
 	}
 }

@@ -60,7 +60,6 @@ public class MITLI2CLTLoc {
 		for (MITLIFormula f : formula.accept(new SubformulaeVisitor())) {
 
 			CLTLocFormula f1 = visitor.getckTheta(f, parentRelation);
-		//	f1=CLTLocFormula.TRUE;
 			CLTLocFormula f2 = f.accept(visitor);
 			
 			CLTLocFormula formula = MITLI2CLTLocVisitor.AND.apply(f1, f2);

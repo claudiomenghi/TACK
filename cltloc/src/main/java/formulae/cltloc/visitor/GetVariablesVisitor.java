@@ -5,6 +5,7 @@ import java.util.Set;
 
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
@@ -214,5 +215,10 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 		Set<Variable> formulae = new HashSet<>();
 		formulae.add(keepVariableConstant.getVariable());
 		return formulae;
+	}
+
+	@Override
+	public Set<Variable> visit(CLTLocSelector formula) {
+		return new HashSet<>();
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
@@ -253,5 +254,11 @@ public class CLTLoc2StringVisitor implements CLTLocVisitor<Entry<String, Class<?
 	@Override
 	public Entry<String, Class<? extends CLTLocFormula>> visit(KeepVariableConstant formula) {
 		return new AbstractMap.SimpleEntry<String, Class<? extends CLTLocFormula>>(formula.toString(), CLTLocAP.class);
+	}
+
+	@Override
+	public Entry<String, Class<? extends CLTLocFormula>> visit(CLTLocSelector formula) {
+		return new AbstractMap.SimpleEntry<String, Class<? extends CLTLocFormula>>(formula.toString(), CLTLocAP.class);
+
 	}
 }

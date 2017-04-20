@@ -4,18 +4,22 @@ import java.io.PrintStream;
 import java.util.AbstractMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import com.google.common.base.Stopwatch;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocClock;
+import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
-import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocImplies;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.unary.CLTLocGlobally;
+import formulae.cltloc.operators.unary.CLTLocNegation;
 import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.relations.CLTLocRelation;
 import formulae.cltloc.relations.Relation;
@@ -25,15 +29,21 @@ import ta.SystemDecl;
 import ta.TA;
 import ta.Variable;
 import ta.VariableAssignementAP;
-import ta.state.State;
-import ta.transition.Transition;
 
 public class TANetwork2CLTLoc extends TA2CLTLoc {
 
 	
+	public TANetwork2CLTLoc(){
+		super();
+		
+	}
 	
 	public CLTLocFormula convert(SystemDecl system, Set<StateAP> propositionsOfInterest, Set<VariableAssignementAP> atomicpropositionsVariable) {
 
+
+		Stopwatch testTimer = Stopwatch.createUnstarted();
+
+		testTimer.start();
 		this.variable1=
 				conjunctionOperator.apply(
 						this.getVariable1(system)
@@ -41,10 +51,12 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				system.getTimedAutomata().stream().map(ta ->
 					(CLTLocFormula) this.getVariable1(ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
+		testTimer.stop();
+		writer.write("variable1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
-		CLTLocFormula variableconst = this.variable1;
-
-		
+		testTimer.reset();
+		testTimer.start();
 		this.clock1 =
 				conjunctionOperator.apply(
 						this.getClock1(system)
@@ -52,7 +64,12 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				system.getTimedAutomata().stream().map(ta ->
 						this.getClock1(system, ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
+		testTimer.stop();
+		writer.write("clock1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
 		this.clock2 = 
 				conjunctionOperator.apply(
 						this.getClock2(system)
@@ -60,7 +77,12 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				system.getTimedAutomata().stream().map(ta ->
 						this.getClock2(system, ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
+		testTimer.stop();
+		writer.write("clock2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
 		this.clock3 = 
 				conjunctionOperator.apply(
 						this.getClock3(system)
@@ -68,53 +90,106 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				system.getTimedAutomata().stream().map(ta ->
 						this.getClock3(system, ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
-		
+		testTimer.stop();
+		writer.write("clock3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
 		CLTLocFormula clockconst = 
 				CLTLocFormula.getAnd( this.clock1,this.clock2, this.clock3);
-
+		
+		testTimer.reset();
+		testTimer.start();
 		this.phi1 = system.getTimedAutomata().stream().map(ta ->
 					this.getPhi1(system, ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		testTimer.stop();
+		writer.write("phi1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		
+		testTimer.reset();
+		testTimer.start();
 		this.phi2 = system.getTimedAutomata().stream().map(ta ->
 					this.getPhi2(ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		testTimer.stop();
+		writer.write("phi2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
 		this.phi3 =  system.getTimedAutomata().stream().map(ta ->
 					this.getPhi3(ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		testTimer.stop();
+		writer.write("phi3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
 		this.phi4 = system.getTimedAutomata().stream().map(ta ->
 						this.getPhi4(system, ta)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		testTimer.stop();
+		writer.write("phi4: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
 		this.phi5 = system.getTimedAutomata().stream().map(ta ->
 					this.getPhi5(ta, propositionsOfInterest,atomicpropositionsVariable)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		testTimer.stop();
+		writer.write("phi5: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
 		this.phi6 = system.getTimedAutomata().stream().map(ta ->
 						this.getPhi6(ta, propositionsOfInterest, atomicpropositionsVariable)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		testTimer.stop();
+		writer.write("phi6: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
 		this.phi7 = system.getTimedAutomata().stream().map(ta ->
 						this.getPhi7(ta, propositionsOfInterest, atomicpropositionsVariable)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-
+		testTimer.stop();
+		writer.write("phi7: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
 		CLTLocFormula taFormula = CLTLocFormula.getAnd(this.phi1, this.phi2, this.phi3, this.phi4, this.phi5, this.phi6, this.phi7);
 
 
-		
+		testTimer.reset();
+		testTimer.start();
 		this.network1=this.getNetwork1(system);
-		this.network2=this.getNetwork2(system);
-		this.network3=this.getNetwork3(system);
-
+		testTimer.stop();
+		writer.write("network1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
+		testTimer.reset();
+		testTimer.start();
+		this.network2=this.getNetwork2(system);
+		testTimer.stop();
+		writer.write("network2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		
+		testTimer.reset();
+		testTimer.start();
+		this.network3=this.getNetwork3(system);
+		testTimer.stop();
+		writer.write("network3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
+		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+				
 		CLTLocFormula network = 
 				CLTLocFormula.getAnd( this.network1,this.network2, this.network3);
 		
-		
-		return Y.apply(CLTLocFormula.getAnd(variableconst, clockconst, taFormula, network));
+		writer.close();
+		return Y.apply(CLTLocFormula.getAnd(this.variable1, clockconst, taFormula, network));
 		
 
 	}
@@ -131,7 +206,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 						CLTLocFormula.getAnd(
 						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "0"), new Constant(0), Relation.EQ),
 						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "1"), new Constant(0), Relation.GE),					
-						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "_v"), new Constant(0), Relation.EQ)
+						new CLTLocNegation(new CLTLocSelector( v.getName() + "_v"))
 						);
 				}
 			).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -148,7 +223,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 					CLTLocFormula.getAnd(
 					new CLTLocRelation(new CLTLocClock( c.getName() + "0"), new Constant(0), Relation.EQ),
 					new CLTLocRelation(new CLTLocClock( c.getName() + "1"), new Constant(0), Relation.GE),					
-					new CLTLocRelation(new formulae.cltloc.atoms.Variable( c.getName() + "_v"), new Constant(0), Relation.EQ)
+					new CLTLocNegation(new CLTLocSelector( c.getName() + "_v"))
 					);
 					
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -169,8 +244,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 					new CLTLocNext(new CLTLocRelease(
 							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
 							new CLTLocConjunction(
-									new CLTLocRelation(new formulae.cltloc.atoms.Variable(prefix + c.getName() + "_v"),
-											zero, Relation.EQ),
+									new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")),
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero,
 											Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -182,8 +256,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 										new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
 												Relation.EQ),
 										new CLTLocConjunction(
-												new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getId() + "_v"),
-														zero, Relation.EQ),
+												new CLTLocNegation(new CLTLocSelector(c.getId() + "_v")),
 												new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
 														Relation.GE)))))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -203,9 +276,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 					new CLTLocNext(new CLTLocRelease(
 							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
 							new CLTLocConjunction(
-									new CLTLocRelation(
-											new formulae.cltloc.atoms.Variable(prefix + c.getName() + "_v"),
-											new Constant(1), Relation.EQ),
+											new CLTLocSelector(prefix + c.getName() + "_v"),
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero,
 											Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -217,8 +288,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 										new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
 												Relation.EQ),
 										new CLTLocConjunction(
-												new CLTLocRelation(new formulae.cltloc.atoms.Variable(c.getId() + "_v"),
-														new Constant(1), Relation.EQ),
+												new CLTLocSelector(c.getId() + "_v"),
 												new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
 														Relation.GE)))))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -252,6 +322,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				);
 		
 		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
+		
 	}
 	
 	private CLTLocFormula getNetwork2(SystemDecl system){
@@ -278,6 +349,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				);
 		
 		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
+		
 	}
 
 private CLTLocFormula getNetwork3(SystemDecl system){
@@ -325,6 +397,7 @@ private CLTLocFormula getNetwork3(SystemDecl system){
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 				
 		return disjunctionOperator.apply(ret, ret2);
+		
 	}
 
 	

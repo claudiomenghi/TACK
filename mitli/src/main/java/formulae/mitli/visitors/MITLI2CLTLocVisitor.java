@@ -153,9 +153,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 			.getAnd(CLTLocFormula.getNeg(first.apply(s)), CLTLocFormula.getNeg(rest.apply(s)));
 
 	public final Function<MITLIFormula, CLTLocClock> newz0clock = formula -> new CLTLocClock(
-			"Z0_" + formulaIdMap.get(formula));
+			"Z" + formulaIdMap.get(formula)+"_0");
 	public final Function<MITLIFormula, CLTLocClock> newz1clock = formula -> new CLTLocClock(
-			"Z1_" + formulaIdMap.get(formula));
+			"Z" + formulaIdMap.get(formula)+"_1");
 
 	public MITLI2CLTLocVisitor(MITLIFormula formula, int maxIntComparedto) {
 

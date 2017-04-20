@@ -2,12 +2,20 @@ package formulae.cltloc.atoms;
 
 import com.google.common.base.Preconditions;
 
+import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLocClock extends Atom {
+public class CLTLocSelector extends CLTLocFormula {
 
+
+	public CLTLocSelector(String name) {
+		super();
+		Preconditions.checkNotNull(name, "The clock name cannot be null");
+		this.clockName = name;
+		this.hash = clockName.hashCode();
+	}
 	
-	public String getClockName() {
+	public String getName() {
 		return clockName;
 	}
 
@@ -17,12 +25,6 @@ public class CLTLocClock extends Atom {
 	private final int hash;
 	private final String clockName;
 
-	public CLTLocClock(String name) {
-		super();
-		Preconditions.checkNotNull(name, "The clock name cannot be null");
-		this.clockName = name;
-		this.hash = clockName.hashCode();
-	}
 
 	
 	
@@ -40,7 +42,7 @@ public class CLTLocClock extends Atom {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CLTLocClock other = (CLTLocClock) obj;
+		CLTLocSelector other = (CLTLocSelector) obj;
 		if (clockName == null) {
 			if (other.clockName != null)
 				return false;

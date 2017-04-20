@@ -54,7 +54,7 @@ public class TACheckerExample2Test {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-
+System.out.println(ta);
 		TAChecker checker = new TAChecker(system, ta, formula2, 20, System.out);
 		boolean result = checker.check();
 

@@ -87,8 +87,8 @@ public class TA {
 		this.clocks = clocks;
 		this.outTransitions = new HashMap<>();
 		this.variables = variables;
-		this.allclocks = new HashSet<>();
-		this.allVariables = new HashSet<>();
+		this.allclocks = new HashSet<>(clocks);
+		this.allVariables = new HashSet<>(variables);
 
 		this.actions=new ArrayList<>();
 		this.states.forEach(s -> this.outTransitions.put(s, new HashSet<>()));

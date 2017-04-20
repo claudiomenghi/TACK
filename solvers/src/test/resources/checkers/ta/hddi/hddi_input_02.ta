@@ -11,8 +11,8 @@ chan tt1,tt2,
 process RING { 
 clock x; 
 state 
-  ring_to_1{x <= 0}, ring_1,
-  ring_to_2{x <= 0}, ring_2;
+  ring_to_1{ x<= 0 }, ring_1,
+  ring_to_2{ x<= 0 }, ring_2;
 init ring_to_1; 
 trans 
 ring_to_1 -> ring_1 { guard x <= 0; sync tt1!; }, 

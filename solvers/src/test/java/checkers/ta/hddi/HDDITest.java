@@ -9,6 +9,7 @@ import java.util.HashSet;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import checkers.SystemChecker;
@@ -47,6 +48,7 @@ public class HDDITest {
 
 	}
 	
+	@Ignore
 	@Test
 	public void testModelSatisfiable() throws IOException, ZotException {
 
@@ -60,9 +62,11 @@ public class HDDITest {
 		SystemDecl system = taparser.ta().systemret;
 
 		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
+
 		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
+		converter.printFancy(System.out);
 		
-		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
+		CLTLocsolver solver=new CLTLocsolver(res, System.out , 30);
 
 		assertTrue(solver.solve());
 

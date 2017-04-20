@@ -16,11 +16,11 @@ import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
 
-public class CLTLoc2ZotBvzot implements Function<CLTLocFormula, String> {
+public class CLTLoc2Ae2zot implements Function<CLTLocFormula, String> {
 
 	private final int bound;
 
-	public CLTLoc2ZotBvzot(int bound) {
+	public CLTLoc2Ae2zot(int bound) {
 		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
 		this.bound = bound;
 	}
@@ -28,6 +28,7 @@ public class CLTLoc2ZotBvzot implements Function<CLTLocFormula, String> {
 	public String apply(CLTLocFormula formula) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("(asdf:operate 'asdf:load-op 'ae2zot)\n");
+		
 		builder.append("(use-package :trio-utils)\n");
 
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
@@ -42,11 +43,9 @@ public class CLTLoc2ZotBvzot implements Function<CLTLocFormula, String> {
 		
 		
 		final StringBuilder footerBuilder = new StringBuilder();
-		//footerBuilder.append(":signals '(" + StringUtils.join(signals, ' ') + ")");
 		
 		footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
 
-		
 		builder.append("(ae2zot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
 				+ ":smt-lib :smt2 \n" 
 				+ ":logic :QF_UFRDL \n" 

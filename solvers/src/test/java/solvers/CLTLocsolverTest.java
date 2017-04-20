@@ -86,7 +86,7 @@ public class CLTLocsolverTest {
 				new CLTLocYesterday(new CLTLocAP("tmp")));
 		
 		assertFalse("a contradiction should return unsat",
-				new CLTLocsolver(f, new PrintStream(ByteStreams.nullOutputStream()), 5).solve());
+				new CLTLocsolver(f, new PrintStream(System.out), 5).solve());
 	}
 	
 	@Test

@@ -104,7 +104,7 @@ public class TAChecker extends SystemChecker{
 		out.println("Contstraint: ");
 		out.println(initFormula);
 		formula = new CLTLocConjunction(formula, CLTLocFormula.Y(initFormula));
-
+		
 		out.println("\n");
 		out.println("\n");
 		out.println("\n");

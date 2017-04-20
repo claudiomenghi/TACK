@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.io.ByteStreams;
@@ -29,6 +30,7 @@ public class HDDIScalabilityTest {
 	
 	private final int bound=12;
 	
+	@Ignore
 	@Test
 	public void test1() throws IOException, ZotException {
 	
@@ -61,8 +63,8 @@ public class HDDIScalabilityTest {
 
 			SystemChecker checker = new SystemChecker(system, formula, bound, new PrintStream(ByteStreams.nullOutputStream()));
 			boolean result = checker.check();
-			fileWriter.write(i+"\t"+checker.getCheckingtime()+"\t"+checker.getCheckingspace()+"\n");
-			System.out.println(i+"\t"+checker.getCheckingtime()+"\t"+checker.getCheckingspace()+"\n");
+			fileWriter.write(i+"\t"+checker.getCheckingTime()+"\t"+checker.getCheckingspace()+"\n");
+			System.out.println(i+"\t"+checker.getCheckingTime()+"\t"+checker.getCheckingspace()+"\n");
 			assertTrue(result);
 			fileWriter.close();
 		}
