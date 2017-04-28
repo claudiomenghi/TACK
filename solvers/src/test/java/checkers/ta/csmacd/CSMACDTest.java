@@ -72,7 +72,7 @@ public class CSMACDTest {
 		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
 		boolean result = checker.check();
 
-		assertFalse(result);
+		assertTrue(result);
 
 	}
 }

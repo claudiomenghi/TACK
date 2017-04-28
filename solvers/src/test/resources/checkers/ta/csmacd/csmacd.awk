@@ -77,16 +77,16 @@ function collision(i, OUT){
     }
     print "init  bus_idle; \n" > OUT;
     print "trans \n" > OUT;
-    print "bus_idle -> bus_active { sync begin?; assign x:= 0; }, \n" > OUT;
-    print "bus_active -> bus_idle { sync end?; assign x:= 0; }, \n" > OUT;
-    print "bus_active -> bus_active { guard x >= 26; sync busy!; }, \n" > OUT;
-    print "bus_active -> bus_collision1 { guard x < 26; sync begin?; assign x:= 0; },\n" > OUT;
-    print "bus_collision1 -> bus_collision2 { guard x < 26; sync cd1!; assign x:= 0; }, \n" > OUT;
+    print "bus_idle -> bus_active { sync begin ?; assign x:= 0; }, \n" > OUT;
+    print "bus_active -> bus_idle { sync end ?; assign x:= 0; }, \n" > OUT;
+    print "bus_active -> bus_active { guard x >= 26; sync busy !; }, \n" > OUT;
+    print "bus_active -> bus_collision1 { guard x < 26; sync begin ?; assign x:= 0; },\n" > OUT;
+    print "bus_collision1 -> bus_collision2 { guard x < 26; sync cd1 !; assign x:= 0; }, \n" > OUT;
     for(v = 2; v < i; v++){
 	w = v+1;
-	print "bus_collision" v " -> bus_collision" w " { guard x <= 0; sync cd" v "!; assign x:= 0; }, \n" > OUT;
+	print "bus_collision" v " -> bus_collision" w " { guard x <= 0; sync cd" v " !; assign x:= 0; }, \n" > OUT;
     }
-    print "bus_collision" i " -> bus_idle { guard x <= 0; sync cd" i"!; assign x:= 0; }; \n" > OUT;
+    print "bus_collision" i " -> bus_idle { guard x <= 0; sync cd" i" !; assign x:= 0; }; \n" > OUT;
     print "}\n\n" > OUT;
     ORS="\n";
 
@@ -98,14 +98,14 @@ function process(i, OUT){
     print "state sender_wait, sender_transm{ x<= 808}, sender_retry{x < 52}; " > OUT;
     print "init sender_wait; " > OUT;
     print "trans " > OUT;
-    print "sender_wait -> sender_transm { sync begin!; assign x:= 0; }, " > OUT;
-    print "sender_wait -> sender_wait { sync cd" i "?; assign x:= 0; }, " > OUT;
-    print "sender_wait -> sender_retry { sync cd" i "?; assign x:= 0; }, " > OUT;
-    print "sender_wait -> sender_retry { sync busy?; assign x:= 0; }, " > OUT;
-    print "sender_transm -> sender_wait { guard x == 808; sync end!; assign x:= 0; },  " > OUT;
-    print "sender_transm -> sender_retry { guard x < 52; sync cd" i "?; assign x:= 0; }, " > OUT;
-    print "sender_retry -> sender_transm { guard x < 52; sync begin!; assign x:= 0; }, " > OUT;
-    print "sender_retry -> sender_retry { guard x < 52; sync cd" i "?; assign x:= 0; };  " > OUT;
+    print "sender_wait -> sender_transm { sync begin !; assign x:= 0; }, " > OUT;
+    print "sender_wait -> sender_wait { sync cd" i " ?; assign x:= 0; }, " > OUT;
+    print "sender_wait -> sender_retry { sync cd" i " ?; assign x:= 0; }, " > OUT;
+    print "sender_wait -> sender_retry { sync busy ?; assign x:= 0; }, " > OUT;
+    print "sender_transm -> sender_wait { guard x == 808; sync end !; assign x:= 0; },  " > OUT;
+    print "sender_transm -> sender_retry { guard x < 52; sync cd" i " ?; assign x:= 0; }, " > OUT;
+    print "sender_retry -> sender_transm { guard x < 52; sync begin !; assign x:= 0; }, " > OUT;
+    print "sender_retry -> sender_retry { guard x < 52; sync cd" i " ?; assign x:= 0; };  " > OUT;
     print "}\n\n\n" > OUT;
 }
 
@@ -123,7 +123,7 @@ function systemdef(i, OUT){
 
 
 function property(i, OUT){
-    print "G_i+ 0 (! (&& (P1_sender_transm)  (P2_sender_transm)))" > OUT;
+    print "A[] not ( P1.sender_transm and P2.sender_transm and P1.x >= 52 )" > OUT;
 } 
 
 BEGIN {

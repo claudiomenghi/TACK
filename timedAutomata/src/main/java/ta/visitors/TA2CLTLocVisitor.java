@@ -122,7 +122,6 @@ public CLTLocFormula visit(ExpInvariant expInvariant,  State state) {
 		}
 		
 		CLTLocFormula tmp= new CLTLocDisjunction(
-		TA2CLTLoc.conjunctionOperator.apply(
 				TA2CLTLoc.conjunctionOperator.apply(
 						new CLTLocNegation(
 								new CLTLocSelector(prefix+ expInvariant.getId().getId()+"_v"))
@@ -130,15 +129,8 @@ public CLTLocFormula visit(ExpInvariant expInvariant,  State state) {
 				new CLTLocRelation(
 						new CLTLocClock(prefix+ expInvariant.getId().getId()+"_0"),
 						new Constant(expInvariant.getExp().evaluate()), relation)
-				)
-				,
-				TA2CLTLoc.nextOperator.apply(
-						
-						new CLTLocRelation(
-								new CLTLocClock(prefix+ expInvariant.getId().getId()+"_0"),
-								new Constant(expInvariant.getExp().evaluate()), relation)
-						)),
-		TA2CLTLoc.conjunctionOperator.apply(
+				),
+
 				TA2CLTLoc.conjunctionOperator.apply(
 								new CLTLocSelector(prefix+ expInvariant.getId().getId()+"_v")
 						,
@@ -146,12 +138,7 @@ public CLTLocFormula visit(ExpInvariant expInvariant,  State state) {
 						new CLTLocClock(prefix+ expInvariant.getId().getId()+"_1"),
 						new Constant(expInvariant.getExp().evaluate()), relation)
 				)
-				,
-				TA2CLTLoc.nextOperator.apply(
-						new CLTLocRelation(
-								new CLTLocClock(prefix+ expInvariant.getId().getId()+"_1"),
-								new Constant(expInvariant.getExp().evaluate()), relation)
-						))
+			
 		);
 
 

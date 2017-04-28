@@ -425,6 +425,7 @@ public class ATVAExample2Test {
 		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
 		ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
 
+		System.out.println("var1: "+ta2cltloc.getVariable1());
 		assertEquals("Variable 1 formula generated correctly", expectedVariable1, ta2cltloc.getVariable1());
 
 	}
@@ -456,6 +457,8 @@ public class ATVAExample2Test {
 	public void testPhi1() throws IOException {
 		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
 		ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
+		
+		System.out.println("Phi1="+ta2cltloc.getPhi1());
 		assertEquals("Variable 1 formula generated correctly", expectedphi1, ta2cltloc.getPhi1());
 	}
 
@@ -463,6 +466,7 @@ public class ATVAExample2Test {
 	public void testPhi2() throws IOException {
 		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
 		ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
+		System.out.println("Phi2="+ta2cltloc.getPhi2());
 		assertEquals("Variable 1 formula generated correctly", expectedphi2, ta2cltloc.getPhi2());
 	}
 
@@ -473,7 +477,7 @@ public class ATVAExample2Test {
 		assertEquals("Variable 1 formula generated correctly", expectedphi3, ta2cltloc.getPhi3());
 	}
 
-	@Ignore
+	
 	@Test
 	public void testPhi4() throws IOException {
 		
@@ -484,6 +488,7 @@ public class ATVAExample2Test {
 		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
 		ta2cltloc.convert(system, ta, new HashSet<>(),ap);
 
+		System.out.println("Phi4: "+ta2cltloc.getPhi4());
 		assertEquals("Variable 1 formula generated correctly", expectedphi4, ta2cltloc.getPhi4());
 
 	}

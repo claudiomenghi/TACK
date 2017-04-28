@@ -92,13 +92,9 @@ public class ATVAExample1Test {
 	private final CLTLocFormula expectedphi3 = new CLTLocGlobally(
 			new CLTLocImplies(new CLTLocAP("Example1_l1"), new CLTLocDisjunction(
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocNegation(xv),
-
-							new CLTLocRelation(clock0, new Constant(5), Relation.LEQ)),
-							new CLTLocNext(new CLTLocRelation(clock0, new Constant(5), Relation.LEQ))),
+							new CLTLocRelation(clock0, new Constant(5), Relation.LEQ))),
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(xv,
-
-							new CLTLocRelation(clock1, new Constant(5), Relation.LEQ)),
-							new CLTLocNext(new CLTLocRelation(clock1, new Constant(5), Relation.LEQ))))));
+							new CLTLocRelation(clock1, new Constant(5), Relation.LEQ))))));
 
 	
 	private final CLTLocFormula transLocation0=
