@@ -68,6 +68,7 @@ public class ConverterTest {
 				)
 			);
 
+		
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi1.equals(phi1)));
 
@@ -100,8 +101,6 @@ public class ConverterTest {
 				new CLTLocConjunction(new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant(0), Relation.GE),
 						new CLTLocNegation(new CLTLocSelector("Sender_A_c_v"))));
 		
-		System.out.println(expectedphi1);
-		System.out.println(phi1);
 		assertTrue("The formula phi1 is such that the automaton can be only in one of its states",
 				(expectedphi1.equals(phi1)));
 
@@ -244,8 +243,7 @@ public class ConverterTest {
 		CLTLocFormula phi2 = converter.getPhi2();
 
 		CLTLocFormula expectedphi2 = 
-				CLTLocFormula.getAnd(new CLTLocAP("Sender_A_state_1"), CLTLocFormula.getAnd(
-						new CLTLocNegation(new CLTLocSelector("Sender_A_i_v")), new CLTLocRelation(new Variable("Sender_A_i_0"), new Constant(0), Relation.EQ)));
+				CLTLocFormula.getAnd(new CLTLocAP("Sender_A_state_1"));
 
 
 		assertTrue("The initial state should be correct", (expectedphi2.equals(phi2)));
@@ -274,24 +272,23 @@ public class ConverterTest {
 		CLTLocFormula expectedphi3 = new CLTLocGlobally(new CLTLocImplies(new CLTLocAP("Sender_A_state_1"),
 				new CLTLocDisjunction(
 						new CLTLocConjunction(
-								new CLTLocConjunction(
 								new CLTLocNegation(new CLTLocSelector("Sender_A_c_v"))
 								,
-						new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant("15"), Relation.LE)),
-								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant("15"), Relation.LE)))
+								new CLTLocRelation(new CLTLocClock("Sender_A_c_0"), new Constant("15"), Relation.LE)
+								)
 						, 
 						new CLTLocConjunction(
-								new CLTLocConjunction(
 								new CLTLocSelector("Sender_A_c_v")
 								,
-						new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant("15"), Relation.LE)),
-								new CLTLocNext(new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant("15"), Relation.LE)))
+								new CLTLocRelation(new CLTLocClock("Sender_A_c_1"), new Constant("15"), Relation.LE)
+						)
 										
-										)
-				));
+				)
+			)
+		);
 
 		
-		
+	
 		assertTrue("The invariant must be added as formulae", (expectedphi3.equals(phi3)));
 
 	}
@@ -501,8 +498,6 @@ public class ConverterTest {
 		
 
 
-		System.out.println(expectedphi4);
-		System.out.println(phi4);
 		assertTrue("The transition relation must be encored correclty", (expectedphi4.equals(phi4)));
 	}
 

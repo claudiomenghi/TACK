@@ -301,6 +301,7 @@ protected CLTLocFormula getVariable1(TA ta) {
 				return (CLTLocFormula) 
 						CLTLocFormula.getAnd(
 						new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "_0"), new Constant(0), Relation.EQ),
+						new CLTLocRelation(new formulae.cltloc.atoms.Variable(ta.getIdentifier() + "_" + v.getName() + "_1"), new Constant(0), Relation.GE),
 						new CLTLocNegation(new CLTLocSelector(ta.getIdentifier() + "_" + v.getName() + "_v"))
 						);
 				}
@@ -401,7 +402,8 @@ protected CLTLocFormula getVariable1(TA ta) {
 		CLTLocFormula f1 = ta.getStates().stream().map(s -> implicationOperator.apply(
 				state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, s)),
 				ta.getStates().stream().filter(s1 -> !s1.equals(s))
-						.map(s1 -> negationOperator.apply(state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, s1))))
+						.map(s1 -> 
+						negationOperator.apply(state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, s1))))
 						.reduce(conjunctionOperator).orElse(state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, s)))))
 				.reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE);
 

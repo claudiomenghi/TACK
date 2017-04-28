@@ -101,23 +101,31 @@ public class ATVAExample1Test {
 			new CLTLocImplies(new CLTLocAP("Example1_l0"), 
 					
 							new CLTLocDisjunction(
-										new CLTLocConjunction(
+										CLTLocFormula.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l0"))
 												,
-												new CLTLocNext(new CLTLocDisjunction(
-														new CLTLocConjunction(
-																new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
-																, 
-																new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)																
+												new CLTLocDisjunction(
+														CLTLocFormula.getAnd(
+																new CLTLocNegation(new CLTLocSelector("Example1_x_v")), 
+																new CLTLocNext(
+																		CLTLocFormula.getAnd(
+																				new CLTLocNegation(new CLTLocSelector("Example1_x_v")),
+																				new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)
+																		)
+																	)
 																)
 														,
-														new CLTLocConjunction(
-																new CLTLocSelector("Example1_x_v")
-																, 
-																new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)																
+														CLTLocFormula.getAnd(
+																new CLTLocSelector("Example1_x_v"), 
+																new CLTLocNext(
+																		CLTLocFormula.getAnd(
+																				new CLTLocSelector("Example1_x_v"),
+																				new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)
+																		)
+																	)
 																)
-														)
-												))
+												)
+												)
 										,
 										new CLTLocConjunction(
 												new CLTLocNext(new CLTLocAP("Example1_l1"))
@@ -175,21 +183,27 @@ public class ATVAExample1Test {
 										new CLTLocConjunction(
 												new CLTLocNext(new CLTLocAP("Example1_l1"))
 												,
-												new CLTLocNext(
-														new CLTLocDisjunction(
-															new CLTLocConjunction(
-																	new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
-																	, 
-																	new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)																
+												new CLTLocDisjunction(
+														CLTLocFormula.getAnd(
+																new CLTLocNegation(new CLTLocSelector("Example1_x_v")), 
+																new CLTLocNext(
+																		CLTLocFormula.getAnd(
+																				new CLTLocNegation(new CLTLocSelector("Example1_x_v")),
+																				new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)
+																		)
 																	)
-															,
-															new CLTLocConjunction(
-																	new CLTLocSelector("Example1_x_v")
-																	, 
-																	new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)																
+																)
+														,
+														CLTLocFormula.getAnd(
+																new CLTLocSelector("Example1_x_v"), 
+																new CLTLocNext(
+																		CLTLocFormula.getAnd(
+																				new CLTLocSelector("Example1_x_v"),
+																				new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)
+																		)
 																	)
-															)
-														)
+																)
+												)
 												)
 										,
 										new CLTLocConjunction(
@@ -233,21 +247,27 @@ public class ATVAExample1Test {
 										new CLTLocConjunction(
 												new CLTLocNext(new CLTLocAP("Example1_l2"))
 												,
-												new CLTLocNext(
-													new CLTLocDisjunction(
-															new CLTLocConjunction(
-																	new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
-																	, 
-																	new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)																
+												new CLTLocDisjunction(
+														CLTLocFormula.getAnd(
+																new CLTLocNegation(new CLTLocSelector("Example1_x_v")), 
+																new CLTLocNext(
+																		CLTLocFormula.getAnd(
+																				new CLTLocNegation(new CLTLocSelector("Example1_x_v")),
+																				new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)
+																		)
 																	)
-															,
-															new CLTLocConjunction(
-																	new CLTLocSelector("Example1_x_v")
-																	, 
-																	new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)																
+																)
+														,
+														CLTLocFormula.getAnd(
+																new CLTLocSelector("Example1_x_v"), 
+																new CLTLocNext(
+																		CLTLocFormula.getAnd(
+																				new CLTLocSelector("Example1_x_v"),
+																				new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)
+																		)
 																	)
-															)
-													)
+																)
+												)
 												)
 										,
 										new CLTLocConjunction(
@@ -274,7 +294,7 @@ public class ATVAExample1Test {
 															new CLTLocNext(
 																	new CLTLocConjunction(
 																				new CLTLocSelector("Example1_x_v"),
-																				new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)
+																				new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.EQ)
 																			)
 															)
 														)
@@ -285,7 +305,7 @@ public class ATVAExample1Test {
 																new CLTLocNext(
 																		new CLTLocConjunction(
 																					new CLTLocNegation(new CLTLocSelector("Example1_x_v")),
-																					new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)
+																					new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.EQ)
 																				)
 																)
 														)
@@ -330,17 +350,7 @@ public class ATVAExample1Test {
 
 		CLTLocFormula f=ta2cltloc.convert(system, ta, new HashSet<>(),  new HashSet<>());
 
-		System.out.println(ta2cltloc.getClock1());
-		System.out.println(ta2cltloc.getClock2());
-		System.out.println(ta2cltloc.getClock3());
 		
-		System.out.println(ta2cltloc.getPhi1());
-		
-		System.out.println(ta2cltloc.getPhi2());
-		
-		System.out.println(ta2cltloc.getPhi3());
-		
-		System.out.println(ta2cltloc.getPhi4());
 		assertTrue(f!=null);
 	}
 	

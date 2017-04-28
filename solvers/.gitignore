@@ -17,3 +17,5 @@ bin/*
 *.lisp
 *.cltloc
 *.vocabulary
+NUL
+scalabilityresults.txt

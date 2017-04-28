@@ -1,0 +1,14 @@
+variable1: 0
+clock1: 0
+clock2: 0
+clock3: 0
+phi1: 0
+phi2: 0
+phi3: 0
+phi4: 6
+phi5: 0
+phi6: 0
+phi7: 0
+network1: 0
+network2: 0
+network3: 0
