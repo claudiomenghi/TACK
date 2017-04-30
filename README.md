@@ -1,6 +1,8 @@
-# QLTLoc Framework
+# TAKER (Timed Automata checKER)
 
-The QLTLoc framework is made by several modules:
+
+#### Implementation
+The TAKER framework is made by several modules:
 
 * [cltloc](/cltloc) module that contains the description of CLTLoc formulae
 * [mitli](/mitli) module that contains the description of  MITL formulae

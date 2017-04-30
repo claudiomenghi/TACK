@@ -55,23 +55,29 @@ public class ZotRunner {
 		Process p = builder.start();
 		
 		InputStream stdout = p.getInputStream();
-
+	
+		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
-
 		boolean sat = true;
 
 		boolean resultfound = false;
 
+		
 		String line;
 		while ((line = reader.readLine()) != null) {
+			
+			
 			if (line.contains("---UNSAT---")) {
 				sat = false;
 				resultfound = true;
+				System.out.println("Result2: Zot ends");
 			}
 			if (line.contains("---SAT---")) {
 				sat = true;
 				resultfound = true;
 			}
+			
+
 			String resultTime=" seconds of real time";
 			if (line.contains(resultTime)) {
 				String extracted = line
@@ -88,13 +94,15 @@ public class ZotRunner {
 				out.println("Stdout: " + line);
 			}
 		}
+		System.out.println("Result1: Zot ends");
 		if (!resultfound) {
-			throw new ZotException("ZOT: There are compilation problems");
+			throw new ZotException("Problems in ZOT detected");
 		}
 
 		out.print("Zot ends");
 		timer.stop();
 		this.checkingtime=timer.elapsed(TimeUnit.MILLISECONDS);
+		
 		
 		return sat;
 	}

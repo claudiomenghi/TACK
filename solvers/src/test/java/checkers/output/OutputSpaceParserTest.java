@@ -20,10 +20,9 @@ public class OutputSpaceParserTest {
 	 */
 	@Test
 	public void parserTest() throws FileNotFoundException, IOException, ZotException {
-		double space=new OutputSpaceParser(ClassLoader.getSystemResource("checkers/output/output.1.txt").getPath()).getSpace();
-		System.out.println(space);
+		double space=new OutputSpaceParser(ClassLoader.getSystemResource("checkers/output.1.txt").getPath()).getSpace();
 		assertTrue(
-				Double.compare(space, 469.57)==0);
+				Double.compare(space, 16.51)==0);
 	}
 	
 

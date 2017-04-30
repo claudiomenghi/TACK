@@ -6,7 +6,18 @@ apply plugin: 'antlr'
 apply plugin:'application'
 
 
-
+jar {
+    manifest {
+        attributes 'Main-Class': 'scalability.CSMACDScalabilityTest'
+    }
+    from {
+            configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+}
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
+}
 
 
 // In this section you declare where to find the dependencies of your project
