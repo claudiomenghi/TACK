@@ -19,3 +19,4 @@ bin/*
 *.vocabulary
 NUL
 scalabilityresults.txt
+/bin/
