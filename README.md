@@ -1,8 +1,8 @@
-# TAKER (Timed Automata checKER)
+# TACK (Timed Automata ChecKer))
 
 
 #### Implementation
-The TAKER framework is made by several modules:
+The TACK framework is made by several modules:
 
 * [cltloc](/cltloc) module that contains the description of CLTLoc formulae
 * [mitli](/mitli) module that contains the description of  MITL formulae
