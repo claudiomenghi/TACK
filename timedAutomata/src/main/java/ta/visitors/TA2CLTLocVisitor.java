@@ -16,6 +16,7 @@ import formulae.cltloc.relations.Relation;
 import operators.PropositionalLogicOperator;
 import ta.AP;
 import ta.Clock;
+import ta.StateAP;
 import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.EmptyExpression;
@@ -31,8 +32,8 @@ import ta.transition.guard.VariableConstraintAtom;
 
 public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 
-	private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
-	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
+	public static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
+	public static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
 
 	private static final Constant zero=new Constant("0");
 	private static final Constant one=new Constant("1");
@@ -54,6 +55,11 @@ public class TA2CLTLocVisitor implements TAVisitor<CLTLocFormula> {
 				TA2CLTLoc.nextOperator.apply(ap2CLTLocFIRSTAp.apply(ap)));
 	}
 
+	@Override
+	public CLTLocFormula visit(StateAP ap) {
+		return TA2CLTLoc.implicationOperator.apply(ap2CLTLocRESTAp.apply(ap),
+				TA2CLTLoc.nextOperator.apply(ap2CLTLocFIRSTAp.apply(ap)));
+	}
 	@Override
 	public CLTLocFormula visit(VariableAssignementAP ap) {
 		return this.visit(new AP(ap.getEncodingSymbol()));

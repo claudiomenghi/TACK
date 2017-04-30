@@ -16,10 +16,8 @@ import formulae.mitli.MITLIImplies;
 import formulae.mitli.MITLINegation;
 import formulae.mitli.MITLIPast_AtoB;
 import formulae.mitli.MITLIPast_ZerotoB;
-import formulae.mitli.MITLIRelease;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
-import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
 import formulae.mitli.atoms.MITLITrue;
@@ -37,14 +35,6 @@ public class GetRelationalAtomsVisitor implements MITLIVisitor<Set<MITLIRelation
 		return formulae;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<MITLIRelationalAtom> visit(MITLIFalse formula) {
-		Set<MITLIRelationalAtom> formulae = new HashSet<>();
-		return formulae;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -202,16 +192,6 @@ public class GetRelationalAtomsVisitor implements MITLIVisitor<Set<MITLIRelation
 		return formulae;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Set<MITLIRelationalAtom> visit(MITLIRelease formula) {
-		Set<MITLIRelationalAtom> formulae = new HashSet<>();
-		formulae.addAll(formula.getLeftChild().accept(this));
-		formulae.addAll(formula.getRightChild().accept(this));
-		return formulae;
-	}
 
 	@Override
 	public Set<MITLIRelationalAtom> visit(MITLIPropositionalAtom formula) {

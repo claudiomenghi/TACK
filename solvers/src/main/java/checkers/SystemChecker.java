@@ -16,6 +16,7 @@ import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
+import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
@@ -170,13 +171,8 @@ public class SystemChecker  {
 		out.println("CLTLoc encoding");
 		out.println(formula);
 		
-		out.println("************************************************************************");
-		out.println("***ADDING THE CONTRAINT THAT THE FORMULA INITIALLY HOLDS ******");
-		CLTLocFormula initFormula = new CLTLocAP("H_" + vocabular.get(negatedFormula));
-		out.println("Contstraint: ");
-		out.println(initFormula);
-		formula = new CLTLocConjunction(formula, CLTLocFormula.Y(initFormula));
 
+		
 		out.println("\n");
 		out.println("\n");
 		out.println("\n");
@@ -225,7 +221,9 @@ public class SystemChecker  {
 		// out.println(translator.getVocabulary());
 
 		out.println("Creating the conjunction of the formulae");
-		CLTLocFormula conjunctionFormula = new CLTLocConjunction(taFormula, formula);
+		CLTLocFormula conjunctionFormula = 
+				new CLTLocYesterday(
+				new CLTLocConjunction(taFormula, formula));
 		out.println("Conjunction of the formulae created");
 
 		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, bound);

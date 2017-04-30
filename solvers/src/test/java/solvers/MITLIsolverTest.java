@@ -1,6 +1,7 @@
 package solvers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,10 +14,11 @@ import org.junit.Test;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.mitli.MITLIFormula;
+import formulae.mitli.MITLINegation;
 import formulae.mitli.atoms.MITLIAtom;
-import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
+import formulae.mitli.atoms.MITLITrue;
 import formulae.mitli.converters.MITLI2CLTLoc;
 import formulae.mitli.parser.MITLILexer;
 import formulae.mitli.parser.MITLIParser;
@@ -87,19 +89,19 @@ public class MITLIsolverTest {
 	@Test
 	public void test5() throws IOException, ZotException {
 
-		MITLIFormula formula = new MITLIFalse();
+		MITLIFormula formula = new MITLINegation(new MITLITrue());
 
 		MITLIsolver sover = new MITLIsolver(formula, out, 5);
 
-		assertTrue(sover.solve());
+		assertFalse(sover.solve());
 	}
 
 	@Test
 	public void test6() throws IOException, ZotException {
 
-		MITLIFormula formula1 = new MITLIFalse();
+		MITLIFormula formula1 = new MITLINegation(new MITLITrue());
 
-		MITLIFormula formula2 = MITLIFormula.not(new MITLIFalse());
+		MITLIFormula formula2 = MITLIFormula.not(new MITLITrue());
 		MITLIsolver sover = new MITLIsolver(MITLIFormula.and(formula1, formula2), out, 5);
 
 		assertFalse(sover.solve());
@@ -368,6 +370,20 @@ public class MITLIsolverTest {
 	}
 	
 
+	@Test
+	public void testFormula1() throws IOException, ZotException {
+		String path = ClassLoader.getSystemResource("solvers/FormulaB1.mitli").getPath();
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		MITLIsolver sover = new MITLIsolver(formula, out, 5);
+
+		assertFalse(sover.solve());
+	}
 	
 	@Test
 	public void testFormula2() throws IOException, ZotException {
@@ -439,20 +455,7 @@ public class MITLIsolverTest {
 
 	
 	
-	@Test
-	public void testFormula1() throws IOException, ZotException {
-		String path = ClassLoader.getSystemResource("solvers/FormulaB1.mitli").getPath();
-		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
-		MITLILexer lexer = new MITLILexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		MITLIParser parser = new MITLIParser(tokens);
-		parser.setBuildParseTree(true);
-		MITLIFormula formula = parser.mitli().formula;
 
-		MITLIsolver sover = new MITLIsolver(formula, out, 5);
-
-		assertFalse(sover.solve());
-	}
 	
 	@Test
 	public void testFormula1a() throws IOException, ZotException {

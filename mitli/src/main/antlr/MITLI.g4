@@ -45,7 +45,7 @@ fmla returns [MITLIFormula r]
 		}
 	|	FALSE
 		{
-			MITLIFormula f = new MITLIFalse();
+			MITLIFormula f = new MITLINegation(new MITLITrue());
 				
 			$r = f;
 		}

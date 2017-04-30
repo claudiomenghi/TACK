@@ -221,10 +221,9 @@ public class TACheckerTest {
 		assertFalse(result);
 	}
 
-	@Ignore
 	@Test
 	public void test8() throws FileNotFoundException, IOException, ZotException {
-		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula2.mitli").getPath();
+		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula8.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -234,7 +233,35 @@ public class TACheckerTest {
 		MITLIFormula formula = parser.mitli().formula;
 
 		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("checkers/ta/examples/example3.ta").getPath());
+				ClassLoader.getSystemResource("checkers/ta/examples/example1.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		parser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		TA ta = system.getTimedAutomata().iterator().next();
+
+		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		boolean result = checker.check();
+
+		assertTrue(result);
+	}
+	
+	
+	@Test
+	public void test9() throws FileNotFoundException, IOException, ZotException {
+		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula9.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("checkers/ta/examples/example1.ta").getPath());
 		TALexer talexer = new TALexer(tainput);
 		CommonTokenStream tatokens = new CommonTokenStream(talexer);
 		TAParser taparser = new TAParser(tatokens);
@@ -249,10 +276,9 @@ public class TACheckerTest {
 		assertFalse(result);
 	}
 
-	@Ignore
 	@Test
-	public void test9() throws FileNotFoundException, IOException, ZotException {
-		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula7.mitli").getPath();
+	public void test10() throws FileNotFoundException, IOException, ZotException {
+		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula10.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -262,7 +288,61 @@ public class TACheckerTest {
 		MITLIFormula formula = parser.mitli().formula;
 
 		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("checkers/ta/examples/example3.ta").getPath());
+				ClassLoader.getSystemResource("checkers/ta/examples/example1.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		parser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		TA ta = system.getTimedAutomata().iterator().next();
+
+		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		boolean result = checker.check();
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void test11() throws FileNotFoundException, IOException, ZotException {
+		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula11.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("checkers/ta/examples/example1.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		parser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		TA ta = system.getTimedAutomata().iterator().next();
+
+		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		boolean result = checker.check();
+
+		assertFalse(result);
+	}
+
+	@Test
+	public void test12() throws FileNotFoundException, IOException, ZotException {
+		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula12.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("checkers/ta/examples/example1.ta").getPath());
 		TALexer talexer = new TALexer(tainput);
 		CommonTokenStream tatokens = new CommonTokenStream(talexer);
 		TAParser taparser = new TAParser(tatokens);

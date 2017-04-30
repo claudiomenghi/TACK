@@ -29,6 +29,7 @@ import ta.SystemDecl;
 import ta.TA;
 import ta.Variable;
 import ta.VariableAssignementAP;
+import ta.transition.sync.SyncExpression;
 
 public class TANetwork2CLTLoc extends TA2CLTLoc {
 
@@ -80,7 +81,6 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		testTimer.stop();
 		writer.write("clock2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
 		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
 		testTimer.reset();
 		testTimer.start();
 		this.clock3 = 
@@ -145,9 +145,8 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		
 		testTimer.reset();
 		testTimer.start();
-		this.phi6 = system.getTimedAutomata().stream().map(ta ->
-						this.getPhi6(ta, propositionsOfInterest, atomicpropositionsVariable)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		this.phi6 =
+						this.getPhi6(propositionsOfInterest, atomicpropositionsVariable);
 		testTimer.stop();
 		writer.write("phi6: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
 		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
@@ -189,8 +188,9 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				CLTLocFormula.getAnd( this.network1,this.network2, this.network3);
 		
 		writer.close();
-		return Y.apply(CLTLocFormula.getAnd(this.variable1, clockconst, taFormula, network));
-		
+
+		network=CLTLocFormula.TRUE;
+		return CLTLocFormula.getAnd(this.variable1, clockconst, taFormula,network);
 
 	}
 	
@@ -241,20 +241,22 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 			String prefix = "";
 			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
 					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
-					new CLTLocNext(new CLTLocRelease(
-							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
-							new CLTLocConjunction(
-									new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")),
-									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero,
-											Relation.GE))))));
+					new CLTLocNext(
+							new CLTLocRelease(
+									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
+									new CLTLocConjunction(
+										new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")),
+										new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero,
+												Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		CLTLocFormula f2 = system.getClockDeclarations().stream()
 				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-						new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero, Relation.EQ), new CLTLocNext(
+						new CLTLocRelation(
+								new CLTLocClock(c.getId() + "0"), zero, Relation.EQ), 
+						new CLTLocNext(
 								new CLTLocRelease(
-										new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
-												Relation.EQ),
+										new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,Relation.EQ),
 										new CLTLocConjunction(
 												new CLTLocNegation(new CLTLocSelector(c.getId() + "_v")),
 												new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
@@ -271,10 +273,12 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 
 		CLTLocFormula f1 = clocks.stream().map(c -> {
 			String prefix ="";
-			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+			return (CLTLocFormula) new CLTLocGlobally(
+					new CLTLocImplies(
 					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
-					new CLTLocNext(new CLTLocRelease(
-							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
+					new CLTLocNext(
+							new CLTLocRelease(
+									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
 							new CLTLocConjunction(
 											new CLTLocSelector(prefix + c.getName() + "_v"),
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero,
@@ -285,7 +289,7 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
 						new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero, Relation.EQ), new CLTLocNext(
 								new CLTLocRelease(
-										new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
+											new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
 												Relation.EQ),
 										new CLTLocConjunction(
 												new CLTLocSelector(c.getId() + "_v"),
@@ -300,12 +304,15 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 	
 		Set<TA> tas=system.getTimedAutomata();
 		
+		final Set<String> actions=new HashSet<>();
+		
+		
 		CLTLocFormula ret=
 				
 				CLTLocFormula.getOr(
 				// only one send
 				tas.stream().map(ta -> 
-						(CLTLocFormula) ta.getActions().stream().map(
+						(CLTLocFormula) ta.sendActions().stream().map(
 								event -> sendEvent2Ap.apply(
 											new AbstractMap.SimpleEntry<>(ta, event)
 										)
@@ -313,15 +320,18 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 						).reduce(CLTLocFormula.FALSE, xorOperator),
 				// or no sends
 				tas.stream().map(ta ->  
-					(CLTLocFormula) ta.getActions().stream().map(
-							event -> sendEvent2Ap.apply(
+					(CLTLocFormula) ta.sendActions().stream().map(
+							event -> 
+							CLTLocFormula.getNeg(
+								sendEvent2Ap.apply(
 										new AbstractMap.SimpleEntry<>(ta, event)
-									)
-							).reduce(CLTLocFormula.FALSE, conjunctionOperator)
-					).reduce(CLTLocFormula.FALSE, xorOperator)
+									))
+							).reduce(CLTLocFormula.TRUE, conjunctionOperator)
+					).reduce(CLTLocFormula.TRUE, conjunctionOperator)
 				);
 		
 		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
+		
 		
 	}
 	
@@ -333,19 +343,21 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 				
 				CLTLocFormula.getOr(
 				tas.stream().map(ta -> 
-						(CLTLocFormula) ta.getActions().stream().map(
+						(CLTLocFormula) ta.reveiveActions().stream().map(
 								event -> receiveEvent2Ap.apply(
 											new AbstractMap.SimpleEntry<>(ta, event)
 										)
 								).reduce(CLTLocFormula.FALSE, xorOperator)
 						).reduce(CLTLocFormula.FALSE, xorOperator),
 				tas.stream().map(ta ->  
-					(CLTLocFormula) ta.getActions().stream().map(
-							event -> receiveEvent2Ap.apply(
+					(CLTLocFormula) ta.reveiveActions().stream().map(
+							event -> 
+							CLTLocFormula.getNeg(
+								receiveEvent2Ap.apply(
 										new AbstractMap.SimpleEntry<>(ta, event)
-									)
-							).reduce(CLTLocFormula.FALSE, conjunctionOperator)
-					).reduce(CLTLocFormula.FALSE, xorOperator)
+									))
+							).reduce(CLTLocFormula.TRUE, conjunctionOperator)
+					).reduce(CLTLocFormula.TRUE, conjunctionOperator)
 				);
 		
 		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
@@ -363,7 +375,9 @@ private CLTLocFormula getNetwork3(SystemDecl system){
 				tas.stream().forEach(
 						ta2-> {
 								if(!ta2.getIdentifier().equals(ta1.getIdentifier())){
-									couplesOfTa.add(new AbstractMap.SimpleEntry<>(ta1,ta2));
+									if(!couplesOfTa.contains(new AbstractMap.SimpleEntry<>(ta2,ta1))){
+										couplesOfTa.add(new AbstractMap.SimpleEntry<>(ta1,ta2));
+									}
 								}
 							}
 						)
@@ -372,14 +386,30 @@ private CLTLocFormula getNetwork3(SystemDecl system){
 		CLTLocFormula ret=couplesOfTa.stream().map(
 				tacouple -> {
 						Set<String> commonEvents=new HashSet<>(tacouple.getKey().getActions());
-						commonEvents.removeAll(tacouple.getValue().getActions());
+						commonEvents.retainAll(tacouple.getValue().getActions());
 						
 						return commonEvents.stream().map( event ->
 									{
-										return CLTLocDisjunction.getAnd(
-											sendEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getKey(), event)),
-											receiveEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getValue(), event))
-										);
+										CLTLocFormula f=CLTLocFormula.FALSE;
+										
+										if(tacouple.getKey().sendActions().contains(event) && tacouple.getValue().reveiveActions().contains(event)) {
+												f=TA2CLTLoc.disjunctionOperator.apply(f, 
+														CLTLocFormula.getAnd(
+																sendEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getKey(), event)),
+																receiveEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getValue(), event))
+														)
+													);
+										}
+										if(tacouple.getValue().sendActions().contains(event) && tacouple.getKey().reveiveActions().contains(event)) {
+											f=TA2CLTLoc.disjunctionOperator.apply(f, 
+													CLTLocFormula.getAnd(
+															sendEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getValue(), event)),
+															receiveEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getKey(), event))
+													)
+												);
+										} 
+										return f;
+										
 									}
 								).reduce(CLTLocFormula.FALSE, disjunctionOperator);
 					}
@@ -397,13 +427,51 @@ private CLTLocFormula getNetwork3(SystemDecl system){
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 				
 		return disjunctionOperator.apply(ret, ret2);
-		
 	}
 
 	
 	
 	
 	
+
+protected CLTLocFormula getPhi4(SystemDecl system, TA ta) {
+
+
+	CLTLocFormula ret = ta.getStates().stream().map(state -> (CLTLocFormula) 
+			implicationOperator.apply(
+					state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, state)),
+					disjunctionOperator.apply(
+						this.remainInCurrentState(system, ta, state),
+						ta.getOutgoingTransitions(state).stream()	.map(t -> 
+							(CLTLocFormula) 
+							CLTLocFormula.getAnd(
+									nextOperator.apply(state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, t.getDestination()))),
+									t.getSync()!=null ? this.getEvent(ta, t.getSync()) :CLTLocFormula.TRUE,
+									this.getGuardConditions(ta, t),
+									this.getAssignConditions(ta, t)
+								)
+							).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+				)
+			)
+		).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	
+
+	return globallyOperator.apply(ret);
+	
+	 
+}
+
+	protected CLTLocFormula getEvent(TA ta, SyncExpression e){
+		
+		
+		if(e.getOperator().equals("?")){
+			return receiveEvent2Ap.apply(
+					new AbstractMap.SimpleEntry<>(ta, e.getEvent()));
+		}
+		else{
+			return sendEvent2Ap.apply(new AbstractMap.SimpleEntry<>(ta, e.getEvent()));
+		}
+	}
 
 
 	

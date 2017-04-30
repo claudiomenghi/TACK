@@ -362,7 +362,7 @@ public class MITLIParser extends Parser {
 				setState(33);
 				match(FALSE);
 
-							MITLIFormula f = new MITLIFalse();
+							MITLIFormula f = new MITLINegation(new MITLITrue());
 								
 							((FmlaContext)_localctx).r =  f;
 						

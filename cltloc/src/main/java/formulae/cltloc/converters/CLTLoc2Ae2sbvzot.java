@@ -49,7 +49,6 @@ public class CLTLoc2Ae2sbvzot implements Function<CLTLocFormula, String> {
 		
 		footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
 
-		System.out.println("AAAAAA"+clocks);
 		Set<String> clockNames=new HashSet<>();
 		clockNames=clocks.stream()
 				.filter(c ->  c.getClockName().contains("_")).map(c ->{

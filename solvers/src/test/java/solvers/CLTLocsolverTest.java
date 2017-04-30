@@ -14,7 +14,9 @@ import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.Variable;
+import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
+import formulae.cltloc.operators.binary.CLTLocUntil;
 import formulae.cltloc.operators.unary.CLTLocGlobally;
 import formulae.cltloc.operators.unary.CLTLocNegation;
 import formulae.cltloc.operators.unary.CLTLocNext;
@@ -46,6 +48,22 @@ public class CLTLocsolverTest {
 		assertTrue("a contradiction should return unsat", new CLTLocsolver(assignment, out, 5).solve());
 	}
 
+	@Test
+	public void test5() throws IOException, ZotException {
+
+		CLTLocFormula assignment = 
+				
+				new CLTLocNegation(
+						
+						new CLTLocUntil(CLTLocFormula.TRUE, 
+								new CLTLocConjunction(new CLTLocAP("p2_cs"), new CLTLocAP("p1_cs"))
+								)
+						);
+				
+
+		assertTrue("a contradiction should return unsat", new CLTLocsolver(assignment, System.out, 5).solve());
+	}
+	
 	
 	@Test
 	public void testOrigin() throws IOException, ZotException {
@@ -142,6 +160,44 @@ public class CLTLocsolverTest {
 	}
 	
 	
+	@Test
+	public void test6() throws IOException, ZotException {
+
+		CLTLocFormula h1 = new CLTLocAP("H_1");
+		CLTLocFormula h0 = new CLTLocAP("H_0");
+		
+		CLTLocFormula checked=new CLTLocIff(new CLTLocNext(h1), h0);
+		assertTrue(
+				new CLTLocsolver(checked, new PrintStream(ByteStreams.nullOutputStream()), 5).solve());
+	}
+	
+	@Test
+	public void test7() throws IOException, ZotException {
+
+		CLTLocFormula h1 = new CLTLocAP("H_1");
+		CLTLocFormula h0 = new CLTLocAP("H_0");
+		
+		CLTLocFormula checked=
+				new CLTLocYesterday(
+				new CLTLocIff(new CLTLocNext(h1), h0));
+		assertTrue(
+				new CLTLocsolver(checked, new PrintStream(ByteStreams.nullOutputStream()), 5).solve());
+	}
+	
+	@Test
+	public void test8() throws IOException, ZotException {
+
+		CLTLocFormula h1 = new CLTLocAP("H_1");
+		CLTLocFormula h0 = new CLTLocAP("H_0");
+		
+		CLTLocFormula checked=
+				new CLTLocYesterday(
+						CLTLocFormula.getAnd(
+				new CLTLocNegation(h1),
+				new CLTLocIff(new CLTLocNext(h1), h0)));
+		assertTrue(
+				new CLTLocsolver(checked, new PrintStream(ByteStreams.nullOutputStream()), 5).solve());
+	}
 	@Test
 	public void yesterday() throws IOException, ZotException {
 

@@ -5,7 +5,6 @@ import java.util.Set;
 import com.google.common.base.Preconditions;
 
 import formulae.Formula;
-import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLITrue;
 import formulae.mitli.visitors.MITLIVisitor;
@@ -15,7 +14,6 @@ public abstract class MITLIFormula extends Formula {
 	private int maxIntComparedto = 0;
 
 	public static final MITLIFormula TRUE = new MITLITrue();
-	public static final MITLIFormula FALSE = new MITLIFalse();
 
 	public MITLIFormula() {
 		super();
@@ -47,6 +45,7 @@ public abstract class MITLIFormula extends Formula {
 		if(f instanceof MITLINegation){
 			return ((MITLINegation) f).getChild();
 		}
+		
 		return new MITLINegation(f);
 	}
 
@@ -106,7 +105,8 @@ public abstract class MITLIFormula extends Formula {
 	public static MITLIFormula G_inf(MITLIFormula f, int a) {
 		Preconditions.checkNotNull(f, "The formula cannot be null");
 		if (a == 0) {
-			return R(new MITLIFalse(), f);
+			return R(
+					not(TRUE), f);
 		} else {
 			return new MITLIGlobally_AtoInf(f, a);
 		}
@@ -214,9 +214,10 @@ public abstract class MITLIFormula extends Formula {
 
 	// Producers method to build derived temporal CLTL formulae
 	public static MITLIFormula R(MITLIFormula f1, MITLIFormula f2) {
-		return new MITLIRelease(f1, f2);
+		return not(U(not(f1), not(f2)));
 	}
 
+	
 	
 	// Eventually: F_<a,+oo)
 	public static MITLIFormula F(MITLIFormula f, int a, boolean aB) {

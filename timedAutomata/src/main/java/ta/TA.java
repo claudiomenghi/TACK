@@ -32,6 +32,8 @@ public class TA {
 	
 	
 	private List<String> actions;
+	private List<String> sendActions;
+	private List<String> receiveActions;
 
 	/**
 	 * The name of the timed automaton
@@ -91,6 +93,8 @@ public class TA {
 		this.allVariables = new HashSet<>(variables);
 
 		this.actions=new ArrayList<>();
+		this.sendActions=new ArrayList<>();
+		this.receiveActions=new ArrayList<>();
 		this.states.forEach(s -> this.outTransitions.put(s, new HashSet<>()));
 		this.transitions.forEach(t -> {
 			Preconditions.checkArgument(this.outTransitions.containsKey(t.getSource()),
@@ -102,7 +106,15 @@ public class TA {
 			t.getGuard().getConditions().forEach(g -> allVariables.addAll(g.getVariables()));
 			t.getAssignement().getVariableassigments().forEach(v -> allVariables.add(v.getVariable()));
 			if(t.getSync()!=null && t.getSync().getEvent()!=null){
-				this.actions.add(t.getSync().getEvent());
+				if(!this.actions.contains(t.getSync().getEvent())){
+					this.actions.add(t.getSync().getEvent());
+				}
+				if(!this.sendActions.contains(t.getSync().getEvent()) && t.getSync().getOperator().equals("!")){
+					this.sendActions.add(t.getSync().getEvent());
+				}
+				if(!this.receiveActions.contains(t.getSync().getEvent()) && t.getSync().getOperator().equals("?")){
+					this.receiveActions.add(t.getSync().getEvent());
+				}
 			}
 		});
 
@@ -227,5 +239,12 @@ public class TA {
 
 	public List<String> getActions() {
 		return Collections.unmodifiableList(actions);
+	}
+	
+	public List<String> sendActions() {
+		return Collections.unmodifiableList(this.sendActions);
+	}
+	public List<String> reveiveActions() {
+		return Collections.unmodifiableList(this.receiveActions);
 	}
 }

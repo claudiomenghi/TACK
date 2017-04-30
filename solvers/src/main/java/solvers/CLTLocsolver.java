@@ -9,6 +9,7 @@ import com.google.common.base.Stopwatch;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.converters.CLTLoc2Ae2sbvzot;
 import formulae.cltloc.converters.CLTLoc2Ae2zot;
+import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.visitor.CLTLoc2StringVisitor;
 import zotrunner.ZotException;
 import zotrunner.ZotRunner;

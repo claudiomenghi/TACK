@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.base.Preconditions;
 
 import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.visitor.NicelyIndentToString;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.converters.MITLI2CLTLoc;
@@ -45,6 +46,8 @@ public class MITLIsolver {
 
 		out.println("Transforming the MITLI formula in CLTLoc");
 		out.println("Formula: " + formula);
+		
+		
 		MITLI2CLTLoc converted = new MITLI2CLTLoc(formula, bound);
 
 		cltlocFormula = converted.apply();
@@ -52,7 +55,8 @@ public class MITLIsolver {
 
 		this.vocabulary = converted.getVocabulary();
 
-		return new CLTLocsolver(cltlocFormula, out, bound).solve();
+	
+		return new CLTLocsolver(new CLTLocYesterday(cltlocFormula), out, bound).solve();
 
 	}
 

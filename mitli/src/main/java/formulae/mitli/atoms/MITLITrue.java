@@ -63,7 +63,7 @@ public class MITLITrue extends MITLIAtom {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		return this.atomName;
+		return "("+this.atomName+")";
 	}
 	/**
 	 * {@inheritDoc}

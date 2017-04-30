@@ -14,6 +14,7 @@ import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
+import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
@@ -77,6 +78,8 @@ public class TAChecker extends SystemChecker{
 		out.println("Converting the MITLI formula in CLTLoc");
 		MITLI2CLTLoc translator = new MITLI2CLTLoc(negatedFormula, this.bound);
 		formula = translator.apply();
+		
+		
 		out.println("MITLI formula converted in CLTLoc");
 		out.println("************************************************");
 		out.println("**  MITLI FORMULA CLTLoc ENCODING                **");
@@ -89,6 +92,8 @@ public class TAChecker extends SystemChecker{
 				.map(a -> new VariableAssignementAP(Integer.toString(vocabular.get(a)),
 						new ta.Variable(a.getIdentifier()), new Value(Integer.toString(a.getValue()))))
 				.collect(Collectors.toSet());
+		CLTLocFormula initFormula = new CLTLocAP("H_" + vocabular.get(negatedFormula));
+		formula = new CLTLocConjunction(formula, initFormula);
 		
 		Set<MITLIPropositionalAtom> propositionalAtoms = mitliformula.accept(new GetPropositionalAtomsVisitor());
 		Set<StateAP> atomicpropositions=
@@ -97,13 +102,6 @@ public class TAChecker extends SystemChecker{
 		out.println("------------------");
 		out.println("CLTLoc encoding");
 		out.println(formula);
-		
-		out.println("************************************************************************");
-		out.println("***ADDING THE CONTRAINT THAT THE FORMULA INITIALLY HOLDS ******");
-		CLTLocFormula initFormula = new CLTLocAP("H_" + vocabular.get(negatedFormula));
-		out.println("Contstraint: ");
-		out.println(initFormula);
-		formula = new CLTLocConjunction(formula, CLTLocFormula.Y(initFormula));
 		
 		out.println("\n");
 		out.println("\n");
@@ -148,7 +146,8 @@ public class TAChecker extends SystemChecker{
 		// out.println(translator.getVocabulary());
 
 		out.println("Creating the conjunction of the formulae");
-		CLTLocFormula conjunctionFormula = new CLTLocConjunction(taFormula, formula);
+		CLTLocFormula conjunctionFormula = 
+				new CLTLocYesterday(new CLTLocConjunction(taFormula, formula));
 		out.println("Conjunction of the formulae created");
 
 

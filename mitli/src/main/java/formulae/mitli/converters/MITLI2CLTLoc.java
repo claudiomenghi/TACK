@@ -19,6 +19,7 @@ import formulae.cltloc.relations.CLTLocGERelation;
 import formulae.cltloc.visitor.CLTLoc2StringVisitor;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.mitli.MITLIFormula;
+import formulae.mitli.MITLINegation;
 import formulae.mitli.visitors.MITLI2CLTLocVisitor;
 import formulae.mitli.visitors.SubformulaeVisitor;
 
@@ -54,7 +55,13 @@ public class MITLI2CLTLoc {
 
 		this.populateParentRelation(formula);
 
+		
+		//CLTLocFormula init = 
+		//	  (formula instanceof MITLINegation )? 
+		//				  CLTLocFormula.getNeg(MITLI2CLTLocVisitor.first.apply(visitor.formulaIdMap.get(formula)))
 		CLTLocFormula init = MITLI2CLTLocVisitor.first.apply(visitor.formulaIdMap.get(formula));
+		// init  =CLTLocFormula.TRUE;
+				
 
 		CLTLocFormula conjunction = CLTLocFormula.TRUE;
 		for (MITLIFormula f : formula.accept(new SubformulaeVisitor())) {
@@ -92,7 +99,7 @@ public class MITLI2CLTLoc {
 		CLTLocFormula formula = CLTLocFormula.getAnd( nowConstraint, clockConstraint, init, conjunction);
 
 		converted = true;
-		return MITLI2CLTLocVisitor.Y.apply(formula);
+		return formula;
 
 	}
 

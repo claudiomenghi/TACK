@@ -1,6 +1,8 @@
 package ta.visitors;
 
+import formulae.cltloc.CLTLocFormula;
 import ta.AP;
+import ta.StateAP;
 import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.EmptyExpression;
@@ -33,4 +35,5 @@ public interface TAVisitor<T> {
 	
 	public T visit(VariableAssignementAP ap);
 
+	public T visit(StateAP ap);
 }
