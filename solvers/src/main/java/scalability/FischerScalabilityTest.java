@@ -72,9 +72,6 @@ public class FischerScalabilityTest {
 				System.out.println("BOUND \t NUMBER OF STATIONS \t MITLI2CLTLoc \t TA2CLTLoc \t CLTLoc2zot \t CHECKING \t SAT \t CHEKING SPACE \n");
 				
 				System.out.println(dateFormat.format(date)+"\t"+bound+"\t"+stationsNumber+"\t"+checker.getMitli2cltlocTime()+"\t"+checker.getTa2clclocTime()+"\t"+checker.getCltloc2zotTime()+"\t"+checker.getCheckingTime()+"\t"+checker.getSattime()+"\t"+checker.getCheckingspace()+"\n");
-				if(!result){
-					throw new InternalError("The property must be satisfied");
-				}
 				fileWriter.close();
 			}
 		}

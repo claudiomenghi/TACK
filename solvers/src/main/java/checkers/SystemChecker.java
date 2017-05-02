@@ -160,7 +160,7 @@ public class SystemChecker  {
 					throw new IllegalArgumentException("The proposition "+a+ "is not contained in the alphabet of the vocabulary");
 				}
 				if( a.getAtomName().indexOf("_")==-1){
-					throw new IllegalArgumentException("A state proposition  must have the form state_ap");
+					throw new IllegalArgumentException("Error in the proposition: "+a.getAtomName()+"A state proposition  must have the form state_ap");
 							
 				}
 				return new StateAP(Integer.toString(vocabular.get(a)),a.getAtomName().substring(0, a.getAtomName().indexOf("_")), a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()));

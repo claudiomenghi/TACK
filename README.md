@@ -1,4 +1,4 @@
-# TACK (Timed Automata ChecKer))
+# TACK (Timed Automata ChecKer)
 
 
 #### Implementation

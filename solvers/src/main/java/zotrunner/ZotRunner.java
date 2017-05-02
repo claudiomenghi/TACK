@@ -70,7 +70,7 @@ public class ZotRunner {
 			if (line.contains("---UNSAT---")) {
 				sat = false;
 				resultfound = true;
-				System.out.println("Result2: Zot ends");
+				out.println("Result2: Zot ends");
 			}
 			if (line.contains("---SAT---")) {
 				sat = true;
