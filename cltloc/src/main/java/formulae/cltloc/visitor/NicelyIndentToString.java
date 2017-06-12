@@ -6,6 +6,7 @@ import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
+import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -271,6 +272,14 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 
 	@Override
 	public String visit(CLTLocSelector formula) {
+		StringBuilder finalFormula=new StringBuilder();
+		finalFormula.append(formula.toString());
+		
+		return finalFormula.toString();
+	}
+
+	@Override
+	public String visit(AssignNextVariable formula) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(formula.toString());
 		

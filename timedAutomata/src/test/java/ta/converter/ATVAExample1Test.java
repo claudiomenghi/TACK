@@ -1,18 +1,12 @@
 package ta.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Before;
-import org.junit.Test;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocAP;
@@ -29,12 +23,10 @@ import formulae.cltloc.operators.unary.CLTLocNegation;
 import formulae.cltloc.operators.unary.CLTLocNext;
 import formulae.cltloc.relations.CLTLocRelation;
 import formulae.cltloc.relations.Relation;
-import ta.StateAP;
 import ta.SystemDecl;
 import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
-import ta.visitors.TA2CLTLoc;
 
 public class ATVAExample1Test {
 
@@ -343,144 +335,7 @@ public class ATVAExample1Test {
 
 	}
 
-	@Test
-	public void testExample() throws IOException {
 
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		CLTLocFormula f=ta2cltloc.convert(system, ta, new HashSet<>(),  new HashSet<>());
-
-		
-		assertTrue(f!=null);
-	}
-	
-	@Test
-	public void testVariable1() throws IOException {
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta, new HashSet<>(),  new HashSet<>());
-
-		assertTrue("No CLTLoc formula for variables", ta2cltloc.getVariable1().equals(CLTLocFormula.TRUE));
-
-	}
-
-	
-
-	@Test
-	public void testClock1() throws IOException {
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
-
-		assertEquals(expectedclock1, ta2cltloc.getClock1());
-
-	}
-
-	@Test
-	public void testClock2() throws IOException {
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta, new HashSet<>(),  new HashSet<>());
-
-		assertEquals(expectedclock2, ta2cltloc.getClock2());
-
-	}
-
-	@Test
-	public void testClock3() throws IOException {
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
-
-		assertEquals(expectedclock3, ta2cltloc.getClock3());
-
-	}
-
-	@Test
-	public void testPhi1() throws IOException {
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-		ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
-		assertEquals("Relation between state of the automaton  encoded correctly", expectedphi1, ta2cltloc.getPhi1());
-	}
-
-	@Test
-	public void testPhi2() throws IOException {
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		 ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
-		assertEquals("The initial state is encoded correctly", expectedphi2, ta2cltloc.getPhi2());
-
-	}
-
-	@Test
-	public void testPhi3() throws IOException {
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta, new HashSet<>(), new HashSet<>());
-
-		assertEquals("The invariants are encoded correctly", expectedphi3, ta2cltloc.getPhi3());
-	}
-
-	@Test
-	public void testPhi4() throws IOException {
-
-		Set<StateAP> ap = new HashSet<>();
-		ap.add(new StateAP("Example1_l0","Example1","l0"));
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta,  ap, new HashSet<>());
-
-		assertEquals("The ap are associated to the states correctly", expectedphi4, ta2cltloc.getPhi4());
-	}
-	
-	@Test
-	public void testPhi5() throws IOException {
-
-		Set<StateAP> ap = new HashSet<>();
-		ap.add(new StateAP("Example1_l0","Example1","l0"));
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta,  ap, new HashSet<>());
-
-		assertEquals("The ap are associated to the states correctly", expectedphi5, ta2cltloc.getPhi5());
-
-	}
-	
-	
-	@Test
-	public void testPhi6() throws IOException {
-
-		Set<StateAP> ap = new HashSet<>();
-		ap.add(new StateAP("Example1_l0","Example1","l0"));
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta, ap, new HashSet<>());
-
-		assertEquals("The ap are associated to the states correctly", expectedphi6, ta2cltloc.getPhi6());
-	}
-	
-	@Test
-	public void testPhi7() throws IOException {
-
-		Set<StateAP> ap = new HashSet<>();
-		ap.add(new StateAP("Example1_l0","Example1","l0"));
-
-		TA2CLTLoc ta2cltloc = new TA2CLTLoc();
-
-		ta2cltloc.convert(system, ta, ap, new HashSet<>());
-
-		assertEquals("The ap are associated to the states correctly", expectedphi7, ta2cltloc.getPhi7());
-
-	}
 
 	
 }

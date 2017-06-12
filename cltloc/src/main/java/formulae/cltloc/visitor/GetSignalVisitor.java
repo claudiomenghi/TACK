@@ -9,6 +9,7 @@ import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
+import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -213,6 +214,11 @@ public class GetSignalVisitor implements CLTLocVisitor<Set<Signal>> {
 
 	@Override
 	public Set<Signal> visit(CLTLocSelector formula) {
+		return new HashSet<>();
+	}
+
+	@Override
+	public Set<Signal> visit(AssignNextVariable formula) {
 		return new HashSet<>();
 	}
 }

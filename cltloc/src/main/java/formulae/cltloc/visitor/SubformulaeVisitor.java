@@ -10,6 +10,7 @@ import formulae.cltloc.atoms.Constant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
+import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -216,6 +217,13 @@ public class SubformulaeVisitor implements CLTLocVisitor<Set<CLTLocFormula>> {
 	@Override
 	public Set<CLTLocFormula> visit(CLTLocSelector formula) {
 		return new HashSet<>();
+	}
+
+	@Override
+	public Set<CLTLocFormula> visit(AssignNextVariable formula) {
+		Set<CLTLocFormula> formulae = new HashSet<>();
+		formulae.add(formula);
+		return formulae;
 	}
 
 }

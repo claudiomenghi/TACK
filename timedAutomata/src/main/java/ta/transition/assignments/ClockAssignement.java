@@ -2,10 +2,8 @@ package ta.transition.assignments;
 
 import com.google.common.base.Preconditions;
 
-import formulae.cltloc.CLTLocFormula;
 import ta.Clock;
 import ta.expressions.Value;
-import ta.visitors.TA2CLTLocVisitor;
 import ta.visitors.TAVisitor;
 
 public class ClockAssignement extends Assignment {

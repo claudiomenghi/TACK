@@ -1,43 +1,308 @@
 package ta.visitors;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.AbstractMap;
+import java.io.PrintWriter;
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
+import com.google.common.io.ByteStreams;
 
 import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
+import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
 import formulae.cltloc.operators.binary.CLTLocRelease;
+import formulae.cltloc.operators.unary.CLTLocEventually;
 import formulae.cltloc.operators.unary.CLTLocGlobally;
 import formulae.cltloc.operators.unary.CLTLocNegation;
 import formulae.cltloc.operators.unary.CLTLocNext;
+import formulae.cltloc.operators.unary.CLTLocYesterday;
+import formulae.cltloc.relations.CLTLocEQRelation;
 import formulae.cltloc.relations.CLTLocRelation;
 import formulae.cltloc.relations.Relation;
+import ta.AP;
 import ta.Clock;
 import ta.StateAP;
 import ta.SystemDecl;
 import ta.TA;
 import ta.Variable;
 import ta.VariableAssignementAP;
-import ta.transition.sync.SyncExpression;
+import ta.state.State;
+import ta.transition.Transition;
+import ta.transition.assignments.ClockAssignement;
+import ta.transition.assignments.VariableAssignement;
+import ta.transition.guard.ClockConstraint;
+import ta.transition.guard.ClockConstraintAtom;
 
-public class TANetwork2CLTLoc extends TA2CLTLoc {
+public class TANetwork2CLTLoc {
+
+
+	public static final CLTLocFormula ORIGIN = CLTLocFormula.getNeg(new CLTLocYesterday(CLTLocFormula.TRUE));
+	
+	public static final Constant zero=new Constant(0);
+	
+	protected final File statisticsFile;
+	protected PrintWriter writer;
+	
+	public static final Function<Integer, CLTLocFormula> rest = (s) -> new CLTLocAP("H_" + s);
+
+	public static final Function<Integer, CLTLocFormula> first = (s) -> new CLTLocAP("P_" + s);
+	
+	public static final BinaryOperator<CLTLocFormula> conjunctionOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+
+		if (left.equals(CLTLocFormula.TRUE)) {
+			return right;
+		}
+		if (left.equals(CLTLocFormula.FALSE)) {
+			return left;
+		}
+		if (right.equals(CLTLocFormula.TRUE)) {
+			return left;
+		}
+		if (right.equals(CLTLocFormula.FALSE)) {
+			return right;
+		}
+		return new CLTLocConjunction(left, right);
+	};
+	
+	
+	public static final BinaryOperator<CLTLocFormula> iffOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+
+		if(left.equals(CLTLocFormula.TRUE)){
+			return right;
+		}
+		if(right.equals(CLTLocFormula.TRUE)){
+			return left;
+		}
+		return new CLTLocIff(left, right);
+	};
+	
+
+	public static final BinaryOperator<CLTLocFormula> disjunctionOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+		if (left.equals(CLTLocFormula.FALSE)) {
+			return right;
+		}
+		if (right.equals(CLTLocFormula.FALSE)) {
+			return left;
+		}
+		return new CLTLocDisjunction(left, right);
+	};
 
 	
+	public static final UnaryOperator<CLTLocFormula> eventuallyOperator = (formula) ->
+	{
+		
+		return new CLTLocEventually(formula);
+	};
+	
+	
+	public static final BinaryOperator<CLTLocFormula> implicationOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+		if (right.equals(CLTLocFormula.TRUE)) {
+			return CLTLocFormula.TRUE;
+		}
+		return new CLTLocImplies(left, right);
+	};
+
+	public static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
+	public static final UnaryOperator<CLTLocFormula> globallyOperator = (formula) ->
+	{
+		if(formula.equals(CLTLocFormula.TRUE)){
+			return formula;
+		}
+		return new CLTLocGlobally(formula);
+	};
+	
+	
+	public static final UnaryOperator<CLTLocFormula> nextOperator = (formula) -> {
+		Preconditions.checkNotNull(formula, "The formula cannot be null");
+
+		if(formula.equals(CLTLocFormula.TRUE)){
+			return formula;
+		}
+		return new CLTLocNext(formula);
+	};
+	
+	public static final UnaryOperator<CLTLocFormula> Y = CLTLocYesterday::new;
+
+
+	//private static final Function<AP, CLTLocFormula> ap2CLTLocRESTAp = ap -> new CLTLocAP("H_" + ap.getName());
+	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
+
+	protected static final Function<Entry<TA, State>, CLTLocFormula> state2Ap = (s) -> new CLTLocAP(
+			s.getKey().getIdentifier() + "_" + s.getValue().getId());
+
+	protected static final Function<Entry<TA, String>, CLTLocFormula> sendEvent2Ap = (s) -> new CLTLocAP(
+			s.getKey().getIdentifier() + "_?" + s.getValue());
+
+	protected static final Function<Entry<TA, String>, CLTLocFormula> tauEvent2Ap = (s) -> new CLTLocAP(
+			s.getKey().getIdentifier() + "_" + s.getValue());
+	
+	protected static final Function<Entry<TA, String>, CLTLocFormula> receiveEvent2Ap = (s) -> new CLTLocAP(
+			s.getKey().getIdentifier() + "_!" + s.getValue());
+	
+	
+	protected static final BinaryOperator<CLTLocFormula> xorOperator = (left, right) -> {
+		Preconditions.checkNotNull(left, "The left formula cannot be null");
+		Preconditions.checkNotNull(right, "The right formula cannot be null");
+
+		if(left.equals(CLTLocFormula.FALSE)){
+			return right;
+		}
+		
+		if(right.equals(CLTLocFormula.FALSE)){
+			return left;
+		}
+		
+		return CLTLocFormula.getOr(
+					CLTLocFormula.getAnd(
+						left,
+						negationOperator.apply(right)
+					), 
+					CLTLocFormula.getAnd(
+						negationOperator.apply(left),
+						right
+					)
+			);
+	};
+	
 	public TANetwork2CLTLoc(){
-		super();
+		this.statisticsFile=new File("TA2CLTLocstatistics.txt");
+		try {
+			writer = new PrintWriter(statisticsFile);
+		} catch (FileNotFoundException e) {
+			writer =new PrintWriter(ByteStreams.nullOutputStream());
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * encodes the property phi1 of the paper
+	 * @param system the system to be considered
+	 * @return the property phi1
+	 */
+	protected CLTLocFormula getInitialStateConstraint(SystemDecl system) {
+		return system.getTimedAutomata().stream().map(ta -> (CLTLocFormula)
+				new CLTLocEQRelation(
+						new formulae.cltloc.atoms.Variable("s"+ta.getId())
+						,
+						new Constant(ta.getInitialState().getId()))
+					).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	/**
+	 * encodes the property phi2 of the paper
+	 * @param system the system to be considered
+	 * @return the property phi2
+	 */
+	protected CLTLocFormula getInitialVariableValuesConstraint(SystemDecl system) {
+		return system.getVariableDeclaration().stream().map(v -> (CLTLocFormula)
+				new CLTLocEQRelation(
+						new formulae.cltloc.atoms.Variable(v.getId())
+						,
+						new Constant(v.getExp().evaluate()))
+					).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	
+	/**
+	 * encodes the property phi4 of the paper
+	 * @param system the system to be considered
+	 * @return the property phi4 of the paper
+	 */
+	public CLTLocFormula getTransitionConstraint(SystemDecl system){
+		return 
+				system.getTimedAutomata().stream().map(
+				ta -> ta.getTransitions().stream().map(
+						t->
+							implicationOperator.apply(
+									new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("t"+ta.getId()), new Constant(t.getId())),
+									CLTLocFormula.getAnd(
+											new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(t.getSource().getId())),
+											this.getVariableGuard(t),
+											nextOperator.apply(
+													CLTLocFormula.getAnd(
+															new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(t.getDestination().getId())),
+															this.getClockGuard(t),
+															this.getAssignVariables(t),
+															this.getAssignclock(t)
+															)
+													)
+											)
+									)
+						).reduce(CLTLocFormula.TRUE, conjunctionOperator)
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		
 	}
+
+	private CLTLocFormula getClockGuard(Transition t) {
+		
+		Set<ClockConstraintAtom> assignments=t.getGuard().getClockConstraints();
+		return assignments.stream().map(c ->{
+						return (CLTLocFormula) new CLTLocDisjunction(
+								CLTLocFormula.getAnd(
+										new CLTLocSelector(c.getClock().getName() + "_v"),
+										new CLTLocRelation(new CLTLocClock(c.getClock().getName() + "_0"), new Constant(c.getValue()), Relation.EQ)
+										),
+								CLTLocFormula.getAnd(
+										new CLTLocNegation(new CLTLocSelector(c.getClock().getName() + "_v")),
+										new CLTLocRelation(new CLTLocClock(c.getClock().getName() + "_0"), new Constant(c.getValue()), Relation.EQ)
+										)
+							);
+					}
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+	}
+	private CLTLocFormula getVariableGuard(Transition t) {
+		return (CLTLocFormula)  t.getGuard().getConditions().stream().map(condition -> 
+		(CLTLocFormula) new CLTLocEQRelation(new formulae.cltloc.atoms.Variable( condition.getVariable().getName()), new Constant(condition.getValue()))
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	
+	
+	private CLTLocFormula getAssignVariables(Transition t) {
+		 Set<VariableAssignement> assignments=t.getAssignement().getVariableassigments();
+		 return assignments.stream().map(v -> (CLTLocFormula) new CLTLocEQRelation(new formulae.cltloc.atoms.Variable(v.getVariable().getName()), new Constant(v.getValue().evaluate()))).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	private CLTLocFormula getAssignclock(Transition t){
+		Set<ClockAssignement> assignments=t.getAssignement().getClockassigments();
+		return assignments.stream().map(c ->{
+						return (CLTLocFormula) new CLTLocDisjunction(
+									new CLTLocRelation(new CLTLocClock(c.getClock().getName() + "_0"), new Constant(c.getValue().value), Relation.EQ),
+									new CLTLocRelation(new CLTLocClock(c.getClock().getName() + "_1"), new Constant(c.getValue().value), Relation.EQ)
+									);
+					}
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	
+	
 	
 	public CLTLocFormula convert(SystemDecl system, Set<StateAP> propositionsOfInterest, Set<VariableAssignementAP> atomicpropositionsVariable) {
 
@@ -45,174 +310,52 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		Stopwatch testTimer = Stopwatch.createUnstarted();
 
 		testTimer.start();
-		this.variable1=
+		CLTLocFormula clockConstraint=
 				conjunctionOperator.apply(
-						this.getVariable1(system)
-						, 
-				system.getTimedAutomata().stream().map(ta ->
-					(CLTLocFormula) this.getVariable1(ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
+				this.getClock1(system),
+				conjunctionOperator.apply(
+						globallyOperator.apply(this.getClock2(system))
+							,
+						globallyOperator.apply(this.getClock3(system))
+						)
+				);
+		
+		CLTLocFormula automaton=
+				CLTLocFormula.getAnd(
+				this.getInitialStateConstraint(system),
+				this.getInitialVariableValuesConstraint(system),
+				globallyOperator.apply(
+						CLTLocFormula.getAnd(
+								this.getTransitionConstraint(system),
+								this.stateChangesImpliesTransition(system),
+								this.resetImpliesTransition(system),
+								this.variableChangeImpliesTransition(system)
+								)
+						),
+				this.finallyOneTransitionPerformed(system)
+				);
+		CLTLocFormula semantic=
+				CLTLocFormula.getAnd(
+						globallyOperator.apply(
+								CLTLocFormula.getAnd(
+										this.labelIsTrueOnlyInTheStates(system, propositionsOfInterest),
+										this.intervalsAreRightClosed(propositionsOfInterest),
+										this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
+										this.variableIntervalsAreRightClosed(atomicpropositionsVariable)
+										)
+								),
+						this.initialFirstValues(system, propositionsOfInterest),
+						this.initAssignments(system, atomicpropositionsVariable)
+						);
 		testTimer.stop();
 		writer.write("variable1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
+		//this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
-		testTimer.reset();
-		testTimer.start();
-		this.clock1 =
-				conjunctionOperator.apply(
-						this.getClock1(system)
-						, 
-				system.getTimedAutomata().stream().map(ta ->
-						this.getClock1(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
-		testTimer.stop();
-		writer.write("clock1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.clock2 = 
-				conjunctionOperator.apply(
-						this.getClock2(system)
-						, 
-				system.getTimedAutomata().stream().map(ta ->
-						this.getClock2(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
-		testTimer.stop();
-		writer.write("clock2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		testTimer.reset();
-		testTimer.start();
-		this.clock3 = 
-				conjunctionOperator.apply(
-						this.getClock3(system)
-						, 
-				system.getTimedAutomata().stream().map(ta ->
-						this.getClock3(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
-		testTimer.stop();
-		writer.write("clock3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		CLTLocFormula clockconst = 
-				CLTLocFormula.getAnd( this.clock1,this.clock2, this.clock3);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.phi1 = system.getTimedAutomata().stream().map(ta ->
-					this.getPhi1(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		testTimer.stop();
-		writer.write("phi1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		
-		testTimer.reset();
-		testTimer.start();
-		this.phi2 = system.getTimedAutomata().stream().map(ta ->
-					this.getPhi2(ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		testTimer.stop();
-		writer.write("phi2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.phi3 =  system.getTimedAutomata().stream().map(ta ->
-					this.getPhi3(ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		testTimer.stop();
-		writer.write("phi3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.phi4 = system.getTimedAutomata().stream().map(ta ->
-						this.getPhi4(system, ta)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		testTimer.stop();
-		writer.write("phi4: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.phi5 = system.getTimedAutomata().stream().map(ta ->
-					this.getPhi5(ta, propositionsOfInterest,atomicpropositionsVariable)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		testTimer.stop();
-		writer.write("phi5: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.phi6 =
-						this.getPhi6(propositionsOfInterest, atomicpropositionsVariable);
-		testTimer.stop();
-		writer.write("phi6: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.phi7 = system.getTimedAutomata().stream().map(ta ->
-						this.getPhi7(ta, propositionsOfInterest, atomicpropositionsVariable)
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		testTimer.stop();
-		writer.write("phi7: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		CLTLocFormula taFormula = CLTLocFormula.getAnd(this.phi1, this.phi2, this.phi3, this.phi4, this.phi5, this.phi6, this.phi7);
-
-
-		testTimer.reset();
-		testTimer.start();
-		this.network1=this.getNetwork1(system);
-		testTimer.stop();
-		writer.write("network1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.network2=this.getNetwork2(system);
-		testTimer.stop();
-		writer.write("network2: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-		
-		testTimer.reset();
-		testTimer.start();
-		this.network3=this.getNetwork3(system);
-		testTimer.stop();
-		writer.write("network3: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
-				
-		CLTLocFormula network = 
-				CLTLocFormula.getAnd( this.network1,this.network2, this.network3);
-		
-		writer.close();
-
-		network=CLTLocFormula.TRUE;
-		return CLTLocFormula.getAnd(this.variable1, clockconst, taFormula,network);
-
+		return CLTLocFormula.getAnd(clockConstraint, automaton, semantic);
 	}
 	
 	
-	protected CLTLocFormula getVariable1(SystemDecl system) {
 
-		Set<Variable> variables=system.getVariableDeclaration().stream().map(c -> (Variable) new Variable(c.getId())).collect(Collectors.toSet());
-
-		CLTLocFormula f1 = 
-				variables.stream().map( 
-				v ->{
-				return (CLTLocFormula) 
-						CLTLocFormula.getAnd(
-						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "0"), new Constant(0), Relation.EQ),
-						new CLTLocRelation(new formulae.cltloc.atoms.Variable( v.getName() + "1"), new Constant(0), Relation.GE),					
-						new CLTLocNegation(new CLTLocSelector( v.getName() + "_v"))
-						);
-				}
-			).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-
-		return f1;
-	}
 	
 	protected CLTLocFormula getClock1(SystemDecl system) {
 
@@ -221,8 +364,8 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		CLTLocFormula f0 = clocks.stream().map(c -> {
 			return (CLTLocFormula) 
 					CLTLocFormula.getAnd(
-					new CLTLocRelation(new CLTLocClock( c.getName() + "0"), new Constant(0), Relation.EQ),
-					new CLTLocRelation(new CLTLocClock( c.getName() + "1"), new Constant(0), Relation.GE),					
+					new CLTLocRelation(new CLTLocClock( c.getName() + "_0"), new Constant(0), Relation.EQ),
+					new CLTLocRelation(new CLTLocClock( c.getName() + "_1"), new Constant(0), Relation.GE),					
 					new CLTLocNegation(new CLTLocSelector( c.getName() + "_v"))
 					);
 					
@@ -238,32 +381,20 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 
 
 		CLTLocFormula f1 = clocks.stream().map(c -> {
-			String prefix = "";
 			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
+					new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.EQ),
 					new CLTLocNext(
 							new CLTLocRelease(
-									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
+									new CLTLocRelation(new CLTLocClock( c.getName() + "_1"), zero, Relation.EQ),
 									new CLTLocConjunction(
-										new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")),
-										new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero,
+										new CLTLocNegation(new CLTLocSelector(c.getName() + "_v")),
+										new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero,
 												Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
-		CLTLocFormula f2 = system.getClockDeclarations().stream()
-				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-						new CLTLocRelation(
-								new CLTLocClock(c.getId() + "0"), zero, Relation.EQ), 
-						new CLTLocNext(
-								new CLTLocRelease(
-										new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,Relation.EQ),
-										new CLTLocConjunction(
-												new CLTLocNegation(new CLTLocSelector(c.getId() + "_v")),
-												new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
-														Relation.GE)))))))
-				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
-		return CLTLocFormula.getAnd(f1, f2);
+
+		return f1;
 	}
 
 	protected CLTLocFormula getClock3(SystemDecl system) {
@@ -271,212 +402,206 @@ public class TANetwork2CLTLoc extends TA2CLTLoc {
 		Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock) new Clock(c.getId())).collect(Collectors.toSet());
 
 
-		CLTLocFormula f1 = clocks.stream().map(c -> {
-			String prefix ="";
-			return (CLTLocFormula) new CLTLocGlobally(
-					new CLTLocImplies(
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero, Relation.EQ),
-					new CLTLocNext(
-							new CLTLocRelease(
-									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "0"), zero, Relation.EQ),
-							new CLTLocConjunction(
-											new CLTLocSelector(prefix + c.getName() + "_v"),
-									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "1"), zero,
-											Relation.GE))))));
-		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-
-		CLTLocFormula f2 = system.getClockDeclarations().stream()
+		CLTLocFormula f2 = clocks.stream()
 				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
-						new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero, Relation.EQ), new CLTLocNext(
+						new CLTLocRelation(
+								new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ), 
+						new CLTLocNext(
 								new CLTLocRelease(
-											new CLTLocRelation(new CLTLocClock(c.getId() + "0"), zero,
-												Relation.EQ),
+										new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero,Relation.EQ),
 										new CLTLocConjunction(
-												new CLTLocSelector(c.getId() + "_v"),
-												new CLTLocRelation(new CLTLocClock(c.getId() + "1"), zero,
+												new CLTLocSelector(c.getName() + "_v"),
+												new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero,
 														Relation.GE)))))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
-		return CLTLocFormula.getAnd(f1, f2);
+		return CLTLocFormula.getAnd(f2);
 	}
 	
-	private CLTLocFormula getNetwork1(SystemDecl system){
-	
-		Set<TA> tas=system.getTimedAutomata();
-		
-		final Set<String> actions=new HashSet<>();
-		
-		
-		CLTLocFormula ret=
-				
-				CLTLocFormula.getOr(
-				// only one send
-				tas.stream().map(ta -> 
-						(CLTLocFormula) ta.sendActions().stream().map(
-								event -> sendEvent2Ap.apply(
-											new AbstractMap.SimpleEntry<>(ta, event)
+
+	/**
+	 * encodes formula phi5 of the paper
+	  * @param system the system to be considered
+	 * @return the property phi5 of the paper
+	 */
+	public CLTLocFormula stateChangesImpliesTransition(SystemDecl system) {
+		return (CLTLocFormula) system.getTimedAutomata().stream().map(ta ->
+					(CLTLocFormula) ta.getStates().stream().map(s1 -> 
+								(CLTLocFormula) ta.getStates().stream().filter(s2 -> !s2.equals(s1)).
+										 map(s2 ->
+										 (CLTLocFormula)
+										implicationOperator.apply(
+												conjunctionOperator.apply(
+												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s1.getId())),
+												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s2.getId()))),
+												ta.getTransitions().stream().filter(
+														t1 -> t1.getSource().equals(s1)&& t1.getDestination().equals(s2)
+														).map(t1 ->
+																(CLTLocFormula) new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("t"+ta.getId()), new Constant(t1.getId()))).
+												reduce(CLTLocFormula.FALSE, disjunctionOperator)
 										)
-								).reduce(CLTLocFormula.FALSE, xorOperator)
-						).reduce(CLTLocFormula.FALSE, xorOperator),
-				// or no sends
-				tas.stream().map(ta ->  
-					(CLTLocFormula) ta.sendActions().stream().map(
-							event -> 
-							CLTLocFormula.getNeg(
-								sendEvent2Ap.apply(
-										new AbstractMap.SimpleEntry<>(ta, event)
-									))
-							).reduce(CLTLocFormula.TRUE, conjunctionOperator)
-					).reduce(CLTLocFormula.TRUE, conjunctionOperator)
-				);
-		
-		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
-		
-		
-	}
-	
-	private CLTLocFormula getNetwork2(SystemDecl system){
-		
-		Set<TA> tas=system.getTimedAutomata();
-		
-		CLTLocFormula ret=
-				
-				CLTLocFormula.getOr(
-				tas.stream().map(ta -> 
-						(CLTLocFormula) ta.reveiveActions().stream().map(
-								event -> receiveEvent2Ap.apply(
-											new AbstractMap.SimpleEntry<>(ta, event)
-										)
-								).reduce(CLTLocFormula.FALSE, xorOperator)
-						).reduce(CLTLocFormula.FALSE, xorOperator),
-				tas.stream().map(ta ->  
-					(CLTLocFormula) ta.reveiveActions().stream().map(
-							event -> 
-							CLTLocFormula.getNeg(
-								receiveEvent2Ap.apply(
-										new AbstractMap.SimpleEntry<>(ta, event)
-									))
-							).reduce(CLTLocFormula.TRUE, conjunctionOperator)
-					).reduce(CLTLocFormula.TRUE, conjunctionOperator)
-				);
-		
-		return ret.equals(CLTLocFormula.FALSE) ? CLTLocFormula.TRUE : ret;
-		
-	}
-
-private CLTLocFormula getNetwork3(SystemDecl system){
-		
-		Set<TA> tas=system.getTimedAutomata();
-		
-		final Set<Entry<TA, TA>> couplesOfTa=new HashSet<>();
-		
-		tas.stream().forEach(
-				ta1 ->
-				tas.stream().forEach(
-						ta2-> {
-								if(!ta2.getIdentifier().equals(ta1.getIdentifier())){
-									if(!couplesOfTa.contains(new AbstractMap.SimpleEntry<>(ta2,ta1))){
-										couplesOfTa.add(new AbstractMap.SimpleEntry<>(ta1,ta2));
-									}
-								}
-							}
-						)
-				);
-		
-		CLTLocFormula ret=couplesOfTa.stream().map(
-				tacouple -> {
-						Set<String> commonEvents=new HashSet<>(tacouple.getKey().getActions());
-						commonEvents.retainAll(tacouple.getValue().getActions());
-						
-						return commonEvents.stream().map( event ->
-									{
-										CLTLocFormula f=CLTLocFormula.FALSE;
-										
-										if(tacouple.getKey().sendActions().contains(event) && tacouple.getValue().reveiveActions().contains(event)) {
-												f=TA2CLTLoc.disjunctionOperator.apply(f, 
-														CLTLocFormula.getAnd(
-																sendEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getKey(), event)),
-																receiveEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getValue(), event))
-														)
-													);
-										}
-										if(tacouple.getValue().sendActions().contains(event) && tacouple.getKey().reveiveActions().contains(event)) {
-											f=TA2CLTLoc.disjunctionOperator.apply(f, 
-													CLTLocFormula.getAnd(
-															sendEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getValue(), event)),
-															receiveEvent2Ap.apply(new AbstractMap.SimpleEntry<>(tacouple.getKey(), event))
-													)
-												);
-										} 
-										return f;
-										
-									}
-								).reduce(CLTLocFormula.FALSE, disjunctionOperator);
-					}
-				).reduce(CLTLocFormula.FALSE, disjunctionOperator);
-	
-		CLTLocFormula ret2=tas.stream().map(ta -> 
-							{
-								Set<String> events=new HashSet<>(ta.getActions());
-								return (CLTLocFormula) 
-										events.stream().map(event -> 
-											(CLTLocFormula) negationOperator.apply(receiveEvent2Ap.apply(
-													new AbstractMap.SimpleEntry<>(ta, event)))
-											).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-							}
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-				
-		return disjunctionOperator.apply(ret, ret2);
-	}
-
-	
-	
-	
-	
-
-protected CLTLocFormula getPhi4(SystemDecl system, TA ta) {
-
-
-	CLTLocFormula ret = ta.getStates().stream().map(state -> (CLTLocFormula) 
-			implicationOperator.apply(
-					state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, state)),
-					disjunctionOperator.apply(
-						this.remainInCurrentState(system, ta, state),
-						ta.getOutgoingTransitions(state).stream()	.map(t -> 
-							(CLTLocFormula) 
-							CLTLocFormula.getAnd(
-									nextOperator.apply(state2Ap.apply(new AbstractMap.SimpleEntry<>(ta, t.getDestination()))),
-									t.getSync()!=null ? this.getEvent(ta, t.getSync()) :CLTLocFormula.TRUE,
-									this.getGuardConditions(ta, t),
-									this.getAssignConditions(ta, t)
-								)
-							).reduce(CLTLocFormula.FALSE, disjunctionOperator)
-				)
-			)
+								).reduce(CLTLocFormula.TRUE, conjunctionOperator)
+						).reduce(CLTLocFormula.TRUE, conjunctionOperator)
 		).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-	
-
-	return globallyOperator.apply(ret);
-	
-	 
-}
-
-	protected CLTLocFormula getEvent(TA ta, SyncExpression e){
 		
-		
-		if(e.getOperator().equals("?")){
-			return receiveEvent2Ap.apply(
-					new AbstractMap.SimpleEntry<>(ta, e.getEvent()));
-		}
-		else{
-			return sendEvent2Ap.apply(new AbstractMap.SimpleEntry<>(ta, e.getEvent()));
-		}
+	}
+	
+	/** encodes formula phi6 of the paper
+	 * @param system the system to be considered
+	 * @return the property phi6 of the paper
+	 */
+	public CLTLocFormula resetImpliesTransition(SystemDecl system) {
+		Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock) new Clock(c.getId())).collect(Collectors.toSet());
+
+		return clocks.stream().map(c -> 
+				(CLTLocFormula) 
+					implicationOperator.apply(
+					new CLTLocNext(
+							new CLTLocDisjunction(
+									new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.EQ), 
+									new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ)
+									)
+							),
+
+						(CLTLocFormula)  system.getTimedAutomata().stream().map(
+								ta ->
+										ta.getTransitions().stream().filter(t ->  t.getAssignement().assign(c))
+													.map( t->
+															(CLTLocFormula)  
+															new CLTLocEQRelation(
+																		new formulae.cltloc.atoms.Variable("t"+ta.getId()), 
+																		new Constant(t.getId()))
+						 			).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+						 	).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+					)
+			).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 
-
+	/**
+	 * encodes formula phi7 of the paper
+	  * @param system the system to be considered
+	 * @return the property phi7 of the paper
+	 */
+	public CLTLocFormula variableChangeImpliesTransition(SystemDecl system) {
+		Set<String> variables=system.getVariableDeclaration().stream().map(v-> v.getId()).collect(Collectors.toSet());
+		
+		return variables.stream().map(
+				v->
+					implicationOperator.apply(	
+							negationOperator.apply(new KeepVariableConstant(new formulae.cltloc.atoms.Variable(v))),
+							system.getTimedAutomata().stream().map(ta->
+										(CLTLocFormula) ta.getTransitions().stream().filter(
+												t->
+													t.getAssignement().assignedVariable(new Variable(v))
+												).map(t-> (CLTLocFormula)  new CLTLocEQRelation(
+																		new formulae.cltloc.atoms.Variable("t"+ta.getId()), 
+																		new Constant(t.getId())))
+														.reduce(CLTLocFormula.FALSE, disjunctionOperator)
+									).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+						)
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+	}
 	
+	
+	/**
+	 * encodes the liveness condition phisem1
+	 * 
+	 * @param system the system to be considered
+	 * @return the liveness condition phisem1
+	 */
+	public CLTLocFormula finallyOneTransitionPerformed(SystemDecl system) {
+		
+		return system.getTimedAutomata().stream().map(ta->
+					globallyOperator.apply(
+							eventuallyOperator.apply(
+									ta.getTransitions().stream().map(t-> 
+										(CLTLocFormula)  new CLTLocEQRelation(
+											new formulae.cltloc.atoms.Variable("t"+ta.getId()), 
+											new Constant(t.getId())
+											)
+										).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+									) 
+							)
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	
+	public CLTLocFormula labelIsTrueOnlyInTheStates(SystemDecl system,Set<StateAP> propositionsOfInterest){
+	
+		return (CLTLocFormula) propositionsOfInterest.stream().map(ap ->
+					(CLTLocFormula)
+					iffOperator.apply(
+							rest.apply(ap.getEncodingSymbol()),
+							system.getTimedAutomata().stream().map(ta ->
+									(CLTLocFormula)
+									ta.getStates().stream().filter(s -> s.getId().equals(ap.getState())).map(s->
+									(CLTLocFormula)
+												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s.getId()))
+											)
+									).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+							)
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+	}
+	
+	public CLTLocFormula intervalsAreRightClosed(Set<StateAP> propositionsOfInterest){
+		return (CLTLocFormula) propositionsOfInterest.stream().map(ap ->
+				iffOperator.apply(rest.apply(ap.getEncodingSymbol()),
+						nextOperator.apply(first.apply(ap.getEncodingSymbol())))).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	public CLTLocFormula initialFirstValues(SystemDecl system,Set<StateAP> propositionsOfInterest){
+		
+		return propositionsOfInterest.stream().map(ap->
+		iffOperator.apply(first.apply(ap.getEncodingSymbol()),
+				(CLTLocFormula) system.getTimedAutomata().stream()
+					.map(ta ->
+							(CLTLocFormula) 
+							ta.getStates().stream().filter(s -> s.getId().equals(ap.getState()))
+									.map(s-> (CLTLocFormula)  
+											new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s.getId())))
+									.reduce(CLTLocFormula.FALSE, disjunctionOperator)
+					).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+				)
+		).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	
+public CLTLocFormula variablesAreTrueOnlyIfAssignmentsAreSatisfied(SystemDecl system,Set<VariableAssignementAP> atomicpropositionsVariable){
+		
+		return (CLTLocFormula) atomicpropositionsVariable.stream().map(ap ->
+					(CLTLocFormula)
+					iffOperator.apply(
+							rest.apply(ap.getEncodingSymbol()),
+							(CLTLocFormula)
+							new CLTLocEQRelation(
+									new formulae.cltloc.atoms.Variable(ap.getVariable().getName()), new Constant(ap.getValue().value)))
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+	}
 
-	public void printFancy(PrintStream fancyprint) {
+	public CLTLocFormula  variableIntervalsAreRightClosed(Set<VariableAssignementAP> atomicpropositionsVariable){
+		return (CLTLocFormula) atomicpropositionsVariable.stream().map(ap ->
+		iffOperator.apply(rest.apply(ap.getEncodingSymbol()),
+				nextOperator.apply(first.apply(ap.getEncodingSymbol())))).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+	}
+	
+	
+	public CLTLocFormula initAssignments(SystemDecl system,Set<VariableAssignementAP> atomicpropositionsVariable){
+		
+		return (CLTLocFormula) atomicpropositionsVariable.stream().map(ap ->
+					(CLTLocFormula)
+					iffOperator.apply(
+							first.apply(ap.getEncodingSymbol()),
+							(CLTLocFormula)
+							new CLTLocEQRelation(
+									new formulae.cltloc.atoms.Variable(ap.getVariable().getName()), new Constant(ap.getValue().value)))
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
+	}
+	
+/*	public void printFancy(PrintStream fancyprint) {
 		fancyprint.println("variable1: " + this.variable1);
 		fancyprint.flush();
 		fancyprint.println("clock1: " + this.clock1);
@@ -508,5 +633,5 @@ protected CLTLocFormula getPhi4(SystemDecl system, TA ta) {
 		fancyprint.println("network3: " + this.network3);
 		fancyprint.flush();
 		
-	}
+	}*/
 }

@@ -127,9 +127,40 @@ public class Examples {
 		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
 		boolean result = checker.check();
 
-		assertFalse(result);
+		assertTrue(result);
 	}
 
+	
+	@Test
+	public void test4modelUnsat() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("checkers/ta/example1.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("checkers/ta/example3.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
+		boolean result = checker.check();
+
+		CLTLocFormula taEncoding = checker.getTAEncoding();
+
+		CLTLocsolver solver = new CLTLocsolver(taEncoding, System.out, 5);
+
+		assertFalse(solver.solve());
+	}
+	
 	@Test
 	public void modelSat() throws IOException, ZotException {
 

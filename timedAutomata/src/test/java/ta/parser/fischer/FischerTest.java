@@ -10,8 +10,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import ta.SystemDecl;
+import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.transition.Transition;
+import ta.transition.sync.SyncExpression;
 
 public class FischerTest {
 
@@ -32,6 +35,13 @@ public class FischerTest {
 		
 		assertTrue(system.getClockDeclarations().size()==2);
 		assertTrue(system.getVariableDeclaration().size()==1);
+		
+		TA ta=system.getTimedAutomata().iterator().next();
+		
+		for(Transition t: ta.getTransitions()){
+			SyncExpression e=t.getSync();
+			assertTrue(e.getOperator().equals("TAU"));
+		}
 	}
 
 }

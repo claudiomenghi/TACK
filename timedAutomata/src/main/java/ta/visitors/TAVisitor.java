@@ -1,6 +1,5 @@
 package ta.visitors;
 
-import formulae.cltloc.CLTLocFormula;
 import ta.AP;
 import ta.StateAP;
 import ta.TA;

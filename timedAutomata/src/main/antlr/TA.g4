@@ -22,6 +22,7 @@
     private void addCurrentTADeecl(String name, String type){
         currentTaDeclarations.put(name, type);
     }
+    public static int TAU_COUNTER=0;
  }
 
  @header {
@@ -631,7 +632,7 @@ import operators.*;
 
  	)?
  	{
-		if($guardexp==null) {$guardexp=new Guard(new HashSet<VariableConstraint>(), new HashSet<ClockConstraint>());}
+		if($guardexp==null) {$guardexp=new Guard(new HashSet<VariableConstraintAtom>(), new HashSet<ClockConstraintAtom>());}
 		}
 
  	(
@@ -640,7 +641,7 @@ import operators.*;
 		$syncexp=$sync.syncexp;
 		}
 
- 	)?
+ 	)
  	(
  		assign
  		{
@@ -658,13 +659,13 @@ import operators.*;
  :
  	'guard' exp1 = guardconditionList SEMICOLUMN
  	{
-	$guardexp=new Guard($guardconditionList.variableconst==null? new HashSet<VariableConstraint>() :$guardconditionList.variableconst, $guardconditionList.clockconst==null? new HashSet<ClockConstraint>():$guardconditionList.clockconst);
+	$guardexp=new Guard($guardconditionList.variableconst==null? new HashSet<VariableConstraintAtom>() :$guardconditionList.variableconst, $guardconditionList.clockconst==null? new HashSet<ClockConstraintAtom>():$guardconditionList.clockconst);
 }
 
  ;
 
  guardconditionList returns
- [Set<VariableConstraint> variableconst, Set<ClockConstraint> clockconst] @init {
+ [Set<VariableConstraintAtom> variableconst, Set<ClockConstraintAtom> clockconst] @init {
 		$variableconst=new HashSet<>();
 		$clockconst=new HashSet<>();
 	}
@@ -686,60 +687,18 @@ import operators.*;
  ;
 
  clockconstraint returns
- [ClockConstraint clockconst, VariableConstraint variableconst]
+ [ClockConstraintAtom clockconst, VariableConstraintAtom variableconst]
  :
- 	constraintAtom clockconstraintprime
- 	{
-		if($clockconstraintprime.clockconst!=null ){
-			if($constraintAtom.atom!=null){
-				$clockconst=new BinaryClockConstraint($constraintAtom.atom, $clockconstraintprime.operaror, $clockconstraintprime.clockconst);
+ 	constraintAtom {
+				$clockconst=$constraintAtom.atom;	
+				$variableconst=$constraintAtom.variableAtom;
 			}
-			else{
-				$clockconst=$clockconstraintprime.clockconst;	
-			}
-		}
-		else{
-			$clockconst=$constraintAtom.atom;	
-		}
-		if($clockconstraintprime.variableconst!=null){
-				if($constraintAtom.variableAtom!=null){
-					$variableconst=new BinaryVariableConstraint($constraintAtom.variableAtom, $clockconstraintprime.operaror, $clockconstraintprime.variableconst);
-				}
-				else{
-					$variableconst=$clockconstraintprime.variableconst;
-				}
-		}
-		else{
-			$variableconst=$constraintAtom.variableAtom;
-		}
-	}
 
  ;
 
- clockconstraintprime returns
- [PropositionalLogicOperator operaror, ClockConstraint clockconst, VariableConstraint variableconst]
- :
- 	(
- 		op = BIN_PROPOSITIONAL_LOGIC_OPERATOR c2 = clockconstraint
- 		clockconstraintprime
- 		{
-		if($clockconstraintprime.clockconst!=null){
-			$clockconst=new BinaryClockConstraint($c2.clockconst, $clockconstraintprime.operaror, $clockconstraintprime.clockconst);
-			$operaror=PropositionalLogicOperator.parse($op.text);
-		}
-		else{
-				$clockconst=$c2.clockconst;
-				$operaror=PropositionalLogicOperator.parse($op.text);
-		}
-	
-	}
-
- 	)
- 	|
- ;
 
  constraintAtom returns
- [ClockConstraintAtom atom, VariableConstraint variableAtom]
+ [ClockConstraintAtom atom, VariableConstraintAtom variableAtom]
  :
  	id = ID op =
  	(
@@ -773,14 +732,30 @@ import operators.*;
 
  sync returns [SyncExpression syncexp]
  :
- 	'sync' exp2 = ID op =
+ 	(('sync' exp2 = ID op =
  	(
  		'!'
  		| '?'
- 	) ';'
- 	{
-	$syncexp=new SyncExpression($exp2.text, $op.text);
-}
+ 		
+ 	) ';'){
+ 		if($op.text.equals("!") || $op.text.equals("?")){
+ 				$syncexp=new SyncExpression($exp2.text, $op.text);		
+ 		}
+ 		else{
+ 			$syncexp=new SyncExpression("tau"+TAU_COUNTER, "TAU");
+ 			TAU_COUNTER++;
+ 		}
+	}
+ 	|
+	('sync' exp2 = ID  ';'){
+ 			$syncexp=new SyncExpression("tau"+TAU_COUNTER, "TAU");
+ 			TAU_COUNTER++;
+ 	}
+	| {
+ 			$syncexp=new SyncExpression("tau"+TAU_COUNTER, "TAU");
+ 			TAU_COUNTER++;
+ 	})
+ 	
 
  ;
 

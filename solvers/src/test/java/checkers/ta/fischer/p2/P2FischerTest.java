@@ -91,7 +91,6 @@ public class P2FischerTest {
 		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
 		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
 		
-		converter.printFancy(System.out);
 		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
 
 		assertTrue(solver.solve());

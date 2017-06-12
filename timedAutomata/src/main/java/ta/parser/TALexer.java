@@ -151,6 +151,7 @@ public class TALexer extends Lexer {
 	    private void addCurrentTADeecl(String name, String type){
 	        currentTaDeclarations.put(name, type);
 	    }
+	    public static int TAU_COUNTER=0;
 	 
 
 	public TALexer(CharStream input) {

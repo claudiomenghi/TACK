@@ -11,7 +11,6 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.BiMap;
 
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
@@ -148,7 +147,7 @@ public class SystemChecker  {
 		BiMap<MITLIFormula, Integer> vocabular = translator.getVocabulary().inverse();
 		Set<MITLIRelationalAtom> atoms = mitliformula.accept(new GetRelationalAtomsVisitor());
 		Set<VariableAssignementAP> atomicpropositionsVariable = atoms.stream()
-				.map(a -> new VariableAssignementAP(Integer.toString(vocabular.get(a)),
+				.map(a -> new VariableAssignementAP(vocabular.get(a),
 						new ta.Variable(a.getIdentifier()), new Value(Integer.toString(a.getValue()))))
 				.collect(Collectors.toSet());
 		
@@ -163,7 +162,7 @@ public class SystemChecker  {
 					throw new IllegalArgumentException("Error in the proposition: "+a.getAtomName()+"A state proposition  must have the form state_ap");
 							
 				}
-				return new StateAP(Integer.toString(vocabular.get(a)),a.getAtomName().substring(0, a.getAtomName().indexOf("_")), a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()));
+				return new StateAP(vocabular.get(a),a.getAtomName().substring(0, a.getAtomName().indexOf("_")), a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()));
 				}		
 				).collect(Collectors.toSet());
 				
@@ -190,10 +189,11 @@ public class SystemChecker  {
 		timer.reset();
 		timer.start();
 		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		
 		taFormula = converter.convert(system,  atomicpropositions, atomicpropositionsVariable);
+		
 		out.println("TA converted in CLTLoc");
 
-		converter.printFancy(out);
 		timer.stop();
 		this.ta2clclocTime=timer.elapsed(TimeUnit.MILLISECONDS);
 		
@@ -201,6 +201,8 @@ public class SystemChecker  {
 
 		final StringBuilder builder = new StringBuilder();
 
+		system.getTimedAutomata().stream().forEach(ta -> builder.append(ta+"\n"));
+		
 		builder.append("clock: \t");
 		Set<CLTLocClock> clocks = taFormula.accept(new GetClocksVisitor());
 		clocks.forEach(clock -> builder.append(clock.toString() + "\t"));

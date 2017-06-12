@@ -29,7 +29,8 @@ public class FischerScalabilityTest {
 	
 	public static void main(String [ ] args) throws IOException, ZotException{
 	
-		
+
+		System.out.println("Scalability test new--");
 		System.out.println("Starting the Fischer scalability test ");
 		File file=new File("FisherScalabilityresults.txt");
 		FileWriter fileWriter=new FileWriter(file, false);

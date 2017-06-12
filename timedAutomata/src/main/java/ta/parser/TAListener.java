@@ -388,16 +388,6 @@ public interface TAListener extends ParseTreeListener {
 	 */
 	void exitClockconstraint(TAParser.ClockconstraintContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TAParser#clockconstraintprime}.
-	 * @param ctx the parse tree
-	 */
-	void enterClockconstraintprime(TAParser.ClockconstraintprimeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TAParser#clockconstraintprime}.
-	 * @param ctx the parse tree
-	 */
-	void exitClockconstraintprime(TAParser.ClockconstraintprimeContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TAParser#constraintAtom}.
 	 * @param ctx the parse tree
 	 */

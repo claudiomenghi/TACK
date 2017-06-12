@@ -26,11 +26,12 @@ import ta.visitors.TAVisitor;
 
 public class TA {
 
+	public static int IDCOUNTER = 0;
+	private final int id;
 	private final Set<VariableDecl> variableDeclaration;
 
 	private final Set<ClockDecl> clockDeclarations;
-	
-	
+
 	private List<String> actions;
 	private List<String> sendActions;
 	private List<String> receiveActions;
@@ -76,7 +77,8 @@ public class TA {
 		Preconditions.checkNotNull(states, "The set of the states cannot be null");
 		Preconditions.checkNotNull(clocks, "The set of the clocks cannot be null");
 		Preconditions.checkNotNull(variables, "The set of the variables cannot be null");
-
+		this.id = IDCOUNTER;
+		IDCOUNTER++;
 		this.identifier = identifier;
 		if (atomicPropositions != null) {
 			this.atomicPropositions = new HashSet<>(atomicPropositions);
@@ -92,28 +94,31 @@ public class TA {
 		this.allclocks = new HashSet<>(clocks);
 		this.allVariables = new HashSet<>(variables);
 
-		this.actions=new ArrayList<>();
-		this.sendActions=new ArrayList<>();
-		this.receiveActions=new ArrayList<>();
+		this.actions = new ArrayList<>();
+		this.sendActions = new ArrayList<>();
+		this.receiveActions = new ArrayList<>();
 		this.states.forEach(s -> this.outTransitions.put(s, new HashSet<>()));
 		this.transitions.forEach(t -> {
 			Preconditions.checkArgument(this.outTransitions.containsKey(t.getSource()),
 					"The state " + t.getSource() + "is not contained in the states of the TA");
-			
+
 			this.outTransitions.get(t.getSource()).add(t);
 			t.getGuard().getClockConstraints().forEach(c -> allclocks.addAll(c.getClocks()));
 			t.getAssignement().getClockassigments().forEach(c -> allclocks.add(c.getClock()));
 			t.getGuard().getConditions().forEach(g -> allVariables.addAll(g.getVariables()));
 			t.getAssignement().getVariableassigments().forEach(v -> allVariables.add(v.getVariable()));
-			if(t.getSync()!=null && t.getSync().getEvent()!=null){
-				if(!this.actions.contains(t.getSync().getEvent())){
-					this.actions.add(t.getSync().getEvent());
-				}
-				if(!this.sendActions.contains(t.getSync().getEvent()) && t.getSync().getOperator().equals("!")){
-					this.sendActions.add(t.getSync().getEvent());
-				}
-				if(!this.receiveActions.contains(t.getSync().getEvent()) && t.getSync().getOperator().equals("?")){
-					this.receiveActions.add(t.getSync().getEvent());
+			if (t.getSync() != null && t.getSync().getEvent() != null) {
+				if (t.getSync().getOperator() != "TAU" && t.getSync().getOperator() != "tau") {
+					if (!this.actions.contains(t.getSync().getEvent())) {
+						this.actions.add(t.getSync().getEvent());
+					}
+					if (!this.sendActions.contains(t.getSync().getEvent()) && t.getSync().getOperator().equals("!")) {
+						this.sendActions.add(t.getSync().getEvent());
+					}
+					if (!this.receiveActions.contains(t.getSync().getEvent())
+							&& t.getSync().getOperator().equals("?")) {
+						this.receiveActions.add(t.getSync().getEvent());
+					}
 				}
 			}
 		});
@@ -197,7 +202,7 @@ public class TA {
 		builder.append("-----------------------------TIMED AUTOMATON----------------------------- \n");
 
 		builder.append("TA \n");
-		builder.append("id: \n");
+		builder.append("id: "+this.id+"\n");
 		builder.append("\t" + this.identifier + "\n");
 		builder.append("clocks: \n");
 		builder.append("\t");
@@ -240,11 +245,16 @@ public class TA {
 	public List<String> getActions() {
 		return Collections.unmodifiableList(actions);
 	}
-	
+
 	public List<String> sendActions() {
 		return Collections.unmodifiableList(this.sendActions);
 	}
+
 	public List<String> reveiveActions() {
 		return Collections.unmodifiableList(this.receiveActions);
+	}
+
+	public int getId() {
+		return id;
 	}
 }

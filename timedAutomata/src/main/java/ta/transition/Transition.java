@@ -7,12 +7,14 @@ import ta.transition.sync.SyncExpression;
 
 public class Transition {
 
+	private static int IDCOUNTER=0;
 	private final State source;
 	private final State destination;
 	private final Guard guard;
 	private final SyncExpression sync;
 	private final Assign assignement;
-
+	private final int id;
+	
 	public Transition(State source, State destination, Guard guard, SyncExpression sync, Assign assignement) {
 		Preconditions.checkNotNull(source, "The source of the transition cannot be null");
 		Preconditions.checkNotNull(destination, "The destination of the transition cannot be null");
@@ -24,6 +26,8 @@ public class Transition {
 		this.guard = guard;
 		this.sync = sync;
 		this.assignement = assignement;
+		id=IDCOUNTER+1;
+		IDCOUNTER++;
 	}
 
 	public State getSource() {
@@ -86,6 +90,10 @@ public class Transition {
 
 	public Assign getAssignement() {
 		return assignement;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }

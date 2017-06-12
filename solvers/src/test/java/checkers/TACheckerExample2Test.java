@@ -55,7 +55,7 @@ public class TACheckerExample2Test {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 System.out.println(ta);
-		TAChecker checker = new TAChecker(system, ta, formula2, 20, System.out);
+		SystemChecker checker = new SystemChecker(system, formula2, 20, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -92,7 +92,7 @@ System.out.println(ta);
 		TA ta = system.getTimedAutomata().iterator().next();
 
 
-		TAChecker checker = new TAChecker(system,ta, formula3, 20, System.out);
+		SystemChecker checker = new SystemChecker(system, formula3, 20, System.out);
 		boolean result = checker.check();
 
 		assertFalse(result);

@@ -1,6 +1,7 @@
 package checkers.ta.fischer.p4;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class P4FischerTest {
 	@Test
 	public void test() throws IOException, ZotException {
 	
-		String path = ClassLoader.getSystemResource("checkers/ta/fischer/p3/fischer_input_02.q").getPath();
+		String path = ClassLoader.getSystemResource("checkers/ta/fischer/p4/fischer_input_02.q").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -39,7 +40,7 @@ public class P4FischerTest {
 		MITLIFormula formula = parser.mitli().formula;
 
 		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("checkers/ta/fischer/p3/fischer_input_02.ta").getPath());
+				ClassLoader.getSystemResource("checkers/ta/fischer/p4/fischer_input_02.ta").getPath());
 		TALexer talexer = new TALexer(tainput);
 		CommonTokenStream tatokens = new CommonTokenStream(talexer);
 		TAParser taparser = new TAParser(tatokens);
@@ -59,7 +60,7 @@ public class P4FischerTest {
 	@Test
 	public void testFormulaSatisfiable() throws IOException, ZotException {
 	
-		String path = ClassLoader.getSystemResource("checkers/ta/fischer/p3/fischer_input_02.q").getPath();
+		String path = ClassLoader.getSystemResource("checkers/ta/fischer/p4/fischer_input_02.q").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -81,17 +82,18 @@ public class P4FischerTest {
 
 
 		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("checkers/ta/fischer/p3/fischer_input_02.ta").getPath());
+				ClassLoader.getSystemResource("checkers/ta/fischer/p4/fischer_input_02.ta").getPath());
 		TALexer talexer = new TALexer(tainput);
 		CommonTokenStream tatokens = new CommonTokenStream(talexer);
 		TAParser taparser = new TAParser(tatokens);
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
+		System.out.println(system);
+		
 		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
 		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
 		
-		converter.printFancy(System.out);
 		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
 
 		assertTrue(solver.solve());

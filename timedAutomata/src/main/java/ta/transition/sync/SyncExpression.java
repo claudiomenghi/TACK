@@ -2,9 +2,39 @@ package ta.transition.sync;
 
 import com.google.common.base.Preconditions;
 
-import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator;
-
 public class SyncExpression {
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((event == null) ? 0 : event.hashCode());
+		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SyncExpression other = (SyncExpression) obj;
+		if (event == null) {
+			if (other.event != null)
+				return false;
+		} else if (!event.equals(other.event))
+			return false;
+		if (operator == null) {
+			if (other.operator != null)
+				return false;
+		} else if (!operator.equals(other.operator))
+			return false;
+		return true;
+	}
+
 
 	private final String event;
 	private final String operator;
@@ -35,7 +65,7 @@ public class SyncExpression {
 	
 	
 	public enum Operator {
-		SEND("?"), RECEIVED("!");
+		SEND("?"), RECEIVED("!"), TAU("TAU");
 
 		private final String operaor;
 
@@ -47,8 +77,7 @@ public class SyncExpression {
 			switch(value){
 				case "?": return Operator.SEND;
 				case "!": return Operator.RECEIVED;
-				default:
-					throw new IllegalArgumentException("Operator "+value+" not present");
+				default: return Operator.TAU;
 			}
 		}
 		public String toString() {

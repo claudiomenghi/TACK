@@ -466,18 +466,6 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClockconstraintprime(TAParser.ClockconstraintprimeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClockconstraintprime(TAParser.ClockconstraintprimeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterConstraintAtom(TAParser.ConstraintAtomContext ctx) { }
 	/**
 	 * {@inheritDoc}

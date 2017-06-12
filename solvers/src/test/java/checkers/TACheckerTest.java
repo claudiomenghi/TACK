@@ -1,6 +1,7 @@
 package checkers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +10,6 @@ import java.io.IOException;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import formulae.mitli.MITLIFormula;
@@ -44,7 +44,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -71,7 +71,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -98,7 +98,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -134,7 +134,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -161,7 +161,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -188,7 +188,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertFalse(result);
@@ -215,7 +215,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertFalse(result);
@@ -242,7 +242,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -270,7 +270,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertFalse(result);
@@ -297,7 +297,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);
@@ -324,7 +324,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertFalse(result);
@@ -351,7 +351,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		TAChecker checker = new TAChecker(system, ta, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
 		boolean result = checker.check();
 
 		assertTrue(result);

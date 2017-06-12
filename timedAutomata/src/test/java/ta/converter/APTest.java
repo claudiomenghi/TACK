@@ -21,7 +21,7 @@ import ta.SystemDecl;
 import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
-import ta.visitors.TA2CLTLoc;
+import ta.visitors.TANetwork2CLTLoc;
 
 public class APTest {
 
@@ -42,7 +42,7 @@ public class APTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		Set<StateAP> propositionsOfInterest = new HashSet<>();
-		CLTLocFormula formula = new TA2CLTLoc().convert(system, ta, propositionsOfInterest, new HashSet<>());
+		CLTLocFormula formula = new TANetwork2CLTLoc().convert(system, propositionsOfInterest, new HashSet<>());
 
 		System.out.println(formula);
 		Set<CLTLocAP> atomicPropositions = formula.accept(new GetAPVisitor());

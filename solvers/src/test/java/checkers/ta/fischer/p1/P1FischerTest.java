@@ -1,6 +1,6 @@
 package checkers.ta.fischer.p1;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class P1FischerTest {
 		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
 		boolean result = checker.check();
 
-		assertFalse(result);
+		assertTrue(result);
 
 	}
 	
@@ -91,7 +91,6 @@ public class P1FischerTest {
 		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
 		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
 		
-		converter.printFancy(System.out);
 		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
 
 		assertTrue(solver.solve());

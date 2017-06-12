@@ -1,9 +1,7 @@
 package ta.state;
 
-import formulae.cltloc.CLTLocFormula;
 import ta.expressions.Expression;
 import ta.expressions.Identifier;
-import ta.visitors.TA2CLTLocVisitor;
 
 public class ExpInvariant extends Invariant {
 
@@ -29,15 +27,6 @@ public class ExpInvariant extends Invariant {
 		return exp;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public CLTLocFormula accept(TA2CLTLocVisitor ta2cltLoc) {
-
-		return ta2cltLoc.visit(this);
-
-	}
 
 	/**
 	 * {@inheritDoc}

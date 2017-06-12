@@ -49,7 +49,7 @@ public class P3FischerTest {
 		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
 		boolean result = checker.check();
 
-		assertFalse(result);
+		assertTrue(result);
 
 	}
 	
@@ -90,7 +90,6 @@ public class P3FischerTest {
 		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
 		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
 		
-		converter.printFancy(System.out);
 		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
 
 		assertTrue(solver.solve());

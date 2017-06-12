@@ -3,6 +3,7 @@ package formulae.cltloc.visitor;
 import java.util.HashSet;
 import java.util.Set;
 
+import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
@@ -220,5 +221,13 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 	@Override
 	public Set<Variable> visit(CLTLocSelector formula) {
 		return new HashSet<>();
+	}
+
+	@Override
+	public Set<Variable> visit(AssignNextVariable formula) {
+		Set<Variable> formulae = new HashSet<>();
+		formulae.add(formula.getVariable());
+		formulae.add(formula.getNextVariable());
+		return formulae;
 	}
 }

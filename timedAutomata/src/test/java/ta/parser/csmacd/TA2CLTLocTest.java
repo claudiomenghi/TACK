@@ -36,7 +36,6 @@ public class TA2CLTLocTest {
 		
 		ta2cltloc.convert(system, ap, new HashSet<>());
 		
-		ta2cltloc.printFancy(System.out);
 	}
 
 }

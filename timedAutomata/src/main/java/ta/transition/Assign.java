@@ -1,9 +1,13 @@
 package ta.transition;
 
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
 
+import ta.Clock;
+import ta.Variable;
 import ta.transition.assignments.ClockAssignement;
 import ta.transition.assignments.VariableAssignement;
 
@@ -17,7 +21,14 @@ public class Assign {
 		this.clockassigments = clockassigments;
 		this.variableassigments = variableassigments;
 	}
+	
+	public boolean assign(Clock x){
+		return this.clockassigments.stream().map(c -> c.getClock()).collect(Collectors.toSet()).contains(x);
+	}
 
+	public boolean assignedVariable(Variable x){
+		return this.variableassigments.stream().map(v-> v.getVariable()).collect(Collectors.toSet()).contains(x);
+	}
 	public Set<ClockAssignement> getClockassigments() {
 		return clockassigments;
 	}

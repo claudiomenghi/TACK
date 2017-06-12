@@ -6,11 +6,11 @@ import ta.expressions.Value;
 import ta.visitors.TAVisitor;
 
 public class VariableAssignementAP extends AP {
-	private final String encodingSymbol;
+	private final int encodingSymbol;
 	private final Variable variable;
 	private final Value expression;
 
-	public VariableAssignementAP( String encodingSymbol, Variable variable, Value expression) {
+	public VariableAssignementAP( int encodingSymbol, Variable variable, Value expression) {
 		super(variable.toString()+expression.toString());
 		Preconditions.checkNotNull(variable, "The variable cannot be null");
 		Preconditions.checkNotNull(expression, "The expression assigned to the variable  cannot be null");
@@ -19,7 +19,7 @@ public class VariableAssignementAP extends AP {
 		this.expression = expression;
 	}
 
-	public String getEncodingSymbol() {
+	public int getEncodingSymbol() {
 		return encodingSymbol;
 	}
 
