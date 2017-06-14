@@ -255,8 +255,8 @@ public class TANetwork2CLTLoc {
 																	this.getId(ta,
 																	t.getDestination()))),
 															this.getClockGuard(t),
-															this.getAssignVariables(t),
-															this.getAssignclock(t)
+															this.getAssignVariables(t)
+															,this.getAssignclock(t)
 															)
 													)
 											)
@@ -277,12 +277,12 @@ public class TANetwork2CLTLoc {
 		return assignments.stream().map(c ->{
 						return (CLTLocFormula) new CLTLocDisjunction(
 								CLTLocFormula.getAnd(
-										new CLTLocSelector(c.getClock().getName() + "_v"),
+										new CLTLocNegation(new CLTLocSelector(c.getClock().getName() + "_v")),
 										new CLTLocRelation(new CLTLocClock(c.getClock().getName() + "_0"), new Constant(c.getValue()), Relation.EQ)
 										),
 								CLTLocFormula.getAnd(
-										new CLTLocNegation(new CLTLocSelector(c.getClock().getName() + "_v")),
-										new CLTLocRelation(new CLTLocClock(c.getClock().getName() + "_0"), new Constant(c.getValue()), Relation.EQ)
+										new CLTLocSelector(c.getClock().getName() + "_v"),
+										new CLTLocRelation(new CLTLocClock(c.getClock().getName() + "_1"), new Constant(c.getValue()), Relation.EQ)
 										)
 							);
 					}
@@ -375,7 +375,6 @@ public class TANetwork2CLTLoc {
 						);
 		testTimer.stop();
 		writer.write("variable1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
-		//this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
 		return CLTLocFormula.getAnd(
 				clockConstraint, 
@@ -455,7 +454,7 @@ public class TANetwork2CLTLoc {
 	  * @param system the system to be considered
 	 * @return the property phi5 of the paper
 	 */
-	public CLTLocFormula stateChangesImpliesTransition(SystemDecl system) {
+	protected CLTLocFormula stateChangesImpliesTransition(SystemDecl system) {
 		return (CLTLocFormula) system.getTimedAutomata().stream().map(ta ->
 					(CLTLocFormula) ta.getStates().stream().map(s1 -> 
 								(CLTLocFormula) ta.getStates().stream().filter(s2 -> !s2.equals(s1)).
@@ -478,7 +477,7 @@ public class TANetwork2CLTLoc {
 	}
 	
 	
-	public CLTLocFormula eachAutomatonIsInOneOfItsStates(SystemDecl system) {
+	protected CLTLocFormula eachAutomatonIsInOneOfItsStates(SystemDecl system) {
 		
 		return (CLTLocFormula) system.getTimedAutomata().stream().map(ta ->
 							(CLTLocFormula) ta.getStates().stream().map(s1 -> 
