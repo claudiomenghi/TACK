@@ -7,7 +7,11 @@ public class VariableDecl {
 	/**
 	 * The identifier
 	 */
-	private final String id;
+	private  String id;
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	/**
 	 * The initializer
 	 */

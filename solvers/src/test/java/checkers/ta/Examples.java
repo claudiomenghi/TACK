@@ -51,32 +51,32 @@ public class Examples {
 		assertFalse(result);
 	}
 	
-
-	@Test
-	public void test2() throws IOException, ZotException {
-
-		String path = ClassLoader.getSystemResource("checkers/ta/example1.q").getPath();
-
-		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
-		MITLILexer lexer = new MITLILexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		MITLIParser parser = new MITLIParser(tokens);
-		parser.setBuildParseTree(true);
-		MITLIFormula formula = parser.mitli().formula;
-
-		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("checkers/ta/example1.ta").getPath());
-		TALexer talexer = new TALexer(tainput);
-		CommonTokenStream tatokens = new CommonTokenStream(talexer);
-		TAParser taparser = new TAParser(tatokens);
-		taparser.setBuildParseTree(true);
-		SystemDecl system = taparser.ta().systemret;
-
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-		boolean result = checker.check();
-
-		assertFalse(result);
-	}
+//
+//	@Test
+//	public void test2() throws IOException, ZotException {
+//
+//		String path = ClassLoader.getSystemResource("checkers/ta/example1.q").getPath();
+//
+//		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+//		MITLILexer lexer = new MITLILexer(input);
+//		CommonTokenStream tokens = new CommonTokenStream(lexer);
+//		MITLIParser parser = new MITLIParser(tokens);
+//		parser.setBuildParseTree(true);
+//		MITLIFormula formula = parser.mitli().formula;
+//
+//		ANTLRInputStream tainput = new ANTLRFileStream(
+//				ClassLoader.getSystemResource("checkers/ta/example1.ta").getPath());
+//		TALexer talexer = new TALexer(tainput);
+//		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+//		TAParser taparser = new TAParser(tatokens);
+//		taparser.setBuildParseTree(true);
+//		SystemDecl system = taparser.ta().systemret;
+//
+//		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
+//		boolean result = checker.check();
+//
+//		assertFalse(result);
+//	}
 	
 	@Test
 	public void test3() throws IOException, ZotException {
@@ -104,31 +104,7 @@ public class Examples {
 		assertFalse(result);
 	}
 	
-	@Test
-	public void test4() throws IOException, ZotException {
-
-		String path = ClassLoader.getSystemResource("checkers/ta/example1.q").getPath();
-
-		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
-		MITLILexer lexer = new MITLILexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		MITLIParser parser = new MITLIParser(tokens);
-		parser.setBuildParseTree(true);
-		MITLIFormula formula = parser.mitli().formula;
-
-		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("checkers/ta/example3.ta").getPath());
-		TALexer talexer = new TALexer(tainput);
-		CommonTokenStream tatokens = new CommonTokenStream(talexer);
-		TAParser taparser = new TAParser(tatokens);
-		taparser.setBuildParseTree(true);
-		SystemDecl system = taparser.ta().systemret;
-
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-		boolean result = checker.check();
-
-		assertTrue(result);
-	}
+	
 
 	
 	@Test

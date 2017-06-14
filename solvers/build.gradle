@@ -20,6 +20,7 @@ configurations {
 }
 
 
+
 // In this section you declare where to find the dependencies of your project
 repositories {
 	mavenCentral()    
@@ -59,6 +60,13 @@ main = "solvers.MITLIsolver"
 test {
 	jvmArgs "-Xmx8g"
     jvmArgs "-XX:MaxPermSize=2g"
+    
+    beforeTest { desc -> 
+        println "Executing test ${desc.className}.${desc.name} "
+    }
+     afterTest { desc, result -> 
+        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
 }
  
 

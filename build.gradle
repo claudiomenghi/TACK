@@ -3,6 +3,11 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 
+test {
+    afterTest { desc, result -> 
+        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}
 
 subprojects {
     apply plugin: 'java'

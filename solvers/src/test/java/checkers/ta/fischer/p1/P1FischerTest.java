@@ -68,7 +68,6 @@ public class P1FischerTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		System.out.println("AAAA"+formula);
 		MITLIsolver solver=new MITLIsolver(formula, System.out, 20);
 
 

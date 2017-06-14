@@ -77,7 +77,7 @@ public class Transition {
 	 */
 	@Override
 	public String toString() {
-		return "Transition [source=" + source.getId() + ", destination=" + destination.getId() + ", guard=["+guard.toString()+"], sync="+this.sync+", assign=["+this.assignement+"]]";
+		return "Transition [source=" + source.getStringId() + ", destination=" + destination.getStringId() + ", guard=["+guard.toString()+"], sync="+this.sync+", assign=["+this.assignement+"]]";
 	}
 
 	public Guard getGuard() {

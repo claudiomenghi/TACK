@@ -1,10 +1,17 @@
 package checkers;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import org.apache.commons.io.FileUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
@@ -28,8 +35,10 @@ import formulae.mitli.visitors.GetRelationalAtomsVisitor;
 import solvers.CLTLocsolver;
 import ta.StateAP;
 import ta.SystemDecl;
+import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.Value;
+import ta.state.State;
 import ta.visitors.TANetwork2CLTLoc;
 import zotrunner.ZotException;
 
@@ -190,15 +199,22 @@ public class SystemChecker  {
 		timer.start();
 		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
 		
+		
+		
 		taFormula = converter.convert(system,  atomicpropositions, atomicpropositionsVariable);
+		
 		
 		out.println("TA converted in CLTLoc");
 
+		out.println("------------------");
 		timer.stop();
 		this.ta2clclocTime=timer.elapsed(TimeUnit.MILLISECONDS);
 		
 		out.println("-------------INFO");
-
+		out.println("TA encoding");
+		out.println(taFormula);
+		out.println("************************************************");
+		
 		final StringBuilder builder = new StringBuilder();
 
 		system.getTimedAutomata().stream().forEach(ta -> builder.append(ta+"\n"));
@@ -218,6 +234,25 @@ public class SystemChecker  {
 
 		out.println(builder.toString());
 		out.println("************************************************");
+		
+		
+		out.println(converter.getMapStateId());
+		StringBuilder stateIdMappingBuilder=new StringBuilder();
+		system.getTimedAutomata().stream().forEach(ta -> ta.getStates().stream().forEach(s-> stateIdMappingBuilder.append(ta.getIdentifier()+"\t"+s.getStringId()+":\t"+
+		converter.getMapStateId().get(
+				new AbstractMap.SimpleEntry<>(ta, s.getStringId())
+				)+"\n")));
+		File stateIdStringMappingfile=new File("elementsIDmap.txt");
+		
+		FileUtils.writeStringToFile(stateIdStringMappingfile, stateIdMappingBuilder.toString());
+		
+		String a=null;
+		StringBuilder transitionsIdMappingBuilder=new StringBuilder();
+		system.getTimedAutomata().stream().forEach(ta-> ta.getTransitions().stream().forEach(
+				s-> 
+					transitionsIdMappingBuilder.append(ta.getIdentifier()+"\t"+s.getSource().getStringId()+"\t"+s.getDestination().getStringId()+"\t"+s.getId()+"\n")
+				));
+		FileUtils.writeStringToFile(stateIdStringMappingfile, transitionsIdMappingBuilder.toString(), true);
 		
 		// out.println(formula);
 		// out.println(translator.getVocabulary());

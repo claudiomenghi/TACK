@@ -11,6 +11,7 @@ import ta.visitors.TAVisitor;
 
 public class State extends ModelElement {
 
+	
 	private final String stateId;
 	private final Invariant invariant;
 
@@ -19,17 +20,20 @@ public class State extends ModelElement {
 		Preconditions.checkNotNull(invariant, "The invariant cannto be null");
 		this.stateId = stateId;
 		this.invariant = invariant;
+		
 	}
 
 	public State(String stateId) {
 		Preconditions.checkNotNull(stateId, "The id of the state cannot be null");
 		this.stateId = stateId;
 		this.invariant = new EmptyInvariant();
+	
 	}
 
-	public String getId() {
+	public String getStringId() {
 		return stateId;
 	}
+	
 
 	/**
 	 * {@inheritDoc}

@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -55,6 +59,7 @@ public class TANetwork2CLTLoc {
 
 	public static final CLTLocFormula ORIGIN = CLTLocFormula.getNeg(new CLTLocYesterday(CLTLocFormula.TRUE));
 	
+	private  Map<Entry<TA, String>, Integer> mapStateId;
 	public static final Constant zero=new Constant(0);
 	
 	protected final File statisticsFile;
@@ -153,7 +158,7 @@ public class TANetwork2CLTLoc {
 	private static final Function<AP, CLTLocFormula> ap2CLTLocFIRSTAp = ap -> new CLTLocAP("P_" + ap.getName());
 
 	protected static final Function<Entry<TA, State>, CLTLocFormula> state2Ap = (s) -> new CLTLocAP(
-			s.getKey().getIdentifier() + "_" + s.getValue().getId());
+			s.getKey().getIdentifier() + "_" + s.getValue().getStringId());
 
 	protected static final Function<Entry<TA, String>, CLTLocFormula> sendEvent2Ap = (s) -> new CLTLocAP(
 			s.getKey().getIdentifier() + "_?" + s.getValue());
@@ -210,7 +215,7 @@ public class TANetwork2CLTLoc {
 				new CLTLocEQRelation(
 						new formulae.cltloc.atoms.Variable("s"+ta.getId())
 						,
-						new Constant(ta.getInitialState().getId()))
+						new Constant(this.getId(ta, ta.getInitialState())))
 					).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 	
@@ -234,7 +239,7 @@ public class TANetwork2CLTLoc {
 	 * @param system the system to be considered
 	 * @return the property phi4 of the paper
 	 */
-	public CLTLocFormula getTransitionConstraint(SystemDecl system){
+	private CLTLocFormula getTransitionConstraint(SystemDecl system){
 		return 
 				system.getTimedAutomata().stream().map(
 				ta -> ta.getTransitions().stream().map(
@@ -242,11 +247,13 @@ public class TANetwork2CLTLoc {
 							implicationOperator.apply(
 									new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("t"+ta.getId()), new Constant(t.getId())),
 									CLTLocFormula.getAnd(
-											new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(t.getSource().getId())),
+											new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(this.getId(ta, t.getSource()))),
 											this.getVariableGuard(t),
 											nextOperator.apply(
 													CLTLocFormula.getAnd(
-															new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(t.getDestination().getId())),
+															new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(
+																	this.getId(ta,
+																	t.getDestination()))),
 															this.getClockGuard(t),
 															this.getAssignVariables(t),
 															this.getAssignclock(t)
@@ -257,6 +264,11 @@ public class TANetwork2CLTLoc {
 						).reduce(CLTLocFormula.TRUE, conjunctionOperator)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		
+	}
+	
+	private int getId(TA ta, State s){
+		return this.mapStateId.get(
+		new AbstractMap.SimpleEntry<>(ta, s.getStringId()));
 	}
 
 	private CLTLocFormula getClockGuard(Transition t) {
@@ -303,10 +315,23 @@ public class TANetwork2CLTLoc {
 	
 	
 	
+	public Map<Entry<TA, String>, Integer> getMapStateId(){
+		return this.mapStateId;
+	}
 	
 	public CLTLocFormula convert(SystemDecl system, Set<StateAP> propositionsOfInterest, Set<VariableAssignementAP> atomicpropositionsVariable) {
 
 
+		this.mapStateId=new HashMap<>();
+		
+		int count=0;
+		for(TA ta: system.getTimedAutomata()){
+			for(State s: ta.getStates()){
+				mapStateId.put(new AbstractMap.SimpleEntry<>(ta, s.getStringId()), count);
+				count++;
+			}
+		}
+		
 		Stopwatch testTimer = Stopwatch.createUnstarted();
 
 		testTimer.start();
@@ -329,10 +354,11 @@ public class TANetwork2CLTLoc {
 								this.getTransitionConstraint(system),
 								this.stateChangesImpliesTransition(system),
 								this.resetImpliesTransition(system),
-								this.variableChangeImpliesTransition(system)
+								this.variableChangeImpliesTransition(system),
+								this.eachAutomatonIsInOneOfItsStates(system)
 								)
-						),
-				this.finallyOneTransitionPerformed(system)
+						)
+				, this.finallyOneTransitionPerformed(system)
 				);
 		CLTLocFormula semantic=
 				CLTLocFormula.getAnd(
@@ -351,7 +377,11 @@ public class TANetwork2CLTLoc {
 		writer.write("variable1: "+testTimer.elapsed(TimeUnit.MILLISECONDS)+"\n");
 		//this.conversionTime+=testTimer.elapsed(TimeUnit.MILLISECONDS);
 		
-		return CLTLocFormula.getAnd(clockConstraint, automaton, semantic);
+		return CLTLocFormula.getAnd(
+				clockConstraint, 
+				automaton
+				, semantic
+				);
 	}
 	
 	
@@ -359,6 +389,7 @@ public class TANetwork2CLTLoc {
 	
 	protected CLTLocFormula getClock1(SystemDecl system) {
 
+		System.out.println("AAAA "+system.getClockDeclarations());
 		Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock) new Clock(c.getId())).collect(Collectors.toSet());
 
 		CLTLocFormula f0 = clocks.stream().map(c -> {
@@ -432,8 +463,8 @@ public class TANetwork2CLTLoc {
 										 (CLTLocFormula)
 										implicationOperator.apply(
 												conjunctionOperator.apply(
-												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s1.getId())),
-												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s2.getId()))),
+												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(this.getId(ta,s1))),
+												new CLTLocNext(new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(this.getId(ta,s2))))),
 												ta.getTransitions().stream().filter(
 														t1 -> t1.getSource().equals(s1)&& t1.getDestination().equals(s2)
 														).map(t1 ->
@@ -444,6 +475,16 @@ public class TANetwork2CLTLoc {
 						).reduce(CLTLocFormula.TRUE, conjunctionOperator)
 		).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		
+	}
+	
+	
+	public CLTLocFormula eachAutomatonIsInOneOfItsStates(SystemDecl system) {
+		
+		return (CLTLocFormula) system.getTimedAutomata().stream().map(ta ->
+							(CLTLocFormula) ta.getStates().stream().map(s1 -> 
+							(CLTLocFormula)  new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(this.getId(ta,s1)))
+							).reduce(CLTLocFormula.FALSE, disjunctionOperator)
+						).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 	
 	/** encodes formula phi6 of the paper
@@ -535,10 +576,14 @@ public class TANetwork2CLTLoc {
 							rest.apply(ap.getEncodingSymbol()),
 							system.getTimedAutomata().stream().map(ta ->
 									(CLTLocFormula)
-									ta.getStates().stream().filter(s -> s.getId().equals(ap.getState())).map(s->
+									ta.getStates().stream().filter(Objects::nonNull).
+									filter(s -> 
+									s.getStringId().equals(ap.getState())).
+									map(s
+											->
 									(CLTLocFormula)
-												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s.getId()))
-											)
+												new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(this.getId(ta,s)))
+											).reduce(CLTLocFormula.FALSE, disjunctionOperator)
 									).reduce(CLTLocFormula.FALSE, disjunctionOperator)
 							)
 				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -558,9 +603,9 @@ public class TANetwork2CLTLoc {
 				(CLTLocFormula) system.getTimedAutomata().stream()
 					.map(ta ->
 							(CLTLocFormula) 
-							ta.getStates().stream().filter(s -> s.getId().equals(ap.getState()))
+							ta.getStates().stream().filter(s -> s.getStringId().equals(ap.getState()))
 									.map(s-> (CLTLocFormula)  
-											new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(s.getId())))
+											new CLTLocEQRelation(new formulae.cltloc.atoms.Variable("s"+ta.getId()), new Constant(this.getId(ta,s))))
 									.reduce(CLTLocFormula.FALSE, disjunctionOperator)
 					).reduce(CLTLocFormula.FALSE, disjunctionOperator)
 				)

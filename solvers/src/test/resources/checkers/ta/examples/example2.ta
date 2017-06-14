@@ -5,8 +5,10 @@ int A_stop=0;
 
   state  call_check, ex_jam;
   init   ex_jam;
-  trans  call_check -> ex_jam {
+  trans  ex_jam -> call_check {
            
+         },
+         call_check->call_check{
          };
          
 }

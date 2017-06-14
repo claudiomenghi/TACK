@@ -215,6 +215,8 @@ import operators.*;
 			 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
 		}
 	}
+	
+	
 		
 	$timedAutomaton=new TA($ID.text, null, $procBody.stateset, $procBody.transitionsetret, $procBody.initstate, clocks,variables, variableDeclaration, clockDeclaration);
 }
@@ -260,13 +262,18 @@ import operators.*;
  	)?
  	(
  		urgent
- 	)? init
+ 	)? init{
+ 		for(State s: $states.stateset){
+ 			if(s.getStringId().equals($init.initString)){
+ 				$initstate=s;
+ 			}
+ 		}
+ 	}
  	(
  		transitions
  	)?
  	{
- 				    	$initstate=$init.initstate;
-                    	$stateset=$states.stateset;
+ 				    	$stateset=$states.stateset;
                     	$transitionsetret=$transitions.transitionsret;
     }
  ;
@@ -561,11 +568,11 @@ import operators.*;
 
  ;
 
- init returns [State initstate]
+ init returns [String initString]
  :
  	'init' ID ';'
  	{
-	$initstate=new State($ID.text);
+	$initString=$ID.text;
 	}
 
  ;
@@ -677,7 +684,7 @@ import operators.*;
 			}
 
  	(
- 		COMMA clockconstraint
+ 		(COMMA || AND) clockconstraint
  		{
 				if($clockconstraint.clockconst!=null) $clockconst.add($clockconstraint.clockconst);
 				if($clockconstraint.variableconst!=null)$variableconst.add($clockconstraint.variableconst) ;
