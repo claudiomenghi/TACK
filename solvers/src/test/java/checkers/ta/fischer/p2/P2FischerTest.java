@@ -29,7 +29,7 @@ public class P2FischerTest {
 	@Test
 	public void test() throws IOException, ZotException {
 	
-		String path = ClassLoader.getSystemResource("checkers/ta/fischer/p3/fischer_input_02.q").getPath();
+		String path = ClassLoader.getSystemResource("checkers/ta/fischer/p2/fischer_input_02.q").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -39,7 +39,7 @@ public class P2FischerTest {
 		MITLIFormula formula = parser.mitli().formula;
 
 		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("checkers/ta/fischer/p3/fischer_input_02.ta").getPath());
+				ClassLoader.getSystemResource("checkers/ta/fischer/p2/fischer_input_02.ta").getPath());
 		TALexer talexer = new TALexer(tainput);
 		CommonTokenStream tatokens = new CommonTokenStream(talexer);
 		TAParser taparser = new TAParser(tatokens);
@@ -49,7 +49,7 @@ public class P2FischerTest {
 		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
 		boolean result = checker.check();
 
-		assertTrue(result);
+		assertFalse(result);
 
 	}
 	

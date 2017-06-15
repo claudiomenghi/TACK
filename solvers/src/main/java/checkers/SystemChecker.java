@@ -156,8 +156,10 @@ public class SystemChecker  {
 		BiMap<MITLIFormula, Integer> vocabular = translator.getVocabulary().inverse();
 		Set<MITLIRelationalAtom> atoms = mitliformula.accept(new GetRelationalAtomsVisitor());
 		Set<VariableAssignementAP> atomicpropositionsVariable = atoms.stream()
-				.map(a -> new VariableAssignementAP(vocabular.get(a),
-						new ta.Variable(a.getIdentifier()), new Value(Integer.toString(a.getValue()))))
+				.map(a -> new VariableAssignementAP(
+						(a.getIdentifier().contains("_") ?  a.getIdentifier().substring(0, a.getIdentifier().indexOf("_")) : ""),
+						vocabular.get(a),
+						new ta.Variable(a.getIdentifier().contains("_") ?  a.getIdentifier().substring( a.getIdentifier().indexOf("_")+1, a.getIdentifier().length()) :  a.getIdentifier()), new Value(Integer.toString(a.getValue()))))
 				.collect(Collectors.toSet());
 		
 		
@@ -199,7 +201,7 @@ public class SystemChecker  {
 		timer.start();
 		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
 		
-		
+		System.out.println(system.getTimedAutomata().iterator().next().getIdentifier());
 		
 		taFormula = converter.convert(system,  atomicpropositions, atomicpropositionsVariable);
 		
@@ -210,7 +212,8 @@ public class SystemChecker  {
 		timer.stop();
 		this.ta2clclocTime=timer.elapsed(TimeUnit.MILLISECONDS);
 		
-		out.println("-------------INFO");
+		out.println("-------------INFO--------");
+		out.println(system.getGlobalClocks());
 		out.println("TA encoding");
 		out.println(taFormula);
 		out.println("************************************************");

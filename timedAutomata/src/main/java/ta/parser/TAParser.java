@@ -1076,11 +1076,21 @@ public class TAParser extends Parser {
 						
 				 			}
 				 			_localctx.variabledeclret.put(((VariableDeclContext)_localctx).varn.id, (((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null));
-				 			if(((VariableDeclContext)_localctx).varn.exp!=null && !(((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
-				 				_localctx.variableinitializationret.put(((VariableDeclContext)_localctx).varn.id, ((VariableDeclContext)_localctx).varn.exp);
+				 			if(!(((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
+				 				if(((VariableDeclContext)_localctx).varn.exp!=null){
+				 					_localctx.variableinitializationret.put(((VariableDeclContext)_localctx).varn.id, ((VariableDeclContext)_localctx).varn.exp);
+				 				}
+				 				else{
+				 					_localctx.variableinitializationret.put(((VariableDeclContext)_localctx).varn.id, new EmptyExpression());
+				 				}
 				 			}
-				 		 	if(((VariableDeclContext)_localctx).varn.exp!=null && (((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
-								_localctx.clockinitializationret.put(((VariableDeclContext)_localctx).varn.id, (Value) ((VariableDeclContext)_localctx).varn.exp);
+				 			if( (((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
+				 				if(((VariableDeclContext)_localctx).varn.exp!=null){
+				 				 	_localctx.clockinitializationret.put(((VariableDeclContext)_localctx).varn.id, (Value) ((VariableDeclContext)_localctx).varn.exp);
+				 				 }
+				 				 else{
+				 				 	_localctx.clockinitializationret.put(((VariableDeclContext)_localctx).varn.id, new Value("0"));
+				 				 }
 				 			}
 				 		
 				}

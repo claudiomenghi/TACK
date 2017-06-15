@@ -2,6 +2,7 @@ package ta;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
 
@@ -14,9 +15,12 @@ public class SystemDecl {
 
 	private final Set<ClockDecl> clockDeclarations;
 
+	private final Set<Clock> allClocks;
+	
 	private Set<TA> timedAutomata;
 
 	private final Set<Variable> variables;
+	
 	public SystemDecl(Set<TA> timedAutomata, Set<ClockDecl> clockDeclarations, Set<VariableDecl> variableDeclaration) {
 
 		Preconditions.checkNotNull(timedAutomata, "The timed automaton cannot be null");
@@ -29,12 +33,21 @@ public class SystemDecl {
 		this.variableDeclaration = variableDeclaration;
 
 		this.variableDeclaration.forEach(v -> variables.add(new Variable(v.getId())));
+		
+		allClocks=new HashSet<>();
+		this.allClocks.addAll(this.getGlobalClocks());
+		for(TA ta: timedAutomata){
+			this.allClocks.addAll(ta.getLocalClocks());
+		}
 	}
 
+	public Set<Clock> getGlobalClocks(){
+		return this.clockDeclarations.stream().map(c -> new Clock(c.getId())).collect(Collectors.toSet());
+	}
+	
+	
 	public Set<Variable> getGlobalVariables(){
-		Set<Variable> allVariables=new HashSet<>(variables);
-		timedAutomata.forEach(t -> allVariables.removeAll(t.getVariables()));
-		return allVariables;
+		return this.variableDeclaration.stream().map(v-> new Variable(v.getId())).collect(Collectors.toSet());
 	}
 	
 

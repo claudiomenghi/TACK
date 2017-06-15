@@ -42,8 +42,7 @@ public class TACheckerTest {
 		parser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		TA ta = system.getTimedAutomata().iterator().next();
-
+	
 		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
 		boolean result = checker.check();
 

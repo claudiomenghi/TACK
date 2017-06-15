@@ -1,18 +1,18 @@
 Initialized native services in: /Users/Claudio1/.gradle/native
-Connected to daemon DaemonInfo{pid=22177, address=[7284dd0c-1ffa-40b7-afb4-050122c933d7 port:51826, addresses:[/0:0:0:0:0:0:0:1, /127.0.0.1]], state=Idle, lastBusy=1497352686301, context=DefaultDaemonContext[uid=443262cf-3506-4366-ac3d-ff80927955ad,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=22177,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]}. Dispatching request Build{id=6f15c600-e391-4903-abd7-b0c6a5fb96e9.1, currentDir=/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers}.
-Received result org.gradle.launcher.daemon.protocol.BuildStarted@21129f1f from daemon DaemonInfo{pid=22177, address=[7284dd0c-1ffa-40b7-afb4-050122c933d7 port:51826, addresses:[/0:0:0:0:0:0:0:1, /127.0.0.1]], state=Idle, lastBusy=1497352686301, context=DefaultDaemonContext[uid=443262cf-3506-4366-ac3d-ff80927955ad,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=22177,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]} (build should be starting).
-The client will now receive all logging from the daemon (pid: 22177). The daemon log file: /Users/Claudio1/.gradle/daemon/3.5/daemon-22177.out.log
-Starting 14th build in daemon [uptime: 15 mins 59.59 secs, performance: 100%, no major garbage collections]
-Executing build with daemon context: DefaultDaemonContext[uid=443262cf-3506-4366-ac3d-ff80927955ad,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=22177,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]
-Creating new cache for plugin-use-metadata, path /Users/Claudio1/.gradle/caches/3.5/plugin-resolution/plugin-use-metadata.bin, access org.gradle.cache.internal.DefaultCacheAccess@33c41ea4
-Creating new cache for client-status, path /Users/Claudio1/.gradle/caches/3.5/plugin-resolution/client-status.bin, access org.gradle.cache.internal.DefaultCacheAccess@33c41ea4
+Connected to daemon DaemonInfo{pid=37202, address=[9ee2fc8d-b358-4a05-928b-3980e9ca1489 port:63565, addresses:[/0:0:0:0:0:0:0:1, /127.0.0.1]], state=Idle, lastBusy=1497476494029, context=DefaultDaemonContext[uid=871749e5-0663-4b43-966b-fa9db069a91a,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=37202,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]}. Dispatching request Build{id=eb6a3f96-fac1-42ec-b3d6-7c6879088ceb.1, currentDir=/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers}.
+Received result org.gradle.launcher.daemon.protocol.BuildStarted@21129f1f from daemon DaemonInfo{pid=37202, address=[9ee2fc8d-b358-4a05-928b-3980e9ca1489 port:63565, addresses:[/0:0:0:0:0:0:0:1, /127.0.0.1]], state=Idle, lastBusy=1497476494029, context=DefaultDaemonContext[uid=871749e5-0663-4b43-966b-fa9db069a91a,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=37202,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]} (build should be starting).
+The client will now receive all logging from the daemon (pid: 37202). The daemon log file: /Users/Claudio1/.gradle/daemon/3.5/daemon-37202.out.log
+Starting 15th build in daemon [uptime: 27 mins 54.281 secs, performance: 100%, no major garbage collections]
+Executing build with daemon context: DefaultDaemonContext[uid=871749e5-0663-4b43-966b-fa9db069a91a,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=37202,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]
+Creating new cache for plugin-use-metadata, path /Users/Claudio1/.gradle/caches/3.5/plugin-resolution/plugin-use-metadata.bin, access org.gradle.cache.internal.DefaultCacheAccess@12226f9f
+Creating new cache for client-status, path /Users/Claudio1/.gradle/caches/3.5/plugin-resolution/client-status.bin, access org.gradle.cache.internal.DefaultCacheAccess@12226f9f
 Starting Build
 Settings evaluated using settings file '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/settings.gradle'.
 Projects loaded. Root project using build file '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/build.gradle'.
 Included projects: [root project 'TAKER', project ':cltloc', project ':mitli', project ':solvers', project ':timedAutomata']
 Evaluating root project 'TAKER' using build file '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/build.gradle'.
 Using 4 worker leases.
-Creating new cache for fileHashes, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/fileHashes.bin, access org.gradle.cache.internal.DefaultCacheAccess@44768f9b
+Creating new cache for fileHashes, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/fileHashes.bin, access org.gradle.cache.internal.DefaultCacheAccess@2356c40a
 Evaluating project ':cltloc' using build file '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/cltloc/build.gradle'.
 Evaluating project ':mitli' using build file '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/mitli/build.gradle'.
 Evaluating project ':solvers' using build file '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build.gradle'.
@@ -20,57 +20,57 @@ Evaluating project ':timedAutomata' using build file '/Users/Claudio1/Documents/
 All projects evaluated.
 Selected primary task 'clean' from project :solvers
 Selected primary task 'test' from project :solvers
-Creating new cache for annotation-processors, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/fileContent/annotation-processors.bin, access org.gradle.cache.internal.DefaultCacheAccess@c419bef
+Creating new cache for annotation-processors, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/fileContent/annotation-processors.bin, access org.gradle.cache.internal.DefaultCacheAccess@3ce8951f
 Tasks to be executed: [task ':solvers:clean', task ':cltloc:compileJava', task ':cltloc:processResources', task ':cltloc:classes', task ':cltloc:jar', task ':mitli:generateGrammarSource', task ':mitli:compileJava', task ':mitli:processResources', task ':mitli:classes', task ':mitli:jar', task ':solvers:generateGrammarSource', task ':timedAutomata:generateGrammarSource', task ':timedAutomata:compileJava', task ':timedAutomata:processResources', task ':timedAutomata:classes', task ':timedAutomata:jar', task ':solvers:compileJava', task ':solvers:processResources', task ':solvers:classes', task ':solvers:generateTestGrammarSource', task ':solvers:compileTestJava', task ':solvers:processTestResources', task ':solvers:testClasses', task ':solvers:test']
-Creating new cache for jvmClassSignatures, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/jvmClassSignatures.bin, access org.gradle.cache.internal.DefaultCacheAccess@44768f9b
-Creating new cache for fileSnapshots, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/fileSnapshots.bin, access org.gradle.cache.internal.DefaultCacheAccess@44768f9b
-Creating new cache for taskHistory, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/taskHistory.bin, access org.gradle.cache.internal.DefaultCacheAccess@44768f9b
-:solvers:clean (Thread[Daemon worker Thread 5,5,main]) started.
+Creating new cache for jvmClassSignatures, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/jvmClassSignatures.bin, access org.gradle.cache.internal.DefaultCacheAccess@2356c40a
+Creating new cache for fileSnapshots, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/fileSnapshots.bin, access org.gradle.cache.internal.DefaultCacheAccess@2356c40a
+Creating new cache for taskHistory, path /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/.gradle/3.5/taskHistory/taskHistory.bin, access org.gradle.cache.internal.DefaultCacheAccess@2356c40a
+:solvers:clean (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:clean
 Putting task artifact state for task ':solvers:clean' into context took 0.0 secs.
 Executing task ':solvers:clean' (up-to-date check took 0.0 secs) due to:
   Task has not declared any outputs.
-:solvers:clean (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.033 secs.
-:cltloc:compileJava (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:clean (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.177 secs.
+:cltloc:compileJava (Thread[Daemon worker Thread 7,5,main]) started.
 :cltloc:compileJava
-Putting task artifact state for task ':cltloc:compileJava' into context took 0.001 secs.
+Putting task artifact state for task ':cltloc:compileJava' into context took 0.0 secs.
 Task :cltloc:compileJava class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :cltloc:compileJava actions class loader hashes: [750e1d72030581ace81f7325929812f4, 41621835a1ddfd325406e64eb3109d65]
-Creating new cache for metadata-2.23/module-metadata, path /Users/Claudio1/.gradle/caches/modules-2/metadata-2.23/module-metadata.bin, access org.gradle.cache.internal.DefaultCacheAccess@5f2d8720
-Creating new cache for metadata-2.23/artifact-at-repository, path /Users/Claudio1/.gradle/caches/modules-2/metadata-2.23/artifact-at-repository.bin, access org.gradle.cache.internal.DefaultCacheAccess@5f2d8720
-Skipping task ':cltloc:compileJava' as it is up-to-date (took 0.012 secs).
+Creating new cache for metadata-2.23/module-metadata, path /Users/Claudio1/.gradle/caches/modules-2/metadata-2.23/module-metadata.bin, access org.gradle.cache.internal.DefaultCacheAccess@be28b64
+Creating new cache for metadata-2.23/artifact-at-repository, path /Users/Claudio1/.gradle/caches/modules-2/metadata-2.23/artifact-at-repository.bin, access org.gradle.cache.internal.DefaultCacheAccess@be28b64
+Skipping task ':cltloc:compileJava' as it is up-to-date (took 0.008 secs).
 :cltloc:compileJava UP-TO-DATE
-:cltloc:compileJava (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.014 secs.
-:cltloc:processResources (Thread[Daemon worker Thread 5,5,main]) started.
+:cltloc:compileJava (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.01 secs.
+:cltloc:processResources (Thread[Daemon worker Thread 7,5,main]) started.
 :cltloc:processResources
 Putting task artifact state for task ':cltloc:processResources' into context took 0.0 secs.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/cltloc/src/main/resources', not found
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/cltloc/src/main/resources', not found
 Skipping task ':cltloc:processResources' as it has no source files and no previous output files.
 :cltloc:processResources NO-SOURCE
-:cltloc:processResources (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.001 secs.
-:cltloc:classes (Thread[Daemon worker Thread 5,5,main]) started.
+:cltloc:processResources (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.0 secs.
+:cltloc:classes (Thread[Daemon worker Thread 7,5,main]) started.
 :cltloc:classes
 Skipping task ':cltloc:classes' as it has no actions.
 :cltloc:classes UP-TO-DATE
-:cltloc:classes (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.0 secs.
-:cltloc:jar (Thread[Daemon worker Thread 5,5,main]) started.
+:cltloc:classes (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.0 secs.
+:cltloc:jar (Thread[Daemon worker Thread 7,5,main]) started.
 :cltloc:jar
-Putting task artifact state for task ':cltloc:jar' into context took 0.001 secs.
+Putting task artifact state for task ':cltloc:jar' into context took 0.0 secs.
 Task :cltloc:jar class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :cltloc:jar actions class loader hashes: [750e1d72030581ace81f7325929812f4]
 Skipping task ':cltloc:jar' as it is up-to-date (took 0.001 secs).
 :cltloc:jar UP-TO-DATE
-:cltloc:jar (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.002 secs.
-:mitli:generateGrammarSource (Thread[Daemon worker Thread 5,5,main]) started.
+:cltloc:jar (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.004 secs.
+:mitli:generateGrammarSource (Thread[Daemon worker Thread 7,5,main]) started.
 :mitli:generateGrammarSource
-Putting task artifact state for task ':mitli:generateGrammarSource' into context took 0.0 secs.
+Putting task artifact state for task ':mitli:generateGrammarSource' into context took 0.001 secs.
 Task :mitli:generateGrammarSource class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :mitli:generateGrammarSource actions class loader hashes: [750e1d72030581ace81f7325929812f4, 41621835a1ddfd325406e64eb3109d65, ae119a45695d188d1a89a8eee7fab284]
-Skipping task ':mitli:generateGrammarSource' as it is up-to-date (took 0.005 secs).
+Skipping task ':mitli:generateGrammarSource' as it is up-to-date (took 0.004 secs).
 :mitli:generateGrammarSource UP-TO-DATE
-:mitli:generateGrammarSource (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.005 secs.
-:mitli:compileJava (Thread[Daemon worker Thread 5,5,main]) started.
+:mitli:generateGrammarSource (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.005 secs.
+:mitli:compileJava (Thread[Daemon worker Thread 7,5,main]) started.
 :mitli:compileJava
 Putting task artifact state for task ':mitli:compileJava' into context took 0.0 secs.
 Task :mitli:compileJava class loader hash: 41621835a1ddfd325406e64eb3109d65
@@ -78,110 +78,110 @@ Task :mitli:compileJava actions class loader hashes: [750e1d72030581ace81f732592
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/mitli/build/generated-src/antlr/main', not found
 Skipping task ':mitli:compileJava' as it is up-to-date (took 0.006 secs).
 :mitli:compileJava UP-TO-DATE
-:mitli:compileJava (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.007 secs.
-:mitli:processResources (Thread[Daemon worker Thread 5,5,main]) started.
+:mitli:compileJava (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.007 secs.
+:mitli:processResources (Thread[Daemon worker Thread 7,5,main]) started.
 :mitli:processResources
 Putting task artifact state for task ':mitli:processResources' into context took 0.0 secs.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/mitli/src/main/resources', not found
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/mitli/src/main/resources', not found
 Skipping task ':mitli:processResources' as it has no source files and no previous output files.
 :mitli:processResources NO-SOURCE
-:mitli:processResources (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.001 secs.
-:mitli:classes (Thread[Daemon worker Thread 5,5,main]) started.
+:mitli:processResources (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.001 secs.
+:mitli:classes (Thread[Daemon worker Thread 7,5,main]) started.
 :mitli:classes
 Skipping task ':mitli:classes' as it has no actions.
 :mitli:classes UP-TO-DATE
-:mitli:classes (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.0 secs.
-:mitli:jar (Thread[Daemon worker Thread 5,5,main]) started.
+:mitli:classes (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.0 secs.
+:mitli:jar (Thread[Daemon worker Thread 7,5,main]) started.
 :mitli:jar
-Putting task artifact state for task ':mitli:jar' into context took 0.001 secs.
+Putting task artifact state for task ':mitli:jar' into context took 0.0 secs.
 Task :mitli:jar class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :mitli:jar actions class loader hashes: [750e1d72030581ace81f7325929812f4]
 Skipping task ':mitli:jar' as it is up-to-date (took 0.001 secs).
 :mitli:jar UP-TO-DATE
-:mitli:jar (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.003 secs.
-:solvers:generateGrammarSource (Thread[Daemon worker Thread 5,5,main]) started.
+:mitli:jar (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.004 secs.
+:solvers:generateGrammarSource (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:generateGrammarSource
 Putting task artifact state for task ':solvers:generateGrammarSource' into context took 0.0 secs.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/src/main/antlr', not found
 Skipping task ':solvers:generateGrammarSource' as it has no source files and no previous output files.
 :solvers:generateGrammarSource NO-SOURCE
-:solvers:generateGrammarSource (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.0 secs.
-:timedAutomata:generateGrammarSource (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:generateGrammarSource (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.001 secs.
+:timedAutomata:generateGrammarSource (Thread[Daemon worker Thread 7,5,main]) started.
 :timedAutomata:generateGrammarSource
 Putting task artifact state for task ':timedAutomata:generateGrammarSource' into context took 0.0 secs.
 Task :timedAutomata:generateGrammarSource class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :timedAutomata:generateGrammarSource actions class loader hashes: [750e1d72030581ace81f7325929812f4, 41621835a1ddfd325406e64eb3109d65, afd1f28dbd46c9419e8f332644e32302]
-Skipping task ':timedAutomata:generateGrammarSource' as it is up-to-date (took 0.004 secs).
+Skipping task ':timedAutomata:generateGrammarSource' as it is up-to-date (took 0.003 secs).
 :timedAutomata:generateGrammarSource UP-TO-DATE
-:timedAutomata:generateGrammarSource (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.004 secs.
-:timedAutomata:compileJava (Thread[Daemon worker Thread 5,5,main]) started.
+:timedAutomata:generateGrammarSource (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.003 secs.
+:timedAutomata:compileJava (Thread[Daemon worker Thread 7,5,main]) started.
 :timedAutomata:compileJava
-Putting task artifact state for task ':timedAutomata:compileJava' into context took 0.0 secs.
+Putting task artifact state for task ':timedAutomata:compileJava' into context took 0.001 secs.
 Task :timedAutomata:compileJava class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :timedAutomata:compileJava actions class loader hashes: [750e1d72030581ace81f7325929812f4, 41621835a1ddfd325406e64eb3109d65]
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/timedAutomata/build/generated-src/antlr/main', not found
-Executing task ':timedAutomata:compileJava' (up-to-date check took 0.013 secs) due to:
+Executing task ':timedAutomata:compileJava' (up-to-date check took 0.008 secs) due to:
   Input property 'source' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/timedAutomata/src/main/java/ta/visitors/TANetwork2CLTLoc.java has changed.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/timedAutomata/build/generated-src/antlr/main', not found
 Compiling with JDK Java compiler API.
-:timedAutomata:compileJava (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.989 secs.
-:timedAutomata:processResources (Thread[Daemon worker Thread 5,5,main]) started.
+:timedAutomata:compileJava (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.62 secs.
+:timedAutomata:processResources (Thread[Daemon worker Thread 7,5,main]) started.
 :timedAutomata:processResources
-Putting task artifact state for task ':timedAutomata:processResources' into context took 0.001 secs.
+Putting task artifact state for task ':timedAutomata:processResources' into context took 0.0 secs.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/timedAutomata/src/main/resources', not found
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/timedAutomata/src/main/resources', not found
 Skipping task ':timedAutomata:processResources' as it has no source files and no previous output files.
 :timedAutomata:processResources NO-SOURCE
-:timedAutomata:processResources (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.003 secs.
-:timedAutomata:classes (Thread[Daemon worker Thread 5,5,main]) started.
+:timedAutomata:processResources (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.003 secs.
+:timedAutomata:classes (Thread[Daemon worker Thread 7,5,main]) started.
 :timedAutomata:classes
 Skipping task ':timedAutomata:classes' as it has no actions.
-:timedAutomata:classes (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.001 secs.
-:timedAutomata:jar (Thread[Daemon worker Thread 5,5,main]) started.
+:timedAutomata:classes (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.0 secs.
+:timedAutomata:jar (Thread[Daemon worker Thread 7,5,main]) started.
 :timedAutomata:jar
-Putting task artifact state for task ':timedAutomata:jar' into context took 0.0 secs.
+Putting task artifact state for task ':timedAutomata:jar' into context took 0.001 secs.
 Task :timedAutomata:jar class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :timedAutomata:jar actions class loader hashes: [750e1d72030581ace81f7325929812f4]
-Executing task ':timedAutomata:jar' (up-to-date check took 0.001 secs) due to:
+Executing task ':timedAutomata:jar' (up-to-date check took 0.003 secs) due to:
   Input property 'rootSpec$1' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/timedAutomata/build/classes/main/ta/visitors/TANetwork2CLTLoc.class has changed.
-:timedAutomata:jar (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.101 secs.
-:solvers:compileJava (Thread[Daemon worker Thread 5,5,main]) started.
+:timedAutomata:jar (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.042 secs.
+:solvers:compileJava (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:compileJava
-Putting task artifact state for task ':solvers:compileJava' into context took 0.001 secs.
+Putting task artifact state for task ':solvers:compileJava' into context took 0.0 secs.
 Task :solvers:compileJava class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :solvers:compileJava actions class loader hashes: [750e1d72030581ace81f7325929812f4, 41621835a1ddfd325406e64eb3109d65]
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/generated-src/antlr/main', not found
-Executing task ':solvers:compileJava' (up-to-date check took 0.066 secs) due to:
+Executing task ':solvers:compileJava' (up-to-date check took 0.032 secs) due to:
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/classes/main has changed.
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/classes/main/checkers has been removed.
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/classes/main/checkers/output has been removed.
 All input files are considered out-of-date for incremental task ':solvers:compileJava'.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/generated-src/antlr/main', not found
 Compiling with JDK Java compiler API.
-:solvers:compileJava (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.346 secs.
-:solvers:processResources (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:compileJava (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.232 secs.
+:solvers:processResources (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:processResources
-Putting task artifact state for task ':solvers:processResources' into context took 0.001 secs.
+Putting task artifact state for task ':solvers:processResources' into context took 0.0 secs.
 Task :solvers:processResources class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :solvers:processResources actions class loader hashes: [750e1d72030581ace81f7325929812f4]
-Executing task ':solvers:processResources' (up-to-date check took 0.008 secs) due to:
+Executing task ':solvers:processResources' (up-to-date check took 0.007 secs) due to:
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/resources/main has changed.
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/resources/main/checkers has been removed.
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/resources/main/checkers/ta has been removed.
-:solvers:processResources (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.068 secs.
-:solvers:classes (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:processResources (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.086 secs.
+:solvers:classes (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:classes
 Skipping task ':solvers:classes' as it has no actions.
-:solvers:classes (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.0 secs.
-:solvers:generateTestGrammarSource (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:classes (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.001 secs.
+:solvers:generateTestGrammarSource (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:generateTestGrammarSource
-Putting task artifact state for task ':solvers:generateTestGrammarSource' into context took 0.001 secs.
+Putting task artifact state for task ':solvers:generateTestGrammarSource' into context took 0.0 secs.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/src/test/antlr', not found
 Skipping task ':solvers:generateTestGrammarSource' as it has no source files and no previous output files.
 :solvers:generateTestGrammarSource NO-SOURCE
-:solvers:generateTestGrammarSource (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.001 secs.
-:solvers:compileTestJava (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:generateTestGrammarSource (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.0 secs.
+:solvers:compileTestJava (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:compileTestJava
 Putting task artifact state for task ':solvers:compileTestJava' into context took 0.0 secs.
 Task :solvers:compileTestJava class loader hash: 41621835a1ddfd325406e64eb3109d65
@@ -194,22 +194,22 @@ Executing task ':solvers:compileTestJava' (up-to-date check took 0.008 secs) due
 All input files are considered out-of-date for incremental task ':solvers:compileTestJava'.
 file or directory '/Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/generated-src/antlr/test', not found
 Compiling with JDK Java compiler API.
-:solvers:compileTestJava (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.209 secs.
-:solvers:processTestResources (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:compileTestJava (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.207 secs.
+:solvers:processTestResources (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:processTestResources
 Putting task artifact state for task ':solvers:processTestResources' into context took 0.0 secs.
 Task :solvers:processTestResources class loader hash: 41621835a1ddfd325406e64eb3109d65
 Task :solvers:processTestResources actions class loader hashes: [750e1d72030581ace81f7325929812f4]
-Executing task ':solvers:processTestResources' (up-to-date check took 0.013 secs) due to:
+Executing task ':solvers:processTestResources' (up-to-date check took 0.019 secs) due to:
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/resources/test has changed.
   Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/resources/test/checkers has been removed.
-  Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/resources/test/checkers/output.1.txt has been removed.
-:solvers:processTestResources (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.207 secs.
-:solvers:testClasses (Thread[Daemon worker Thread 5,5,main]) started.
+  Output property 'destinationDir' file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/resources/test/checkers/.gradle has been removed.
+:solvers:processTestResources (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.174 secs.
+:solvers:testClasses (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:testClasses
 Skipping task ':solvers:testClasses' as it has no actions.
-:solvers:testClasses (Thread[Daemon worker Thread 5,5,main]) completed. Took 0.001 secs.
-:solvers:test (Thread[Daemon worker Thread 5,5,main]) started.
+:solvers:testClasses (Thread[Daemon worker Thread 7,5,main]) completed. Took 0.001 secs.
+:solvers:test (Thread[Daemon worker Thread 7,5,main]) started.
 :solvers:test
 Putting task artifact state for task ':solvers:test' into context took 0.001 secs.
 Task :solvers:test class loader hash: 41621835a1ddfd325406e64eb3109d65
@@ -220,59 +220,62 @@ Starting process 'Gradle Test Executor 1'. Working directory: /Users/Claudio1/Do
 Successfully started process 'Gradle Test Executor 1'
 Initialized native services in: /Users/Claudio1/.gradle/native
 Gradle Test Executor 1 started executing tests.
+Executing test checkers.TACheckerTest.test3 
 
-checkers.ta.Examples > test4modelUnsat STANDARD_ERROR
-    ANTLR Tool version 4.5 used for code generation does not match the current runtime version 4.6ANTLR Runtime version 4.5 used for parser compilation does not match the current runtime version 4.6ANTLR Tool version 4.5 used for code generation does not match the current runtime version 4.6ANTLR Runtime version 4.5 used for parser compilation does not match the current runtime version 4.6line 17:0 no viable alternative at input ',}'
-    line 25:0 no viable alternative at input ',}'
-    line 28:9 mismatched input '||' expecting {';', ','}
-
-checkers.ta.Examples > test4modelUnsat STANDARD_OUT
+checkers.TACheckerTest > test3 STANDARD_OUT
     ************************************************
     ************************************************
-    MITLI formula:  (G[0,1](NEG(P1_sender_transm)))
+    MITLI formula:  ((SenderA_Astop == 0) OR ((TRUE) U (SenderA_Astop == 0)))
     Converting the MITLI formula in CLTLoc
 
-checkers.ta.Examples > test4modelUnsat STANDARD_ERROR
-    log4j:WARN No appenders could be found for logger (formulae.mitli.visitors.MITLI2CLTLocVisitor).
+checkers.TACheckerTest > test3 STANDARD_ERROR
+    ANTLR Tool version 4.5 used for code generation does not match the current runtime version 4.6ANTLR Runtime version 4.5 used for parser compilation does not match the current runtime version 4.6ANTLR Tool version 4.5 used for code generation does not match the current runtime version 4.6ANTLR Runtime version 4.5 used for parser compilation does not match the current runtime version 4.6log4j:WARN No appenders could be found for logger (formulae.mitli.visitors.MITLI2CLTLocVisitor).
     log4j:WARN Please initialize the log4j system properly.
     log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
 
-checkers.ta.Examples > test4modelUnsat STANDARD_OUT
+checkers.TACheckerTest > test3 STANDARD_OUT
     MITLI formula converted in CLTLoc
     ************************************************
     **  MITLI FORMULA CLTLoc ENCODING                **
     ---
-    Subformula: 2	(G[0,1](NEG(P1_sender_transm)))
-    ---Clock constraint
-    (Z2_0=0)&&(G(((((!(Y(H_2)))&& H_2)|| ((Y(!(H_2)))&& P_2 &&(!(H_2)))||((!(Y(True)))&& P_2) || ((!(Y(!(H_2))))&&(!(H_2)))|| ((Y(H_2))&& (!(P_2))&& H_2)||((!(Y(True)))&&(!(P_2))))<->((Z2_0=0)||(Z2_1=0)))&& ((Z2_0=0)->(X((Z2_1=0)R(Z2_0>0))))&&((Z2_1=0)->(X((Z2_0=0)R(Z2_1>0))))))
-    ---Subformula
-    G(((H_2 ||(Y(H_2)))->(P_2))&& (((!(Y(!(H_2))))&&(!(H_2)))<->(((!(Y(True)))&&(((!(P_2))&&(((!(Y(!(H_1))))&&(!(H_1)))||(X((Z2_0>0)U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&& (Z2_0>0)&&(Z2_0<1))))))||(P_2 && (!(Y(H_1)))&& H_1 &&(X(((Z2_0>0)&&(!(((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))))U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&(Z2_0=1)))))))||((Y(True))&&((P_2 && (Z2_0=0)&&(X((Z2_0>0)U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&& (Z2_0=1)&&((Z1_0>1)||(Z1_1>1))))))||(P_2 && (Z2_1=0)&&(X((Z2_1>0)U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&& (Z2_1=1)&&((Z1_0>1)||(Z1_1>1))))))))))&& (((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&((Z1_0>=1)||(Z1_1>=1)))->((Z2_0=1)||(Z2_1=1)))&& (((!(Y(H_2)))&& H_2)<->((((!(Y(H_1)))&& H_1)||((Y(H_1))&& (!(P_1))&& H_1))&&(!(X((!(((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1)))))U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&(((Z1_0>0)&&(Z1_0<=1))||((Z1_1>0)&&(Z1_1<=1)))))))))&&(((Y(!(H_2)))&& P_2 &&(!(H_2)))<->((((!(Y(H_1)))&& H_1)||((Y(H_1))&& (!(P_1))&& H_1))&& (X((!(((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1)))))U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&((Z1_0=1)||(Z1_1=1)))))&&(Y(True)))))
-
-    ---
-    Subformula: 3	(NEG(G[0,1](NEG(P1_sender_transm))))
+    Subformula: 3	((TRUE) U (SenderA_Astop == 0))
     ---Clock constraint
     G(((((!(Y(H_3)))&& H_3)|| ((Y(!(H_3)))&& P_3 &&(!(H_3)))||((!(Y(True)))&& P_3) || ((!(Y(!(H_3))))&&(!(H_3)))|| ((Y(H_3))&& (!(P_3))&& H_3)||((!(Y(True)))&&(!(P_3))))<->((Z3_0=0)||(Z3_1=0)))&& ((Z3_0=0)->(X((Z3_1=0)R(Z3_0>0))))&&((Z3_1=0)->(X((Z3_0=0)R(Z3_1>0)))))
     ---Subformula
-    G(((P_3)<->(!(P_2)))&&((H_3)<->(!(H_2))))
+    G(((P_3)<->(P_2 || (P_1 &&((H_1)U(H_2)))|| (P_1 &&((H_1)U(P_2)))||(P_1 && H_2)))&&((H_3)<->(H_2 || ((H_1)U(H_1 && H_2))||((H_1)U(P_2)))))
 
     ---
-    Subformula: 0	(P1_sender_transm)
+    Subformula: 2	(SenderA_Astop == 0)
     ---Clock constraint
-    G(((((!(Y(H_0)))&& H_0)|| ((Y(!(H_0)))&& P_0 &&(!(H_0)))||((!(Y(True)))&& P_0) || ((!(Y(!(H_0))))&&(!(H_0)))|| ((Y(H_0))&& (!(P_0))&& H_0)||((!(Y(True)))&&(!(P_0))))<->((Z0_0=0)||(Z0_1=0)))&& ((Z0_0=0)->(X((Z0_1=0)R(Z0_0>0))))&&((Z0_1=0)->(X((Z0_0=0)R(Z0_1>0)))))
+    G(((((!(Y(H_2)))&& H_2)|| ((Y(!(H_2)))&& P_2 &&(!(H_2)))||((!(Y(True)))&& P_2) || ((!(Y(!(H_2))))&&(!(H_2)))|| ((Y(H_2))&& (!(P_2))&& H_2)||((!(Y(True)))&&(!(P_2))))<->((Z2_0=0)||(Z2_1=0)))&& ((Z2_0=0)->(X((Z2_1=0)R(Z2_0>0))))&&((Z2_1=0)->(X((Z2_0=0)R(Z2_1>0)))))
     ---Subformula
     True
 
     ---
-    Subformula: 1	(NEG(P1_sender_transm))
+    Subformula: 4	((SenderA_Astop == 0) OR ((TRUE) U (SenderA_Astop == 0)))
     ---Clock constraint
-    (Z1_0=0)&&(G(((((!(Y(H_1)))&& H_1)|| ((Y(!(H_1)))&& P_1 &&(!(H_1)))||((!(Y(True)))&& P_1) || ((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))<->((Z1_0=0)||(Z1_1=0)))&& ((Z1_0=0)->(X((Z1_1=0)R(Z1_0>0))))&&((Z1_1=0)->(X((Z1_0=0)R(Z1_1>0))))))
+    G(((((!(Y(H_4)))&& H_4)|| ((Y(!(H_4)))&& P_4 &&(!(H_4)))||((!(Y(True)))&& P_4) || ((!(Y(!(H_4))))&&(!(H_4)))|| ((Y(H_4))&& (!(P_4))&& H_4)||((!(Y(True)))&&(!(P_4))))<->((Z4_0=0)||(Z4_1=0)))&& ((Z4_0=0)->(X((Z4_1=0)R(Z4_0>0))))&&((Z4_1=0)->(X((Z4_0=0)R(Z4_1>0)))))
     ---Subformula
-    G(((P_1)<->(!(P_0)))&&((H_1)<->(!(H_0))))
+    G(((P_4)<->(P_2 || P_3))&&((H_4)<->(H_2 || H_3)))
+
+    ---
+    Subformula: 1	(TRUE)
+    ---Clock constraint
+    G(((((!(Y(H_1)))&& H_1)|| ((Y(!(H_1)))&& P_1 &&(!(H_1)))||((!(Y(True)))&& P_1) || ((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))<->((Z1_0=0)||(Z1_1=0)))&& ((Z1_0=0)->(X((Z1_1=0)R(Z1_0>0))))&&((Z1_1=0)->(X((Z1_0=0)R(Z1_1>0)))))
+    ---Subformula
+    G(P_1 && H_1)
+
+    ---
+    Subformula: 5	(NEG((SenderA_Astop == 0) OR ((TRUE) U (SenderA_Astop == 0))))
+    ---Clock constraint
+    G(((((!(Y(H_5)))&& H_5)|| ((Y(!(H_5)))&& P_5 &&(!(H_5)))||((!(Y(True)))&& P_5) || ((!(Y(!(H_5))))&&(!(H_5)))|| ((Y(H_5))&& (!(P_5))&& H_5)||((!(Y(True)))&&(!(P_5))))<->((Z5_0=0)||(Z5_1=0)))&& ((Z5_0=0)->(X((Z5_1=0)R(Z5_0>0))))&&((Z5_1=0)->(X((Z5_0=0)R(Z5_1>0)))))
+    ---Subformula
+    G(((P_5)<->(!(P_4)))&&((H_5)<->(!(H_4))))
 
     ************************************************
     ------------------
     CLTLoc encoding
-    ((Now=0) && (X(G(Now>0)))) && (((((((((Z1_1>=0) && (Z2_0>=0)) && (Z0_1>=0)) && (Z1_0>=0)) && (Z3_1>=0)) && (Z2_1>=0)) && (Z3_0>=0)) && (Z0_0>=0)) && ((P_3) && ((((G((((((!(Y(H_0))) && (H_0)) || (((Y(!(H_0))) && ((P_0) && (!(H_0)))) || ((!(Y(True))) && (P_0)))) || (((!(Y(!(H_0)))) && (!(H_0))) || (((Y(H_0)) && ((!(P_0)) && (H_0))) || ((!(Y(True))) && (!(P_0)))))) <-> ((Z0_0=0) || (Z0_1=0))) && (((Z0_0=0) -> (X((Z0_1=0) R (Z0_0>0)))) && ((Z0_1=0) -> (X((Z0_0=0) R (Z0_1>0))))))) && (((Z1_0=0) && (G((((((!(Y(H_1))) && (H_1)) || (((Y(!(H_1))) && ((P_1) && (!(H_1)))) || ((!(Y(True))) && (P_1)))) || (((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1)))))) <-> ((Z1_0=0) || (Z1_1=0))) && (((Z1_0=0) -> (X((Z1_1=0) R (Z1_0>0)))) && ((Z1_1=0) -> (X((Z1_0=0) R (Z1_1>0)))))))) && (G(((P_1) <-> (!(P_0))) && ((H_1) <-> (!(H_0))))))) && (((Z2_0=0) && (G((((((!(Y(H_2))) && (H_2)) || (((Y(!(H_2))) && ((P_2) && (!(H_2)))) || ((!(Y(True))) && (P_2)))) || (((!(Y(!(H_2)))) && (!(H_2))) || (((Y(H_2)) && ((!(P_2)) && (H_2))) || ((!(Y(True))) && (!(P_2)))))) <-> ((Z2_0=0) || (Z2_1=0))) && (((Z2_0=0) -> (X((Z2_1=0) R (Z2_0>0)))) && ((Z2_1=0) -> (X((Z2_0=0) R (Z2_1>0)))))))) && (G((((H_2) || (Y(H_2))) -> (P_2)) && ((((!(Y(!(H_2)))) && (!(H_2))) <-> (((!(Y(True))) && (((!(P_2)) && (((!(Y(!(H_1)))) && (!(H_1))) || (X((Z2_0>0) U ((((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))) && ((Z2_0>0) && (Z2_0<1))))))) || ((P_2) && (((!(Y(H_1))) && (H_1)) && (X(((Z2_0>0) && (!(((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))))) U ((((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))) && (Z2_0=1)))))))) || ((Y(True)) && (((P_2) && ((Z2_0=0) && (X((Z2_0>0) U ((((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))) && ((Z2_0=1) && ((Z1_0>1) || (Z1_1>1)))))))) || ((P_2) && ((Z2_1=0) && (X((Z2_1>0) U ((((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))) && ((Z2_1=1) && ((Z1_0>1) || (Z1_1>1)))))))))))) && ((((((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))) && ((Z1_0>=1) || (Z1_1>=1))) -> ((Z2_0=1) || (Z2_1=1))) && ((((!(Y(H_2))) && (H_2)) <-> ((((!(Y(H_1))) && (H_1)) || ((Y(H_1)) && ((!(P_1)) && (H_1)))) && (!(X((!(((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1)))))) U ((((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))) && (((Z1_0>0) && (Z1_0<=1)) || ((Z1_1>0) && (Z1_1<=1))))))))) && (((Y(!(H_2))) && ((P_2) && (!(H_2)))) <-> ((((!(Y(H_1))) && (H_1)) || ((Y(H_1)) && ((!(P_1)) && (H_1)))) && ((X((!(((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1)))))) U ((((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1))))) && ((Z1_0=1) || (Z1_1=1))))) && (Y(True)))))))))))) && ((G((((((!(Y(H_3))) && (H_3)) || (((Y(!(H_3))) && ((P_3) && (!(H_3)))) || ((!(Y(True))) && (P_3)))) || (((!(Y(!(H_3)))) && (!(H_3))) || (((Y(H_3)) && ((!(P_3)) && (H_3))) || ((!(Y(True))) && (!(P_3)))))) <-> ((Z3_0=0) || (Z3_1=0))) && (((Z3_0=0) -> (X((Z3_1=0) R (Z3_0>0)))) && ((Z3_1=0) -> (X((Z3_0=0) R (Z3_1>0))))))) && (G(((P_3) <-> (!(P_2))) && ((H_3) <-> (!(H_2)))))))))
+    ((Now=0) && (X(G(Now>0)))) && (((((((((((Z2_0>=0) && (Z1_1>=0)) && (Z1_0>=0)) && (Z3_1>=0)) && (Z4_0>=0)) && (Z2_1>=0)) && (Z3_0>=0)) && (Z5_1>=0)) && (Z4_1>=0)) && (Z5_0>=0)) && ((P_5) && ((((((G((((((!(Y(H_2))) && (H_2)) || (((Y(!(H_2))) && ((P_2) && (!(H_2)))) || ((!(Y(True))) && (P_2)))) || (((!(Y(!(H_2)))) && (!(H_2))) || (((Y(H_2)) && ((!(P_2)) && (H_2))) || ((!(Y(True))) && (!(P_2)))))) <-> ((Z2_0=0) || (Z2_1=0))) && (((Z2_0=0) -> (X((Z2_1=0) R (Z2_0>0)))) && ((Z2_1=0) -> (X((Z2_0=0) R (Z2_1>0))))))) && ((G((((((!(Y(H_1))) && (H_1)) || (((Y(!(H_1))) && ((P_1) && (!(H_1)))) || ((!(Y(True))) && (P_1)))) || (((!(Y(!(H_1)))) && (!(H_1))) || (((Y(H_1)) && ((!(P_1)) && (H_1))) || ((!(Y(True))) && (!(P_1)))))) <-> ((Z1_0=0) || (Z1_1=0))) && (((Z1_0=0) -> (X((Z1_1=0) R (Z1_0>0)))) && ((Z1_1=0) -> (X((Z1_0=0) R (Z1_1>0))))))) && (G((P_1) && (H_1))))) && (G((((((!(Y(H_2))) && (H_2)) || (((Y(!(H_2))) && ((P_2) && (!(H_2)))) || ((!(Y(True))) && (P_2)))) || (((!(Y(!(H_2)))) && (!(H_2))) || (((Y(H_2)) && ((!(P_2)) && (H_2))) || ((!(Y(True))) && (!(P_2)))))) <-> ((Z2_0=0) || (Z2_1=0))) && (((Z2_0=0) -> (X((Z2_1=0) R (Z2_0>0)))) && ((Z2_1=0) -> (X((Z2_0=0) R (Z2_1>0)))))))) && ((G((((((!(Y(H_3))) && (H_3)) || (((Y(!(H_3))) && ((P_3) && (!(H_3)))) || ((!(Y(True))) && (P_3)))) || (((!(Y(!(H_3)))) && (!(H_3))) || (((Y(H_3)) && ((!(P_3)) && (H_3))) || ((!(Y(True))) && (!(P_3)))))) <-> ((Z3_0=0) || (Z3_1=0))) && (((Z3_0=0) -> (X((Z3_1=0) R (Z3_0>0)))) && ((Z3_1=0) -> (X((Z3_0=0) R (Z3_1>0))))))) && (G(((P_3) <-> ((P_2) || (((P_1) && ((H_1) U (H_2))) || (((P_1) && ((H_1) U (P_2))) || ((P_1) && (H_2)))))) && ((H_3) <-> ((H_2) || (((H_1) U ((H_1) && (H_2))) || ((H_1) U (P_2))))))))) && ((G((((((!(Y(H_4))) && (H_4)) || (((Y(!(H_4))) && ((P_4) && (!(H_4)))) || ((!(Y(True))) && (P_4)))) || (((!(Y(!(H_4)))) && (!(H_4))) || (((Y(H_4)) && ((!(P_4)) && (H_4))) || ((!(Y(True))) && (!(P_4)))))) <-> ((Z4_0=0) || (Z4_1=0))) && (((Z4_0=0) -> (X((Z4_1=0) R (Z4_0>0)))) && ((Z4_1=0) -> (X((Z4_0=0) R (Z4_1>0))))))) && (G(((P_4) <-> ((P_2) || (P_3))) && ((H_4) <-> ((H_2) || (H_3))))))) && ((G((((((!(Y(H_5))) && (H_5)) || (((Y(!(H_5))) && ((P_5) && (!(H_5)))) || ((!(Y(True))) && (P_5)))) || (((!(Y(!(H_5)))) && (!(H_5))) || (((Y(H_5)) && ((!(P_5)) && (H_5))) || ((!(Y(True))) && (!(P_5)))))) <-> ((Z5_0=0) || (Z5_1=0))) && (((Z5_0=0) -> (X((Z5_1=0) R (Z5_0>0)))) && ((Z5_1=0) -> (X((Z5_0=0) R (Z5_1>0))))))) && (G(((P_5) <-> (!(P_4))) && ((H_5) <-> (!(H_4)))))))))
 
 
 
@@ -281,187 +284,130 @@ checkers.ta.Examples > test4modelUnsat STANDARD_OUT
 
     ************************************************
     **************     VOCABULARY     ***************
-    2	(G[0,1](NEG(P1_sender_transm)))
-    0	(P1_sender_transm)
-    3	(NEG(G[0,1](NEG(P1_sender_transm))))
-    1	(NEG(P1_sender_transm))
+    4	((SenderA_Astop == 0) OR ((TRUE) U (SenderA_Astop == 0)))
+    1	(TRUE)
+    5	(NEG((SenderA_Astop == 0) OR ((TRUE) U (SenderA_Astop == 0))))
+    2	(SenderA_Astop == 0)
+    3	((TRUE) U (SenderA_Astop == 0))
     ************************************************
     ************************************************
     Converting the TA in CLTLoc
-    AAAA []
+    SenderA
     TA converted in CLTLoc
     ------------------
-    -------------INFO
+    -------------INFO--------
+    []
     TA encoding
-    (((s0=0) && (s1=2)) && ((G((((t0=1) -> ((s0=0) && (X((s0=1) && ((ta_0_x_0=0) || (ta_0_x_1=0)))))) && ((t1=2) -> ((s1=2) && (X((s1=3) && ((ta_1_x_0=0) || (ta_1_x_1=0))))))) && ((((((s0=0) && (X(s0=1))) -> (t0=1)) && (((s0=1) && (X(s0=0))) -> (False))) && ((((s1=2) && (X(s1=3))) -> (t1=2)) && (((s1=3) && (X(s1=2))) -> (False)))) && (((s0=0) || (s0=1)) && ((s1=2) || (s1=3)))))) && ((G(F(t0=1))) && (G(F(t1=2)))))) && ((G(((H_0) <-> (s1=3)) && ((H_0) <-> (X(P_0))))) && ((P_0) <-> (s1=3)))
+    (((SenderA_c_0=0) && ((SenderA_c_1>0) && (!(SenderA_c_v)))) && ((G((SenderA_c_0=0) -> (X((SenderA_c_1=0) R ((!(SenderA_c_v)) && (SenderA_c_0>0)))))) && (G((SenderA_c_1=0) -> (X((SenderA_c_0=0) R ((SenderA_c_v) && (SenderA_c_1>0)))))))) && (((s0=1) && ((SenderA_Astop=0) && ((G((((s0=0) -> (X(True))) && ((s0=1) -> (X(True)))) && ((((t0=2) -> ((s0=0) && (X(s0=0)))) && ((t0=1) -> ((s0=1) && (X(s0=0))))) && (((((s0=0) && (X(s0=1))) -> (False)) && (((s0=1) && (X(s0=0))) -> (t0=1))) && (((X((SenderA_c_0=0) || (SenderA_c_1=0))) -> (False)) && (((!(X(SenderA_Astop) = SenderA_Astop)) -> (False)) && ((s0=0) || (s0=1)))))))) && (G(F((t0=2) || (t0=1))))))) && ((G(((H_2) <-> (SenderA_Astop=0)) && ((H_2) <-> (X(P_2))))) && ((P_2) <-> (SenderA_Astop=0))))
     ************************************************
     -----------------------------TIMED AUTOMATON----------------------------- 
     TA 
     id: 0
-    	P0
+    	SenderA
     clocks: 
-    	x,	z,	
+    	c,	
     variables: 
-	
+    	Astop,	
     initialstate 
-    	State [id=bus_idle]
+    	State [id=ex_jam]
     states 
-    	State [id=bus_idle],
-    	State [id=bus_active],
+    	State [id=call_check],
+    	State [id=ex_jam],
     transitions 
-    	Transition [source=bus_idle, destination=bus_active, guard=[clockConstraints=[], variableConstraints=[]]], sync=begin?, assign=[clockassigments=[ta_0_x=0], variableassigments=[]]],
+    	Transition [source=call_check, destination=call_check, guard=[clockConstraints=[], variableConstraints=[]]], sync=tau1TAU, assign=[clockassigments=[], variableassigments=[]]],
+    	Transition [source=ex_jam, destination=call_check, guard=[clockConstraints=[], variableConstraints=[]]], sync=tau0TAU, assign=[clockassigments=[], variableassigments=[]]],
     --------------------------
     DECLARATION 
     variables 
+    	int Astop=0,
     clocks 
-    	clock ta_0_x=0,
+    	clock c=0,
     -------------------------------------------------------------------------------- 
 
-    -----------------------------TIMED AUTOMATON----------------------------- 
-    TA 
-    id: 1
-    	P1
-    clocks: 
-    	x,	z,	
-    variables: 
-	
-    initialstate 
-    	State [id=sender_wait]
-    states 
-    	State [id=sender_wait],
-    	State [id=sender_transm, invariant=x<=808],
-    transitions 
-    	Transition [source=sender_wait, destination=sender_transm, guard=[clockConstraints=[], variableConstraints=[]]], sync=begin!, assign=[clockassigments=[ta_1_x=0], variableassigments=[]]],
-    --------------------------
-    DECLARATION 
-    variables 
-    clocks 
-    	clock ta_1_x=0,
-    -------------------------------------------------------------------------------- 
-
-    clock: 	ta_1_x_0	ta_0_x_0	ta_1_x_1	ta_0_x_1	
+    clock: 	SenderA_c_1	SenderA_c_0	
     signals: 	
-    variables: 	t0	s0	t1	s1	
+    variables: 	SenderA_Astop	t0	s0	
 
     ************************************************
     {-----------------------------TIMED AUTOMATON----------------------------- 
     TA 
     id: 0
-    	P0
+    	SenderA
     clocks: 
-    	x,	z,	
+    	c,	
     variables: 
-	
+    	Astop,	
     initialstate 
-    	State [id=bus_idle]
+    	State [id=ex_jam]
     states 
-    	State [id=bus_idle],
-    	State [id=bus_active],
+    	State [id=call_check],
+    	State [id=ex_jam],
     transitions 
-    	Transition [source=bus_idle, destination=bus_active, guard=[clockConstraints=[], variableConstraints=[]]], sync=begin?, assign=[clockassigments=[ta_0_x=0], variableassigments=[]]],
+    	Transition [source=call_check, destination=call_check, guard=[clockConstraints=[], variableConstraints=[]]], sync=tau1TAU, assign=[clockassigments=[], variableassigments=[]]],
+    	Transition [source=ex_jam, destination=call_check, guard=[clockConstraints=[], variableConstraints=[]]], sync=tau0TAU, assign=[clockassigments=[], variableassigments=[]]],
     --------------------------
     DECLARATION 
     variables 
+    	int Astop=0,
     clocks 
-    	clock ta_0_x=0,
+    	clock c=0,
     -------------------------------------------------------------------------------- 
-    =bus_active=1, -----------------------------TIMED AUTOMATON----------------------------- 
-    TA 
-    id: 1
-    	P1
-    clocks: 
-    	x,	z,	
-    variables: 
-	
-    initialstate 
-    	State [id=sender_wait]
-    states 
-    	State [id=sender_wait],
-    	State [id=sender_transm, invariant=x<=808],
-    transitions 
-    	Transition [source=sender_wait, destination=sender_transm, guard=[clockConstraints=[], variableConstraints=[]]], sync=begin!, assign=[clockassigments=[ta_1_x=0], variableassigments=[]]],
-    --------------------------
-    DECLARATION 
-    variables 
-    clocks 
-    	clock ta_1_x=0,
-    -------------------------------------------------------------------------------- 
-    =sender_wait=2, -----------------------------TIMED AUTOMATON----------------------------- 
-    TA 
-    id: 1
-    	P1
-    clocks: 
-    	x,	z,	
-    variables: 
-	
-    initialstate 
-    	State [id=sender_wait]
-    states 
-    	State [id=sender_wait],
-    	State [id=sender_transm, invariant=x<=808],
-    transitions 
-    	Transition [source=sender_wait, destination=sender_transm, guard=[clockConstraints=[], variableConstraints=[]]], sync=begin!, assign=[clockassigments=[ta_1_x=0], variableassigments=[]]],
-    --------------------------
-    DECLARATION 
-    variables 
-    clocks 
-    	clock ta_1_x=0,
-    -------------------------------------------------------------------------------- 
-    =sender_transm=3, -----------------------------TIMED AUTOMATON----------------------------- 
+    =call_check=0, -----------------------------TIMED AUTOMATON----------------------------- 
     TA 
     id: 0
-    	P0
+    	SenderA
     clocks: 
-    	x,	z,	
+    	c,	
     variables: 
-	
+    	Astop,	
     initialstate 
-    	State [id=bus_idle]
+    	State [id=ex_jam]
     states 
-    	State [id=bus_idle],
-    	State [id=bus_active],
+    	State [id=call_check],
+    	State [id=ex_jam],
     transitions 
-    	Transition [source=bus_idle, destination=bus_active, guard=[clockConstraints=[], variableConstraints=[]]], sync=begin?, assign=[clockassigments=[ta_0_x=0], variableassigments=[]]],
+    	Transition [source=call_check, destination=call_check, guard=[clockConstraints=[], variableConstraints=[]]], sync=tau1TAU, assign=[clockassigments=[], variableassigments=[]]],
+    	Transition [source=ex_jam, destination=call_check, guard=[clockConstraints=[], variableConstraints=[]]], sync=tau0TAU, assign=[clockassigments=[], variableassigments=[]]],
     --------------------------
     DECLARATION 
     variables 
+    	int Astop=0,
     clocks 
-    	clock ta_0_x=0,
+    	clock c=0,
     -------------------------------------------------------------------------------- 
-    =bus_idle=0}
+    =ex_jam=1}
     Creating the conjunction of the formulae
     Conjunction of the formulae created
     Converting the following CLTLoc formula in zot
-    Y((s0=0)&&(s1=2) && (G(((t0=1)->((s0=0)&&(X((s0=1)&&((ta_0_x_0=0)||(ta_0_x_1=0))))))&&((t1=2)->((s1=2)&&(X((s1=3)&&((ta_1_x_0=0)||(ta_1_x_1=0)))))) && (((s0=0)&&(X(s0=1)))->(t0=1))&&(((s0=1)&&(X(s0=0)))->(False)) && (((s1=2)&&(X(s1=3)))->(t1=2))&&(((s1=3)&&(X(s1=2)))->(False)) && ((s0=0)||(s0=1))&&((s1=2)||(s1=3))))&& (G(F(t0=1)))&&(G(F(t1=2))) && (G(((H_0)<->(s1=3))&&((H_0)<->(X(P_0)))))&&((P_0)<->(s1=3)) && (Now=0)&&(X(G(Now>0))) && (Z1_1>=0)&&(Z2_0>=0) &&(Z0_1>=0) &&(Z1_0>=0) &&(Z3_1>=0) &&(Z2_1>=0) &&(Z3_0>=0) &&(Z0_0>=0) && P_3 && (G(((((!(Y(H_0)))&& H_0)|| ((Y(!(H_0)))&& P_0 &&(!(H_0)))||((!(Y(True)))&& P_0) || ((!(Y(!(H_0))))&&(!(H_0)))|| ((Y(H_0))&& (!(P_0))&& H_0)||((!(Y(True)))&&(!(P_0))))<->((Z0_0=0)||(Z0_1=0)))&& ((Z0_0=0)->(X((Z0_1=0)R(Z0_0>0))))&&((Z0_1=0)->(X((Z0_0=0)R(Z0_1>0))))))&& (Z1_0=0)&&(G(((((!(Y(H_1)))&& H_1)|| ((Y(!(H_1)))&& P_1 &&(!(H_1)))||((!(Y(True)))&& P_1) || ((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))<->((Z1_0=0)||(Z1_1=0)))&& ((Z1_0=0)->(X((Z1_1=0)R(Z1_0>0))))&&((Z1_1=0)->(X((Z1_0=0)R(Z1_1>0)))))) &&(G(((P_1)<->(!(P_0)))&&((H_1)<->(!(H_0))))) && (Z2_0=0)&&(G(((((!(Y(H_2)))&& H_2)|| ((Y(!(H_2)))&& P_2 &&(!(H_2)))||((!(Y(True)))&& P_2) || ((!(Y(!(H_2))))&&(!(H_2)))|| ((Y(H_2))&& (!(P_2))&& H_2)||((!(Y(True)))&&(!(P_2))))<->((Z2_0=0)||(Z2_1=0)))&& ((Z2_0=0)->(X((Z2_1=0)R(Z2_0>0))))&&((Z2_1=0)->(X((Z2_0=0)R(Z2_1>0)))))) &&(G(((H_2 ||(Y(H_2)))->(P_2))&& (((!(Y(!(H_2))))&&(!(H_2)))<->(((!(Y(True)))&&(((!(P_2))&&(((!(Y(!(H_1))))&&(!(H_1)))||(X((Z2_0>0)U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&& (Z2_0>0)&&(Z2_0<1))))))||(P_2 && (!(Y(H_1)))&& H_1 &&(X(((Z2_0>0)&&(!(((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))))U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&(Z2_0=1)))))))||((Y(True))&&((P_2 && (Z2_0=0)&&(X((Z2_0>0)U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&& (Z2_0=1)&&((Z1_0>1)||(Z1_1>1))))))||(P_2 && (Z2_1=0)&&(X((Z2_1>0)U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&& (Z2_1=1)&&((Z1_0>1)||(Z1_1>1))))))))))&& (((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&((Z1_0>=1)||(Z1_1>=1)))->((Z2_0=1)||(Z2_1=1)))&& (((!(Y(H_2)))&& H_2)<->((((!(Y(H_1)))&& H_1)||((Y(H_1))&& (!(P_1))&& H_1))&&(!(X((!(((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1)))))U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&(((Z1_0>0)&&(Z1_0<=1))||((Z1_1>0)&&(Z1_1<=1)))))))))&&(((Y(!(H_2)))&& P_2 &&(!(H_2)))<->((((!(Y(H_1)))&& H_1)||((Y(H_1))&& (!(P_1))&& H_1))&& (X((!(((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1)))))U((((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))&&((Z1_0=1)||(Z1_1=1)))))&&(Y(True)))))) && (G(((((!(Y(H_3)))&& H_3)|| ((Y(!(H_3)))&& P_3 &&(!(H_3)))||((!(Y(True)))&& P_3) || ((!(Y(!(H_3))))&&(!(H_3)))|| ((Y(H_3))&& (!(P_3))&& H_3)||((!(Y(True)))&&(!(P_3))))<->((Z3_0=0)||(Z3_1=0)))&& ((Z3_0=0)->(X((Z3_1=0)R(Z3_0>0))))&&((Z3_1=0)->(X((Z3_0=0)R(Z3_1>0))))))&&(G(((P_3)<->(!(P_2)))&&((H_3)<->(!(H_2))))))
+    Y((SenderA_c_0=0)&& (SenderA_c_1>0)&&(!(SenderA_c_v)) && (G((SenderA_c_0=0)->(X((SenderA_c_1=0)R((!(SenderA_c_v))&&(SenderA_c_0>0))))))&&(G((SenderA_c_1=0)->(X((SenderA_c_0=0)R(SenderA_c_v &&(SenderA_c_1>0)))))) && (s0=1)&& (SenderA_Astop=0)&& (G(((s0=0)->(X(True)))&&((s0=1)->(X(True))) && ((t0=2)->((s0=0)&&(X(s0=0))))&&((t0=1)->((s0=1)&&(X(s0=0)))) && (((s0=0)&&(X(s0=1)))->(False))&&(((s0=1)&&(X(s0=0)))->(t0=1)) && ((X((SenderA_c_0=0)||(SenderA_c_1=0)))->(False))&& ((!(X(SenderA_Astop) = SenderA_Astop))->(False))&&((s0=0)||(s0=1))))&&(G(F((t0=2)||(t0=1)))) && (G(((H_2)<->(SenderA_Astop=0))&&((H_2)<->(X(P_2)))))&&((P_2)<->(SenderA_Astop=0)) && (Now=0)&&(X(G(Now>0))) && (Z2_0>=0)&&(Z1_1>=0) &&(Z1_0>=0) &&(Z3_1>=0) &&(Z4_0>=0) &&(Z2_1>=0) &&(Z3_0>=0) &&(Z5_1>=0) &&(Z4_1>=0) &&(Z5_0>=0) && P_5 && (G(((((!(Y(H_2)))&& H_2)|| ((Y(!(H_2)))&& P_2 &&(!(H_2)))||((!(Y(True)))&& P_2) || ((!(Y(!(H_2))))&&(!(H_2)))|| ((Y(H_2))&& (!(P_2))&& H_2)||((!(Y(True)))&&(!(P_2))))<->((Z2_0=0)||(Z2_1=0)))&& ((Z2_0=0)->(X((Z2_1=0)R(Z2_0>0))))&&((Z2_1=0)->(X((Z2_0=0)R(Z2_1>0))))))&& (G(((((!(Y(H_1)))&& H_1)|| ((Y(!(H_1)))&& P_1 &&(!(H_1)))||((!(Y(True)))&& P_1) || ((!(Y(!(H_1))))&&(!(H_1)))|| ((Y(H_1))&& (!(P_1))&& H_1)||((!(Y(True)))&&(!(P_1))))<->((Z1_0=0)||(Z1_1=0)))&& ((Z1_0=0)->(X((Z1_1=0)R(Z1_0>0))))&&((Z1_1=0)->(X((Z1_0=0)R(Z1_1>0))))))&&(G(P_1 && H_1)) &&(G(((((!(Y(H_2)))&& H_2)|| ((Y(!(H_2)))&& P_2 &&(!(H_2)))||((!(Y(True)))&& P_2) || ((!(Y(!(H_2))))&&(!(H_2)))|| ((Y(H_2))&& (!(P_2))&& H_2)||((!(Y(True)))&&(!(P_2))))<->((Z2_0=0)||(Z2_1=0)))&& ((Z2_0=0)->(X((Z2_1=0)R(Z2_0>0))))&&((Z2_1=0)->(X((Z2_0=0)R(Z2_1>0)))))) && (G(((((!(Y(H_3)))&& H_3)|| ((Y(!(H_3)))&& P_3 &&(!(H_3)))||((!(Y(True)))&& P_3) || ((!(Y(!(H_3))))&&(!(H_3)))|| ((Y(H_3))&& (!(P_3))&& H_3)||((!(Y(True)))&&(!(P_3))))<->((Z3_0=0)||(Z3_1=0)))&& ((Z3_0=0)->(X((Z3_1=0)R(Z3_0>0))))&&((Z3_1=0)->(X((Z3_0=0)R(Z3_1>0))))))&&(G(((P_3)<->(P_2 || (P_1 &&((H_1)U(H_2)))|| (P_1 &&((H_1)U(P_2)))||(P_1 && H_2)))&&((H_3)<->(H_2 || ((H_1)U(H_1 && H_2))||((H_1)U(P_2)))))) && (G(((((!(Y(H_4)))&& H_4)|| ((Y(!(H_4)))&& P_4 &&(!(H_4)))||((!(Y(True)))&& P_4) || ((!(Y(!(H_4))))&&(!(H_4)))|| ((Y(H_4))&& (!(P_4))&& H_4)||((!(Y(True)))&&(!(P_4))))<->((Z4_0=0)||(Z4_1=0)))&& ((Z4_0=0)->(X((Z4_1=0)R(Z4_0>0))))&&((Z4_1=0)->(X((Z4_0=0)R(Z4_1>0))))))&&(G(((P_4)<->(P_2 || P_3))&&((H_4)<->(H_2 || H_3)))) && (G(((((!(Y(H_5)))&& H_5)|| ((Y(!(H_5)))&& P_5 &&(!(H_5)))||((!(Y(True)))&& P_5) || ((!(Y(!(H_5))))&&(!(H_5)))|| ((Y(H_5))&& (!(P_5))&& H_5)||((!(Y(True)))&&(!(P_5))))<->((Z5_0=0)||(Z5_1=0)))&& ((Z5_0=0)->(X((Z5_1=0)R(Z5_0>0))))&&((Z5_1=0)->(X((Z5_0=0)R(Z5_1>0))))))&&(G(((P_5)<->(!(P_4)))&&((H_5)<->(!(H_4))))))
     ************************************************
     ZOT ENCODING
     (asdf:operate 'asdf:load-op 'ae2zot)
     (use-package :trio-utils)
-    (define-tvar Z1_1 *real*)
     (define-tvar Z2_0 *real*)
-    (define-tvar Z0_1 *real*)
+    (define-tvar Z1_1 *real*)
     (define-tvar Z1_0 *real*)
     (define-tvar Z3_1 *real*)
+    (define-tvar Z4_0 *real*)
     (define-tvar Z2_1 *real*)
     (define-tvar Z3_0 *real*)
-    (define-tvar ta_1_x_0 *real*)
-    (define-tvar ta_1_x_1 *real*)
-    (define-tvar Z0_0 *real*)
+    (define-tvar Z5_1 *real*)
+    (define-tvar Z4_1 *real*)
+    (define-tvar Z5_0 *real*)
     (define-tvar Now *real*)
-    (define-tvar ta_0_x_0 *real*)
-    (define-tvar ta_0_x_1 *real*)
+    (define-tvar SenderA_c_1 *real*)
+    (define-tvar SenderA_c_0 *real*)
+    (define-tvar SenderA_Astop *real*)
     (define-tvar t0 *real*)
     (define-tvar s0 *real*)
-    (define-tvar t1 *real*)
-    (define-tvar s1 *real*)
-    (ae2zot:zot 10 (&&(yesterday (&&(&&(&&(&&([=] (-V- s0) 0) ([=] (-V- s1) 2)) (&&(alwf (&&(&&(-> ([=] (-V- t0) 1) (&&([=] (-V- s0) 0) (next (&&([=] (-V- s0) 1) (||([=] (-V- ta_0_x_0) 0) ([=] (-V- ta_0_x_1) 0)))))) (-> ([=] (-V- t1) 2) (&&([=] (-V- s1) 2) (next (&&([=] (-V- s1) 3) (||([=] (-V- ta_1_x_0) 0) ([=] (-V- ta_1_x_1) 0))))))) (&&(&&(&&(-> (&&([=] (-V- s0) 0) (next ([=] (-V- s0) 1))) ([=] (-V- t0) 1)) (-> (&&([=] (-V- s0) 1) (next ([=] (-V- s0) 0))) (&&  (-P- a) (!!(-P- a))))) (&&(-> (&&([=] (-V- s1) 2) (next ([=] (-V- s1) 3))) ([=] (-V- t1) 2)) (-> (&&([=] (-V- s1) 3) (next ([=] (-V- s1) 2))) (&&  (-P- a) (!!(-P- a)))))) (&&(||([=] (-V- s0) 0) ([=] (-V- s0) 1)) (||([=] (-V- s1) 2) ([=] (-V- s1) 3)))))) (&&(alwf (somf ([=] (-V- t0) 1))) (alwf (somf ([=] (-V- t1) 2)))))) (&&(alwf (&&(<-> (-P- H_0) ([=] (-V- s1) 3)) (<-> (-P- H_0) (next (-P- P_0))))) (<-> (-P- P_0) ([=] (-V- s1) 3)))) (&&(&&([=] (-V- Now) 0) (next (alwf ([>] (-V- Now) 0)))) (&&(&&(&&(&&(&&(&&(&&(&&([>=] (-V- Z1_1) 0) ([>=] (-V- Z2_0) 0)) ([>=] (-V- Z0_1) 0)) ([>=] (-V- Z1_0) 0)) ([>=] (-V- Z3_1) 0)) ([>=] (-V- Z2_1) 0)) ([>=] (-V- Z3_0) 0)) ([>=] (-V- Z0_0) 0)) (&&(-P- P_3) (&&(&&(&&(alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_0))) (-P- H_0)) (||(&&(yesterday (!! (-P- H_0))) (&&(-P- P_0) (!! (-P- H_0)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_0)))) (||(&&(!! (yesterday (!! (-P- H_0)))) (!! (-P- H_0))) (||(&&(yesterday (-P- H_0)) (&&(!! (-P- P_0)) (-P- H_0))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_0)))))) (||([=] (-V- Z0_0) 0) ([=] (-V- Z0_1) 0))) (&&(-> ([=] (-V- Z0_0) 0) (next (release ([=] (-V- Z0_1) 0) ([>] (-V- Z0_0) 0)))) (-> ([=] (-V- Z0_1) 0) (next (release ([=] (-V- Z0_0) 0) ([>] (-V- Z0_1) 0))))))) (&&(&&([=] (-V- Z1_0) 0) (alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_1))) (-P- H_1)) (||(&&(yesterday (!! (-P- H_1))) (&&(-P- P_1) (!! (-P- H_1)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_1)))) (||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1)))))) (||([=] (-V- Z1_0) 0) ([=] (-V- Z1_1) 0))) (&&(-> ([=] (-V- Z1_0) 0) (next (release ([=] (-V- Z1_1) 0) ([>] (-V- Z1_0) 0)))) (-> ([=] (-V- Z1_1) 0) (next (release ([=] (-V- Z1_0) 0) ([>] (-V- Z1_1) 0)))))))) (alwf (&&(<-> (-P- P_1) (!! (-P- P_0))) (<-> (-P- H_1) (!! (-P- H_0))))))) (&&(&&([=] (-V- Z2_0) 0) (alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_2))) (-P- H_2)) (||(&&(yesterday (!! (-P- H_2))) (&&(-P- P_2) (!! (-P- H_2)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_2)))) (||(&&(!! (yesterday (!! (-P- H_2)))) (!! (-P- H_2))) (||(&&(yesterday (-P- H_2)) (&&(!! (-P- P_2)) (-P- H_2))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_2)))))) (||([=] (-V- Z2_0) 0) ([=] (-V- Z2_1) 0))) (&&(-> ([=] (-V- Z2_0) 0) (next (release ([=] (-V- Z2_1) 0) ([>] (-V- Z2_0) 0)))) (-> ([=] (-V- Z2_1) 0) (next (release ([=] (-V- Z2_0) 0) ([>] (-V- Z2_1) 0)))))))) (alwf (&&(-> (||(-P- H_2) (yesterday (-P- H_2))) (-P- P_2)) (&&(<-> (&&(!! (yesterday (!! (-P- H_2)))) (!! (-P- H_2))) (||(&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (||(&&(!! (-P- P_2)) (||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (next (until ([>] (-V- Z2_0) 0) (&&(||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))) (&&([>] (-V- Z2_0) 0) ([<] (-V- Z2_0) 1))))))) (&&(-P- P_2) (&&(&&(!! (yesterday (-P- H_1))) (-P- H_1)) (next (until (&&([>] (-V- Z2_0) 0) (!! (||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))))) (&&(||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))) ([=] (-V- Z2_0) 1)))))))) (&&(yesterday (||  (-P- a) (!!(-P- a)))) (||(&&(-P- P_2) (&&([=] (-V- Z2_0) 0) (next (until ([>] (-V- Z2_0) 0) (&&(||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))) (&&([=] (-V- Z2_0) 1) (||([>] (-V- Z1_0) 1) ([>] (-V- Z1_1) 1)))))))) (&&(-P- P_2) (&&([=] (-V- Z2_1) 0) (next (until ([>] (-V- Z2_1) 0) (&&(||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))) (&&([=] (-V- Z2_1) 1) (||([>] (-V- Z1_0) 1) ([>] (-V- Z1_1) 1)))))))))))) (&&(-> (&&(||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))) (||([>=] (-V- Z1_0) 1) ([>=] (-V- Z1_1) 1))) (||([=] (-V- Z2_0) 1) ([=] (-V- Z2_1) 1))) (&&(<-> (&&(!! (yesterday (-P- H_2))) (-P- H_2)) (&&(||(&&(!! (yesterday (-P- H_1))) (-P- H_1)) (&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1)))) (!! (next (until (!! (||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1)))))) (&&(||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))) (||(&&([>] (-V- Z1_0) 0) ([<=] (-V- Z1_0) 1)) (&&([>] (-V- Z1_1) 0) ([<=] (-V- Z1_1) 1))))))))) (<-> (&&(yesterday (!! (-P- H_2))) (&&(-P- P_2) (!! (-P- H_2)))) (&&(||(&&(!! (yesterday (-P- H_1))) (-P- H_1)) (&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1)))) (&&(next (until (!! (||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1)))))) (&&(||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1))))) (||([=] (-V- Z1_0) 1) ([=] (-V- Z1_1) 1))))) (yesterday (||  (-P- a) (!!(-P- a)))))))))))))) (&&(alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_3))) (-P- H_3)) (||(&&(yesterday (!! (-P- H_3))) (&&(-P- P_3) (!! (-P- H_3)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_3)))) (||(&&(!! (yesterday (!! (-P- H_3)))) (!! (-P- H_3))) (||(&&(yesterday (-P- H_3)) (&&(!! (-P- P_3)) (-P- H_3))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_3)))))) (||([=] (-V- Z3_0) 0) ([=] (-V- Z3_1) 0))) (&&(-> ([=] (-V- Z3_0) 0) (next (release ([=] (-V- Z3_1) 0) ([>] (-V- Z3_0) 0)))) (-> ([=] (-V- Z3_1) 0) (next (release ([=] (-V- Z3_0) 0) ([>] (-V- Z3_1) 0))))))) (alwf (&&(<-> (-P- P_3) (!! (-P- P_2))) (<-> (-P- H_3) (!! (-P- H_2)))))))))))))
+    (ae2zot:zot 5 (&&(yesterday (&&(&&(&&(&&([=] (-V- SenderA_c_0) 0) (&&([>] (-V- SenderA_c_1) 0) (!! (-P- SenderA_c_v)))) (&&(alwf (-> ([=] (-V- SenderA_c_0) 0) (next (release ([=] (-V- SenderA_c_1) 0) (&&(!! (-P- SenderA_c_v)) ([>] (-V- SenderA_c_0) 0)))))) (alwf (-> ([=] (-V- SenderA_c_1) 0) (next (release ([=] (-V- SenderA_c_0) 0) (&&(-P- SenderA_c_v) ([>] (-V- SenderA_c_1) 0)))))))) (&&(&&([=] (-V- s0) 1) (&&([=] (-V- SenderA_Astop) 0) (&&(alwf (&&(&&(-> ([=] (-V- s0) 0) (next (||  (-P- a) (!!(-P- a))))) (-> ([=] (-V- s0) 1) (next (||  (-P- a) (!!(-P- a)))))) (&&(&&(-> ([=] (-V- t0) 2) (&&([=] (-V- s0) 0) (next ([=] (-V- s0) 0)))) (-> ([=] (-V- t0) 1) (&&([=] (-V- s0) 1) (next ([=] (-V- s0) 0))))) (&&(&&(-> (&&([=] (-V- s0) 0) (next ([=] (-V- s0) 1))) (&&  (-P- a) (!!(-P- a)))) (-> (&&([=] (-V- s0) 1) (next ([=] (-V- s0) 0))) ([=] (-V- t0) 1))) (&&(-> (next (||([=] (-V- SenderA_c_0) 0) ([=] (-V- SenderA_c_1) 0))) (&&  (-P- a) (!!(-P- a)))) (&&(-> (!! ([=] (next (-V- SenderA_Astop))  (-V- SenderA_Astop) )) (&&  (-P- a) (!!(-P- a)))) (||([=] (-V- s0) 0) ([=] (-V- s0) 1)))))))) (alwf (somf (||([=] (-V- t0) 2) ([=] (-V- t0) 1))))))) (&&(alwf (&&(<-> (-P- H_2) ([=] (-V- SenderA_Astop) 0)) (<-> (-P- H_2) (next (-P- P_2))))) (<-> (-P- P_2) ([=] (-V- SenderA_Astop) 0))))) (&&(&&([=] (-V- Now) 0) (next (alwf ([>] (-V- Now) 0)))) (&&(&&(&&(&&(&&(&&(&&(&&(&&(&&([>=] (-V- Z2_0) 0) ([>=] (-V- Z1_1) 0)) ([>=] (-V- Z1_0) 0)) ([>=] (-V- Z3_1) 0)) ([>=] (-V- Z4_0) 0)) ([>=] (-V- Z2_1) 0)) ([>=] (-V- Z3_0) 0)) ([>=] (-V- Z5_1) 0)) ([>=] (-V- Z4_1) 0)) ([>=] (-V- Z5_0) 0)) (&&(-P- P_5) (&&(&&(&&(&&(&&(alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_2))) (-P- H_2)) (||(&&(yesterday (!! (-P- H_2))) (&&(-P- P_2) (!! (-P- H_2)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_2)))) (||(&&(!! (yesterday (!! (-P- H_2)))) (!! (-P- H_2))) (||(&&(yesterday (-P- H_2)) (&&(!! (-P- P_2)) (-P- H_2))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_2)))))) (||([=] (-V- Z2_0) 0) ([=] (-V- Z2_1) 0))) (&&(-> ([=] (-V- Z2_0) 0) (next (release ([=] (-V- Z2_1) 0) ([>] (-V- Z2_0) 0)))) (-> ([=] (-V- Z2_1) 0) (next (release ([=] (-V- Z2_0) 0) ([>] (-V- Z2_1) 0))))))) (&&(alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_1))) (-P- H_1)) (||(&&(yesterday (!! (-P- H_1))) (&&(-P- P_1) (!! (-P- H_1)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_1)))) (||(&&(!! (yesterday (!! (-P- H_1)))) (!! (-P- H_1))) (||(&&(yesterday (-P- H_1)) (&&(!! (-P- P_1)) (-P- H_1))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_1)))))) (||([=] (-V- Z1_0) 0) ([=] (-V- Z1_1) 0))) (&&(-> ([=] (-V- Z1_0) 0) (next (release ([=] (-V- Z1_1) 0) ([>] (-V- Z1_0) 0)))) (-> ([=] (-V- Z1_1) 0) (next (release ([=] (-V- Z1_0) 0) ([>] (-V- Z1_1) 0))))))) (alwf (&&(-P- P_1) (-P- H_1))))) (alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_2))) (-P- H_2)) (||(&&(yesterday (!! (-P- H_2))) (&&(-P- P_2) (!! (-P- H_2)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_2)))) (||(&&(!! (yesterday (!! (-P- H_2)))) (!! (-P- H_2))) (||(&&(yesterday (-P- H_2)) (&&(!! (-P- P_2)) (-P- H_2))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_2)))))) (||([=] (-V- Z2_0) 0) ([=] (-V- Z2_1) 0))) (&&(-> ([=] (-V- Z2_0) 0) (next (release ([=] (-V- Z2_1) 0) ([>] (-V- Z2_0) 0)))) (-> ([=] (-V- Z2_1) 0) (next (release ([=] (-V- Z2_0) 0) ([>] (-V- Z2_1) 0)))))))) (&&(alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_3))) (-P- H_3)) (||(&&(yesterday (!! (-P- H_3))) (&&(-P- P_3) (!! (-P- H_3)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_3)))) (||(&&(!! (yesterday (!! (-P- H_3)))) (!! (-P- H_3))) (||(&&(yesterday (-P- H_3)) (&&(!! (-P- P_3)) (-P- H_3))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_3)))))) (||([=] (-V- Z3_0) 0) ([=] (-V- Z3_1) 0))) (&&(-> ([=] (-V- Z3_0) 0) (next (release ([=] (-V- Z3_1) 0) ([>] (-V- Z3_0) 0)))) (-> ([=] (-V- Z3_1) 0) (next (release ([=] (-V- Z3_0) 0) ([>] (-V- Z3_1) 0))))))) (alwf (&&(<-> (-P- P_3) (||(-P- P_2) (||(&&(-P- P_1) (until (-P- H_1) (-P- H_2))) (||(&&(-P- P_1) (until (-P- H_1) (-P- P_2))) (&&(-P- P_1) (-P- H_2)))))) (<-> (-P- H_3) (||(-P- H_2) (||(until (-P- H_1) (&&(-P- H_1) (-P- H_2))) (until (-P- H_1) (-P- P_2))))))))) (&&(alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_4))) (-P- H_4)) (||(&&(yesterday (!! (-P- H_4))) (&&(-P- P_4) (!! (-P- H_4)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_4)))) (||(&&(!! (yesterday (!! (-P- H_4)))) (!! (-P- H_4))) (||(&&(yesterday (-P- H_4)) (&&(!! (-P- P_4)) (-P- H_4))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_4)))))) (||([=] (-V- Z4_0) 0) ([=] (-V- Z4_1) 0))) (&&(-> ([=] (-V- Z4_0) 0) (next (release ([=] (-V- Z4_1) 0) ([>] (-V- Z4_0) 0)))) (-> ([=] (-V- Z4_1) 0) (next (release ([=] (-V- Z4_0) 0) ([>] (-V- Z4_1) 0))))))) (alwf (&&(<-> (-P- P_4) (||(-P- P_2) (-P- P_3))) (<-> (-P- H_4) (||(-P- H_2) (-P- H_3))))))) (&&(alwf (&&(<-> (||(||(&&(!! (yesterday (-P- H_5))) (-P- H_5)) (||(&&(yesterday (!! (-P- H_5))) (&&(-P- P_5) (!! (-P- H_5)))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (-P- P_5)))) (||(&&(!! (yesterday (!! (-P- H_5)))) (!! (-P- H_5))) (||(&&(yesterday (-P- H_5)) (&&(!! (-P- P_5)) (-P- H_5))) (&&(!! (yesterday (||  (-P- a) (!!(-P- a))))) (!! (-P- P_5)))))) (||([=] (-V- Z5_0) 0) ([=] (-V- Z5_1) 0))) (&&(-> ([=] (-V- Z5_0) 0) (next (release ([=] (-V- Z5_1) 0) ([>] (-V- Z5_0) 0)))) (-> ([=] (-V- Z5_1) 0) (next (release ([=] (-V- Z5_0) 0) ([>] (-V- Z5_1) 0))))))) (alwf (&&(<-> (-P- P_5) (!! (-P- P_4))) (<-> (-P- H_5) (!! (-P- H_4)))))))))))))
 
     :smt-lib :smt2 
     :logic :QF_UFRDL 
     :over-clocks 3 
     :gen-symbolic-val nil
     :parametric-regions t
-    :discrete-counters '(t0 s0 t1 s1))
+    :discrete-counters '(SenderA_Astop t0 s0))
 
 
     ************************************************
@@ -469,172 +415,55 @@ checkers.ta.Examples > test4modelUnsat STANDARD_OUT
     Running zot
     Considering the file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/tmp.zot
     unsat
-    (error "line 6569 column 103: model is not available")
-    (:add-rows            8534
-     :added-eqs           31497
-     :arith-conflicts     58
-     :assert-diseq        11697
-     :assert-lower        14177
-     :assert-upper        21917
-     :binary-propagations 133818
-     :bound-prop          1746
-     :conflicts           262
-     :decisions           13784
-     :del-clause          2993
-     :eq-adapter          2159
-     :fixed-eqs           2169
-     :max-memory          14.67
-     :memory              5.54
-     :minimized-lits      173
-     :mk-bool-var         12384
-     :mk-clause           8308
-     :num-allocs          89920
-     :offset-eqs          3346
-     :pivots              552
-     :propagations        175354
-     :restarts            2
-     :rlimit-count        446463
-     :time                0.50
-     :total-time          0.52)
+    (error "line 4781 column 61: model is not available")
+    (:add-rows            540
+     :binary-propagations 557
+     :conflicts           1
+     :eq-adapter          610
+     :max-memory          9.52
+     :memory              4.84
+     :mk-bool-var         6865
+     :mk-clause           4075
+     :num-allocs          67791
+     :propagations        584
+     :rlimit-count        120346
+     :time                0.10
+     :total-time          0.12)
     Result2: Zot ends
     Stdout: ---UNSAT---
     Stdout: Evaluation took:
-    Stdout:   0.738 seconds of real time
-    Stdout:   0.191710 seconds of total run time (0.161921 user, 0.029789 system)
-    Stdout:   26.02% CPU
-    Stdout:   2,285,413,761 processor cycles
+    Stdout:   0.276 seconds of real time
+    Stdout:   0.133907 seconds of total run time (0.119669 user, 0.014238 system)
+    Stdout:   48.55% CPU
+    Stdout:   855,862,380 processor cycles
     unsat
-    (error "line 6569 column 103: model is not available")
-    (:add-rows            8534
-     :added-eqs           31497
-     :arith-conflicts     58
-     :assert-diseq        11697
-     :assert-lower        14177
-     :assert-upper        21917
-     :binary-propagations 133818
-     :bound-prop          1746
-     :conflicts           262
-     :decisions           13784
-     :del-clause          2993
-     :eq-adapter          2159
-     :fixed-eqs           2169
-     :max-memory          14.67
-     :memory              5.54
-     :minimized-lits      173
-     :mk-bool-var         12384
-     :mk-clause           8308
-     :num-allocs          89920
-     :offset-eqs          3346
-     :pivots              552
-     :propagations        175354
-     :restarts            2
-     :rlimit-count        446463
-     :time                0.50
-     :total-time          0.52)
-    Stdout:   22,695,408 bytes consed
-    Stdout:   
-    Result1: Zot ends
-    Zot endsConverting the following CLTLoc formula in zot
-    (s0=0)&&(s1=2) && (G(((t0=1)->((s0=0)&&(X((s0=1)&&((ta_0_x_0=0)||(ta_0_x_1=0))))))&&((t1=2)->((s1=2)&&(X((s1=3)&&((ta_1_x_0=0)||(ta_1_x_1=0)))))) && (((s0=0)&&(X(s0=1)))->(t0=1))&&(((s0=1)&&(X(s0=0)))->(False)) && (((s1=2)&&(X(s1=3)))->(t1=2))&&(((s1=3)&&(X(s1=2)))->(False)) && ((s0=0)||(s0=1))&&((s1=2)||(s1=3))))&& (G(F(t0=1)))&&(G(F(t1=2))) && (G(((H_0)<->(s1=3))&&((H_0)<->(X(P_0)))))&&((P_0)<->(s1=3))
-    ************************************************
-    ZOT ENCODING
-    (asdf:operate 'asdf:load-op 'ae2zot)
-    (use-package :trio-utils)
-    (define-tvar ta_1_x_0 *real*)
-    (define-tvar ta_0_x_0 *real*)
-    (define-tvar ta_1_x_1 *real*)
-    (define-tvar ta_0_x_1 *real*)
-    (define-tvar t0 *real*)
-    (define-tvar s0 *real*)
-    (define-tvar t1 *real*)
-    (define-tvar s1 *real*)
-    (ae2zot:zot 5 (&&(&&(&&(&&([=] (-V- s0) 0) ([=] (-V- s1) 2)) (&&(alwf (&&(&&(-> ([=] (-V- t0) 1) (&&([=] (-V- s0) 0) (next (&&([=] (-V- s0) 1) (||([=] (-V- ta_0_x_0) 0) ([=] (-V- ta_0_x_1) 0)))))) (-> ([=] (-V- t1) 2) (&&([=] (-V- s1) 2) (next (&&([=] (-V- s1) 3) (||([=] (-V- ta_1_x_0) 0) ([=] (-V- ta_1_x_1) 0))))))) (&&(&&(&&(-> (&&([=] (-V- s0) 0) (next ([=] (-V- s0) 1))) ([=] (-V- t0) 1)) (-> (&&([=] (-V- s0) 1) (next ([=] (-V- s0) 0))) (&&  (-P- a) (!!(-P- a))))) (&&(-> (&&([=] (-V- s1) 2) (next ([=] (-V- s1) 3))) ([=] (-V- t1) 2)) (-> (&&([=] (-V- s1) 3) (next ([=] (-V- s1) 2))) (&&  (-P- a) (!!(-P- a)))))) (&&(||([=] (-V- s0) 0) ([=] (-V- s0) 1)) (||([=] (-V- s1) 2) ([=] (-V- s1) 3)))))) (&&(alwf (somf ([=] (-V- t0) 1))) (alwf (somf ([=] (-V- t1) 2)))))) (&&(alwf (&&(<-> (-P- H_0) ([=] (-V- s1) 3)) (<-> (-P- H_0) (next (-P- P_0))))) (<-> (-P- P_0) ([=] (-V- s1) 3)))))
-
-    :smt-lib :smt2 
-    :logic :QF_UFRDL 
-    :over-clocks 3 
-    :gen-symbolic-val nil
-    :parametric-regions t
-    :discrete-counters '(t0 s0 t1 s1))
-
-
-    ************************************************
-    Formula converted in zot
-    Running zot
-    Considering the file /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/tmp.zot
-    unsat
-    (error "line 808 column 61: model is not available")
-    (:add-rows            991
-     :added-eqs           3225
-     :arith-conflicts     28
-     :assert-diseq        1050
-     :assert-lower        1107
-     :assert-upper        2079
-     :binary-propagations 7574
-     :bound-prop          136
-     :conflicts           95
-     :decisions           1282
-     :del-clause          780
-     :eq-adapter          514
-     :fixed-eqs           152
-     :max-memory          4.44
-     :memory              2.62
-     :minimized-lits      32
-     :mk-bool-var         1977
-     :mk-clause           1488
-     :num-allocs          33990
-     :offset-eqs          278
-     :pivots              187
-     :propagations        10900
-     :rlimit-count        43551
-     :time                0.05
-     :total-time          0.06)
-    Result2: Zot ends
-    Stdout: ---UNSAT---
-    Stdout: Evaluation took:
-    Stdout:   0.102 seconds of real time
-    Stdout:   0.024770 seconds of total run time (0.019487 user, 0.005283 system)
-    Stdout:   24.51% CPU
-    Stdout:   315,191,519 processor cycles
-    unsat
-    (error "line 808 column 61: model is not available")
-    (:add-rows            991
-     :added-eqs           3225
-     :arith-conflicts     28
-     :assert-diseq        1050
-     :assert-lower        1107
-     :assert-upper        2079
-     :binary-propagations 7574
-     :bound-prop          136
-     :conflicts           95
-     :decisions           1282
-     :del-clause          780
-     :eq-adapter          514
-     :fixed-eqs           152
-     :max-memory          4.44
-     :memory              2.62
-     :minimized-lits      32
-     :mk-bool-var         1977
-     :mk-clause           1488
-     :num-allocs          33990
-     :offset-eqs          278
-     :pivots              187
-     :propagations        10900
-     :rlimit-count        43551
-     :time                0.05
-     :total-time          0.06)
-    Stdout:   2,814,672 bytes consed
+    (error "line 4781 column 61: model is not available")
+    (:add-rows            540
+     :binary-propagations 557
+     :conflicts           1
+     :eq-adapter          610
+     :max-memory          9.52
+     :memory              4.84
+     :mk-bool-var         6865
+     :mk-clause           4075
+     :num-allocs          67791
+     :propagations        584
+     :rlimit-count        120346
+     :time                0.10
+     :total-time          0.12)
+    Stdout:   15,554,272 bytes consed
     Stdout:   
     Result1: Zot ends
     Zot ends
+Executing test test3 [checkers.TACheckerTest] with result: SUCCESS
 Gradle Test Executor 1 finished executing tests.
-Finished generating test XML results (0.002 secs) into: /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/test-results/test
+Finished generating test XML results (0.001 secs) into: /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/test-results/test
 Generating HTML test report...
-Finished generating test html results (0.008 secs) into: /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/reports/tests/test
-:solvers:test (Thread[Daemon worker Thread 5,5,main]) completed. Took 3.278 secs.
+Finished generating test html results (0.004 secs) into: /Users/Claudio1/Documents/School/University/Postdoc/Software/TAKER/TAKER/solvers/build/reports/tests/test
+:solvers:test (Thread[Daemon worker Thread 7,5,main]) completed. Took 1.914 secs.
 
 BUILD SUCCESSFUL
 
-Total time: 6.397 secs
+Total time: 4.337 secs
 Stopped 0 worker daemon(s).
-Received result Success[value=null] from daemon DaemonInfo{pid=22177, address=[7284dd0c-1ffa-40b7-afb4-050122c933d7 port:51826, addresses:[/0:0:0:0:0:0:0:1, /127.0.0.1]], state=Idle, lastBusy=1497352686301, context=DefaultDaemonContext[uid=443262cf-3506-4366-ac3d-ff80927955ad,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=22177,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]} (build should be done).
+Received result Success[value=null] from daemon DaemonInfo{pid=37202, address=[9ee2fc8d-b358-4a05-928b-3980e9ca1489 port:63565, addresses:[/0:0:0:0:0:0:0:1, /127.0.0.1]], state=Idle, lastBusy=1497476494029, context=DefaultDaemonContext[uid=871749e5-0663-4b43-966b-fa9db069a91a,javaHome=/Library/Java/JavaVirtualMachines/jdk1.8.0_71.jdk/Contents/Home,daemonRegistryDir=/Users/Claudio1/.gradle/daemon,pid=37202,idleTimeout=10800000,daemonOpts=-XX:MaxPermSize=256m,-XX:+HeapDumpOnOutOfMemoryError,-Xmx1024m,-Dfile.encoding=UTF-8,-Duser.country=IT,-Duser.language=it,-Duser.variant]} (build should be done).

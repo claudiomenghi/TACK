@@ -125,41 +125,8 @@ public class TA {
 		});
 		
 		
-		Set<String> declaredClocks=clockDeclarations.stream().map(c-> c.getId()).collect(Collectors.toSet());
-		this.transitions.forEach(t-> {
-			 t.getGuard().getClockConstraints().forEach(c -> {
-							if(declaredClocks.contains(c.getClock().getName())){
-										c.getClock().setName("ta_"+this.id+"_"+c.getClock().getName());
-							}
-			 	}
-				);
-			 t.getAssignement().getClockassigments().forEach(a ->{
-				 if(declaredClocks.contains(a.getClock().getName())){
-					 	a.getClock().setName("ta_"+this.id+"_"+a.getClock().getName());
-				 }
-			 });
-			}
-			);
-
-		clockDeclarations.forEach(c -> c.setId("ta_"+this.id+"_"+c.getId()));
 		
 		
-		Set<String> declaredVariables=variableDeclaration.stream().map(v ->v.getId()).collect(Collectors.toSet());
-		this.transitions.forEach(t-> {
-			 t.getGuard().getConditions().forEach(c -> {
-							if(declaredVariables.contains(c.getVariable().getName())){
-										c.getVariable().setName("ta_"+this.id+"_"+c.getVariable().getName());
-							}
-			 	}
-				);
-			 t.getAssignement().getVariableassigments().forEach(a ->{
-				 if(declaredVariables.contains(a.getVariable().getName())){
-					 	a.getVariable().setName("ta_"+this.id+"_"+a.getVariable().getName());
-				 }
-			 });
-			}
-			);
-		variableDeclaration.stream().forEach(v -> v.setId("ta_"+this.id+"_"+v.getId()));
 		
 		
 		this.variableDeclaration = variableDeclaration;
@@ -281,6 +248,14 @@ public class TA {
 		return ta;
 	}
 
+	public Set<Variable> getLocalVariables(){
+		return this.variableDeclaration.stream().map(v -> new Variable(v.getId())).collect(Collectors.toSet());
+	}
+	
+	public Set<Clock> getLocalClocks(){
+		return this.clockDeclarations.stream().map(cdc-> new Clock(cdc.getId())).collect(Collectors.toSet());
+	}
+	
 	public List<String> getActions() {
 		return Collections.unmodifiableList(actions);
 	}

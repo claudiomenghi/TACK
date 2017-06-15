@@ -1,7 +1,7 @@
 
-process Sender_A {
+process SenderA {
 clock c;
-int A_stop=0;
+int Astop=0;
 
   state  call_check, ex_jam;
   init   ex_jam;
@@ -15,5 +15,5 @@ int A_stop=0;
 
 
  
-system Sender_A;
+system SenderA;
 

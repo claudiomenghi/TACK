@@ -9,14 +9,20 @@ public class VariableAssignementAP extends AP {
 	private final int encodingSymbol;
 	private final Variable variable;
 	private final Value expression;
+	private final String automaton;
 
-	public VariableAssignementAP( int encodingSymbol, Variable variable, Value expression) {
+	public VariableAssignementAP(String automaton, int encodingSymbol, Variable variable, Value expression) {
 		super(variable.toString()+expression.toString());
+		this.automaton=automaton;
 		Preconditions.checkNotNull(variable, "The variable cannot be null");
 		Preconditions.checkNotNull(expression, "The expression assigned to the variable  cannot be null");
 		this.encodingSymbol=encodingSymbol;
 		this.variable = variable;
 		this.expression = expression;
+	}
+
+	public String getAutomaton() {
+		return automaton;
 	}
 
 	public int getEncodingSymbol() {

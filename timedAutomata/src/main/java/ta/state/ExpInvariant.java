@@ -1,7 +1,10 @@
 package ta.state;
 
+import formulae.cltloc.CLTLocFormula;
+import ta.TA;
 import ta.expressions.Expression;
 import ta.expressions.Identifier;
+import ta.visitors.InvariantVisitor;
 
 public class ExpInvariant extends Invariant {
 
@@ -36,4 +39,11 @@ public class ExpInvariant extends Invariant {
 		return "invariant="+id + operator + exp;
 	}
 
+
+	
+	@Override
+	public CLTLocFormula accept(TA ta, InvariantVisitor v) {
+		return v.visit(ta, this);
+	}
+	
 }

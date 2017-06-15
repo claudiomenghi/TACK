@@ -326,11 +326,21 @@ import operators.*;
 		
  			}
  			$variabledeclret.put($varn.id, $type.text);
- 			if($varn.exp!=null && !$type.text.equals("clock")){
- 				$variableinitializationret.put($varn.id, $varn.exp);
+ 			if(!$type.text.equals("clock")){
+ 				if($varn.exp!=null){
+ 					$variableinitializationret.put($varn.id, $varn.exp);
+ 				}
+ 				else{
+ 					$variableinitializationret.put($varn.id, new EmptyExpression());
+ 				}
  			}
- 		 	if($varn.exp!=null && $type.text.equals("clock")){
-				$clockinitializationret.put($varn.id, (Value) $varn.exp);
+ 			if( $type.text.equals("clock")){
+ 				if($varn.exp!=null){
+ 				 	$clockinitializationret.put($varn.id, (Value) $varn.exp);
+ 				 }
+ 				 else{
+ 				 	$clockinitializationret.put($varn.id, new Value("0"));
+ 				 }
  			}
  		}
 

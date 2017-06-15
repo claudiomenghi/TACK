@@ -14,11 +14,9 @@ public class Variable {
 	/**
 	 * The name of the class
 	 */
-	private  String name;
+	private final String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 
 	private final int hash;
 

@@ -37,6 +37,9 @@ public class Assign {
 		return variableassigments;
 	}
 
+	public Set<Variable> assignedVariables(){
+		return this.variableassigments.stream().map(v -> v.getVariable()).collect(Collectors.toSet());
+	}
 	/**
 	 * {@inheritDoc}
 	 */
