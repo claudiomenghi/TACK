@@ -68,6 +68,8 @@ test {
         println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }
 }
+
+ 
  
 
 // In this section you declare the dependencies for your production and test code
@@ -86,4 +88,10 @@ dependencies {
 	antlr "org.antlr:antlr4:4.5" 
 	
     testCompile 'junit:junit:4.12'
+}
+
+run {
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
 }
