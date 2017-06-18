@@ -14,4 +14,4 @@ The TACK framework is made by several modules:
 * open the `checker` folder
 * run `gradle run -PappArgs="['model.ta','property.mitli']"` where `model.ta` is the model to be considered and `property.mitli` is the property to be verified.  
 
-For example, `gradle run -PappArgs="['fischer_input_02.ta','fischer_input_02.mitli']"` executed in the folder `checker` folder verifies whether the formula `fischer_input_02.mitli'` holds in the model `fischer_input_02.ta`
+For example, `gradle run -PappArgs="['fischer_input_02.ta','fischer_input_02.mitli']"` executed in the folder `checker` folder verifies whether the formula `fischer_input_02.mitli` holds in the model `fischer_input_02.ta`
