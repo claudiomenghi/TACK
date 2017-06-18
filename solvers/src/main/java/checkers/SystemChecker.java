@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -23,6 +20,7 @@ import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.unary.CLTLocYesterday;
+import formulae.cltloc.visitor.CLTLocGetMaxBound;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
@@ -35,10 +33,8 @@ import formulae.mitli.visitors.GetRelationalAtomsVisitor;
 import solvers.CLTLocsolver;
 import ta.StateAP;
 import ta.SystemDecl;
-import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.Value;
-import ta.state.State;
 import ta.visitors.TANetwork2CLTLoc;
 import zotrunner.ZotException;
 
@@ -52,7 +48,7 @@ public class SystemChecker  {
 	/**
 	 * The bound to be considered in the verification
 	 */
-	protected final int bound;
+	protected  int bound;
 
 	/**
 	 * The stream to be used to write output messages
@@ -143,7 +139,7 @@ public class SystemChecker  {
 		out.println("MITLI formula:  " + mitliformula);
 		MITLIFormula negatedFormula = MITLIFormula.not(mitliformula);
 		out.println("Converting the MITLI formula in CLTLoc");
-		MITLI2CLTLoc translator = new MITLI2CLTLoc(negatedFormula, this.bound);
+		MITLI2CLTLoc translator = new MITLI2CLTLoc(negatedFormula);
 		formula = translator.apply();
 		out.println("MITLI formula converted in CLTLoc");
 		out.println("************************************************");
@@ -249,7 +245,6 @@ public class SystemChecker  {
 		
 		FileUtils.writeStringToFile(stateIdStringMappingfile, stateIdMappingBuilder.toString());
 		
-		String a=null;
 		StringBuilder transitionsIdMappingBuilder=new StringBuilder();
 		system.getTimedAutomata().stream().forEach(ta-> ta.getTransitions().stream().forEach(
 				s-> 
@@ -266,7 +261,10 @@ public class SystemChecker  {
 				new CLTLocConjunction(taFormula, formula));
 		out.println("Conjunction of the formulae created");
 
-		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, bound);
+		if(bound==-1){
+			bound=conjunctionFormula.accept(new CLTLocGetMaxBound());
+		}
+		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, (bound==0) ? 1: bound);
 		boolean sat = cltlocSolver.solve();
 		this.sattime=cltlocSolver.getSattime();
 		this.checkingspace=cltlocSolver.getCheckingspace();

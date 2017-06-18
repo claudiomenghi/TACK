@@ -49,7 +49,7 @@ public class TAGetThetaTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		MITLI2CLTLocVisitor visitor = new MITLI2CLTLocVisitor(formula, 5);
+		MITLI2CLTLocVisitor visitor = new MITLI2CLTLocVisitor(formula);
 
 		formula.accept(visitor);
 

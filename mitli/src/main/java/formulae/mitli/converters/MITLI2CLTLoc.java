@@ -34,9 +34,9 @@ public class MITLI2CLTLoc {
 
 	private final Map<MITLIFormula, MITLIFormula> parentRelation;
 
-	public MITLI2CLTLoc(MITLIFormula formula, Integer i) {
+	public MITLI2CLTLoc(MITLIFormula formula) {
 		this.formula = formula;
-		this.visitor = new MITLI2CLTLocVisitor(formula, i);
+		this.visitor = new MITLI2CLTLocVisitor(formula);
 		this.generatedFormulaMap = new HashMap<>();
 		this.clockcontraintFormulaMap = new HashMap<>();
 		this.parentRelation = new HashMap<>();

@@ -48,7 +48,7 @@ public class MITLIsolver {
 		out.println("Formula: " + formula);
 		
 		
-		MITLI2CLTLoc converted = new MITLI2CLTLoc(formula, bound);
+		MITLI2CLTLoc converted = new MITLI2CLTLoc(formula);
 
 		cltlocFormula = converted.apply();
 		converted.printFancy(out);

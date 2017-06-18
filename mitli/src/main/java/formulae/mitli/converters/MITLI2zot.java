@@ -16,7 +16,7 @@ public class MITLI2zot implements BiFunction<MITLIFormula, Integer, String> {
 	public String apply(MITLIFormula t, Integer i){
 		
 		String zotencoding=new CLTLoc2Ae2zot(i).apply(
-				(t.accept(new MITLI2CLTLocVisitor(t, i))));
+				(t.accept(new MITLI2CLTLocVisitor(t))));
 		LOGGER.info("Formula converted in zot");
 
 		return zotencoding

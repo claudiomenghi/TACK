@@ -33,7 +33,7 @@ public class MITLIsolverTest {
 
 		MITLIAtom a = new MITLIPropositionalAtom("a");
 
-		MITLI2CLTLoc converter = new MITLI2CLTLoc(a, 5);
+		MITLI2CLTLoc converter = new MITLI2CLTLoc(a);
 
 		converter.apply();
 

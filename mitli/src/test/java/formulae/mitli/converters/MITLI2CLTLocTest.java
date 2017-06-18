@@ -3,8 +3,6 @@
  */
 package formulae.mitli.converters;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import formulae.mitli.atoms.MITLIAtom;
@@ -22,7 +20,7 @@ public class MITLI2CLTLocTest {
 		MITLIAtom a=new MITLIPropositionalAtom("a");
 		
 		
-		MITLI2CLTLoc converter=new MITLI2CLTLoc(a, 5);
+		MITLI2CLTLoc converter=new MITLI2CLTLoc(a);
 		
 		converter.apply();
 		converter.getTheta(a);

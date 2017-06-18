@@ -70,7 +70,6 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	private static final CLTLocClock NOW = new CLTLocClock("Now");
 
-	private final int maxIntComparedto;
 
 	public static final BinaryOperator<CLTLocFormula> AND = CLTLocFormula::getAnd;
 	public static final BinaryOperator<CLTLocFormula> OR = CLTLocDisjunction::new;
@@ -151,7 +150,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public final Function<MITLIFormula, CLTLocClock> newz1clock = formula -> new CLTLocClock(
 			"Z" + formulaIdMap.get(formula)+"_1");
 
-	public MITLI2CLTLocVisitor(MITLIFormula formula, int maxIntComparedto) {
+	public MITLI2CLTLocVisitor(MITLIFormula formula) {
 
 		Preconditions.checkNotNull(formula, "The formula to be considered cannot be null");
 
@@ -162,7 +161,6 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 			this.formulaIdMap.put(listSubFormula.get(i), i);
 		}
 
-		this.maxIntComparedto = maxIntComparedto;
 
 	}
 

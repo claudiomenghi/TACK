@@ -46,6 +46,9 @@ public class Constant extends Atom {
 		return true;
 	}
 
+	public String getValue(){
+		return this.value;
+	}
 	/**
 	 * {@inheritDoc}
 	 */
