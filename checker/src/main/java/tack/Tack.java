@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.ByteStreams;
 
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.parser.MITLILexer;
@@ -23,6 +24,9 @@ public class Tack {
 
 	public static void main(String[] args) throws Exception {
 		PrintStream out = System.out;
+		/*PrintStream out = 
+				new PrintStream(ByteStreams.nullOutputStream());
+*/
 		out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		out.println("TACK  - Timed Automata ChecKer");
 		out.println("v. 0.0.1 - 18/06/2017\n");

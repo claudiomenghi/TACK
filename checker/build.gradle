@@ -69,7 +69,16 @@ test {
     }
 }
 
- 
+ //create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+        	'Main-Class': 'tack.Tack'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
  
 
 // In this section you declare the dependencies for your production and test code
