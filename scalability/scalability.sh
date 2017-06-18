@@ -3,16 +3,19 @@
 touch results.txt
 echo "" > results.txt
 
-for i in 0{2..9} 10;
-do 
+for j in {1..2};
+do
+    echo "--------------------------------------------" >> results.txt
+    echo "Property "$i >> results.txt
     
-    
-#    a=$(echo $( TIMEFORMAT="%3U + %3S"; { time eval $command /dev/sda 2>&1 >/dev/null;  } 2>&1) "*1000" | bc -l)
-    message="Running test: "$i
-    echo $message;
-    
-    (time sh runCommand.sh $i; ) 2>> results.txt
-    
-    #mytime="$(time ( " $command"  ) 2>&1 1>/dev/null )"
-    echo "$mytime" >> results.txt
+    for i in 0{2..9} 10;
+    do 
+        message="Running test: "$i
+        echo $message;
+
+        (time sh runCommand.sh $i $j ; ) 2>> results.txt
+
+        #mytime="$(time ( " $command"  ) 2>&1 1>/dev/null )"
+        echo "$mytime" >> results.txt
+    done
 done
