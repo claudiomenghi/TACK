@@ -55,7 +55,7 @@ public class MITLIsolverTest {
 	@Test
 	public void test3() throws IOException, ZotException {
 
-		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula2.mitli").getPath();
+		String path = ClassLoader.getSystemResource("solvers/ta/examples/formula2.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -72,7 +72,7 @@ public class MITLIsolverTest {
 	@Test
 	public void test4() throws IOException, ZotException {
 
-		String path = ClassLoader.getSystemResource("checkers/ta/examples/formula2.mitli").getPath();
+		String path = ClassLoader.getSystemResource("solvers/ta/examples/formula2.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);

@@ -15,3 +15,6 @@ merda.txt
 solvers/TA2CLTLocstatistics.txt
 .DS_Store
 */*.txt
+/build/
+*.txt 
+*.zot 

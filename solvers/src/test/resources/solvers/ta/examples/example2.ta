@@ -1,0 +1,19 @@
+
+process SenderA {
+clock c;
+int Astop=0;
+
+  state  call_check, ex_jam;
+  init   ex_jam;
+  trans  ex_jam -> call_check {
+           
+         },
+         call_check->call_check{
+         };
+         
+}
+
+
+ 
+system SenderA;
+

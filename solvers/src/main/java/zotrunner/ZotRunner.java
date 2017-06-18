@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.lang.ProcessBuilder.Redirect;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -14,7 +13,7 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 
-import checkers.output.OutputSpaceParser;
+import solvers.output.OutputSpaceParser;
 
 public class ZotRunner {
 
