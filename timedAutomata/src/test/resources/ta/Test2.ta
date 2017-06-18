@@ -3,7 +3,7 @@ process Sender_A {
   clock A_c;
   clock B_c,C_c;
   int A_stop,B_start;
-  state  call_check, call_observe, check_eof, ex_jam;
+  state  start, call_check, call_observe, check_eof, ex_jam;
   init   start;
   trans  call_check -> ex_jam {
            guard  A_stop  ==0;
