@@ -3,10 +3,12 @@ package formulae.cltloc.visitor;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -247,7 +249,6 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	public String visit(Signal formula) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(formula.toString());
-		
 		return finalFormula.toString();
 	}
 
@@ -258,7 +259,6 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	public String visit(Variable formula) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(formula.toString());
-		
 		return finalFormula.toString();
 	}
 
@@ -266,7 +266,6 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	public String visit(KeepVariableConstant keepVariableConstant) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(keepVariableConstant.toString());
-		
 		return finalFormula.toString();
 	}
 
@@ -274,7 +273,6 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	public String visit(CLTLocSelector formula) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(formula.toString());
-		
 		return finalFormula.toString();
 	}
 
@@ -282,8 +280,20 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	public String visit(AssignNextVariable formula) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(formula.toString());
-		
 		return finalFormula.toString();
 	}
 
+	@Override
+	public String visit(BoundedVariable variable) {
+		StringBuilder finalFormula=new StringBuilder();
+		finalFormula.append(variable.toString());
+		return finalFormula.toString();
+	}
+
+	@Override
+	public String visit(KeepBoundedVariableConstant variable) {
+		StringBuilder finalFormula=new StringBuilder();
+		finalFormula.append(variable.toString());
+		return finalFormula.toString();
+	}
 }

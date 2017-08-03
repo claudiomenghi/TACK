@@ -142,6 +142,18 @@ public class TABaseListener implements TAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBoundedVariableDecl(TAParser.BoundedVariableDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoundedVariableDecl(TAParser.BoundedVariableDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariableDecl(TAParser.VariableDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}

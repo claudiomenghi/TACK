@@ -15,7 +15,9 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 
+import ta.declarations.BoundedVariableDecl;
 import ta.declarations.ClockDecl;
 import ta.declarations.VariableDecl;
 import ta.expressions.Value;
@@ -71,6 +73,21 @@ public class TA {
 	 * keeps the outgoint transitions for each state
 	 */
 	private final Map<State, Set<Transition>> outTransitions;
+	
+	
+	public boolean isBounded(String variableId){
+		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId()).collect(Collectors.toSet()).contains(variableId);
+	}
+	
+	public Set<Integer> getBound(String variableId){
+		Set<Integer> retSet=new HashSet<>();
+		this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> ((BoundedVariableDecl) d).getValues()).forEach(c -> retSet.addAll(c));
+		return  retSet;
+	}
+	
+	public int getNumberStates(){
+		return this.states.size();
+	}
 
 	public TA(String identifier, Set<AP> atomicPropositions, Set<State> states, Set<Transition> transitions,
 			State initialState, Set<Clock> clocks, Set<Variable> variables, Set<VariableDecl> variableDeclaration,

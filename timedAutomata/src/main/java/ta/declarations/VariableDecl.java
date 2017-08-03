@@ -8,6 +8,7 @@ public class VariableDecl {
 	 * The identifier
 	 */
 	private  String id;
+	
 	public void setId(String id) {
 		this.id = id;
 	}

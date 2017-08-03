@@ -3,10 +3,12 @@ package formulae.cltloc.visitor;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -173,5 +175,7 @@ public interface CLTLocVisitor<T> {
 
 	public T visit(AssignNextVariable formula);
 
+	public T visit(BoundedVariable variable);
+	public T visit(KeepBoundedVariableConstant variable);
 	
 }

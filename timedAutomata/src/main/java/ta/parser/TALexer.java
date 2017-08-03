@@ -136,6 +136,7 @@ public class TALexer extends Lexer {
 	 	
 	 	 private static Map<String, String> declarations = new HashMap<String, String>();
 	 	  private static Map<String, String> currentTaDeclarations = new HashMap<String, String>();
+	 	  private static Map<String,Set<Integer>> boundedVariablesValues=new HashMap<>();
 	 	  private static String currentProc;
 	 	   private boolean definedVar(String name){
 	 	    if(!currentTaDeclarations.containsKey(name) && !declarations.containsKey(name)){

@@ -7,6 +7,7 @@
  	
  	 private static Map<String, String> declarations = new HashMap<String, String>();
  	  private static Map<String, String> currentTaDeclarations = new HashMap<String, String>();
+ 	  private static Map<String,Set<Integer>> boundedVariablesValues=new HashMap<>();
  	  private static String currentProc;
  	   private boolean definedVar(String name){
  	    if(!currentTaDeclarations.containsKey(name) && !declarations.containsKey(name)){
@@ -78,7 +79,8 @@ import operators.*;
 					clockinitializationret.putAll($declaration.clockinitializationret);
 				}
 				if($declaration.variabledeclret!=null) variabledeclret.putAll($declaration.variabledeclret);
-			
+				
+ 			
 		}
 
  	)* instantiation* system+ EOF
@@ -95,7 +97,13 @@ import operators.*;
 					type=declarations.get(entry.getKey());
 				}
 			
-				 variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));
+			if(boundedVariablesValues.containsKey(entry.getKey())){
+			variableDeclaration.add(new BoundedVariableDecl(type,  entry.getKey(), entry.getValue(),boundedVariablesValues.get(entry.getKey())));	
+		}
+		else{
+			variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));	
+			}
+			
 				}
 		}
 		if(clockinitializationret!=null){
@@ -109,19 +117,31 @@ import operators.*;
  	}
  ;
 
- declaration returns [TA timedAutomaton, Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]
+ declaration returns [TA timedAutomaton, Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]@init { 
+ 	$variabledeclret=new HashMap();
+ 	$variableinitializationret=new HashMap<>();
+ 	$clockinitializationret=new HashMap<>();
+ 	
+ }
+ 
  :
- 	functionDecl
+  	boundedVariableDecl
+		 {
+				declarations.putAll($boundedVariableDecl.variabledeclret);
+ 			$variabledeclret.putAll($boundedVariableDecl.variabledeclret);
+ 			$variableinitializationret.putAll($boundedVariableDecl.variableinitializationret);
+ 			
+		}
+ 	| functionDecl
  	| variableDecl
  	{
  		declarations.putAll($variableDecl.variabledeclret);
- 		$variabledeclret=$variableDecl.variabledeclret;
- 		$variableinitializationret=$variableDecl.variableinitializationret;
+ 		$variabledeclret.putAll($variableDecl.variabledeclret);
+ 		$variableinitializationret.putAll($variableDecl.variableinitializationret);
  		$clockinitializationret=$variableDecl.clockinitializationret;
  	
  	}
-
- 	| typeDecl
+	 	| typeDecl
  	| procDecl
  	{
 	$timedAutomaton=$procDecl.timedAutomaton;
@@ -200,8 +220,12 @@ import operators.*;
 		if(declarations.containsKey(entry.getKey())){
 			type=declarations.get(entry.getKey());
 		}
-	
-		 variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));
+		if(boundedVariablesValues.containsKey(entry.getKey())){
+			variableDeclaration.add(new BoundedVariableDecl(type,  entry.getKey(), entry.getValue(),boundedVariablesValues.get(entry.getKey())));	
+		}
+		else{
+			variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));	
+		}
 		}
 	}
 		
@@ -253,7 +277,8 @@ import operators.*;
 				}
 				
 			
-			}
+		}
+
 
  		| typeDecl
  	)* states
@@ -282,6 +307,47 @@ import operators.*;
  // VARIABLE DECLARATION
  //********************************************************************************
 
+boundedVariableDecl returns
+ [Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret]
+ @init {
+ 	$variabledeclret=new HashMap<>();
+ 	$variableinitializationret=new HashMap<>();
+ 	Set<Integer> values=new HashSet<>();
+
+ 	}
+ :
+ 	type arrayDecl*   	ID
+ 	 '{' 
+ 			nat=NAT{
+ 				values.add(Integer.parseInt($nat.text));
+ 				
+ 			} (',' nat=NAT{
+ 				 	values.add(Integer.parseInt($nat.text));
+ 				
+ 			} )* '}' 
+ 	{
+ 			if(definedVar($ID.text)){
+ 				
+ 				throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Duplicate variable definition:"+$ID.text);
+		
+ 			}
+ 			$variabledeclret.put($ID.text, $type.text);
+ 			boundedVariablesValues.put($ID.text, values);
+ 		
+ 		}
+ 		 (
+ 		'=' expression
+ 		{
+ 			$variableinitializationret.put($ID.text, $expression.exp);
+		}
+
+ 		)?
+ 	
+ 		 ';'
+ ;
+
+
+ 
  variableDecl returns
  [Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]
  @init {

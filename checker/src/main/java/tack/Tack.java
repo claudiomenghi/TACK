@@ -10,7 +10,6 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import com.google.common.base.Preconditions;
-import com.google.common.io.ByteStreams;
 
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.parser.MITLILexer;
@@ -32,7 +31,7 @@ public class Tack {
 		out.println("v. 0.0.1 - 18/06/2017\n");
 		out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		
-		Preconditions.checkArgument(args.length >= 2,
+		Preconditions.checkArgument(args.length >= 3,
 				"you must specify the file that contains the MITLI formula and the bound to be used");
 
 		
@@ -40,6 +39,7 @@ public class Tack {
 
 		String modelFile = args[0];
 		String propertyFile = args[1];		
+		String bound=args[2];
 		
 		Preconditions.checkArgument(Files.exists(Paths.get(modelFile)), "The file: " + modelFile + " containing the model does not exist");
 		Preconditions.checkArgument(Files.exists(Paths.get(propertyFile)), "The file: " + propertyFile + " containing the property does not exist");
@@ -67,8 +67,8 @@ public class Tack {
 		SystemDecl system = taparser.ta().systemret;
 
 		out.println("Model loaded");
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-		boolean result = checker.check();
+		SystemChecker checker = new SystemChecker(system, formula, Integer.parseInt(bound), System.out);
+		boolean result = checker.check(null);
 
 		out.println();
 		out.println();

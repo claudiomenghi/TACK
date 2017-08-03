@@ -1,10 +1,12 @@
 package formulae.cltloc.visitor;
 
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
@@ -148,6 +150,16 @@ return 0;
 
 	@Override
 	public Integer visit(AssignNextVariable formula) {
+		return 0;
+	}
+
+	@Override
+	public Integer visit(BoundedVariable variable) {
+		return 0;
+	}
+
+	@Override
+	public Integer visit(KeepBoundedVariableConstant variable) {
 		return 0;
 	}
 

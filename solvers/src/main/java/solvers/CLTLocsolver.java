@@ -9,6 +9,7 @@ import com.google.common.base.Stopwatch;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.converters.CLTLoc2Ae2zot;
 import formulae.cltloc.visitor.CLTLoc2StringVisitor;
+import formulae.cltloc.visitor.CLTLocGetMaxBound;
 import zotrunner.ZotException;
 import zotrunner.ZotRunner;
 
@@ -44,7 +45,7 @@ public class CLTLocsolver {
 		//String zotEncoding = new CLTLoc2Ae2sbvzot(bound).apply(formula);
 		
 		
-		String zotEncoding = new CLTLoc2Ae2zot(bound).apply(formula);
+		String zotEncoding = new CLTLoc2Ae2zot(bound, formula.accept(new CLTLocGetMaxBound())).apply(formula);
 		timer.stop();
 		cltloc2zottime=timer.elapsed(TimeUnit.MILLISECONDS);
 	

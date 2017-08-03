@@ -46,7 +46,7 @@ public class Examples {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 	}
@@ -73,7 +73,7 @@ public class Examples {
 //		SystemDecl system = taparser.ta().systemret;
 //
 //		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-//		boolean result = checker.check();
+//		boolean result = checker.check(null);
 //
 //		assertFalse(result);
 //	}
@@ -99,7 +99,7 @@ public class Examples {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 	}
@@ -128,7 +128,7 @@ public class Examples {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		CLTLocFormula taEncoding = checker.getTAEncoding();
 
@@ -158,7 +158,7 @@ public class Examples {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		CLTLocFormula taEncoding = checker.getTAEncoding();
 

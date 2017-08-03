@@ -18,9 +18,7 @@ import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
-import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.unary.CLTLocYesterday;
-import formulae.cltloc.visitor.CLTLocGetMaxBound;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
@@ -129,8 +127,11 @@ public class SystemChecker  {
 	 * @throws IOException
 	 * @throws ZotException
 	 */
-	public boolean check() throws IOException, ZotException {
+	public boolean check(CLTLocFormula additionalConstraints) throws IOException, ZotException {
 
+		if(additionalConstraints==null){
+			additionalConstraints=CLTLocFormula.TRUE;
+		}
 		
 		Stopwatch timer = Stopwatch.createUnstarted();
 		timer.start();
@@ -258,13 +259,11 @@ public class SystemChecker  {
 		out.println("Creating the conjunction of the formulae");
 		CLTLocFormula conjunctionFormula = 
 				new CLTLocYesterday(
-				new CLTLocConjunction(taFormula, formula));
+						CLTLocFormula.getAnd(taFormula, formula,additionalConstraints));
 		out.println("Conjunction of the formulae created");
 
-		if(bound==-1){
-			bound=conjunctionFormula.accept(new CLTLocGetMaxBound());
-		}
-		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, (bound==0) ? 1: bound);
+		
+		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, bound);
 		boolean sat = cltlocSolver.solve();
 		this.sattime=cltlocSolver.getSattime();
 		this.checkingspace=cltlocSolver.getCheckingspace();

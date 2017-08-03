@@ -67,7 +67,7 @@ public class FischerScalabilityTest {
 		
 				System.out.println("Running the model checker");
 				SystemChecker checker = new SystemChecker(system, formula, bound, new PrintStream(ByteStreams.nullOutputStream()));
-				boolean result = checker.check();
+				boolean result = checker.check(null);
 			
 				fileWriter.write(bound+"\t"+stationsNumber+"\t"+"\t"+checker.getMitli2cltlocTime()+"\t"+checker.getTa2clclocTime()+"\t"+checker.getCltloc2zotTime()+"\t"+checker.getCheckingTime()+"\t"+checker.getSattime()+"\t"+checker.getCheckingspace()+"\n");
 				System.out.println("BOUND \t NUMBER OF STATIONS \t MITLI2CLTLoc \t TA2CLTLoc \t CLTLoc2zot \t CHECKING \t SAT \t CHEKING SPACE \n");

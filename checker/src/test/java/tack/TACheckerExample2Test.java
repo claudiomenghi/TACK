@@ -57,7 +57,7 @@ public class TACheckerExample2Test {
 
 System.out.println(ta);
 		SystemChecker checker = new SystemChecker(system, formula2, 20, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 
@@ -94,7 +94,7 @@ System.out.println(ta);
 
 
 		SystemChecker checker = new SystemChecker(system, formula3, 20, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 	}

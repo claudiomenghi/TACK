@@ -3,10 +3,12 @@ package formulae.cltloc.visitor;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
+import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
@@ -203,5 +205,15 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	@Override
 	public String visit(AssignNextVariable formula) {
 		return "([=] (next (-V- "+formula.getNextVariable() + "))  (-V- "+formula.getVariable()+") )";
+	}
+
+	@Override
+	public String visit(BoundedVariable variable) {
+		return "(-P- "+variable.toString()+")";
+	}
+
+	@Override
+	public String visit(KeepBoundedVariableConstant variable) {
+		return "(<"+variable.toString() + ">)";
 	}
 }

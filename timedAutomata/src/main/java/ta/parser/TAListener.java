@@ -118,6 +118,16 @@ public interface TAListener extends ParseTreeListener {
 	 */
 	void exitProcBody(TAParser.ProcBodyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TAParser#boundedVariableDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoundedVariableDecl(TAParser.BoundedVariableDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TAParser#boundedVariableDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoundedVariableDecl(TAParser.BoundedVariableDeclContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TAParser#variableDecl}.
 	 * @param ctx the parse tree
 	 */

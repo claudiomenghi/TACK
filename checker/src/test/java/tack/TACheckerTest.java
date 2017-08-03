@@ -45,7 +45,7 @@ public class TACheckerTest {
 
 	
 		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
@@ -72,7 +72,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
@@ -99,7 +99,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
@@ -135,7 +135,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
@@ -162,7 +162,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
@@ -189,7 +189,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 	}
@@ -216,7 +216,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 	}
@@ -243,7 +243,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
@@ -271,7 +271,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 	}
@@ -296,7 +296,7 @@ public class TACheckerTest {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
@@ -323,7 +323,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 	}
@@ -350,7 +350,7 @@ public class TACheckerTest {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}

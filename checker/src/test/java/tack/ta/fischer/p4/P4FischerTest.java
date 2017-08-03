@@ -48,7 +48,7 @@ public class P4FischerTest {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
-		boolean result = checker.check();
+		boolean result = checker.check(null);
 
 		assertFalse(result);
 

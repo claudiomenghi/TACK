@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
 
+import ta.declarations.BoundedVariableDecl;
 import ta.declarations.ClockDecl;
 import ta.declarations.VariableDecl;
 
@@ -20,6 +21,16 @@ public class SystemDecl {
 	private Set<TA> timedAutomata;
 
 	private final Set<Variable> variables;
+	
+	public boolean isBounded(String variableId){
+		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId()).collect(Collectors.toSet()).contains(variableId);
+	}
+	
+	public Set<Integer> getBound(String variableId){
+		Set<Integer> retSet=new HashSet<>();
+		this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> ((BoundedVariableDecl) d).getValues()).forEach(c -> retSet.addAll(c));
+		return  retSet;
+	}
 	
 	public SystemDecl(Set<TA> timedAutomata, Set<ClockDecl> clockDeclarations, Set<VariableDecl> variableDeclaration) {
 

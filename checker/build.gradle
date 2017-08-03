@@ -8,7 +8,8 @@ apply plugin:'application'
 
 jar {
     manifest {
-        attributes 'Main-Class': 'tack.Tack'
+        //attributes 'Main-Class': 'tack.Tack'
+        attributes 'Main-Class': 'tack.TackFisherScalability'
     }
     from {
             configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
