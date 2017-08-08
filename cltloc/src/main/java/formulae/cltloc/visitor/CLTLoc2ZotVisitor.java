@@ -125,6 +125,10 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocRelation formula) {
+		
+		if(formula.getLeftChild() instanceof BoundedVariable){
+			return "("+((BoundedVariable) formula.getLeftChild()).toString()+"= '"+formula.getRightChild().accept(this) +")";
+		}
 		return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " " + formula.getRightChild().accept(this) + ")";
 	}
 

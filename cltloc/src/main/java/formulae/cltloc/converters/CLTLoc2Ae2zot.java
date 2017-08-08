@@ -37,7 +37,7 @@ public class CLTLoc2Ae2zot implements Function<CLTLocFormula, String> {
 
 	public String apply(CLTLocFormula formula) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("(asdf:operate 'asdf:load-op 'ae2zot)\n");
+		builder.append("(asdf:operate 'asdf:load-op 'ae2sbvzot)\n");
 		
 		builder.append("(use-package :trio-utils)\n");
 
@@ -51,14 +51,14 @@ public class CLTLoc2Ae2zot implements Function<CLTLocFormula, String> {
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *real*)\n"));
 
 		Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
-		boundedvariables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + "' ("+StringUtils.join(variable.getValues(), ' ')+"))\n"));
+		boundedvariables.forEach(variable -> builder.append("(define-item " + variable.toString() + " '("+StringUtils.join(variable.getValues(), ' ')+"))\n"));
 
 		
 		final StringBuilder footerBuilder = new StringBuilder();
 		
 		footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
 
-		builder.append("(ae2zot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
+		builder.append("(ae2sbvzot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
 				+ ":smt-lib :smt2 \n" 
 				+ ":logic :QF_UFRDL \n" 
 				+ ":over-clocks "+ maxConstant +"\n"

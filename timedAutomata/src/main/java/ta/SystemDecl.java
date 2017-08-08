@@ -73,7 +73,7 @@ public class SystemDecl {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("------ TA ------");
+		builder.append("------ TA ------\n");
 		timedAutomata.forEach(ta -> builder.append(ta));
 
 		builder.append("------ GLOBAL VARIABLES AND CLOCKS ------\n");

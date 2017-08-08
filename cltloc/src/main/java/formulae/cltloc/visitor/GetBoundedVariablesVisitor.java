@@ -205,7 +205,11 @@ public class GetBoundedVariablesVisitor implements CLTLocVisitor<Set<BoundedVari
 	 */
 	@Override
 	public Set<BoundedVariable> visit(Variable formula) {
-		return new HashSet<>();
+		Set<BoundedVariable> formulae = new HashSet<>();
+		if((formula instanceof BoundedVariable))
+			formulae.add((BoundedVariable)formula);
+		
+		return formulae;
 	}
 
 	/**

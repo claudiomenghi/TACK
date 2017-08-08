@@ -55,7 +55,9 @@ public class TACheckerExample2Test {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-System.out.println(ta);
+		
+		System.out.println(ta);
+		System.out.println(ta.getLocalVariables());
 		SystemChecker checker = new SystemChecker(system, formula2, 20, System.out);
 		boolean result = checker.check(null);
 

@@ -402,6 +402,7 @@ public class TANetwork2CLTLoc {
 	protected CLTLocFormula getClock1(SystemDecl system) {
 
 		Set<Clock> clocks = system.getGlobalClocks();
+	
 
 		CLTLocFormula globalClocks = clocks.stream().map(c -> {
 			return (CLTLocFormula) CLTLocFormula.getAnd(
@@ -434,7 +435,7 @@ public class TANetwork2CLTLoc {
 							new CLTLocConjunction(new CLTLocNegation(new CLTLocSelector(c.getName() + "_v")),
 									new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-
+		
 		CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta -> ta.getLocalClocks().stream().map(c -> {
 			String prefix = ta.getIdentifier()+"_";
 			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
@@ -453,7 +454,7 @@ public class TANetwork2CLTLoc {
 
 		Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock) new Clock(c.getId()))
 				.collect(Collectors.toSet());
-
+		
 		CLTLocFormula globalClocks = clocks.stream()
 				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
 						new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ),
@@ -630,10 +631,10 @@ public class TANetwork2CLTLoc {
 						KeepVariableConstant keepConstant=
 							system.isBounded(v.getName()) ?
 									new KeepBoundedVariableConstant(
-											new formulae.cltloc.atoms.BoundedVariable(v.getName(), system.getBound(v.getName())))
+											new formulae.cltloc.atoms.BoundedVariable(ta.getIdentifier()+"_"+v.getName(), system.getBound(v.getName())))
 									:
 								new KeepVariableConstant(
-										new formulae.cltloc.atoms.Variable(v.getName()));
+										new formulae.cltloc.atoms.Variable(ta.getIdentifier()+"_"+v.getName()));
 											
 							return implicationOperator.apply(
 										negationOperator

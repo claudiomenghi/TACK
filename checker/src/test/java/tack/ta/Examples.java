@@ -127,12 +127,14 @@ public class Examples {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
+		System.out.println(system);
 		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
 		boolean result = checker.check(null);
 
 		CLTLocFormula taEncoding = checker.getTAEncoding();
 
 		CLTLocsolver solver = new CLTLocsolver(taEncoding, System.out, 5);
+
 
 		assertFalse(solver.solve());
 	}
