@@ -208,7 +208,9 @@ public class TANetwork2CLTLoc {
 	}
 	
 	private Set<Integer> getPossibleTransitionVariableValues(TA ta){
-		return ta.getTransitions().stream().map(t -> t.getId()).collect(Collectors.toSet());
+		Set<Integer> values=ta.getTransitions().stream().map(t -> t.getId()).collect(Collectors.toSet());
+		values.add(-1);
+		return values;
 	}
 	/**
 	 * encodes the property phi2 of the paper
@@ -522,19 +524,29 @@ public class TANetwork2CLTLoc {
 	
 	
 	protected CLTLocFormula getInvariant(SystemDecl system) {
+		
 		return (CLTLocFormula) system.getTimedAutomata()
 				.stream().map(ta -> 
 						
-						(CLTLocFormula) ta.getStates().stream().map(s ->
-						(CLTLocFormula) 
-						implicationOperator.apply(
-								new CLTLocEQRelation(new formulae.cltloc.atoms.BoundedVariable("s" + ta.getId(), this.getPossibleStateVariableValues(ta)),
-								new Constant(this.getId(ta, s)))
-								,
-								new CLTLocNext(s.getInvariant().accept(ta, new NormalInvariantVisitor()))))
+						(CLTLocFormula) ta.getStates().stream().map(s ->{
+							if(!s.getInvariant().accept(ta, new NormalInvariantVisitor()).equals(CLTLocFormula.TRUE)){
+								return (CLTLocFormula) 
+	   						implicationOperator.apply(
+									new CLTLocEQRelation(new formulae.cltloc.atoms.BoundedVariable("s" + ta.getId(), this.getPossibleStateVariableValues(ta)),
+									new Constant(this.getId(ta, s)))
+									,
+									new CLTLocNext(s.getInvariant().accept(ta, new NormalInvariantVisitor())));
+							}
+							else{
+								return CLTLocFormula.TRUE;
+							}
+								
+						})
 						.reduce(CLTLocFormula.TRUE, conjunctionOperator)
 						)
+						
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
+		
 
 	}
 

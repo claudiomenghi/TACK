@@ -5,8 +5,8 @@
 // M. Oliver Moeller <omoeller@brics.dk> 
 // Wed Sep 12 20:44:41 2001 
 // ------------------------------------------------------------ 
-clock x1, x2;
-int id;
+clock x1=0, x2=0;
+int id{0,1,2};
 
 process p1 {
   state  a, b {x1<=2}, c, cs;
@@ -24,7 +24,7 @@ process p1 {
            assign x1:=0;
          },
            -> cs {
-           guard  x1>2, id==1;
+           guard  x1>2,id==1;
          },
            cs -> a {
            assign x1:=0,id:=0;
@@ -47,7 +47,7 @@ process p2 {
            assign x2:=0;
          },
            -> cs {
-           guard  x2>2, id==2;
+           guard  x2>2,id==2;
          },
            cs -> a {
            assign x2:=0,id:=0;
