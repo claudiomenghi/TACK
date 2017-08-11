@@ -218,6 +218,9 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 	@Override
 	public Set<Variable> visit(KeepVariableConstant keepVariableConstant) {
 		Set<Variable> formulae = new HashSet<>();
+		if (keepVariableConstant instanceof KeepBoundedVariableConstant) {
+			return formulae;
+		}
 		formulae.add(keepVariableConstant.getVariable());
 		return formulae;
 	}

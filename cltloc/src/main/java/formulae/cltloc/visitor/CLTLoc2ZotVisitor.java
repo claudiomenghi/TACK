@@ -188,6 +188,10 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 
 	@Override
 	public String visit(KeepVariableConstant keepVariableConstant) {
+		
+		if (keepVariableConstant instanceof KeepBoundedVariableConstant) {
+			return "(<"+keepVariableConstant.getVariable() + ">)";
+		}
 		return "([=] (next (-V- "+keepVariableConstant.getVariable() + "))  (-V- "+keepVariableConstant.getVariable()+") )";
 	}
 

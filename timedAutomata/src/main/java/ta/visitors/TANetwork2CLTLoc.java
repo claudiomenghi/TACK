@@ -260,7 +260,7 @@ public class TANetwork2CLTLoc {
 												new CLTLocEQRelation(
 														new formulae.cltloc.atoms.BoundedVariable("s" + ta.getId(), this.getPossibleStateVariableValues(ta)),
 														new Constant(this.getId(ta, t.getSource()))),
-												this.getVariableGuard(ta, t),
+												this.getVariableGuard(system, ta, t),
 												nextOperator.apply(
 														CLTLocFormula.getAnd(
 																new CLTLocEQRelation(
@@ -271,7 +271,7 @@ public class TANetwork2CLTLoc {
 																
 																this.getClockGuard(ta, t),
 																t.getDestination().getInvariant().accept(ta, new ReverseInvariantVisitor()),
-																this.getAssignVariables(ta, t),
+																this.getAssignVariables(system, ta, t),
 																this.getAssignclock(ta, t))))))
 								.reduce(CLTLocFormula.TRUE, conjunctionOperator))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -299,11 +299,16 @@ public class TANetwork2CLTLoc {
 
 	}
 
-	protected CLTLocFormula getVariableGuard(TA ta, Transition t) {
+	protected CLTLocFormula getVariableGuard(SystemDecl system, TA ta, Transition t) {
 		return (CLTLocFormula) t.getGuard().getConditions().stream().map(condition -> {
 			String prefix = ta.getLocalVariables().contains(condition.getVariable()) ? ta.getIdentifier() + "_" : "";
 
-			formulae.cltloc.atoms.Variable v=ta.isBounded(condition.getVariable().getName()) ?
+			formulae.cltloc.atoms.Variable v=
+						(
+								(ta.getLocalVariables().contains(condition.getVariable()) && ta.isBounded(condition.getVariable().getName())) ||
+								(system.isBounded(condition.getVariable().getName()))
+						)
+						?
 							new formulae.cltloc.atoms.BoundedVariable(prefix + condition.getVariable().getName(), ta.getBound(condition.getVariable().getName()))
 									:
 							new formulae.cltloc.atoms.Variable(prefix + condition.getVariable().getName());
@@ -316,13 +321,18 @@ public class TANetwork2CLTLoc {
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 
-	protected CLTLocFormula getAssignVariables(TA ta, Transition t) {
+	protected CLTLocFormula getAssignVariables(SystemDecl system, TA ta, Transition t) {
 		Set<VariableAssignement> assignments = t.getAssignement().getVariableassigments();
 		return assignments.stream().map(v -> {
 			String prefix = ta.getLocalVariables().contains(v.getVariable()) ? ta.getIdentifier() + "_" : "";
 
 			
-			formulae.cltloc.atoms.Variable variable=ta.isBounded(v.getVariable().getName()) ?
+			formulae.cltloc.atoms.Variable variable=
+					(
+							(ta.getLocalVariables().contains(v.getVariable()) && ta.isBounded(v.getVariable().getName())) ||
+							(system.isBounded(v.getVariable().getName()))
+					)
+					?
 					new formulae.cltloc.atoms.BoundedVariable(prefix + v.getVariable().getName(), ta.getBound(v.getVariable().getName()))
 							:
 					new formulae.cltloc.atoms.Variable(prefix + v.getVariable().getName());
