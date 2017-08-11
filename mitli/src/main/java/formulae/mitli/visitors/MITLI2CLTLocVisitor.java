@@ -73,7 +73,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	public static final BinaryOperator<CLTLocFormula> AND = CLTLocFormula::getAnd;
 	public static final BinaryOperator<CLTLocFormula> OR = CLTLocDisjunction::new;
-	public static final BinaryOperator<CLTLocFormula> IMPL = CLTLocImplies::new;
+	public static final BinaryOperator<CLTLocFormula> IMPL = CLTLocImplies::create;
 	public static final BinaryOperator<CLTLocFormula> U = CLTLocUntil::new;
 	public static final BinaryOperator<CLTLocFormula> S = CLTLocSince::new;
 	public static final BinaryOperator<CLTLocFormula> R = CLTLocRelease::new;
@@ -847,7 +847,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 			_f5[i] = EQ.apply(xi, a);
 		}
 
-		CLTLocFormula f5 = new CLTLocImplies(AND.apply(high.apply(childId), R.apply(low.apply(childId),
+		CLTLocFormula f5 =CLTLocImplies.create(AND.apply(high.apply(childId), R.apply(low.apply(childId),
 				NEG.apply(AND.apply(low.apply(childId), AND.apply(LEQ.apply(subfz0, l), LEQ.apply(subfz1, l))))
 
 		)), CLTLocFormula.getAnd(_f5[0], Arrays.copyOfRange(_f5, 1, _f5.length)));
@@ -900,7 +900,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		}
 
 		// Formula (9)
-		CLTLocFormula f3 = new CLTLocImplies(
+		CLTLocFormula f3 = CLTLocImplies.create(
 				AND.apply(high.apply(childId), OR.apply(GE.apply(subfz0, l), GE.apply(subfz1, l))),
 				CLTLocFormula.getAnd(_f3[0], Arrays.copyOfRange(_f3, 1, _f3.length)));
 

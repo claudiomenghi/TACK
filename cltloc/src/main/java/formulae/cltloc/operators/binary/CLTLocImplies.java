@@ -14,7 +14,7 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 	private final int hash;
 	
 
-	public CLTLocImplies(CLTLocFormula subformula1, CLTLocFormula subformula2) {
+	private CLTLocImplies(CLTLocFormula subformula1, CLTLocFormula subformula2) {
 		super();
 		Preconditions.checkNotNull(subformula1, "The first subformula cannot be null");
 		Preconditions.checkNotNull(subformula2, "The second subformula cannot be null");
@@ -100,5 +100,17 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 	@Override
 	public String toString() {
 		return "(" + subformula1+ ") " + operator + " (" + subformula2 + ")";
+	}
+	
+	public static CLTLocFormula create(CLTLocFormula subformula1, CLTLocFormula subformula2){
+		Preconditions.checkNotNull(subformula1, "The first subformula cannot be null");
+		Preconditions.checkNotNull(subformula2, "The second subformula cannot be null");
+		
+		if(subformula2.equals(CLTLocFormula.TRUE)){
+			return subformula1;
+		}
+		else{
+			return new CLTLocImplies(subformula1, subformula2);
+		}
 	}
 }

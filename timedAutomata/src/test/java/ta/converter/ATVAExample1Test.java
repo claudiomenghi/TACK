@@ -47,13 +47,13 @@ public class ATVAExample1Test {
 					));
 
 	private final CLTLocFormula expectedclock2 = CLTLocFormula
-			.G(new CLTLocImplies(new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
+			.G(CLTLocImplies.create(new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(new CLTLocRelation(clock1, new Constant(0), Relation.EQ),
 							CLTLocFormula.getAnd(new CLTLocNegation(xv),
 									new CLTLocRelation(clock0, new Constant(0), Relation.GE))))));
 
 	private final CLTLocFormula expectedclock3 = CLTLocFormula
-			.G(new CLTLocImplies(new CLTLocRelation(clock1, new Constant(0), Relation.EQ),
+			.G(CLTLocImplies.create(new CLTLocRelation(clock1, new Constant(0), Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
 							CLTLocFormula.getAnd(xv,
 									new CLTLocRelation(clock1, new Constant(0), Relation.GE))))));
@@ -63,14 +63,14 @@ public class ATVAExample1Test {
 			CLTLocFormula
 			.G(
 					CLTLocFormula.getAnd(
-					CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocImplies(new CLTLocAP("Example1_l0"),
+					CLTLocFormula.getAnd(CLTLocFormula.getAnd(CLTLocImplies.create(new CLTLocAP("Example1_l0"),
 					CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example1_l1")),
 							CLTLocFormula.getNeg(new CLTLocAP("Example1_l2")))),
 
-					new CLTLocImplies(new CLTLocAP("Example1_l1"),
+					CLTLocImplies.create(new CLTLocAP("Example1_l1"),
 							CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example1_l0")),
 									CLTLocFormula.getNeg(new CLTLocAP("Example1_l2"))))),
-					new CLTLocImplies(new CLTLocAP("Example1_l2"),
+					CLTLocImplies.create(new CLTLocAP("Example1_l2"),
 							CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example1_l0")),
 									CLTLocFormula.getNeg(new CLTLocAP("Example1_l1"))))),
 					new CLTLocDisjunction(
@@ -82,7 +82,7 @@ public class ATVAExample1Test {
 	private final CLTLocFormula expectedphi2 = new CLTLocAP("Example1_l0");
 
 	private final CLTLocFormula expectedphi3 = new CLTLocGlobally(
-			new CLTLocImplies(new CLTLocAP("Example1_l1"), new CLTLocDisjunction(
+			CLTLocImplies.create(new CLTLocAP("Example1_l1"), new CLTLocDisjunction(
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocNegation(xv),
 							new CLTLocRelation(clock0, new Constant(5), Relation.LEQ))),
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(xv,
@@ -90,7 +90,7 @@ public class ATVAExample1Test {
 
 	
 	private final CLTLocFormula transLocation0=
-			new CLTLocImplies(new CLTLocAP("Example1_l0"), 
+			CLTLocImplies.create(new CLTLocAP("Example1_l0"), 
 					
 							new CLTLocDisjunction(
 										CLTLocFormula.getAnd(
@@ -169,7 +169,7 @@ public class ATVAExample1Test {
 					);
 			
 	private final CLTLocFormula transLocation1=
-			new CLTLocImplies(new CLTLocAP("Example1_l1"), 
+			CLTLocImplies.create(new CLTLocAP("Example1_l1"), 
 					
 							new CLTLocDisjunction(
 										new CLTLocConjunction(
@@ -233,7 +233,7 @@ public class ATVAExample1Test {
 					);
 	
 	private final CLTLocFormula transLocation2=
-			new CLTLocImplies(new CLTLocAP("Example1_l2"), 
+			CLTLocImplies.create(new CLTLocAP("Example1_l2"), 
 					
 							new CLTLocDisjunction(
 										new CLTLocConjunction(
@@ -314,7 +314,7 @@ public class ATVAExample1Test {
 			new CLTLocIff(new CLTLocAP("Example1_l0"), new CLTLocAP("H_Example1_l0")));
 	
 	private final CLTLocFormula expectedphi6 = new CLTLocGlobally(
-			new CLTLocImplies(new CLTLocAP("H_Example1_l0"), 
+			CLTLocImplies.create(new CLTLocAP("H_Example1_l0"), 
 					new CLTLocNext(
 					new CLTLocAP("P_Example1_l0"))));
 	

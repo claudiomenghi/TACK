@@ -124,7 +124,7 @@ public class TANetwork2CLTLoc {
 		if (right.equals(CLTLocFormula.TRUE)) {
 			return CLTLocFormula.TRUE;
 		}
-		return new CLTLocImplies(left, right);
+		return CLTLocImplies.create(left, right);
 	};
 
 	public static final UnaryOperator<CLTLocFormula> negationOperator = CLTLocNegation::new;
@@ -430,7 +430,7 @@ public class TANetwork2CLTLoc {
 		Set<Clock> clocks = system.getGlobalClocks();
 
 		CLTLocFormula globalClocks = clocks.stream().map(c -> {
-			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+			return (CLTLocFormula) new CLTLocGlobally(CLTLocImplies.create(
 					new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(
 							new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ),
@@ -440,7 +440,7 @@ public class TANetwork2CLTLoc {
 		
 		CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta -> ta.getLocalClocks().stream().map(c -> {
 			String prefix = ta.getIdentifier()+"_";
-			return (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+			return (CLTLocFormula) new CLTLocGlobally(CLTLocImplies.create(
 					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(
 							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ),
@@ -458,7 +458,7 @@ public class TANetwork2CLTLoc {
 				.collect(Collectors.toSet());
 		
 		CLTLocFormula globalClocks = clocks.stream()
-				.map(c -> (CLTLocFormula) new CLTLocGlobally(new CLTLocImplies(
+				.map(c -> (CLTLocFormula) new CLTLocGlobally(CLTLocImplies.create(
 						new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ),
 							new CLTLocNext(
 								new CLTLocRelease(
@@ -472,7 +472,7 @@ public class TANetwork2CLTLoc {
 		CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta -> ta.getLocalClocks().stream().map(c -> {
 			String prefix = ta.getIdentifier()+"_";
 			return (CLTLocFormula) new CLTLocGlobally(
-					new CLTLocImplies(
+					CLTLocImplies.create(
 							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ),
 							new CLTLocNext(new CLTLocRelease(
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero,
