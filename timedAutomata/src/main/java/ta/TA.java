@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
 
 import ta.declarations.BoundedVariableDecl;
 import ta.declarations.ClockDecl;

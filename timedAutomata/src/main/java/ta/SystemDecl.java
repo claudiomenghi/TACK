@@ -76,12 +76,11 @@ public class SystemDecl {
 		builder.append("------ TA ------\n");
 		timedAutomata.forEach(ta -> builder.append(ta));
 
-		builder.append("------ GLOBAL VARIABLES AND CLOCKS ------\n");
-		variableDeclaration.forEach(v -> builder.append(v+"\n"));
+		builder.append("------ GLOBAL CLOCKS ------\n");
 		clockDeclarations.forEach(v -> builder.append(v+"\n"));
 		
-		builder.append("------ GLOBAL VARIABLES AND CLOCKS ------\n");
-		variables.forEach(v -> builder.append(v+"\n"));
+		builder.append("------ GLOBAL VARIABLES ------\n");
+		variableDeclaration.forEach(v -> builder.append(v+"\n"));
 		
 		
 		return builder.toString();

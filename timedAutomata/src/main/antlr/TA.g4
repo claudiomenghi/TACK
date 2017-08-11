@@ -57,7 +57,7 @@ import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator
 import operators.*;
 }
 
- ta returns [SystemDecl systemret] @init { 
+ ta returns [SystemDecl systemret]  @init { 
 	Set<TA> timedAutomata=new HashSet<>();
 	declarations = new HashMap<String, String>();	
 	currentTaDeclarations = new HashMap<String, String>();
@@ -78,6 +78,7 @@ import operators.*;
 				if($declaration.clockinitializationret!=null){
 					clockinitializationret.putAll($declaration.clockinitializationret);
 				}
+				
 				if($declaration.variabledeclret!=null) variabledeclret.putAll($declaration.variabledeclret);
 				
  			
@@ -111,6 +112,7 @@ import operators.*;
 				 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
 			}
 		}
+		
 	
 		$systemret= new SystemDecl(timedAutomata, clockDeclaration, variableDeclaration);
 	
@@ -128,7 +130,7 @@ import operators.*;
   	boundedVariableDecl
 		 {
 				declarations.putAll($boundedVariableDecl.variabledeclret);
- 			$variabledeclret.putAll($boundedVariableDecl.variabledeclret);
+			$variabledeclret.putAll($boundedVariableDecl.variabledeclret);
  			$variableinitializationret.putAll($boundedVariableDecl.variableinitializationret);
  			
 		}

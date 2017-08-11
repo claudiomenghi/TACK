@@ -7,10 +7,9 @@
 // ------------------------------------------------------------ 
 clock x1, x2;
 int id{1,2}=1;
-environment r1->r1
 
 
-robot p1 {
+process p1 {
   state  a, b {x1<=2}, c, cs;
   init   a;
   trans  a -> b {

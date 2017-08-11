@@ -34,7 +34,7 @@ public class FischerTest2 {
 
 		TA ta=system.getTimedAutomata().iterator().next();
 
-		System.out.println(ta);
+		System.out.println(system);
 		
 		assertTrue(system.getClockDeclarations().size()==2);
 		assertTrue(system.getVariableDeclaration().size()==1);

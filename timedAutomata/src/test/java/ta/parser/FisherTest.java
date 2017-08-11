@@ -1,7 +1,5 @@
 package ta.parser;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -11,7 +9,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
 import ta.SystemDecl;
-import ta.TA;
 import ta.declarations.BoundedVariableDecl;
 
 public class FisherTest {
