@@ -7,6 +7,10 @@ import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
+
+import org.apache.commons.lang3.StringUtils;
+
+import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
@@ -14,6 +18,8 @@ import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocNaryConjunction;
+import formulae.cltloc.operators.binary.CLTLocNaryDisjunction;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.binary.CLTLocSince;
 import formulae.cltloc.operators.binary.CLTLocUntil;
@@ -214,4 +220,26 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	public String visit(KeepBoundedVariableConstant variable) {
 		return "(<"+variable.toString() + ">)";
 	}
+
+	@Override
+	public String visit(CLTLocNaryConjunction cltLocNaryConjunction) {
+		String ret="(&& ";
+		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+			ret=ret+f.accept(this)+" ";
+		}
+		ret=ret+")";
+		return  ret;
+	}
+
+	@Override
+	public String visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
+		String ret="(|| ";
+		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+			ret=ret+f.accept(this)+" ";
+		}
+		ret=ret+")";
+		return  ret;
+	}
+	
+	
 }

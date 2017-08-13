@@ -3,6 +3,8 @@ package formulae.cltloc.visitor;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
+
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.BoundedVariable;
@@ -18,6 +20,8 @@ import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocNaryConjunction;
+import formulae.cltloc.operators.binary.CLTLocNaryDisjunction;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.binary.CLTLocSince;
 import formulae.cltloc.operators.binary.CLTLocUntil;
@@ -278,5 +282,38 @@ public class CLTLoc2StringVisitor implements CLTLocVisitor<Entry<String, Class<?
 	@Override
 	public Entry<String, Class<? extends CLTLocFormula>> visit(KeepBoundedVariableConstant variable) {
 		return new AbstractMap.SimpleEntry<String, Class<? extends CLTLocFormula>>(variable.toString(), CLTLocAP.class);
+	}
+
+	@Override
+	public Entry<String, Class<? extends CLTLocFormula>> visit(CLTLocNaryConjunction cltLocNaryConjunction) {
+		String retString = "";
+		
+		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+			Entry<String, Class<? extends CLTLocFormula>> retleft =f.accept(this);
+			if (f.getClass().equals(retleft.getValue())  || CLTLocAP.class.isAssignableFrom(retleft.getValue())) {
+				retString = retleft.getKey() +" "+ cltLocNaryConjunction.operator;
+			} else {
+				retString = "(" + retleft.getKey() + ")" + cltLocNaryConjunction.operator;
+			}
+		}
+		
+		return new AbstractMap.SimpleEntry<String, Class<? extends CLTLocFormula>>(retString, cltLocNaryConjunction.getClass());
+	}
+
+	@Override
+	public Entry<String, Class<? extends CLTLocFormula>> visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
+	String retString = "";
+		
+		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+			Entry<String, Class<? extends CLTLocFormula>> retleft =f.accept(this);
+			if (f.getClass().equals(retleft.getValue())  || CLTLocAP.class.isAssignableFrom(retleft.getValue())) {
+				retString = retleft.getKey() +" "+ cltLocNaryDisjunction.operator;
+			} else {
+				retString = "(" + retleft.getKey() + ")" + cltLocNaryDisjunction.operator;
+			}
+		}
+		
+		return new AbstractMap.SimpleEntry<String, Class<? extends CLTLocFormula>>(retString, cltLocNaryDisjunction.getClass());
+
 	}
 }

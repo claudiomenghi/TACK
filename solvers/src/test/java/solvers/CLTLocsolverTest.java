@@ -56,7 +56,7 @@ public class CLTLocsolverTest {
 				new CLTLocNegation(
 						
 						new CLTLocUntil(CLTLocFormula.TRUE, 
-								new CLTLocConjunction(new CLTLocAP("p2_cs"), new CLTLocAP("p1_cs"))
+								CLTLocConjunction.getAnd(new CLTLocAP("p2_cs"), new CLTLocAP("p1_cs"))
 								)
 						);
 				

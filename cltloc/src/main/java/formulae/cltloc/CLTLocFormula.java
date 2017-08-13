@@ -39,7 +39,7 @@ public abstract class CLTLocFormula extends Formula {
 		if (f2.equals(CLTLocFormula.TRUE)) {
 			return f1;
 		}
-		return new CLTLocConjunction(f1, f2);
+		return CLTLocConjunction.getCLTLocConjunction(f1, f2);
 	}
 	
 	public static CLTLocFormula getOr(CLTLocFormula f1, CLTLocFormula f2) {
@@ -52,7 +52,7 @@ public abstract class CLTLocFormula extends Formula {
 		if (f2.equals(CLTLocFormula.FALSE)) {
 			return f1;
 		}
-		return new CLTLocDisjunction(f1, f2);
+		return CLTLocDisjunction.getCLTLocDisjunction(f1, f2);
 	}
 
 	public static CLTLocFormula getIff(CLTLocFormula f1, CLTLocFormula f2) {

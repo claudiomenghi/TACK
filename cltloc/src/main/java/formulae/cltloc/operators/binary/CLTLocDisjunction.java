@@ -1,6 +1,8 @@
 package formulae.cltloc.operators.binary;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.google.common.base.Preconditions;
 
@@ -15,7 +17,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 	public final String operator = "||";
 	private final int hash;
 
-	public CLTLocDisjunction(CLTLocFormula subformula1, CLTLocFormula subformula2) {
+	protected CLTLocDisjunction(CLTLocFormula subformula1, CLTLocFormula subformula2) {
 		super();
 		Preconditions.checkNotNull(subformula1, "The first subformula cannot be null");
 		Preconditions.checkNotNull(subformula2, "The second subformula cannot be null");
@@ -108,6 +110,80 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 	@Override
 	public String toString() {
 		return "(" + subformula1+ ") " + operator + " (" + subformula2 + ")";
+	}
+	
+	public static CLTLocFormula getCLTLocDisjunction(CLTLocFormula subformula1, CLTLocFormula subformula2){
+		if(subformula1 instanceof CLTLocDisjunction && subformula2 instanceof CLTLocDisjunction){
+			CLTLocDisjunction f1=(CLTLocDisjunction) subformula1;
+			CLTLocDisjunction f2=(CLTLocDisjunction) subformula2;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.add(f1.getLeftChild());
+			formulae.add(f1.getRightChild());
+			formulae.add(f2.getLeftChild());
+			formulae.add(f2.getRightChild());
+			return new CLTLocNaryDisjunction(formulae);
+		}
+		if(subformula1 instanceof CLTLocNaryDisjunction && subformula2 instanceof CLTLocNaryDisjunction){
+			CLTLocNaryDisjunction f1=(CLTLocNaryDisjunction) subformula1;
+			CLTLocNaryDisjunction f2=(CLTLocNaryDisjunction) subformula2;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.addAll(f1.getChildren());
+			formulae.addAll(f2.getChildren());
+			return new CLTLocNaryDisjunction(formulae);
+		}
+		
+		if(subformula1 instanceof CLTLocDisjunction && subformula2 instanceof CLTLocNaryDisjunction){
+			CLTLocDisjunction f1=(CLTLocDisjunction) subformula1;
+			CLTLocNaryDisjunction f2=(CLTLocNaryDisjunction) subformula2;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.add(f1.getLeftChild());
+			formulae.add(f1.getRightChild());
+			formulae.addAll(f2.getChildren());
+			return new CLTLocNaryDisjunction(formulae);
+		}
+		if(subformula1 instanceof CLTLocNaryDisjunction && subformula2 instanceof CLTLocDisjunction){
+			CLTLocNaryDisjunction f1=(CLTLocNaryDisjunction) subformula1;
+			CLTLocDisjunction f2=(CLTLocDisjunction) subformula2;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.add(f2.getLeftChild());
+			formulae.add(f2.getRightChild());
+			formulae.addAll(f1.getChildren());
+			return new CLTLocNaryDisjunction(formulae);
+		}
+		
+		if(subformula1 instanceof CLTLocDisjunction){
+			CLTLocDisjunction f1=(CLTLocDisjunction) subformula1;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.add(f1.getLeftChild());
+			formulae.add(f1.getRightChild());
+			formulae.add(subformula2);
+			return new CLTLocNaryDisjunction(formulae);			
+		}
+		if(subformula2 instanceof CLTLocDisjunction){
+			CLTLocDisjunction f2=(CLTLocDisjunction) subformula2;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.add(f2.getLeftChild());
+			formulae.add(f2.getRightChild());
+			formulae.add(subformula1);
+			return new CLTLocNaryDisjunction(formulae);			
+		}
+		
+		if(subformula1 instanceof CLTLocNaryDisjunction ){
+			CLTLocNaryDisjunction f1=(CLTLocNaryDisjunction) subformula1;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.addAll(f1.getChildren());
+			formulae.add(subformula2);
+			return new CLTLocNaryDisjunction(formulae);
+		}
+		if(subformula2 instanceof CLTLocNaryDisjunction ){
+			CLTLocNaryDisjunction f2=(CLTLocNaryDisjunction) subformula2;
+			Set<CLTLocFormula> formulae=new HashSet<>();
+			formulae.addAll(f2.getChildren());
+			formulae.add(subformula1);
+			return new CLTLocNaryDisjunction(formulae);
+		}
+			
+		return new CLTLocDisjunction(subformula1, subformula2);
 	}
 	
 }

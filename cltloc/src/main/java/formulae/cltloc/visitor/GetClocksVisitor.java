@@ -10,6 +10,7 @@ import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
+import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
@@ -17,6 +18,8 @@ import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocNaryConjunction;
+import formulae.cltloc.operators.binary.CLTLocNaryDisjunction;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.binary.CLTLocSince;
 import formulae.cltloc.operators.binary.CLTLocUntil;
@@ -234,5 +237,23 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	@Override
 	public Set<CLTLocClock> visit(KeepBoundedVariableConstant variable) {
 		return new HashSet<>();
+	}
+
+	@Override
+	public Set<CLTLocClock> visit(CLTLocNaryConjunction cltLocNaryConjunction) {
+		Set<CLTLocClock> formulae = new HashSet<>();
+		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+			formulae.addAll(f.accept(this));
+		}
+		return formulae;
+	}
+
+	@Override
+	public Set<CLTLocClock> visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
+		Set<CLTLocClock> formulae = new HashSet<>();
+		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+			formulae.addAll(f.accept(this));
+		}
+		return formulae;
 	}
 }

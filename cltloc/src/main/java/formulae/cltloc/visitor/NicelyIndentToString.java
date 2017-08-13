@@ -1,5 +1,9 @@
 package formulae.cltloc.visitor;
 
+import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.BoundedVariable;
+import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
@@ -7,13 +11,12 @@ import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
-import formulae.cltloc.atoms.AssignNextVariable;
-import formulae.cltloc.atoms.BoundedVariable;
-import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocNaryConjunction;
+import formulae.cltloc.operators.binary.CLTLocNaryDisjunction;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.binary.CLTLocSince;
 import formulae.cltloc.operators.binary.CLTLocUntil;
@@ -294,6 +297,38 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 	public String visit(KeepBoundedVariableConstant variable) {
 		StringBuilder finalFormula=new StringBuilder();
 		finalFormula.append(variable.toString());
+		return finalFormula.toString();
+	}
+
+	@Override
+	public String visit(CLTLocNaryConjunction cltLocNaryConjunction) {
+		indentValue++;
+		StringBuilder finalFormula=new StringBuilder();
+		String indent=this.computegetIndet();
+		finalFormula.append(indent+"("+"\n");
+		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+			finalFormula.append(f.accept(this));
+			finalFormula.append(indent+cltLocNaryConjunction.operator+"\n");
+		}
+		finalFormula.append(indent+")"+"\n");
+		indentValue--;
+		
+		return finalFormula.toString();
+	}
+
+	@Override
+	public String visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
+		indentValue++;
+		StringBuilder finalFormula=new StringBuilder();
+		String indent=this.computegetIndet();
+		finalFormula.append(indent+"("+"\n");
+		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+			finalFormula.append(f.accept(this));
+			finalFormula.append(indent+cltLocNaryDisjunction.operator+"\n");
+		}
+		finalFormula.append(indent+")"+"\n");
+		indentValue--;
+		
 		return finalFormula.toString();
 	}
 }

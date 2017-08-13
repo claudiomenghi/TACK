@@ -85,7 +85,7 @@ public class TANetwork2CLTLoc {
 		if (right.equals(CLTLocFormula.FALSE)) {
 			return right;
 		}
-		return new CLTLocConjunction(left, right);
+		return CLTLocConjunction.getAnd(left, right);
 	};
 
 	public static final BinaryOperator<CLTLocFormula> iffOperator = (left, right) -> {
@@ -444,7 +444,7 @@ public class TANetwork2CLTLoc {
 					new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(
 							new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ),
-							new CLTLocConjunction(new CLTLocNegation(new CLTLocSelector(c.getName() + "_v")),
+							CLTLocConjunction.getAnd(new CLTLocNegation(new CLTLocSelector(c.getName() + "_v")),
 									new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		
@@ -454,7 +454,7 @@ public class TANetwork2CLTLoc {
 					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(
 							new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ),
-							new CLTLocConjunction(new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")),
+							CLTLocConjunction.getAnd(new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")),
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero,
 											Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator)).reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -474,7 +474,7 @@ public class TANetwork2CLTLoc {
 								new CLTLocRelease(
 										new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero,
 												Relation.EQ),
-										new CLTLocConjunction(new CLTLocSelector(c.getName() + "_v"),
+										CLTLocConjunction.getAnd(new CLTLocSelector(c.getName() + "_v"),
 												new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero,
 														Relation.GE)))))))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
@@ -487,7 +487,7 @@ public class TANetwork2CLTLoc {
 							new CLTLocNext(new CLTLocRelease(
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero,
 											Relation.EQ),
-									new CLTLocConjunction(new CLTLocSelector(prefix + c.getName() + "_v"),
+									CLTLocConjunction.getAnd(new CLTLocSelector(prefix + c.getName() + "_v"),
 											new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero,
 													Relation.GE))))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator)).reduce(CLTLocFormula.TRUE, conjunctionOperator);

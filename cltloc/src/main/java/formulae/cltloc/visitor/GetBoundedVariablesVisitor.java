@@ -3,6 +3,7 @@ package formulae.cltloc.visitor;
 import java.util.HashSet;
 import java.util.Set;
 
+import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
@@ -17,6 +18,8 @@ import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocNaryConjunction;
+import formulae.cltloc.operators.binary.CLTLocNaryDisjunction;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.binary.CLTLocSince;
 import formulae.cltloc.operators.binary.CLTLocUntil;
@@ -241,6 +244,24 @@ public class GetBoundedVariablesVisitor implements CLTLocVisitor<Set<BoundedVari
 	public Set<BoundedVariable> visit(KeepBoundedVariableConstant variable) {
 		Set<BoundedVariable> formulae = new HashSet<>();
 		formulae.add((BoundedVariable) variable.getVariable());
+		return formulae;
+	}
+
+	@Override
+	public Set<BoundedVariable> visit(CLTLocNaryConjunction cltLocNaryConjunction) {
+		Set<BoundedVariable> formulae = new HashSet<>();
+		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+			formulae.addAll(f.accept(this));
+		}
+		return formulae;
+	}
+
+	@Override
+	public Set<BoundedVariable> visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
+		Set<BoundedVariable> formulae = new HashSet<>();
+		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+			formulae.addAll(f.accept(this));
+		}
 		return formulae;
 	}
 }

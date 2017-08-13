@@ -18,6 +18,8 @@ import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocNaryConjunction;
+import formulae.cltloc.operators.binary.CLTLocNaryDisjunction;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.binary.CLTLocSince;
 import formulae.cltloc.operators.binary.CLTLocUntil;
@@ -237,6 +239,28 @@ public class SubformulaeVisitor implements CLTLocVisitor<Set<CLTLocFormula>> {
 	public Set<CLTLocFormula> visit(KeepBoundedVariableConstant variable) {
 		Set<CLTLocFormula> formulae = new HashSet<>();
 		formulae.add(variable);
+		return formulae;
+	}
+
+	@Override
+	public Set<CLTLocFormula> visit(CLTLocNaryConjunction cltLocNaryConjunction) {
+		Set<CLTLocFormula> formulae = new HashSet<>();
+		
+		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+			formulae.addAll(f.accept(this));
+			formulae.add(f);
+		}
+		return formulae;
+	}
+
+	@Override
+	public Set<CLTLocFormula> visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
+		Set<CLTLocFormula> formulae = new HashSet<>();
+		
+		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+			formulae.addAll(f.accept(this));
+			formulae.add(f);
+		}
 		return formulae;
 	}
 

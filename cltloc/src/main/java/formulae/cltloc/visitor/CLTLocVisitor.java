@@ -14,6 +14,8 @@ import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
 import formulae.cltloc.operators.binary.CLTLocImplies;
+import formulae.cltloc.operators.binary.CLTLocNaryConjunction;
+import formulae.cltloc.operators.binary.CLTLocNaryDisjunction;
 import formulae.cltloc.operators.binary.CLTLocRelease;
 import formulae.cltloc.operators.binary.CLTLocSince;
 import formulae.cltloc.operators.binary.CLTLocUntil;
@@ -177,5 +179,10 @@ public interface CLTLocVisitor<T> {
 
 	public T visit(BoundedVariable variable);
 	public T visit(KeepBoundedVariableConstant variable);
+
+	public T visit(CLTLocNaryConjunction cltLocNaryConjunction);
+
+	public T visit(CLTLocNaryDisjunction cltLocNaryDisjunction);
+
 	
 }

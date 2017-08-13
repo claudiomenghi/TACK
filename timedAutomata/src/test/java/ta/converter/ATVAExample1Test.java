@@ -119,13 +119,13 @@ public class ATVAExample1Test {
 												)
 												)
 										,
-										new CLTLocConjunction(
+										CLTLocConjunction.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l1"))
 												,
-												new CLTLocConjunction(
+												CLTLocConjunction.getAnd(
 												
 														new CLTLocDisjunction(
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
 															new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(5), Relation.LEQ)
@@ -133,7 +133,7 @@ public class ATVAExample1Test {
 															
 														)
 														,
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 																new CLTLocSelector("Example1_x_v")
 																, 
 																new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(5), Relation.LEQ)
@@ -141,22 +141,22 @@ public class ATVAExample1Test {
 												)
 												,
 												new CLTLocDisjunction(
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
 															new CLTLocNext(
-																	new CLTLocConjunction(
+																	CLTLocConjunction.getAnd(
 																			new CLTLocNegation(new CLTLocSelector("Example1_x_v")),
 																			new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)
 																			)
 																	)
 															)
 														,
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 																new CLTLocSelector("Example1_x_v")
 																, 
 																new CLTLocNext(
-																		new CLTLocConjunction(
+																		CLTLocConjunction.getAnd(
 																				new CLTLocSelector("Example1_x_v"),
 																				new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)
 																		)
@@ -172,7 +172,7 @@ public class ATVAExample1Test {
 			CLTLocImplies.create(new CLTLocAP("Example1_l1"), 
 					
 							new CLTLocDisjunction(
-										new CLTLocConjunction(
+										CLTLocConjunction.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l1"))
 												,
 												new CLTLocDisjunction(
@@ -198,27 +198,27 @@ public class ATVAExample1Test {
 												)
 												)
 										,
-										new CLTLocConjunction(
+										CLTLocConjunction.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l2"))
 												,
 												
 													new CLTLocDisjunction(
-															new CLTLocConjunction(
+															CLTLocConjunction.getAnd(
 																new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 																, 
 																new CLTLocNext(
-																		new CLTLocConjunction(
+																		CLTLocConjunction.getAnd(
 																				new CLTLocNegation(new CLTLocSelector("Example1_x_v")),
 																				new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.GE)
 																		)
 																)
 															)
 															,
-															new CLTLocConjunction(
+															CLTLocConjunction.getAnd(
 																	new CLTLocSelector("Example1_x_v")
 																	, 
 																	new CLTLocNext(
-																			new CLTLocConjunction(
+																			CLTLocConjunction.getAnd(
 																					new CLTLocSelector("Example1_x_v"),
 																					new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.GE)
 																			)
@@ -236,7 +236,7 @@ public class ATVAExample1Test {
 			CLTLocImplies.create(new CLTLocAP("Example1_l2"), 
 					
 							new CLTLocDisjunction(
-										new CLTLocConjunction(
+										CLTLocConjunction.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l2"))
 												,
 												new CLTLocDisjunction(
@@ -262,40 +262,40 @@ public class ATVAExample1Test {
 												)
 												)
 										,
-										new CLTLocConjunction(
+										CLTLocConjunction.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l0"))
 												,
-												new CLTLocConjunction(
+												CLTLocConjunction.getAnd(
 												new CLTLocDisjunction(
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
 															new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(10), Relation.EQ)
 														)
 														,
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 																new CLTLocSelector("Example1_x_v")
 																, 
 																new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(10), Relation.EQ)
 														)
 												),
 												new CLTLocDisjunction(
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
 															new CLTLocNext(
-																	new CLTLocConjunction(
+																	CLTLocConjunction.getAnd(
 																				new CLTLocSelector("Example1_x_v"),
 																				new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(0), Relation.EQ)
 																			)
 															)
 														)
 														,
-														new CLTLocConjunction(
+														CLTLocConjunction.getAnd(
 																new CLTLocSelector("Example1_x_v")
 																, 
 																new CLTLocNext(
-																		new CLTLocConjunction(
+																		CLTLocConjunction.getAnd(
 																					new CLTLocNegation(new CLTLocSelector("Example1_x_v")),
 																					new CLTLocRelation(new CLTLocClock("Example1_x_0"), new Constant(0), Relation.EQ)
 																				)
