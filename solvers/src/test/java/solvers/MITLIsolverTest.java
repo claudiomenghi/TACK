@@ -256,7 +256,7 @@ public class MITLIsolverTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testFinallyEx() throws IOException, ZotException {
 
@@ -275,7 +275,7 @@ public class MITLIsolverTest {
 
 	}
 
-	@Ignore @Test
+	@Test
 	public void testGee() throws IOException, ZotException {
 
 		String path = ClassLoader.getSystemResource("solvers/formula6.mitli").getPath();
