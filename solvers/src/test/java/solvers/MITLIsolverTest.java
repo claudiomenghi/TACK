@@ -176,7 +176,7 @@ public class MITLIsolverTest {
 		MITLIFormula formula = parser.mitli().formula;
 
 		
-		MITLIsolver sover = new MITLIsolver(formula, out, 20);
+		MITLIsolver sover = new MITLIsolver(formula, out, 15);
 
 		assertTrue(sover.solve());
 
@@ -194,7 +194,7 @@ public class MITLIsolverTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		MITLIsolver sover = new MITLIsolver(formula, out, 5);
+		MITLIsolver sover = new MITLIsolver(formula, out, 15);
 
 		assertTrue(sover.solve());
 
@@ -212,7 +212,7 @@ public class MITLIsolverTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		MITLIsolver sover = new MITLIsolver(formula, out, 5);
+		MITLIsolver sover = new MITLIsolver(formula, out, 15);
 
 		assertTrue(sover.solve());
 
@@ -303,7 +303,7 @@ public class MITLIsolverTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		MITLIsolver sover = new MITLIsolver(formula, out, 5);
+		MITLIsolver sover = new MITLIsolver(formula, out, 15);
 
 		assertTrue(sover.solve());
 	}
@@ -380,7 +380,7 @@ public class MITLIsolverTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		MITLIsolver sover = new MITLIsolver(formula, out, 5);
+		MITLIsolver sover = new MITLIsolver(formula, out, 15);
 
 		assertFalse(sover.solve());
 	}
