@@ -31,7 +31,7 @@ public class CLTLoc2Ae2zot implements Function<CLTLocFormula, String> {
 	
 	public CLTLoc2Ae2zot(int bound, int maxConstant) {
 		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
-		this.bound = bound;
+		this.bound =Math.max(10, bound);
 		this.maxConstant=maxConstant;
 	}
 
