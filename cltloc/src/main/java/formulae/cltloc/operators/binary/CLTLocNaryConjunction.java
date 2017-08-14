@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Preconditions;
 
-import formulae.BinaryFormula;
 import formulae.NaryFormula;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.visitor.CLTLocVisitor;

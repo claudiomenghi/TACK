@@ -51,7 +51,8 @@ public class CLTLoc2Ae2zot implements Function<CLTLocFormula, String> {
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *real*)\n"));
 
 		Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
-		boundedvariables.forEach(variable -> builder.append("(define-item " + variable.toString() + " '("+StringUtils.join(variable.getValues(), ' ')+"))\n"));
+		boundedvariables.forEach(variable ->{ 
+			builder.append("(define-item " + variable.toString() + " '("+StringUtils.join(variable.getValues(), ' ')+"))\n");});
 
 		
 		final StringBuilder footerBuilder = new StringBuilder();

@@ -233,7 +233,12 @@ public class TANetwork2CLTLoc {
 				ta.getLocalVariables().stream().map(v ->
 							(CLTLocFormula) new CLTLocEQRelation(
 									ta.isBounded(v.getName()) ?
-									new formulae.cltloc.atoms.BoundedVariable(ta.getIdentifier()+"_"+v.getName(), ta.getBound(v.getName()))
+									new formulae.cltloc.atoms.BoundedVariable(ta.getIdentifier()+"_"+v.getName(), 
+											ta.getLocalVariables().contains(v) ?
+													ta.getBound(v.getName()):
+													system.getBound(v.getName())
+											
+											)
 											:
 									new formulae.cltloc.atoms.Variable(ta.getIdentifier()+"_"+v.getName()),
 															new Constant(	ta.getInitialValue(v).value))).reduce(CLTLocFormula.TRUE, conjunctionOperator)
@@ -309,7 +314,11 @@ public class TANetwork2CLTLoc {
 								(system.isBounded(condition.getVariable().getName()))
 						)
 						?
-							new formulae.cltloc.atoms.BoundedVariable(prefix + condition.getVariable().getName(), ta.getBound(condition.getVariable().getName()))
+							new formulae.cltloc.atoms.BoundedVariable(prefix + condition.getVariable().getName(), 
+									ta.getLocalVariables().contains(condition.getVariable()) ?
+									ta.getBound(condition.getVariable().getName()):
+									system.getBound(condition.getVariable().getName())	
+											)
 									:
 							new formulae.cltloc.atoms.Variable(prefix + condition.getVariable().getName());
 			
@@ -333,7 +342,10 @@ public class TANetwork2CLTLoc {
 							(system.isBounded(v.getVariable().getName()))
 					)
 					?
-					new formulae.cltloc.atoms.BoundedVariable(prefix + v.getVariable().getName(), ta.getBound(v.getVariable().getName()))
+					new formulae.cltloc.atoms.BoundedVariable(prefix + v.getVariable().getName(), 
+							ta.getLocalVariables().contains(v.getVariable()) ?
+									ta.getBound(v.getVariable().getName()):
+									system.getBound(v.getVariable().getName()))
 							:
 					new formulae.cltloc.atoms.Variable(prefix + v.getVariable().getName());
 					

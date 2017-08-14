@@ -8,6 +8,12 @@ public class BoundedVariable extends Variable {
 	
 	public BoundedVariable(String name, Set<Integer> values) {
 		super(name);
+		if(values==null){
+			throw new NullPointerException("The values cannot be null");
+		}
+		if(values.isEmpty()){
+			throw new IllegalArgumentException("The set of values cannot be null");
+		}
 		this.values=values;
 	}
 
