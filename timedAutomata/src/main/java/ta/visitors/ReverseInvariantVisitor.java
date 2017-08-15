@@ -23,7 +23,7 @@ public class ReverseInvariantVisitor implements InvariantVisitor{
 	public CLTLocFormula visit(TA ta, ExpInvariant inv) {
 		String variableName=inv.getId().getId();
 		String prefix = ta.getLocalClocks().contains(new Clock(variableName)) ? ta.getIdentifier() + "_" : "";
-		return (CLTLocFormula) new CLTLocDisjunction(
+		return (CLTLocFormula) CLTLocDisjunction.getCLTLocDisjunction(
 				CLTLocFormula.getAnd(
 						new CLTLocSelector(prefix + variableName + "_v"),
 						new CLTLocRelation(new CLTLocClock(prefix +variableName+ "_0"),

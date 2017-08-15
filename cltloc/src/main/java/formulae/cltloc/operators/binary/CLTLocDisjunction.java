@@ -26,7 +26,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		this.hash = this.hashComputation();
 	}
 
-	public CLTLocDisjunction(CLTLocFormula subformula1, CLTLocFormula... formulae) {
+	protected CLTLocDisjunction(CLTLocFormula subformula1, CLTLocFormula... formulae) {
 		super();
 		this.subformula1 = subformula1;
 		if (formulae.length > 1) {

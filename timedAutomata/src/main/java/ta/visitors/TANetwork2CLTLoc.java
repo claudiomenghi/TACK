@@ -110,7 +110,8 @@ public class TANetwork2CLTLoc {
 		if (right.equals(CLTLocFormula.FALSE)) {
 			return left;
 		}
-		return new CLTLocDisjunction(left, right);
+		
+		return CLTLocDisjunction.getCLTLocDisjunction(left, right);
 	};
 
 	public static final UnaryOperator<CLTLocFormula> eventuallyOperator = (formula) -> {
@@ -292,7 +293,7 @@ public class TANetwork2CLTLoc {
 		Set<ClockConstraintAtom> assignments = t.getGuard().getClockConstraints();
 		return assignments.stream().map(c -> {
 			String prefix = ta.getLocalClocks().contains(c.getClock()) ? ta.getIdentifier() + "_" : "";
-			return (CLTLocFormula) new CLTLocDisjunction(
+			return (CLTLocFormula) CLTLocDisjunction.getCLTLocDisjunction(
 					CLTLocFormula.getAnd(new CLTLocNegation(new CLTLocSelector(prefix + c.getClock().getName() + "_v")),
 							new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"),
 									new Constant(c.getValue()), Relation.parse(c.getOperator().toString())
@@ -361,7 +362,7 @@ public class TANetwork2CLTLoc {
 		Set<ClockAssignement> assignments = t.getAssignement().getClockassigments();
 		return assignments.stream().map(c -> {
 			String prefix = ta.getLocalClocks().contains(c.getClock()) ? ta.getIdentifier() + "_" : "";
-			return (CLTLocFormula) new CLTLocDisjunction(
+			return (CLTLocFormula) CLTLocDisjunction.getCLTLocDisjunction(
 					new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"),
 							new Constant(c.getValue().value), Relation.EQ),
 					new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
@@ -593,7 +594,7 @@ public class TANetwork2CLTLoc {
 		CLTLocFormula globalClocks = clocks.stream().map(c -> {
 			return (CLTLocFormula) implicationOperator.apply(
 					new CLTLocNext(
-							new CLTLocDisjunction(
+							CLTLocDisjunction.getCLTLocDisjunction(
 									new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.EQ),
 									new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ))),
 					(CLTLocFormula) system.getTimedAutomata().stream().filter(ta -> !ta.getLocalClocks().contains(c))
@@ -611,7 +612,7 @@ public class TANetwork2CLTLoc {
 			String prefix = ta.getIdentifier()+"_";
 			return (CLTLocFormula) implicationOperator.apply(
 					new CLTLocNext(
-							new CLTLocDisjunction(
+							CLTLocDisjunction.getCLTLocDisjunction(
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ),
 									new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero,
 											Relation.EQ))),

@@ -72,7 +72,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 
 	public static final BinaryOperator<CLTLocFormula> AND = CLTLocFormula::getAnd;
-	public static final BinaryOperator<CLTLocFormula> OR = CLTLocDisjunction::new;
+	public static final BinaryOperator<CLTLocFormula> OR = CLTLocDisjunction::getCLTLocDisjunction;
 	public static final BinaryOperator<CLTLocFormula> IMPL = CLTLocImplies::create;
 	public static final BinaryOperator<CLTLocFormula> U = CLTLocUntil::new;
 	public static final BinaryOperator<CLTLocFormula> S = CLTLocSince::new;

@@ -81,10 +81,6 @@ public class CLTLocNaryDisjunction extends CLTLocFormula implements NaryFormula<
 		return StringUtils.join(formulae, operator);
 	}
 
-
-
-
-
 	@Override
 	public Set<CLTLocFormula> getChildren() {
 		return formulae;

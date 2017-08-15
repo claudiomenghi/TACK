@@ -73,8 +73,8 @@ public class ATVAExample1Test {
 					CLTLocImplies.create(new CLTLocAP("Example1_l2"),
 							CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example1_l0")),
 									CLTLocFormula.getNeg(new CLTLocAP("Example1_l1"))))),
-					new CLTLocDisjunction(
-					new CLTLocDisjunction(new CLTLocAP("Example1_l0"), new CLTLocAP("Example1_l1"))
+					CLTLocDisjunction.getCLTLocDisjunction(
+					CLTLocDisjunction.getCLTLocDisjunction(new CLTLocAP("Example1_l0"), new CLTLocAP("Example1_l1"))
 						, new CLTLocAP("Example1_l2"))
 							)
 					);
@@ -82,7 +82,7 @@ public class ATVAExample1Test {
 	private final CLTLocFormula expectedphi2 = new CLTLocAP("Example1_l0");
 
 	private final CLTLocFormula expectedphi3 = new CLTLocGlobally(
-			CLTLocImplies.create(new CLTLocAP("Example1_l1"), new CLTLocDisjunction(
+			CLTLocImplies.create(new CLTLocAP("Example1_l1"), CLTLocDisjunction.getCLTLocDisjunction(
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocNegation(xv),
 							new CLTLocRelation(clock0, new Constant(5), Relation.LEQ))),
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(xv,
@@ -92,11 +92,11 @@ public class ATVAExample1Test {
 	private final CLTLocFormula transLocation0=
 			CLTLocImplies.create(new CLTLocAP("Example1_l0"), 
 					
-							new CLTLocDisjunction(
+							CLTLocDisjunction.getCLTLocDisjunction(
 										CLTLocFormula.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l0"))
 												,
-												new CLTLocDisjunction(
+												CLTLocDisjunction.getCLTLocDisjunction(
 														CLTLocFormula.getAnd(
 																new CLTLocNegation(new CLTLocSelector("Example1_x_v")), 
 																new CLTLocNext(
@@ -124,7 +124,7 @@ public class ATVAExample1Test {
 												,
 												CLTLocConjunction.getAnd(
 												
-														new CLTLocDisjunction(
+														CLTLocDisjunction.getCLTLocDisjunction(
 														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
@@ -140,7 +140,7 @@ public class ATVAExample1Test {
 														)
 												)
 												,
-												new CLTLocDisjunction(
+												CLTLocDisjunction.getCLTLocDisjunction(
 														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
@@ -171,11 +171,11 @@ public class ATVAExample1Test {
 	private final CLTLocFormula transLocation1=
 			CLTLocImplies.create(new CLTLocAP("Example1_l1"), 
 					
-							new CLTLocDisjunction(
+							CLTLocDisjunction.getCLTLocDisjunction(
 										CLTLocConjunction.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l1"))
 												,
-												new CLTLocDisjunction(
+												CLTLocDisjunction.getCLTLocDisjunction(
 														CLTLocFormula.getAnd(
 																new CLTLocNegation(new CLTLocSelector("Example1_x_v")), 
 																new CLTLocNext(
@@ -202,7 +202,7 @@ public class ATVAExample1Test {
 												new CLTLocNext(new CLTLocAP("Example1_l2"))
 												,
 												
-													new CLTLocDisjunction(
+													CLTLocDisjunction.getCLTLocDisjunction(
 															CLTLocConjunction.getAnd(
 																new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 																, 
@@ -235,11 +235,11 @@ public class ATVAExample1Test {
 	private final CLTLocFormula transLocation2=
 			CLTLocImplies.create(new CLTLocAP("Example1_l2"), 
 					
-							new CLTLocDisjunction(
+							CLTLocDisjunction.getCLTLocDisjunction(
 										CLTLocConjunction.getAnd(
 												new CLTLocNext(new CLTLocAP("Example1_l2"))
 												,
-												new CLTLocDisjunction(
+												CLTLocDisjunction.getCLTLocDisjunction(
 														CLTLocFormula.getAnd(
 																new CLTLocNegation(new CLTLocSelector("Example1_x_v")), 
 																new CLTLocNext(
@@ -266,7 +266,7 @@ public class ATVAExample1Test {
 												new CLTLocNext(new CLTLocAP("Example1_l0"))
 												,
 												CLTLocConjunction.getAnd(
-												new CLTLocDisjunction(
+												CLTLocDisjunction.getCLTLocDisjunction(
 														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
@@ -279,7 +279,7 @@ public class ATVAExample1Test {
 																new CLTLocRelation(new CLTLocClock("Example1_x_1"), new Constant(10), Relation.EQ)
 														)
 												),
-												new CLTLocDisjunction(
+												CLTLocDisjunction.getCLTLocDisjunction(
 														CLTLocConjunction.getAnd(
 															new CLTLocNegation(new CLTLocSelector("Example1_x_v"))
 															, 
