@@ -12,7 +12,6 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 	private final CLTLocFormula subformula2;
 	public final String operator = "->";
 	private final int hash;
-	
 
 	private CLTLocImplies(CLTLocFormula subformula1, CLTLocFormula subformula2) {
 		super();
@@ -46,7 +45,7 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 	public <T> T accept(CLTLocVisitor<T> t) {
 		return t.visit(this);
 	}
-	
+
 	private int hashComputation() {
 		final int prime = 31;
 		int result = 1;
@@ -55,7 +54,7 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 		result = prime * result + ((subformula2 == null) ? 0 : subformula2.hashCode());
 		return result;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -63,7 +62,7 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 	public int hashCode() {
 		return hash;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -93,24 +92,31 @@ public class CLTLocImplies extends CLTLocFormula implements BinaryFormula<CLTLoc
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return "(" + subformula1+ ") " + operator + " (" + subformula2 + ")";
+		return "(" + subformula1 + ") " + operator + " (" + subformula2 + ")";
 	}
-	
-	public static CLTLocFormula create(CLTLocFormula subformula1, CLTLocFormula subformula2){
+
+	public static CLTLocFormula create(CLTLocFormula subformula1, CLTLocFormula subformula2) {
 		Preconditions.checkNotNull(subformula1, "The first subformula cannot be null");
 		Preconditions.checkNotNull(subformula2, "The second subformula cannot be null");
-		
-		if(subformula2.equals(CLTLocFormula.TRUE)){
-			return subformula1;
+
+		if (subformula2.equals(CLTLocFormula.TRUE)) {
+			return CLTLocFormula.TRUE;
 		}
-		else{
-			return new CLTLocImplies(subformula1, subformula2);
+		if (subformula2.equals(CLTLocFormula.FALSE)) {
+			return CLTLocFormula.getNeg(subformula1);
 		}
+		if (subformula1.equals(CLTLocFormula.TRUE)) {
+			return subformula2;
+		}
+		if (subformula1.equals(CLTLocFormula.FALSE)) {
+			return CLTLocFormula.TRUE;
+		}
+		return new CLTLocImplies(subformula1, subformula2);
 	}
 }
