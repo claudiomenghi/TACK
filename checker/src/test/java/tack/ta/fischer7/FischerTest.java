@@ -30,7 +30,7 @@ public class FischerTest {
 	@Test
 	public void test() throws IOException, ZotException {
 	
-		String path = ClassLoader.getSystemResource("tack/ta/fischer7/fischer_input_02.q").getPath();
+		String path = ClassLoader.getSystemResource("tack/ta/fischer7/fischer_input_07.q").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);

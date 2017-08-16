@@ -83,7 +83,7 @@ public class MITLI2CLTLoc {
 		CLTLocFormula nowConstraint=
 				CLTLocFormula.getAnd(
 						new CLTLocEQRelation(new CLTLocClock("Now"), new Constant(0)),
-						new CLTLocNext(new CLTLocGlobally(new CLTLocGERelation(new CLTLocClock("Now"), new Constant(0))))
+						new CLTLocNext(CLTLocGlobally.create(new CLTLocGERelation(new CLTLocClock("Now"), new Constant(0))))
 						);
 		
 

@@ -17,7 +17,7 @@ public class CLTLocGlobally extends CLTLocFormula implements UnaryFormula<CLTLoc
 
 	private final int hash;
 
-	public CLTLocGlobally(CLTLocFormula subformula) {
+	protected CLTLocGlobally(CLTLocFormula subformula) {
 		super();
 		Preconditions.checkNotNull(subformula, "The subformula cannot be null");
 		this.child = subformula;
@@ -87,5 +87,10 @@ public class CLTLocGlobally extends CLTLocFormula implements UnaryFormula<CLTLoc
 	@Override
 	public String toString() {
 		return this.operator+"(" + child + ")";
+	}
+	
+	public static  CLTLocFormula create(CLTLocFormula f){
+		return new CLTLocGlobally(f);
+		
 	}
 }

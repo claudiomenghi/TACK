@@ -46,22 +46,19 @@ public class ATVAExample1Test {
 					new CLTLocNegation(xv)
 					));
 
-	private final CLTLocFormula expectedclock2 = CLTLocFormula
-			.G(CLTLocImplies.create(new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
+	private final CLTLocFormula expectedclock2 =  CLTLocGlobally.create(CLTLocImplies.create(new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(new CLTLocRelation(clock1, new Constant(0), Relation.EQ),
 							CLTLocFormula.getAnd(new CLTLocNegation(xv),
 									new CLTLocRelation(clock0, new Constant(0), Relation.GE))))));
 
-	private final CLTLocFormula expectedclock3 = CLTLocFormula
-			.G(CLTLocImplies.create(new CLTLocRelation(clock1, new Constant(0), Relation.EQ),
+	private final CLTLocFormula expectedclock3 =  CLTLocGlobally.create(CLTLocImplies.create(new CLTLocRelation(clock1, new Constant(0), Relation.EQ),
 					new CLTLocNext(new CLTLocRelease(new CLTLocRelation(clock0, new Constant(0), Relation.EQ),
 							CLTLocFormula.getAnd(xv,
 									new CLTLocRelation(clock1, new Constant(0), Relation.GE))))));
 
 	private final CLTLocFormula expectedphi1 = 
 			
-			CLTLocFormula
-			.G(
+			 CLTLocGlobally.create(
 					CLTLocFormula.getAnd(
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(CLTLocImplies.create(new CLTLocAP("Example1_l0"),
 					CLTLocFormula.getAnd(CLTLocFormula.getNeg(new CLTLocAP("Example1_l1")),
@@ -81,7 +78,7 @@ public class ATVAExample1Test {
 
 	private final CLTLocFormula expectedphi2 = new CLTLocAP("Example1_l0");
 
-	private final CLTLocFormula expectedphi3 = new CLTLocGlobally(
+	private final CLTLocFormula expectedphi3 =  CLTLocGlobally.create(
 			CLTLocImplies.create(new CLTLocAP("Example1_l1"), CLTLocDisjunction.getCLTLocDisjunction(
 					CLTLocFormula.getAnd(CLTLocFormula.getAnd(new CLTLocNegation(xv),
 							new CLTLocRelation(clock0, new Constant(5), Relation.LEQ))),
@@ -308,12 +305,12 @@ public class ATVAExample1Test {
 							)
 					);
 	
-	private final CLTLocFormula expectedphi4=CLTLocFormula.G(
+	private final CLTLocFormula expectedphi4= CLTLocGlobally.create(
 			CLTLocFormula.getAnd(CLTLocFormula.getAnd(transLocation0, transLocation1),transLocation2));
-	private final CLTLocFormula expectedphi5 = new CLTLocGlobally(
+	private final CLTLocFormula expectedphi5 =  CLTLocGlobally.create(
 			new CLTLocIff(new CLTLocAP("Example1_l0"), new CLTLocAP("H_Example1_l0")));
 	
-	private final CLTLocFormula expectedphi6 = new CLTLocGlobally(
+	private final CLTLocFormula expectedphi6 =  CLTLocGlobally.create(
 			CLTLocImplies.create(new CLTLocAP("H_Example1_l0"), 
 					new CLTLocNext(
 					new CLTLocAP("P_Example1_l0"))));

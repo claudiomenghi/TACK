@@ -88,7 +88,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	public static final UnaryOperator<CLTLocFormula> NEG = CLTLocFormula::getNeg;
 	public static final UnaryOperator<CLTLocFormula> F = CLTLocEventually::new;
-	public static final UnaryOperator<CLTLocFormula> G = CLTLocGlobally::new;
+	public static final UnaryOperator<CLTLocFormula> G = CLTLocGlobally::create;
 	public static final UnaryOperator<CLTLocFormula> X = CLTLocNext::new;
 	public static final UnaryOperator<CLTLocFormula> Y = CLTLocYesterday::new;
 

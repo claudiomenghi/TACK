@@ -80,7 +80,7 @@ public class TackFisherScalability {
 		for(int i=1; i<=exampleNumber; i++){
 			f=CLTLocFormula.getOr(f, new CLTLocRelation(new Variable("id"), new Constant(i), Relation.EQ));
 		}
-		boolean result = checker.check(new CLTLocGlobally(f));
+		boolean result = checker.check(CLTLocGlobally.create(f));
 
 		out.println();
 		out.println();

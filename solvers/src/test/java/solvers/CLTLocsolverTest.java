@@ -150,9 +150,9 @@ public class CLTLocsolverTest {
 		CLTLocFormula init = CLTLocFormula.getAnd( new CLTLocRelation(new Variable("A_stop_v"), new Constant(0), Relation.EQ), 
 				 new CLTLocRelation(new Variable("A_stop0"), new Constant(0), Relation.EQ)
 				);
-		CLTLocFormula rel1=new CLTLocGlobally(new CLTLocIff(init, h1));
+		CLTLocFormula rel1=CLTLocGlobally.create(new CLTLocIff(init, h1));
 		
-		CLTLocFormula rel2=new CLTLocGlobally(new CLTLocIff(h1, new CLTLocNegation(h0)));
+		CLTLocFormula rel2= CLTLocGlobally.create(new CLTLocIff(h1, new CLTLocNegation(h0)));
 		
 		CLTLocFormula checked=CLTLocFormula.getAnd(h0, init, rel1,rel2);
 		assertFalse("a contradiction should return unsat",

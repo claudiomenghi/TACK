@@ -9,7 +9,6 @@ import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
-import formulae.cltloc.operators.unary.CLTLocGlobally;
 import formulae.cltloc.operators.unary.CLTLocNegation;
 import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.visitor.CLTLocVisitor;
@@ -26,9 +25,7 @@ public abstract class CLTLocFormula extends Formula {
 
 	public abstract <T> T accept(CLTLocVisitor<T> t);
 
-	public static CLTLocFormula G(CLTLocFormula f){
-		return new CLTLocGlobally(f);
-	}
+	
 	public static CLTLocFormula getAnd(CLTLocFormula f1, CLTLocFormula f2) {
 		Preconditions.checkNotNull(f1, "The first subformula cannot be null");
 		Preconditions.checkNotNull(f2, "The second subformula cannot be null");
@@ -114,6 +111,7 @@ public abstract class CLTLocFormula extends Formula {
 		return new CLTLocYesterday(subformula);
 	}
 	public static CLTLocFormula getNeg(CLTLocFormula f1) {
+		
 		if (f1 instanceof CLTLocNegation) {
 			return ((CLTLocNegation) f1).getChild();
 		} else {
