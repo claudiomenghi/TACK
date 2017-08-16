@@ -393,8 +393,7 @@ public class TANetwork2CLTLoc {
 		CLTLocFormula clockConstraint =this.getClock1(system);
 
 		CLTLocFormula automaton = CLTLocFormula.getAnd(this.getInitialStateConstraint(system),
-				this.getInitialVariableValuesConstraint(system),
-				this.finallyOneTransitionPerformed(system));
+				this.getInitialVariableValuesConstraint(system));
 		
 		CLTLocFormula semantic = 
 				CLTLocFormula.getAnd(
@@ -410,6 +409,7 @@ public class TANetwork2CLTLoc {
 						this.intervalsAreRightClosed(propositionsOfInterest),
 						this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
 						this.variableIntervalsAreRightClosed(atomicpropositionsVariable),
+						this.finallyOneTransitionPerformed(system),
 								this.getInvariant(system),
 								this.getTransitionConstraint(system),
 								this.stateChangesImpliesTransition(system), this.resetImpliesTransition(system),
@@ -699,14 +699,14 @@ public class TANetwork2CLTLoc {
 	 */
 	protected CLTLocFormula finallyOneTransitionPerformed(SystemDecl system) {
 
-		return globallyOperator.apply(system.getTimedAutomata().stream().map(ta -> eventuallyOperator.apply(ta
+		return system.getTimedAutomata().stream().map(ta -> eventuallyOperator.apply(ta
 				.getTransitions().stream()
 				.map(t -> (CLTLocFormula) new CLTLocEQRelation(new formulae.cltloc.atoms.BoundedVariable("t" + ta.getId(), this.getPossibleTransitionVariableValues(ta)),
 						new Constant(t.getId())))
 				.reduce(CLTLocFormula.FALSE, disjunctionOperator)
 				)
 				
-				).reduce(CLTLocFormula.TRUE, conjunctionOperator));
+				).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 
 	protected CLTLocFormula labeIsAreTrueOnlyInTheStates(SystemDecl system, Set<StateAP> propositionsOfInterest) {
