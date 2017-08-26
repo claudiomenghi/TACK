@@ -12,6 +12,7 @@ public class Variable extends Atom {
 	public Variable(String name) {
 		super();
 		Preconditions.checkNotNull(name, "The clock name cannot be null");
+		
 		this.variableName = name;
 		this.hash = variableName.hashCode();
 	}
