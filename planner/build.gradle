@@ -1,0 +1,107 @@
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'antlr'
+apply plugin:'application'
+
+
+jar {
+    manifest {
+        //attributes 'Main-Class': 'tack.TackPlanner'
+        attributes 'Main-Class': 'tack.TackPlanner'
+    }
+    from {
+            configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+}
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
+}
+
+
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+	mavenCentral()    
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources' 
+        }
+    }
+
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+        resources {
+            srcDir 'src/test/resources' 
+        }
+    }
+}
+
+ 
+ task solve (type: JavaExec){
+main = "tack.Tack"
+ classpath = sourceSets.main.runtimeClasspath
+  	   	  	 	 	mainClassName = "tack.Tack"
+    description = "Runs the MITLI framework"
+     if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}
+
+test {
+	jvmArgs "-Xmx8g"
+    jvmArgs "-XX:MaxPermSize=2g"
+    
+    beforeTest { desc -> 
+        println "Executing test ${desc.className}.${desc.name} "
+    }
+     afterTest { desc, result -> 
+        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}
+
+ //create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+        	'Main-Class': 'tack.TackPlanner'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+ 
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+	  compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8'
+ 	 compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8'
+	compile group: 'com.beust', name: 'jcommander', version: '1.58'
+	 compile project(':cltloc')
+	 compile project(':mitli')
+	 	 compile project(':solvers')
+	 compile project(':timedAutomata')
+	 compile group: 'commons-io', name: 'commons-io', version: '2.4'
+	 compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
+ 	compile group: 'com.google.guava', name: 'guava', version: '15.0'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+	antlr "org.antlr:antlr4:4.5" 
+	
+    testCompile 'junit:junit:4.12'
+}
+
+run {
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}

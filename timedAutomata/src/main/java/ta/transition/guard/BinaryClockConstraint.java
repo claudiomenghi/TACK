@@ -6,6 +6,7 @@ import java.util.Set;
 import operators.PropositionalLogicOperator;
 import ta.Clock;
 import ta.expressions.binary.BinaryExpression;
+import ta.visitors.Expression2CLTLocExpression;
 import ta.visitors.ExpressionVisitor;
 import ta.visitors.TAVisitor;
 
@@ -39,6 +40,11 @@ public class BinaryClockConstraint extends BinaryExpression<ClockConstraint, Pro
 		return visitor.visit(this);
 	}
 
+	@Override
+	public formulae.cltloc.atoms.CLTLocArithmeticExpression accept(Expression2CLTLocExpression visitor) {
+		return null;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

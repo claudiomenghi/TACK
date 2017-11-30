@@ -1,22 +1,27 @@
 package formulae.cltloc.relations;
 
+import com.google.common.base.Preconditions;
+
 import formulae.BinaryFormula;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.Atom;
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class CLTLocRelation extends CLTLocFormula implements BinaryFormula<Atom> {
+public class CLTLocRelation extends CLTLocFormula implements BinaryFormula<formulae.cltloc.atoms.Expression> {
 
 	private final Atom subformula1;
-	private final Atom subformula2;
+	private final formulae.cltloc.atoms.Expression subformula2;
 	private final Relation relation;
 	
 
 	private final int hash;
 	
 
-	public CLTLocRelation(Atom subformula1, Atom subformula2, Relation relation) {
+	public CLTLocRelation(Atom subformula1, formulae.cltloc.atoms.Expression subformula2, Relation relation) {
 		super();
+		Preconditions.checkNotNull(subformula1, "The first subformula cannot be null");
+		Preconditions.checkNotNull(subformula2, "The second subformula cannot be null");
+		Preconditions.checkNotNull(relation, "The relation cannot be null");
 		this.subformula1 = subformula1;
 		this.subformula2 = subformula2;
 		this.relation = relation;
@@ -36,7 +41,7 @@ public class CLTLocRelation extends CLTLocFormula implements BinaryFormula<Atom>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Atom getRightChild() {
+	public formulae.cltloc.atoms.Expression getRightChild() {
 		return subformula2;
 	}
 

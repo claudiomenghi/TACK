@@ -2,8 +2,8 @@ package ta.expressions;
 
 import com.google.common.base.Preconditions;
 
+import ta.visitors.Expression2CLTLocExpression;
 import ta.visitors.ExpressionVisitor;
-import ta.visitors.TAVisitor;
 
 public class Identifier extends Expression {
 
@@ -22,8 +22,7 @@ public class Identifier extends Expression {
 	}
 
 	@Override
-	public <T> T accept(TAVisitor<T> visitor) {
-		// TODO Auto-generated method stub
+	public formulae.cltloc.atoms.CLTLocArithmeticExpression accept(Expression2CLTLocExpression visitor) {
 		return null;
 	}
 

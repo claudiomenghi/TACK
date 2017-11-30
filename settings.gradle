@@ -1,4 +1,4 @@
-include 'cltloc', 'timedAutomata', 'mitli', 'solvers', 'checker'
+include 'cltloc', 'timedAutomata', 'mitli', 'solvers', 'checker', 'planner'
 
 
 rootProject.name = 'TACK'

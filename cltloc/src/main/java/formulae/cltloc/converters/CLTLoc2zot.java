@@ -1,35 +1,48 @@
 package formulae.cltloc.converters;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Preconditions;
 
 import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.visitor.CLTLoc2ZotVisitor;
+import formulae.cltloc.visitor.GetBoundedVariablesVisitor;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
+import formulae.cltloc.visitor.ZotPlugin;
 
-public class CLTLoc2Ae2sbvzot implements Function<CLTLocFormula, String> {
+public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 
 	private final int bound;
+	private final int maxConstant;
 
-	public CLTLoc2Ae2sbvzot(int bound) {
+	private final ZotPlugin pluginName;
+	
+	public CLTLoc2zot(int bound,ZotPlugin pluginName) {
 		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
 		this.bound = bound;
+		this.maxConstant=bound;
+		this.pluginName=pluginName;
+	}
+	
+	public CLTLoc2zot(int bound, int maxConstant,ZotPlugin pluginName) {
+		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
+		this.bound =Math.max(10, bound);
+		this.maxConstant=maxConstant;
+		this.pluginName=pluginName;
 	}
 
 	public String apply(CLTLocFormula formula) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("(asdf:operate 'asdf:load-op 'ae2sbvzot)\n");
+		builder.append("(asdf:operate 'asdf:load-op '"+pluginName+")\n");
 		
 		builder.append("(use-package :trio-utils)\n");
 
@@ -42,30 +55,23 @@ public class CLTLoc2Ae2sbvzot implements Function<CLTLocFormula, String> {
 		Set<Variable> variables = formula.accept(new GetVariablesVisitor());
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *real*)\n"));
 
-		
+		Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
+		boundedvariables.forEach(variable ->{ 
+			builder.append("(define-item " + variable.toString() + " '("+StringUtils.join(variable.getValues(), ' ')+"))\n");});
+
 		
 		final StringBuilder footerBuilder = new StringBuilder();
-		//footerBuilder.append(":signals '(" + StringUtils.join(signals, ' ') + ")\n");
 		
 		footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
 
-		Set<String> clockNames=new HashSet<>();
-		clockNames=clocks.stream()
-				.filter(c ->  c.getClockName().contains("_")).map(c ->{
-			return c.getClockName().substring(0, c.getClockName().lastIndexOf("_")+1);
-		}).collect(Collectors.toSet());
-		
-		
-		Set<String> pairedClocks=new HashSet<>();
-		pairedClocks=clockNames.stream().map(name -> "("+name+"0 "+name+"1)").collect(Collectors.toSet());
-		
-		builder.append("(ae2sbvzot:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
+// 	ae2sbvzot
+//		ae2zot
+		builder.append("("+pluginName+":zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
 				+ ":smt-lib :smt2 \n" 
 				+ ":logic :QF_UFRDL \n" 
-				+ ":over-clocks 3 \n"
+				+ ":over-clocks "+ maxConstant +"\n"
 				+ ":gen-symbolic-val nil\n"
 				+":parametric-regions t\n"
-				+ ":paired-clocks '("+StringUtils.join(pairedClocks, ' ') +")\n"
 				+ footerBuilder.toString()
 				 + ")\n");
 

@@ -12,6 +12,8 @@ import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
@@ -258,6 +260,16 @@ public class GetAPVisitor implements CLTLocVisitor<Set<CLTLocAP>> {
 			formulae.addAll(f.accept(this));
 		}
 		return formulae;	
+	}
+	
+	@Override
+	public  Set<CLTLocAP>  visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		return new HashSet<>();
+	}
+	
+	@Override
+	public Set<CLTLocAP> visit(AssignVariable assignVariable) {
+		return new HashSet<>();
 	}
 
 }

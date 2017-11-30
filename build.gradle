@@ -6,6 +6,9 @@ apply plugin: 'eclipse'
 test {
     afterTest { desc, result -> 
         println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+          if (${result.resultType} == 'FAILURE'){
+          throw new GradleException("Test failed!")
+         }
     }
 }
 

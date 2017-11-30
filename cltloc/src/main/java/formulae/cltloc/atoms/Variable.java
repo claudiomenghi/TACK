@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class Variable extends Atom {
+public class Variable extends Atom implements Expression {
 
 	private final int hash;
 	private final String variableName;

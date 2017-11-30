@@ -1,12 +1,14 @@
 package ta;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,22 +71,26 @@ public class TA {
 	private final Set<Transition> transitions;
 
 	/**
-	 * keeps the outgoint transitions for each state
+	 * keeps the outgoing transitions for each state
 	 */
 	private final Map<State, Set<Transition>> outTransitions;
-	
-	
-	public boolean isBounded(String variableId){
-		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId()).collect(Collectors.toSet()).contains(variableId);
+
+	private final Map<Entry<State, State>, Set<Transition>> mapSourceDestinationTransitions;
+
+	private final Map<State, Set<State>> successors;
+	public boolean isBounded(String variableId) {
+		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId())
+				.collect(Collectors.toSet()).contains(variableId);
 	}
-	
-	public Set<Integer> getBound(String variableId){
-		Set<Integer> retSet=new HashSet<>();
-		this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> ((BoundedVariableDecl) d).getValues()).forEach(c -> retSet.addAll(c));
-		return  retSet;
+
+	public Set<Integer> getBound(String variableId) {
+		Set<Integer> retSet = new HashSet<>();
+		this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl)
+				.map(d -> ((BoundedVariableDecl) d).getValues()).forEach(c -> retSet.addAll(c));
+		return retSet;
 	}
-	
-	public int getNumberStates(){
+
+	public int getNumberStates() {
 		return this.states.size();
 	}
 
@@ -139,14 +145,45 @@ public class TA {
 				}
 			}
 		});
-		
-		
-		
-		
-		
-		
+
 		this.variableDeclaration = variableDeclaration;
 		this.clockDeclarations = clockDeclarations;
+
+		this.mapSourceDestinationTransitions = new HashMap<>();
+
+		for (Transition t : this.transitions) {
+			if (!this.mapSourceDestinationTransitions
+					.containsKey(new AbstractMap.SimpleEntry<>(t.getSource(), t.getDestination()))) {
+				Set<Transition> associatedtransitions = new HashSet<>();
+				associatedtransitions.add(t);
+				this.mapSourceDestinationTransitions
+						.put(new AbstractMap.SimpleEntry<>(t.getSource(), t.getDestination()), associatedtransitions);
+			} else {
+				this.mapSourceDestinationTransitions
+						.get(new AbstractMap.SimpleEntry<>(t.getSource(), t.getDestination())).add(t);
+			}
+		}
+		
+		
+		this.successors=new HashMap<>();
+		
+		for(State s: this.states){
+			this.successors.put(s, new HashSet<>());
+		}
+		for (Transition t : this.transitions) {
+			this.successors.get(t.getSource()).add(t.getDestination());
+		}
+	}
+
+	public Set<State> successors(State s){
+		return this.successors.get(s);
+	}
+	public Set<Transition> getTransitions(State source, State destination) {
+		if (this.mapSourceDestinationTransitions.containsKey(new AbstractMap.SimpleEntry<>(source, destination))) {
+			return this.mapSourceDestinationTransitions.get(new AbstractMap.SimpleEntry<>(source, destination));
+		} else {
+			return new HashSet<>();
+		}
 	}
 
 	public Set<Variable> getAllVariables() {
@@ -224,7 +261,7 @@ public class TA {
 		builder.append("-----------------------------TIMED AUTOMATON----------------------------- \n");
 
 		builder.append("TA \n");
-		builder.append("id: "+this.id+"\n");
+		builder.append("id: " + this.id + "\n");
 		builder.append("\t" + this.identifier + "\n");
 		builder.append("clocks: \n");
 		builder.append("\t");
@@ -264,14 +301,14 @@ public class TA {
 		return ta;
 	}
 
-	public Set<Variable> getLocalVariables(){
+	public Set<Variable> getLocalVariables() {
 		return this.variableDeclaration.stream().map(v -> new Variable(v.getId())).collect(Collectors.toSet());
 	}
-	
-	public Set<Clock> getLocalClocks(){
-		return this.clockDeclarations.stream().map(cdc-> new Clock(cdc.getId())).collect(Collectors.toSet());
+
+	public Set<Clock> getLocalClocks() {
+		return this.clockDeclarations.stream().map(cdc -> new Clock(cdc.getId())).collect(Collectors.toSet());
 	}
-	
+
 	public List<String> getActions() {
 		return Collections.unmodifiableList(actions);
 	}

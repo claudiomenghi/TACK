@@ -1,12 +1,12 @@
 package ta.expressions;
 
+import ta.visitors.Expression2CLTLocExpression;
 import ta.visitors.ExpressionVisitor;
-import ta.visitors.TAVisitor;
 
 public abstract class Expression {
 
 	
-	abstract public  <T> T accept(TAVisitor<T> visitor);
+	abstract public  formulae.cltloc.atoms.Expression accept(Expression2CLTLocExpression visitor);
 	
 	abstract public  <T> T accept(ExpressionVisitor<T> visitor);
 	

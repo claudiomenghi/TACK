@@ -8,8 +8,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-import org.apache.log4j.Logger;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -57,7 +55,6 @@ import formulae.mitli.atoms.MITLITrue;
 
 public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
-	private final static Logger LOGGER = Logger.getLogger(MITLI2CLTLocVisitor.class);
 
 	public final BiMap<MITLIFormula, Integer> formulaIdMap = HashBiMap.create();
 
@@ -154,7 +151,6 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		Preconditions.checkNotNull(formula, "The formula to be considered cannot be null");
 
-		LOGGER.info("Converting the formula " + formula.toString() + " to CLTLoc");
 		List<MITLIFormula> listSubFormula = formula.accept(new SubformulaeVisitor());
 		
 		for (int i = 0; i < listSubFormula.size(); i++) {

@@ -6,6 +6,7 @@ import java.util.Set;
 import operators.PropositionalLogicOperator;
 import ta.Variable;
 import ta.expressions.binary.BinaryExpression;
+import ta.visitors.Expression2CLTLocExpression;
 import ta.visitors.ExpressionVisitor;
 import ta.visitors.TAVisitor;
 
@@ -35,6 +36,10 @@ public class BinaryVariableConstraint extends BinaryExpression<VariableConstrain
 	@Override
 	public <T> T accept(TAVisitor<T> visitor) {
 		return visitor.visit(this);
+	}
+	@Override
+	public formulae.cltloc.atoms.CLTLocArithmeticExpression accept(Expression2CLTLocExpression visitor) {
+		return null;
 	}
 
 	/**

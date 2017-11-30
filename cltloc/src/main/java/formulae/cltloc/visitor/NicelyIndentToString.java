@@ -2,6 +2,8 @@ package formulae.cltloc.visitor;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
@@ -330,5 +332,17 @@ public class NicelyIndentToString implements CLTLocVisitor<String> {
 		indentValue--;
 		
 		return finalFormula.toString();
+	}
+	
+	@Override
+	public String visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		return "([" + binaryArithmeticExpression.getOperator() + "] "
+				+ binaryArithmeticExpression.getLeftChild().accept(this) + " "
+				+ binaryArithmeticExpression.getRightChild().accept(this) + " )";
+	}
+	
+	@Override
+	public String visit(AssignVariable assignVariable) {
+		return "([=] (-V- " + assignVariable.getVariable() + ")  " + assignVariable.getExpression().accept(this) + " )";
 	}
 }

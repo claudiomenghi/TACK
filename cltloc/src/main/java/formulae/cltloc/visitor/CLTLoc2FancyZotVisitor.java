@@ -1,5 +1,12 @@
 package formulae.cltloc.visitor;
 
+import org.apache.commons.lang3.StringUtils;
+
+import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
+import formulae.cltloc.atoms.BoundedVariable;
+import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
@@ -7,12 +14,6 @@ import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
-
-import org.apache.commons.lang3.StringUtils;
-
-import formulae.cltloc.atoms.AssignNextVariable;
-import formulae.cltloc.atoms.BoundedVariable;
-import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
@@ -42,17 +43,17 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocConjunction formula) {
-		String leftChild=formula.getLeftChild().accept(this) ;
-		if(leftChild.startsWith("("+formula.operator )){
-			leftChild=leftChild.replaceFirst("("+formula.operator, "");
-			leftChild=leftChild.substring(0, leftChild.length()-1);
+		String leftChild = formula.getLeftChild().accept(this);
+		if (leftChild.startsWith("(" + formula.operator)) {
+			leftChild = leftChild.replaceFirst("(" + formula.operator, "");
+			leftChild = leftChild.substring(0, leftChild.length() - 1);
 		}
-		String rightChild=formula.getRightChild().accept(this);
-		if(rightChild.startsWith("("+formula.operator )){
-			rightChild=rightChild.replaceFirst("("+formula.operator, "");
-			rightChild=rightChild.substring(0, rightChild.length()-1);
+		String rightChild = formula.getRightChild().accept(this);
+		if (rightChild.startsWith("(" + formula.operator)) {
+			rightChild = rightChild.replaceFirst("(" + formula.operator, "");
+			rightChild = rightChild.substring(0, rightChild.length() - 1);
 		}
-		return "(&&"+ leftChild + " " + rightChild + ")";
+		return "(&&" + leftChild + " " + rightChild + ")";
 	}
 
 	/**
@@ -140,7 +141,8 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocRelation formula) {
-		return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " " + formula.getRightChild().accept(this) + ")";
+		return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " "
+				+ formula.getRightChild().accept(this) + ")";
 	}
 
 	/**
@@ -156,10 +158,10 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocAP cltLocAP) {
-		if(cltLocAP.equals(CLTLocAP.TRUE)){
+		if (cltLocAP.equals(CLTLocAP.TRUE)) {
 			return "(||  (-P- a) (!!(-P- a)))";
 		}
-		if(cltLocAP.equals(CLTLocAP.FALSE)){
+		if (cltLocAP.equals(CLTLocAP.FALSE)) {
 			return "(&&  (-P- a) (!!(-P- a)))";
 		}
 		return "(-P- " + cltLocAP.toString() + ")";
@@ -170,7 +172,7 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocClock cltlClock) {
-		return "(-V- "+cltlClock.toString()+")";
+		return "(-V- " + cltlClock.toString() + ")";
 	}
 
 	/**
@@ -186,7 +188,7 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(Signal formula) {
-		return "(-V- "+formula.toString()+")";
+		return "(-V- " + formula.toString() + ")";
 	}
 
 	/**
@@ -194,41 +196,54 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(Variable formula) {
-		return "(-V- "+formula.toString()+")";
+		return "(-V- " + formula.toString() + ")";
 	}
 
 	@Override
 	public String visit(KeepVariableConstant keepVariableConstant) {
-		return "([=] (next (-V- "+keepVariableConstant.getVariable() + "))  (-V- "+keepVariableConstant.getVariable()+") )";
+		return "([=] (next (-V- " + keepVariableConstant.getVariable() + "))  (-V- "
+				+ keepVariableConstant.getVariable() + ") )";
 	}
 
 	@Override
 	public String visit(CLTLocSelector formula) {
-		return "(-P- "+formula.toString()+")";
+		return "(-P- " + formula.toString() + ")";
 	}
 
 	@Override
 	public String visit(AssignNextVariable formula) {
-		return "([=] (next (-V- "+formula.getNextVariable() + "))  (-V- "+formula.getVariable()+") )";
+		return "([=] (next (-V- " + formula.getNextVariable() + "))  (-V- " + formula.getVariable() + ") )";
 	}
 
 	@Override
 	public String visit(BoundedVariable variable) {
-		return "(-P- "+variable.toString()+")";
+		return "(-P- " + variable.toString() + ")";
 	}
 
 	@Override
 	public String visit(KeepBoundedVariableConstant variable) {
-		return "(<"+variable.toString() + ">)";
+		return "(<" + variable.toString() + ">)";
 	}
 
 	@Override
 	public String visit(CLTLocNaryConjunction cltLocNaryConjunction) {
-		return "(&&"+ StringUtils.join(cltLocNaryConjunction.getChildren(), " ") + ")";		
+		return "(&&" + StringUtils.join(cltLocNaryConjunction.getChildren(), " ") + ")";
 	}
 
 	@Override
 	public String visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
-		return "(||"+ StringUtils.join(cltLocNaryDisjunction.getChildren(), " ") + ")";	
+		return "(||" + StringUtils.join(cltLocNaryDisjunction.getChildren(), " ") + ")";
+	}
+
+	@Override
+	public String visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		return "([" + binaryArithmeticExpression.getOperator() + "] "
+				+ binaryArithmeticExpression.getLeftChild().accept(this) + " "
+				+ binaryArithmeticExpression.getRightChild().accept(this) + " )";
+	}
+
+	@Override
+	public String visit(AssignVariable assignVariable) {
+		return "([=] (-V- " + assignVariable.getVariable() + ")  " + assignVariable.getExpression().accept(this) + " )";
 	}
 }

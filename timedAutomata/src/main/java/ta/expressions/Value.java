@@ -1,7 +1,7 @@
 package ta.expressions;
 
+import ta.visitors.Expression2CLTLocExpression;
 import ta.visitors.ExpressionVisitor;
-import ta.visitors.TAVisitor;
 
 public class Value extends Expression {
 
@@ -13,9 +13,8 @@ public class Value extends Expression {
 	}
 
 	@Override
-	public <T> T accept(TAVisitor<T> visitor) {
-		// TODO Auto-generated method stub
-		return null;
+	public formulae.cltloc.atoms.Expression accept(Expression2CLTLocExpression visitor) {
+		return visitor.visit(this);
 	}
 
 	@Override

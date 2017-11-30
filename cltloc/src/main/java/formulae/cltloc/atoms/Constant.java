@@ -1,12 +1,16 @@
 package formulae.cltloc.atoms;
 
+import java.util.HashMap;
+
 import formulae.cltloc.visitor.CLTLocVisitor;
 
-public class Constant extends Atom {
+public class Constant extends Atom implements Expression {
 
 	private final String value;
 	private final int hash;
 
+	private final static HashMap<Integer, Constant> map=new HashMap<>();
+	
 	public Constant(int value) {
 		super();
 		this.value = Integer.toString(value);
@@ -15,6 +19,17 @@ public class Constant extends Atom {
 		int result = 1;
 		result = prime * result + this.value.hashCode();
 		hash = result;
+	}
+	
+	public static Constant getConstant(int value){
+		if(map.containsKey(value)){
+			return map.get(value);
+		}
+		else{
+			Constant c=new Constant(value);
+			map.put(value, c);
+			return c;
+		}
 	}
 
 	public Constant(String value) {

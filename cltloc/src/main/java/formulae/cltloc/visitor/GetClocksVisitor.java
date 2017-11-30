@@ -12,6 +12,8 @@ import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
@@ -203,7 +205,7 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	public Set<CLTLocClock> visit(Signal formula) {
 		return new HashSet<>();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -211,6 +213,7 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	public Set<CLTLocClock> visit(Variable cltLocVariable) {
 		return new HashSet<>();
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -242,7 +245,7 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	@Override
 	public Set<CLTLocClock> visit(CLTLocNaryConjunction cltLocNaryConjunction) {
 		Set<CLTLocClock> formulae = new HashSet<>();
-		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+		for (CLTLocFormula f : cltLocNaryConjunction.getChildren()) {
 			formulae.addAll(f.accept(this));
 		}
 		return formulae;
@@ -251,9 +254,25 @@ public class GetClocksVisitor implements CLTLocVisitor<Set<CLTLocClock>> {
 	@Override
 	public Set<CLTLocClock> visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
 		Set<CLTLocClock> formulae = new HashSet<>();
-		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+		for (CLTLocFormula f : cltLocNaryDisjunction.getChildren()) {
 			formulae.addAll(f.accept(this));
 		}
+		return formulae;
+	}
+
+	@Override
+	public Set<CLTLocClock> visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		Set<CLTLocClock> formulae = new HashSet<>();
+		formulae.addAll(binaryArithmeticExpression.getLeftChild().accept(this));
+		formulae.addAll(binaryArithmeticExpression.getRightChild().accept(this));
+		return formulae;
+	}
+
+	@Override
+	public Set<CLTLocClock> visit(AssignVariable assignVariable) {
+		Set<CLTLocClock> formulae = new HashSet<>();
+		formulae.addAll(assignVariable.getExpression().accept(this));
+
 		return formulae;
 	}
 }

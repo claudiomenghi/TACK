@@ -3,10 +3,10 @@ package formulae.cltloc.visitor;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.StringUtils;
-
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
@@ -315,5 +315,18 @@ public class CLTLoc2StringVisitor implements CLTLocVisitor<Entry<String, Class<?
 		
 		return new AbstractMap.SimpleEntry<String, Class<? extends CLTLocFormula>>(retString, cltLocNaryDisjunction.getClass());
 
+	}
+	
+
+	@Override
+	public Entry<String, Class<? extends CLTLocFormula>> visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		return null;
+	}
+	
+	@Override
+	public  Entry<String, Class<? extends CLTLocFormula>>  visit(AssignVariable assignVariable) {
+		String retString= "([=] (-V- " + assignVariable.getVariable() + ")  " + assignVariable.getExpression().accept(this) + " )";
+		return new AbstractMap.SimpleEntry<String, Class<? extends CLTLocFormula>>(retString, assignVariable.getClass());
+		
 	}
 }

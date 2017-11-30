@@ -5,6 +5,8 @@ import java.util.Set;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
@@ -209,9 +211,9 @@ public class GetBoundedVariablesVisitor implements CLTLocVisitor<Set<BoundedVari
 	@Override
 	public Set<BoundedVariable> visit(Variable formula) {
 		Set<BoundedVariable> formulae = new HashSet<>();
-		if((formula instanceof BoundedVariable))
-			formulae.add((BoundedVariable)formula);
-		
+		if ((formula instanceof BoundedVariable))
+			formulae.add((BoundedVariable) formula);
+
 		return formulae;
 	}
 
@@ -250,7 +252,7 @@ public class GetBoundedVariablesVisitor implements CLTLocVisitor<Set<BoundedVari
 	@Override
 	public Set<BoundedVariable> visit(CLTLocNaryConjunction cltLocNaryConjunction) {
 		Set<BoundedVariable> formulae = new HashSet<>();
-		for(CLTLocFormula f: cltLocNaryConjunction.getChildren()){
+		for (CLTLocFormula f : cltLocNaryConjunction.getChildren()) {
 			formulae.addAll(f.accept(this));
 		}
 		return formulae;
@@ -259,9 +261,28 @@ public class GetBoundedVariablesVisitor implements CLTLocVisitor<Set<BoundedVari
 	@Override
 	public Set<BoundedVariable> visit(CLTLocNaryDisjunction cltLocNaryDisjunction) {
 		Set<BoundedVariable> formulae = new HashSet<>();
-		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
+		for (CLTLocFormula f : cltLocNaryDisjunction.getChildren()) {
 			formulae.addAll(f.accept(this));
 		}
 		return formulae;
+	}
+
+	@Override
+	public Set<BoundedVariable> visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		Set<BoundedVariable> formulae = new HashSet<>();
+		formulae.addAll(binaryArithmeticExpression.getLeftChild().accept(this));
+		formulae.addAll(binaryArithmeticExpression.getRightChild().accept(this));
+		return formulae;
+	}
+
+	@Override
+	public Set<BoundedVariable> visit(AssignVariable assignVariable) {
+		Set<BoundedVariable> formulae = new HashSet<>();
+		if ((assignVariable.getVariable() instanceof BoundedVariable))
+			formulae.add((BoundedVariable) assignVariable.getVariable() );
+
+		formulae.addAll(assignVariable.getExpression().accept(this));
+		return formulae;
+		
 	}
 }

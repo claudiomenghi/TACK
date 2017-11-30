@@ -13,7 +13,7 @@ import formulae.cltloc.visitor.CLTLocVisitor;
 public class CLTLocNaryDisjunction extends CLTLocFormula implements NaryFormula<CLTLocFormula> {
 
 	private final Set<CLTLocFormula> formulae;
-	public final String operator = "&&";
+	public final String operator = "||";
 	private final int hash;
 
 	public CLTLocNaryDisjunction(Set<CLTLocFormula> formulae) {

@@ -8,7 +8,7 @@ import formulae.cltloc.visitor.CLTLocVisitor;
  * @author Claudio Menghi
  *
  */
-public abstract class Atom  {
+public abstract class Atom implements  formulae.cltloc.atoms.Expression{
 
 	public Atom() {
 		super();

@@ -1,5 +1,11 @@
 package formulae.cltloc.visitor;
 
+import formulae.cltloc.CLTLocFormula;
+import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
+import formulae.cltloc.atoms.BoundedVariable;
+import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
@@ -7,13 +13,6 @@ import formulae.cltloc.atoms.KeepBoundedVariableConstant;
 import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
-
-import org.apache.commons.lang3.StringUtils;
-
-import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.atoms.AssignNextVariable;
-import formulae.cltloc.atoms.BoundedVariable;
-import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
 import formulae.cltloc.operators.binary.CLTLocDisjunction;
 import formulae.cltloc.operators.binary.CLTLocIff;
@@ -241,5 +240,15 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 		return  ret;
 	}
 	
+	@Override
+	public String visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		return "([" + binaryArithmeticExpression.getOperator() + "] "
+				+ binaryArithmeticExpression.getLeftChild().accept(this) + " "
+				+ binaryArithmeticExpression.getRightChild().accept(this) + " )";
+	}
 	
+	@Override
+	public String visit(AssignVariable assignVariable) {
+		return "([=] (-V- " + assignVariable.getVariable() + ")  " + assignVariable.getExpression().accept(this) + " )";
+	}
 }

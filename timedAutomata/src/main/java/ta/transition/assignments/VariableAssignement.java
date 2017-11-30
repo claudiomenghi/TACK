@@ -2,8 +2,10 @@ package ta.transition.assignments;
 
 import com.google.common.base.Preconditions;
 
+import formulae.cltloc.CLTLocFormula;
 import ta.Variable;
 import ta.expressions.Expression;
+import ta.visitors.Expression2CLTLoc;
 
 public class VariableAssignement extends Assignment {
 	private final Variable variable;
@@ -61,6 +63,12 @@ public class VariableAssignement extends Assignment {
 		return true;
 	}
 
+	public CLTLocFormula accept(Expression2CLTLoc visitor) {
+		return visitor.visit(this);
+	}
+
+	
+	
 	/**
 	 * {@inheritDoc}
 	 */

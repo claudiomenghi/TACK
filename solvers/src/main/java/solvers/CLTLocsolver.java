@@ -7,9 +7,10 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 
 import formulae.cltloc.CLTLocFormula;
-import formulae.cltloc.converters.CLTLoc2Ae2zot;
+import formulae.cltloc.converters.CLTLoc2zot;
 import formulae.cltloc.visitor.CLTLoc2StringVisitor;
 import formulae.cltloc.visitor.CLTLocGetMaxBound;
+import formulae.cltloc.visitor.ZotPlugin;
 import zotrunner.ZotException;
 import zotrunner.ZotRunner;
 
@@ -39,22 +40,17 @@ public class CLTLocsolver {
 	public boolean solve() throws IOException, ZotException {
 		Stopwatch timer = Stopwatch.createUnstarted();
 		timer.start();
-		out.println("Converting the following CLTLoc formula in zot");
-		out.println(formula.accept(new CLTLoc2StringVisitor()).getKey());
+		out.println("Converting the CLTLoc formula in zot");
 		
 		//String zotEncoding = new CLTLoc2Ae2sbvzot(bound).apply(formula);
 		
 		
-		String zotEncoding = new CLTLoc2Ae2zot(bound, formula.accept(new CLTLocGetMaxBound())).apply(formula);
+		String zotEncoding = new CLTLoc2zot(bound, formula.accept(new CLTLocGetMaxBound()), ZotPlugin.AE2ZOT).apply(formula);
 		timer.stop();
 		cltloc2zottime=timer.elapsed(TimeUnit.MILLISECONDS);
 	
 		
-		out.println("************************************************");
-		out.println("ZOT ENCODING");
-		out.println(zotEncoding);
-		out.println("************************************************");
-
+		
 		out.println("Formula converted in zot");
 		timer.reset();
 		timer.start();

@@ -4,7 +4,8 @@ import java.util.function.BiFunction;
 
 import org.apache.log4j.Logger;
 
-import formulae.cltloc.converters.CLTLoc2Ae2zot;
+import formulae.cltloc.converters.CLTLoc2zot;
+import formulae.cltloc.visitor.ZotPlugin;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.visitors.MITLI2CLTLocVisitor;
 
@@ -15,7 +16,10 @@ public class MITLI2zot implements BiFunction<MITLIFormula, Integer, String> {
 	
 	public String apply(MITLIFormula t, Integer i){
 		
-		String zotencoding=new CLTLoc2Ae2zot(i).apply(
+//	 	ae2sbvzot
+//			ae2zot
+
+		String zotencoding=new CLTLoc2zot(i, ZotPlugin.AE2ZOT).apply(
 				(t.accept(new MITLI2CLTLocVisitor(t))));
 		LOGGER.info("Formula converted in zot");
 

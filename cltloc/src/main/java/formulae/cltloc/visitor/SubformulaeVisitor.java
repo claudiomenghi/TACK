@@ -12,6 +12,8 @@ import formulae.cltloc.atoms.KeepVariableConstant;
 import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
@@ -261,6 +263,24 @@ public class SubformulaeVisitor implements CLTLocVisitor<Set<CLTLocFormula>> {
 			formulae.addAll(f.accept(this));
 			formulae.add(f);
 		}
+		return formulae;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<CLTLocFormula> visit(CLTLocArithmeticExpression formula) {
+		Set<CLTLocFormula> formulae = new HashSet<>();
+		return formulae;
+	}
+	
+	@Override
+	public  Set<CLTLocFormula> visit(AssignVariable formula) {
+		Set<CLTLocFormula> formulae = new HashSet<>();
+		formulae.addAll(formula.getVariable().accept(this));
+		formulae.addAll(formula.getExpression().accept(this));
+		formulae.add(formula);
 		return formulae;
 	}
 

@@ -5,8 +5,10 @@ import java.util.Set;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.CLTLocClock;
 import formulae.cltloc.atoms.CLTLocSelector;
 import formulae.cltloc.atoms.Constant;
@@ -266,6 +268,23 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
 			formulae.addAll(f.accept(this));
 		}
+		return formulae;
+	}
+	
+	@Override
+	public Set<Variable> visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		Set<Variable> formulae = new HashSet<>();
+		formulae.addAll(binaryArithmeticExpression.getLeftChild().accept(this));
+		formulae.addAll(binaryArithmeticExpression.getRightChild().accept(this));
+		return formulae;
+	}
+	
+	@Override
+	public Set<Variable> visit(AssignVariable assignVariable) {
+		Set<Variable> formulae = new HashSet<>();
+		formulae.add(assignVariable.getVariable());
+		formulae.addAll(assignVariable.getExpression().accept(this));
+
 		return formulae;
 	}
 }

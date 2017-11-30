@@ -2,6 +2,8 @@ package formulae.cltloc.visitor;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.atoms.CLTLocClock;
@@ -186,4 +188,16 @@ return 0;
 		}
 		return max;
 	}
+	
+	@Override
+	public Integer visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		return 0;
+	}
+	
+	@Override
+	public Integer visit(AssignVariable assignVariable) {
+		return 0;
+	}
 }
+
+

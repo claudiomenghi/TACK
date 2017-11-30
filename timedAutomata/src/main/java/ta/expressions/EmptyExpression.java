@@ -1,7 +1,7 @@
 package ta.expressions;
 
+import ta.visitors.Expression2CLTLocExpression;
 import ta.visitors.ExpressionVisitor;
-import ta.visitors.TAVisitor;
 
 public class EmptyExpression extends Expression {
 
@@ -9,8 +9,8 @@ public class EmptyExpression extends Expression {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <T> T accept(TAVisitor<T> visitor) {
-		return visitor.visit(this);
+	public formulae.cltloc.atoms.CLTLocArithmeticExpression accept(Expression2CLTLocExpression visitor) {
+		return null;
 	}
 
 	/**

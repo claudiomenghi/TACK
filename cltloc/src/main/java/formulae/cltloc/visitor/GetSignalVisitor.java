@@ -12,6 +12,8 @@ import formulae.cltloc.atoms.Signal;
 import formulae.cltloc.atoms.Variable;
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
+import formulae.cltloc.atoms.AssignVariable;
+import formulae.cltloc.atoms.CLTLocArithmeticExpression;
 import formulae.cltloc.atoms.BoundedVariable;
 import formulae.cltloc.atoms.CLTLocAP;
 import formulae.cltloc.operators.binary.CLTLocConjunction;
@@ -252,6 +254,22 @@ public class GetSignalVisitor implements CLTLocVisitor<Set<Signal>> {
 		for(CLTLocFormula f: cltLocNaryDisjunction.getChildren()){
 			formulae.addAll(f.accept(this));
 		}
+		return formulae;
+	}
+	
+	@Override
+	public Set<Signal> visit(CLTLocArithmeticExpression binaryArithmeticExpression) {
+		Set<Signal> formulae = new HashSet<>();
+		formulae.addAll(binaryArithmeticExpression.getLeftChild().accept(this));
+		formulae.addAll(binaryArithmeticExpression.getRightChild().accept(this));
+		return formulae;
+	}
+	
+	@Override
+	public Set<Signal> visit(AssignVariable assignVariable) {
+		Set<Signal> formulae = new HashSet<>();
+		formulae.addAll(assignVariable.getExpression().accept(this));
+
 		return formulae;
 	}
 }

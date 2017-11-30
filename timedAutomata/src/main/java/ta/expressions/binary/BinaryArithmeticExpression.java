@@ -1,8 +1,8 @@
 package ta.expressions.binary;
 
 import ta.expressions.Expression;
+import ta.visitors.Expression2CLTLocExpression;
 import ta.visitors.ExpressionVisitor;
-import ta.visitors.TAVisitor;
 
 public class BinaryArithmeticExpression<T extends Expression, S extends Expression> extends Expression {
 
@@ -29,9 +29,8 @@ public class BinaryArithmeticExpression<T extends Expression, S extends Expressi
 	}
 
 	@Override
-	public <R> R accept(TAVisitor<R> visitor) {
-		// TODO Auto-generated method stub
-		return null;
+	public formulae.cltloc.atoms.CLTLocArithmeticExpression accept(Expression2CLTLocExpression visitor) {
+		return visitor.visit(this);
 	}
 
 	@Override
@@ -55,7 +54,9 @@ public class BinaryArithmeticExpression<T extends Expression, S extends Expressi
 		switch (operator) {
 		case "+":
 			return leftChild.evaluate() + rightChild.evaluate();
-			
+		case "-":
+			return leftChild.evaluate() - rightChild.evaluate();
+
 		default:
 			throw new IllegalArgumentException("The operator " + operator + " is not a valid operator");
 		}
