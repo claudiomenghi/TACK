@@ -212,7 +212,12 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 
 	@Override
 	public String visit(AssignNextVariable formula) {
-		return "([=] (next (-V- " + formula.getNextVariable() + "))  (-V- " + formula.getVariable() + ") )";
+		if(formula.getVariable() instanceof BoundedVariable){
+			return "([=] (next (" + formula.getVariable() + "=' " + formula.getNextExpression().accept(this) + " )";
+		}
+		else{
+			return "([=] (next (-V- " + formula.getVariable() + "))  " + formula.getNextExpression().accept(this) + " )";
+		}
 	}
 
 	@Override

@@ -79,7 +79,7 @@ public class ATVAExample1Test {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 		assertNotNull("The timed automaton cannot be null ", ta);
-		assertEquals("The TA does not contains all the transitions of the automaton", transitions, ta.getTransitions());
+		assertEquals("The TA does not contains all the transitions of the automaton", transitions.size(), ta.getTransitions().size());
 	}
 
 	@Test

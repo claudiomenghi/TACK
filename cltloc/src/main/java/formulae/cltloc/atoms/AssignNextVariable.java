@@ -9,14 +9,14 @@ public class AssignNextVariable extends CLTLocFormula {
 
 	
 
-	public Variable getNextVariable() {
+	public  formulae.cltloc.atoms.Expression getNextExpression() {
 		return nextVariable;
 	}
 
 	private final Variable variable;
-	private final Variable nextVariable;
+	private final  formulae.cltloc.atoms.Expression nextVariable;
 
-	public AssignNextVariable(Variable variable, Variable nextVariable) {
+	public AssignNextVariable(Variable variable,  formulae.cltloc.atoms.Expression nextVariable) {
 		super();
 		Preconditions.checkNotNull(variable, "The variable cannot be null");
 		this.variable = variable;

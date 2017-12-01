@@ -1,8 +1,8 @@
 package formulae.cltloc.operators.binary;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.google.common.base.Preconditions;
 
@@ -116,7 +116,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		if(subformula1 instanceof CLTLocDisjunction && subformula2 instanceof CLTLocDisjunction){
 			CLTLocDisjunction f1=(CLTLocDisjunction) subformula1;
 			CLTLocDisjunction f2=(CLTLocDisjunction) subformula2;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.add(f1.getLeftChild());
 			formulae.add(f1.getRightChild());
 			formulae.add(f2.getLeftChild());
@@ -126,7 +126,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		if(subformula1 instanceof CLTLocNaryDisjunction && subformula2 instanceof CLTLocNaryDisjunction){
 			CLTLocNaryDisjunction f1=(CLTLocNaryDisjunction) subformula1;
 			CLTLocNaryDisjunction f2=(CLTLocNaryDisjunction) subformula2;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.addAll(f1.getChildren());
 			formulae.addAll(f2.getChildren());
 			return new CLTLocNaryDisjunction(formulae);
@@ -135,7 +135,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		if(subformula1 instanceof CLTLocDisjunction && subformula2 instanceof CLTLocNaryDisjunction){
 			CLTLocDisjunction f1=(CLTLocDisjunction) subformula1;
 			CLTLocNaryDisjunction f2=(CLTLocNaryDisjunction) subformula2;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.add(f1.getLeftChild());
 			formulae.add(f1.getRightChild());
 			formulae.addAll(f2.getChildren());
@@ -144,7 +144,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		if(subformula1 instanceof CLTLocNaryDisjunction && subformula2 instanceof CLTLocDisjunction){
 			CLTLocNaryDisjunction f1=(CLTLocNaryDisjunction) subformula1;
 			CLTLocDisjunction f2=(CLTLocDisjunction) subformula2;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.add(f2.getLeftChild());
 			formulae.add(f2.getRightChild());
 			formulae.addAll(f1.getChildren());
@@ -153,7 +153,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		
 		if(subformula1 instanceof CLTLocDisjunction){
 			CLTLocDisjunction f1=(CLTLocDisjunction) subformula1;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.add(f1.getLeftChild());
 			formulae.add(f1.getRightChild());
 			formulae.add(subformula2);
@@ -161,7 +161,7 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		}
 		if(subformula2 instanceof CLTLocDisjunction){
 			CLTLocDisjunction f2=(CLTLocDisjunction) subformula2;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.add(f2.getLeftChild());
 			formulae.add(f2.getRightChild());
 			formulae.add(subformula1);
@@ -170,14 +170,14 @@ public class CLTLocDisjunction extends CLTLocFormula implements BinaryFormula<CL
 		
 		if(subformula1 instanceof CLTLocNaryDisjunction ){
 			CLTLocNaryDisjunction f1=(CLTLocNaryDisjunction) subformula1;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.addAll(f1.getChildren());
 			formulae.add(subformula2);
 			return new CLTLocNaryDisjunction(formulae);
 		}
 		if(subformula2 instanceof CLTLocNaryDisjunction ){
 			CLTLocNaryDisjunction f2=(CLTLocNaryDisjunction) subformula2;
-			Set<CLTLocFormula> formulae=new HashSet<>();
+			List<CLTLocFormula> formulae=new ArrayList<>();
 			formulae.addAll(f2.getChildren());
 			formulae.add(subformula1);
 			return new CLTLocNaryDisjunction(formulae);

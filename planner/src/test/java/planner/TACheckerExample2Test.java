@@ -41,7 +41,7 @@ public class TACheckerExample2Test {
 		
 	
 		ANTLRInputStream tainput = new ANTLRFileStream(
-				ClassLoader.getSystemResource("planner/Output_TA_RoomOptimized.ta").getPath());
+				ClassLoader.getSystemResource("planner/RoomOptimized1.ta").getPath());
 		TALexer talexer = new TALexer(tainput);
 		CommonTokenStream tatokens = new CommonTokenStream(talexer);
 		TAParser taparser = new TAParser(tatokens);
@@ -53,7 +53,7 @@ public class TACheckerExample2Test {
 		
 		Planner checker = new Planner(system, formula2, 15, System.out);
 		
-		boolean result = checker.check(null);
+		boolean result = checker.plan(null);
 
 	}
 

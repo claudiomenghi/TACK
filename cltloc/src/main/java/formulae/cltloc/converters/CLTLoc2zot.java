@@ -53,7 +53,7 @@ public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 		signals.forEach(signal -> builder.append("(define-tvar " + signal.toString() + " *real*)\n"));
 
 		Set<Variable> variables = formula.accept(new GetVariablesVisitor());
-		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *real*)\n"));
+		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *int*)\n"));
 
 		Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
 		boundedvariables.forEach(variable ->{ 

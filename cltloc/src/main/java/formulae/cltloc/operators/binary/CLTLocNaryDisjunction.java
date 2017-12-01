@@ -1,6 +1,6 @@
 package formulae.cltloc.operators.binary;
 
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,11 +12,11 @@ import formulae.cltloc.visitor.CLTLocVisitor;
 
 public class CLTLocNaryDisjunction extends CLTLocFormula implements NaryFormula<CLTLocFormula> {
 
-	private final Set<CLTLocFormula> formulae;
+	private final List<CLTLocFormula> formulae;
 	public final String operator = "||";
 	private final int hash;
 
-	public CLTLocNaryDisjunction(Set<CLTLocFormula> formulae) {
+	public CLTLocNaryDisjunction(List<CLTLocFormula> formulae) {
 
 		Preconditions.checkNotNull(formulae, "The set subformulae cannot be null");
 		this.formulae = formulae;
@@ -82,7 +82,7 @@ public class CLTLocNaryDisjunction extends CLTLocFormula implements NaryFormula<
 	}
 
 	@Override
-	public Set<CLTLocFormula> getChildren() {
+	public List<CLTLocFormula> getChildren() {
 		return formulae;
 	}
 }

@@ -68,13 +68,13 @@ public class TackPlanner {
 
 		out.println("Model loaded");
 		Planner checker = new Planner(system, formula, Integer.parseInt(bound), System.out);
-		boolean result = checker.check(null);
+		boolean result = checker.plan(null);
 
 		out.println();
 		out.println();
 		out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		
-		out.println("A plan is : "+((result) ? "not available" : "available"));
+		out.println("A plan is : "+((result) ? "available" : "not available"));
 		out.println(((result) ? "" : "check the file output.hist.smt.txt to see the plan"));
 		out.println(((result) ? "" : "the mapping between the elements of the model and the used id can be found in the file elementsIDmap.txt"));
 		out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");

@@ -1,9 +1,9 @@
 package formulae;
 
-import java.util.Set;
+import java.util.List;
 
 public interface NaryFormula<T> {
 
-	public Set<T> getChildren();
+	public List<T> getChildren();
 
 }

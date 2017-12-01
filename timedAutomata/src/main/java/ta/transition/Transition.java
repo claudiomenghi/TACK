@@ -38,18 +38,21 @@ public class Transition {
 		return destination;
 	}
 
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((assignement == null) ? 0 : assignement.hashCode());
 		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
+		result = prime * result + ((guard == null) ? 0 : guard.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
+		result = prime * result + ((sync == null) ? 0 : sync.hashCode());
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -59,15 +62,32 @@ public class Transition {
 		if (getClass() != obj.getClass())
 			return false;
 		Transition other = (Transition) obj;
+		if (assignement == null) {
+			if (other.assignement != null)
+				return false;
+		} else if (!assignement.equals(other.assignement))
+			return false;
 		if (destination == null) {
 			if (other.destination != null)
 				return false;
 		} else if (!destination.equals(other.destination))
 			return false;
+		if (guard == null) {
+			if (other.guard != null)
+				return false;
+		} else if (!guard.equals(other.guard))
+			return false;
+		if (id != other.id)
+			return false;
 		if (source == null) {
 			if (other.source != null)
 				return false;
 		} else if (!source.equals(other.source))
+			return false;
+		if (sync == null) {
+			if (other.sync != null)
+				return false;
+		} else if (!sync.equals(other.sync))
 			return false;
 		return true;
 	}

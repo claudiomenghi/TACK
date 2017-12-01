@@ -226,6 +226,9 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 		if (keepVariableConstant instanceof KeepBoundedVariableConstant) {
 			return formulae;
 		}
+		if (keepVariableConstant.getVariable() instanceof BoundedVariable) {
+			return formulae;
+		}
 		formulae.add(keepVariableConstant.getVariable());
 		return formulae;
 	}
@@ -239,7 +242,7 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 	public Set<Variable> visit(AssignNextVariable formula) {
 		Set<Variable> formulae = new HashSet<>();
 		formulae.add(formula.getVariable());
-		formulae.add(formula.getNextVariable());
+		formulae.addAll(formula.getNextExpression().accept(this));
 		return formulae;
 	}
 

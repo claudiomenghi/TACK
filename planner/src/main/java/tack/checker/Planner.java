@@ -128,7 +128,7 @@ public class Planner  {
 	 * @throws IOException
 	 * @throws ZotException
 	 */
-	public boolean check(CLTLocFormula additionalConstraints) throws IOException, ZotException {
+	public boolean plan(CLTLocFormula additionalConstraints) throws IOException, ZotException {
 
 		if(additionalConstraints==null){
 			additionalConstraints=CLTLocFormula.TRUE;
@@ -254,7 +254,7 @@ public class Planner  {
 
 		this.cltloc2zotTime=cltlocSolver.getCltloc2zottime();
 		this.checkingtime=cltlocSolver.getCheckingtime();
-		return sat ? false : true;
+		return sat ? true : false;
 	}
 
 	public CLTLocFormula getTAEncoding() {

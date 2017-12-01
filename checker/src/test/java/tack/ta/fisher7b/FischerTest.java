@@ -28,7 +28,7 @@ public class FischerTest {
 
 	@Test
 	public void test() throws IOException, ZotException {
-	
+
 		String path = ClassLoader.getSystemResource("tack/ta/fisher7b/fischer_input_07.q").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
@@ -51,13 +51,10 @@ public class FischerTest {
 		assertTrue(result);
 
 	}
-	
-	
-	
-	
+
 	@Test
 	public void testFormulaSatisfiable() throws IOException, ZotException {
-	
+
 		String path = ClassLoader.getSystemResource("tack/ta/fisher7b/fischer_input_07.q").getPath();
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -66,14 +63,13 @@ public class FischerTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		MITLIsolver solver=new MITLIsolver(formula, System.out, 20);
+		MITLIsolver solver = new MITLIsolver(formula, System.out, 20);
 		assertTrue(solver.solve());
 
 	}
-	
+
 	@Test
 	public void testModelSatisfiable() throws IOException, ZotException {
-
 
 		ANTLRInputStream tainput = new ANTLRFileStream(
 				ClassLoader.getSystemResource("tack/ta/fisher7b/fischer_input_07.ta").getPath());
@@ -84,16 +80,14 @@ public class FischerTest {
 		SystemDecl system = taparser.ta().systemret;
 
 		System.out.println(system);
-		
-		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
-		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
-		
-		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
+
+		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		CLTLocFormula res = converter.convert(system, new HashSet<>(), new HashSet<>());
+
+		CLTLocsolver solver = new CLTLocsolver(res, System.out, 20);
 
 		assertTrue(solver.solve());
 
 	}
-	
-	
 
 }
