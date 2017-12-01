@@ -1,6 +1,6 @@
 package tack.ta.room;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -311,4 +311,129 @@ public class Room {
 		assertTrue(result);
 
 	}
+	@Test
+	public void testRoom9() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/room/test1.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/room/Room9.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		Planner planner = new Planner(system, formula, 20, System.out);
+		boolean result = planner.plan(null);
+
+		assertFalse(result);
+
+	}
+	
+	@Test
+	public void testRoom9b() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/room/test2.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/room/Room9.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		Planner planner = new Planner(system, formula, 20, System.out);
+		boolean result = planner.plan(null);
+
+		assertTrue(result);
+
+	}
+	@Test
+	public void testRoom10() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/room/test1.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/room/Room10.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		Planner planner = new Planner(system, formula, 100, System.out);
+		boolean result = planner.plan(null);
+
+		assertTrue(result);
+
+	}
+	
+	@Test
+	public void testRoom10ModelSatisfiable() throws IOException, ZotException {
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/room/Room10.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		System.out.println(system);
+
+		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		CLTLocFormula res = converter.convert(system, new HashSet<>(), new HashSet<>());
+
+		CLTLocsolver solver = new CLTLocsolver(res, System.out, 20);
+
+		assertTrue(solver.solve());
+
+	}
+
+	@Test
+	public void testRoom10b() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/room/test2.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/room/Room10.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		Planner planner = new Planner(system, formula, 100, System.out);
+		boolean result = planner.plan(null);
+
+		assertTrue(result);
+
+	}
+	
 }
