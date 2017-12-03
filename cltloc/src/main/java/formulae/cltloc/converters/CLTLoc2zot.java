@@ -24,26 +24,26 @@ public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 	private final int bound;
 	private final int maxConstant;
 
-	private final ZotPlugin pluginName;
-	
-	public CLTLoc2zot(int bound,ZotPlugin pluginName) {
+	private final ZotPlugin plugin;
+
+	public CLTLoc2zot(int bound, ZotPlugin pluginName) {
 		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
 		this.bound = bound;
-		this.maxConstant=bound;
-		this.pluginName=pluginName;
+		this.maxConstant = bound;
+		this.plugin = pluginName;
 	}
-	
-	public CLTLoc2zot(int bound, int maxConstant,ZotPlugin pluginName) {
+
+	public CLTLoc2zot(int bound, int maxConstant, ZotPlugin plugin) {
 		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
-		this.bound =Math.max(10, bound);
-		this.maxConstant=maxConstant;
-		this.pluginName=pluginName;
+		this.bound = Math.max(10, bound);
+		this.maxConstant = maxConstant;
+		this.plugin = plugin;
 	}
 
 	public String apply(CLTLocFormula formula) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("(asdf:operate 'asdf:load-op '"+pluginName+")\n");
-		
+		builder.append("(asdf:operate 'asdf:load-op '" + plugin + ")\n");
+
 		builder.append("(use-package :trio-utils)\n");
 
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());
@@ -55,29 +55,32 @@ public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 		Set<Variable> variables = formula.accept(new GetVariablesVisitor());
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *int*)\n"));
 
-		Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
-		boundedvariables.forEach(variable ->{ 
-			builder.append("(define-item " + variable.toString() + " '("+StringUtils.join(variable.getValues(), ' ')+"))\n");});
+		if (plugin.equals(ZotPlugin.AE2SBVZOT) || plugin.equals(ZotPlugin.AE2ZOT)) {
+			Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
+			boundedvariables.forEach(variable -> {
+				builder.append("(define-item " + variable.toString() + " '("
+						+ StringUtils.join(variable.getValues(), ' ') + "))\n");
+			});
+		} else {
+			Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
+			boundedvariables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *int*)\n"));
 
-		
-		final StringBuilder footerBuilder = new StringBuilder();
-		
-		footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
+		}
 
-// 	ae2sbvzot
-//		ae2zot
-		builder.append("("+pluginName+":zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
-				+ ":smt-lib :smt2 \n" 
-				+ ":logic :QF_UFRDL \n" 
-				+ ":over-clocks "+ maxConstant +"\n"
-				+ ":gen-symbolic-val nil\n"
-				+":parametric-regions t\n"
-				+ footerBuilder.toString()
-				 + ")\n");
+		// ae2sbvzot
+		// ae2zot
+		builder.append("(" + plugin + ":zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor(plugin)) + ")\n\n"
+				+ ":smt-lib :smt2 \n" + ":logic :QF_UFRDL \n" + ":over-clocks " + maxConstant + "\n"
+				+ ":gen-symbolic-val nil\n");
 
-		builder.append("\n");
-		
-		
+		if (plugin.equals(ZotPlugin.AE2SBVZOT) || plugin.equals(ZotPlugin.AE2ZOT)) {
+			builder.append(":parametric-regions t\n");
+			final StringBuilder footerBuilder = new StringBuilder();
+
+			footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
+			builder.append(footerBuilder.toString() + "");
+		}
+		builder.append(")\n");
 
 		return builder.toString();
 	}

@@ -14,9 +14,9 @@ trans r1
 
 r2 
 -> r2{guard k==1,x>=0,x<10,y>=4,y<50; assign x:=x+1,k:=0,p1:=0;},
--> r2{guard k==1,x>0,x<=10,y>=4,y<50; assign x:=x-1,k:=0,p1:=0;},
--> r2{guard k==1,x>0,x<10,y>=4,y<50; assign y:=y+1,k:=0,p1:=0;},
--> r2{guard k==1,x>0,x<10,y>4,y<=50; assign y:=y-1,k:=0,p1:=0;},
+-> r2{guard k==1,x>0,x<=10,y>=4,y<200; assign x:=x-1,k:=0,p1:=0;},
+-> r2{guard k==1,x>0,x<10,y>=4,y<200; assign y:=y+1,k:=0,p1:=0;},
+-> r2{guard k==1,x>0,x<10,y>4,y<=200; assign y:=y-1,k:=0,p1:=0;},
 -> r2{guard x==3,y==49; assign p1:=1;},
 -> r1{guard k==1,x>=4,x<=6,y==4; assign y:=y-1,k:=0,p1:=0;};
 }

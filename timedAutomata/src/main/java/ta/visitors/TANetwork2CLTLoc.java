@@ -266,9 +266,8 @@ public class TANetwork2CLTLoc {
 										formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("s" + ta.getId(),
 												this.getPossibleStateVariableValues(ta)),
 										new Constant(this.getId(ta, t.getSource()))),
-								this.getVariableGuard(system, ta, t), this
-										.getAssignVariables(system,
-												ta, t),
+								this.getVariableGuard(system, ta, t), 
+								this.getAssignVariables(system,	ta, t),
 								nextOperator.apply(CLTLocFormula.getAnd(new CLTLocEQRelation(
 										formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("s" + ta.getId(),
 												this.getPossibleStateVariableValues(ta)),
@@ -424,13 +423,16 @@ public class TANetwork2CLTLoc {
 				this.initAssignments(system, atomicpropositionsVariable));
 
 		CLTLocFormula glo = globallyOperator.apply(CLTLocFormula.getAnd(
-				this.getClock2(system), this.getClock3(system),
+				this.getClock2(system), 
+				this.getClock3(system),
 				this.labeIsAreTrueOnlyInTheStates(system, propositionsOfInterest),
 				this.intervalsAreRightClosed(propositionsOfInterest),
 				this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
 				this.variableIntervalsAreRightClosed(atomicpropositionsVariable),
-				this.finallyOneTransitionPerformed(system), this.getInvariant(system),
-				this.getTransitionConstraint(system), this.stateChangesImpliesTransition(system),
+				this.finallyOneTransitionPerformed(system), 
+				this.getInvariant(system),
+				this.getTransitionConstraint(system), 
+				this.stateChangesImpliesTransition(system),
 				this.resetImpliesTransition(system),
 				this.variableChangeImpliesTransition(system),
 				this.eachAutomatonIsInOneOfItsStates(system)));

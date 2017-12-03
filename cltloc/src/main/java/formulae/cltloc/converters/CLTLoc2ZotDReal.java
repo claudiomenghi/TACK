@@ -15,6 +15,7 @@ import formulae.cltloc.visitor.CLTLoc2ZotVisitor;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
+import formulae.cltloc.visitor.ZotPlugin;
 
 public class CLTLoc2ZotDReal implements Function<CLTLocFormula, String> {
 
@@ -46,7 +47,7 @@ public class CLTLoc2ZotDReal implements Function<CLTLocFormula, String> {
 		footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
 
 		
-		builder.append("(ae2zotdreal:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor()) + ")\n\n"
+		builder.append("(ae2zotdreal:zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor(ZotPlugin.AE2SBVZOTB1)) + ")\n\n"
 				+ ":smt-lib :smt2 \n" + ":logic :QF_UFRDL \n" + ":over-clocks 3 \n" + footerBuilder.toString() + " \n"
 				+ ":parametric-regions t \n" + ":gen-symbolic-val nil\n" + ")\n");
 

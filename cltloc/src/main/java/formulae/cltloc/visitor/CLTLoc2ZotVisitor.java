@@ -1,5 +1,7 @@
 package formulae.cltloc.visitor;
 
+import com.google.common.base.Preconditions;
+
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.AssignNextVariable;
 import formulae.cltloc.atoms.AssignVariable;
@@ -36,6 +38,14 @@ import formulae.cltloc.relations.CLTLocRelation;
  * @author Claudio Menghi
  */
 public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
+
+	private ZotPlugin plugin;
+
+	public CLTLoc2ZotVisitor(ZotPlugin plugin) {
+		Preconditions.checkNotNull(plugin, "The plugin cannot be null");
+		this.plugin = plugin;
+
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -130,7 +140,11 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocRelation formula) {
-
+		if (plugin.equals(ZotPlugin.AE2SBVZOTB1)) {
+			return "([" + formula.getRelation() + "] " + formula.getLeftChild().accept(this) + " "
+					+ formula.getRightChild().accept(this) + ")";
+		}
+		
 		if (formula.getLeftChild() instanceof BoundedVariable) {
 			return "(" + ((BoundedVariable) formula.getLeftChild()).toString() + "= '"
 					+ formula.getRightChild().accept(this) + ")";
@@ -195,6 +209,10 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 
 	@Override
 	public String visit(KeepVariableConstant keepVariableConstant) {
+		if (plugin.equals(ZotPlugin.AE2SBVZOTB1)) {
+			return "([=] (next (-V- " + keepVariableConstant.getVariable() + "))  (-V- "
+					+ keepVariableConstant.getVariable() + ") )";
+		}
 
 		if (keepVariableConstant instanceof KeepBoundedVariableConstant) {
 			return "(<" + keepVariableConstant.getVariable() + ">)";
@@ -205,26 +223,39 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 
 	@Override
 	public String visit(CLTLocSelector formula) {
+		
 		return "(-P- " + formula.toString() + ")";
 	}
 
 	@Override
 	public String visit(AssignNextVariable formula) {
-		if(formula.getVariable() instanceof BoundedVariable){
-			return "([=] (next (" + formula.getVariable() + "=' " + formula.getNextExpression().accept(this) + " )";
+		if (plugin.equals(ZotPlugin.AE2SBVZOTB1)) {
+			return "([=] (next (-V-  " + formula.getVariable() + "))  " + formula.getNextExpression().accept(this) + " )";
 		}
-		else{
-			return "([=] (next (-V- " + formula.getVariable() + "))  " + formula.getNextExpression().accept(this) + " )";
+
+		if (formula.getVariable() instanceof BoundedVariable) {
+			return " (next  (" + formula.getVariable() + "='" + formula.getNextExpression().accept(this) + " ))";
+		} else {
+			return "([=] (next (-V- " + formula.getVariable() + "))  " + formula.getNextExpression().accept(this)
+					+ " )";
 		}
 	}
 
 	@Override
 	public String visit(BoundedVariable variable) {
+		if (plugin.equals(ZotPlugin.AE2SBVZOTB1)) {
+			return "(-V- " + variable.toString() + " )";
+		}
+
 		return "(-P- " + variable.toString() + ")";
 	}
 
 	@Override
 	public String visit(KeepBoundedVariableConstant variable) {
+		if (plugin.equals(ZotPlugin.AE2SBVZOTB1)) {
+			return "([=] (next (-V- " + variable.getVariable() + "))  (-V- "
+					+ variable.getVariable() + ") )";
+		}
 		return "(<" + variable.toString() + ">)";
 	}
 

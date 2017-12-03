@@ -19,7 +19,6 @@ import formulae.cltloc.relations.CLTLocGERelation;
 import formulae.cltloc.visitor.CLTLoc2StringVisitor;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.mitli.MITLIFormula;
-import formulae.mitli.MITLINegation;
 import formulae.mitli.visitors.MITLI2CLTLocVisitor;
 import formulae.mitli.visitors.SubformulaeVisitor;
 

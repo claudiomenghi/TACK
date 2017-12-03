@@ -47,7 +47,7 @@ public class P4FischerTest {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 40, System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -69,8 +69,7 @@ public class P4FischerTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		System.out.println("AAAA"+formula);
-		MITLIsolver solver=new MITLIsolver(formula, System.out, 20);
+		MITLIsolver solver=new MITLIsolver(formula, System.out, 40);
 
 
 		assertTrue(solver.solve());
@@ -94,7 +93,7 @@ public class P4FischerTest {
 		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
 		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
 		
-		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
+		CLTLocsolver solver=new CLTLocsolver(res, System.out , 40);
 
 		assertTrue(solver.solve());
 

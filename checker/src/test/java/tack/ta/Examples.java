@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashSet;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -19,12 +20,35 @@ import solvers.MITLIsolver;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.visitors.TANetwork2CLTLoc;
 import tack.checker.SystemChecker;
 import zotrunner.ZotException;
 
 
 public class Examples {
 
+	
+	@Test
+	public void testExample1ModelSat() throws IOException, ZotException {
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/examples/example1.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		System.out.println(system);
+
+		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		CLTLocFormula res = converter.convert(system, new HashSet<>(), new HashSet<>());
+
+		CLTLocsolver solver = new CLTLocsolver(res, System.out, 20);
+
+		assertTrue(solver.solve());
+
+	}
 	@Test
 	public void test1() throws IOException, ZotException {
 
