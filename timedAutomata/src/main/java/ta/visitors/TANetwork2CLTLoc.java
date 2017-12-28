@@ -435,7 +435,8 @@ public class TANetwork2CLTLoc {
 				this.stateChangesImpliesTransition(system),
 				this.resetImpliesTransition(system),
 				this.variableChangeImpliesTransition(system),
-				this.eachAutomatonIsInOneOfItsStates(system)));
+				this.eachAutomatonIsInOneOfItsStates(system)
+				));
 
 		testTimer.stop();
 		writer.write("variable1: " + testTimer.elapsed(TimeUnit.MILLISECONDS) + "\n");

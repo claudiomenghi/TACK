@@ -2,6 +2,7 @@ package formulae.cltloc.converters;
 
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,15 +56,23 @@ public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 		Set<Variable> variables = formula.accept(new GetVariablesVisitor());
 		variables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *int*)\n"));
 
+		Set<BoundedVariable> boundedvariables=null;
 		if (plugin.equals(ZotPlugin.AE2SBVZOT) || plugin.equals(ZotPlugin.AE2ZOT)) {
-			Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
+			boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
 			boundedvariables.forEach(variable -> {
 				builder.append("(define-item " + variable.toString() + " '("
 						+ StringUtils.join(variable.getValues(), ' ') + "))\n");
 			});
 		} else {
-			Set<BoundedVariable> boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
-			boundedvariables.forEach(variable -> builder.append("(define-tvar " + variable.toString() + " *int*)\n"));
+			Set<String> variablesString=variables.stream().map(v -> v.toString()).collect(Collectors.toSet());
+			
+			boundedvariables = formula.accept(new GetBoundedVariablesVisitor());
+			boundedvariables.forEach(variable -> {
+				if(!variablesString.contains(variable.toString())){
+					builder.append("(define-tvar " + variable.toString() + " *int*)\n");
+				}
+			}
+			);
 
 		}
 
@@ -76,10 +85,17 @@ public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 		if (plugin.equals(ZotPlugin.AE2SBVZOT) || plugin.equals(ZotPlugin.AE2ZOT)) {
 			builder.append(":parametric-regions t\n");
 			final StringBuilder footerBuilder = new StringBuilder();
-
 			footerBuilder.append(":discrete-counters '(" + StringUtils.join(variables, ' ') + ")");
 			builder.append(footerBuilder.toString() + "");
 		}
+		else{
+			final StringBuilder footerBuilder = new StringBuilder();
+			Set<String> variablesString=variables.stream().map(v -> v.toString()).collect(Collectors.toSet());
+			variablesString.addAll(boundedvariables.stream().map(v -> v.toString()).collect(Collectors.toSet()));
+			footerBuilder.append(":discrete-counters '(" + StringUtils.join(variablesString, ' ') + ")");
+			builder.append(footerBuilder.toString() + "");
+		}
+
 		builder.append(")\n");
 
 		return builder.toString();

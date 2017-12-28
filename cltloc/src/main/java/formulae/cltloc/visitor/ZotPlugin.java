@@ -14,7 +14,7 @@ public enum ZotPlugin {
 	},
 	AE2SBVZOTB1 {
 		public String toString() {
-			return "ae2sbvzot";
+			return "ae2sbvzotb1";
 		}
 	},
 	AE2SBVZOTB2 {
