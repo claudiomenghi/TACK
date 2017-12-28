@@ -1,17 +1,21 @@
 # TACK (Timed Automata ChecKer)
 
+TACK is  a novel technique to perform model checking of MITL properties on networks of TA which relies on a purely logic-based approach. 
+The technique uses an intermediate logical language translating both the MITL formula and the TA model.
+Instead of a direct encoding of the model-checking problem into the language of the underlying solver, the procedure exploits an intermediate level similarly to the Java Byte code for Java program execution.
+The intermediate encoding is then processed by an appropriate solver.
+The bipartite schema of the adopted decision procedure allows for decoupling software engineering and formal methods concerns.
+On the one hand, software engineering concerns can be easily handled  by proposing an encoding of new TA semantics in the intermediate language.
+On the other hand, more efficient solvers can be developed for  the intermediate language. 
 
-#### Implementation
-The TACK framework is made by several modules:
+TACK has been submitted to FM 2018.
 
-* [cltloc](/cltloc) module that contains the description of CLTLoc formulae
-* [mitli](/mitli) module that contains the description of  MITL formulae
-* [solvers](/solvers) module allows the verification of MITL formulae
-* [timed automata](/timedAutomata) contains the classes that represent and parse timed automata
-* [checker](/checker) contains the TACK checker
+### Authors
+- Claudio Menghi - claudio.menghi@gu.se
+- Marcello Bersani - marcellomaria.bersani@polimi.it
+- Matteo Rossi - matteo.rossi@polimi.it
+- Pierluigi San Pietro - pierluigisanpietro@gmail.com
 
-#### Running TACK from the workspace
-* open the `checker` folder
-* run `gradle run -PappArgs="['model.ta','property.mitli']"` where `model.ta` is the model to be considered and `property.mitli` is the property to be verified.  
 
-For example, `gradle run -PappArgs="['fischer_input_02.ta','fischer_input_02.mitli']"` executed in the folder `checker` folder verifies whether the formula `fischer_input_02.mitli` holds in the model `fischer_input_02.ta`
+
+
