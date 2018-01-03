@@ -17,5 +17,9 @@ TACK has been submitted to FM 2018.
 - Pierluigi San Pietro - pierluigisanpietro@gmail.com
 
 
-
+### Running tack using docker
+Type the following commands 
+- `git clone https://github.com/claudiomenghi/TACK.git`
+- `docker image build ./ --tag  tack/tack`
+- `docker run -it tack/tack bash`
 

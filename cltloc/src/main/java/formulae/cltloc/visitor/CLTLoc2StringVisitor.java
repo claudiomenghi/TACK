@@ -201,7 +201,7 @@ public class CLTLoc2StringVisitor implements CLTLocVisitor<Entry<String, Class<?
 
 	}
 
-	/**å
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

@@ -69,7 +69,6 @@ public class ZotRunner {
 			if (line.contains("---UNSAT---")) {
 				sat = false;
 				resultfound = true;
-				out.println("Result2: Zot ends");
 			}
 			if (line.contains("---SAT---")) {
 				sat = true;
@@ -78,6 +77,7 @@ public class ZotRunner {
 			
 
 			String resultTime=" seconds of real time";
+			System.out.println(line);
 			if (line.contains(resultTime)) {
 				String extracted = line
 						.substring(new String("   ").length() - 1, line.indexOf(resultTime))
