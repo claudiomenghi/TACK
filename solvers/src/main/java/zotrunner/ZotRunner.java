@@ -25,7 +25,6 @@ public class ZotRunner {
 	private double checkingspace;
 
 	private float checkingtime;
-	
 
 	/**
 	 * 
@@ -52,20 +51,17 @@ public class ZotRunner {
 		ProcessBuilder builder = new ProcessBuilder(command);
 		builder.redirectErrorStream(true);
 		Process p = builder.start();
-		
+
 		InputStream stdout = p.getInputStream();
-	
-		
+
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
 		boolean sat = true;
 
 		boolean resultfound = false;
 
-		
 		String line;
 		while ((line = reader.readLine()) != null) {
-			
-			
+
 			if (line.contains("---UNSAT---")) {
 				sat = false;
 				resultfound = true;
@@ -74,37 +70,36 @@ public class ZotRunner {
 				sat = true;
 				resultfound = true;
 			}
-			
 
-			String resultTime=" seconds of real time";
+			String resultTime = " seconds of real time";
 			if (line.contains(resultTime)) {
-				String extracted = line
-						.substring(new String("   ").length() - 1, line.indexOf(resultTime))
-						.replace(",", "");
-				this.satTime =
-						(long) (Float.parseFloat(extracted) * 1000.0);
+				String extracted = line.substring(new String("   ").length() - 1, line.indexOf(resultTime)).replace(",",
+						"");
+				this.satTime = (long) (Float.parseFloat(extracted) * 1000.0);
 			}
 			if (line.contains(" bytes consed")) {
 				this.checkingspace = new OutputSpaceParser().getSpace();
 			}
-			//if(line.contains("seconds of real time")){
-			//	out.println("Verification time:" +line.subSequence(0, line.indexOf("seconds of real time")));
-			//}
+			// if(line.contains("seconds of real time")){
+			// out.println("Verification time:" +line.subSequence(0,
+			// line.indexOf("seconds of real time")));
+			// }
 
-			//if (resultfound) {
-				//out.println("Stdout: " + line);
-			//}
+			// if (resultfound) {
+			// out.println("Stdout: " + line);
+			// }
 		}
-		//System.out.println("Result1: Zot ends");
+		// System.out.println("Result1: Zot ends");
 		if (!resultfound) {
 			throw new ZotException("Problems in ZOT detected");
 		}
 
+		
+
 		out.print("Zot ends");
 		timer.stop();
-		this.checkingtime=timer.elapsed(TimeUnit.MILLISECONDS);
-		
-		
+		this.checkingtime = timer.elapsed(TimeUnit.MILLISECONDS);
+
 		return sat;
 	}
 
@@ -115,6 +110,7 @@ public class ZotRunner {
 	public double getCheckingspace() {
 		return checkingspace;
 	}
+
 	public float getCheckingtime() {
 		return checkingtime;
 	}

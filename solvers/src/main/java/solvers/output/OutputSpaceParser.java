@@ -26,7 +26,6 @@ public class OutputSpaceParser {
 		double space=0;
 		 String text = null;
 		while ((text = reader.readLine()) != null) {
-			System.out.println(text);
 			if(text.contains(" :max-memory")){
 			    
 				
