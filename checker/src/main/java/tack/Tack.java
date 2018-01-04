@@ -78,7 +78,7 @@ public class Tack {
 		out.println(((result) ? "" : "check the file output.hist.smt.txt to see the violating trace"));
 		out.println(((result) ? "" : "the mapping between the elements of the model and the used id can be found in the file elementsIDmap.txt"));
 		out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
-		System.exit( (result) ?  1 :0);
+		System.exit( (result) ?  0:1);
 	}
 
 }

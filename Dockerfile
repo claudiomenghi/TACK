@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENTRYPOINT ["entrypoint.sh"]
 # install git
 RUN apt-get update  && apt-get install -y dialog apt-utils && apt-get install -y software-properties-common python-software-properties && apt-get install -y gradle && apt-get install -y time && apt-get install -y sbcl
-RUN apt-get update && apt-get install -y git && apt-get -y install z3 
+RUN apt-get update && apt-get install -y git && apt-get -y install z3  && apt-get -y install vim
 
 
 RUN add-apt-repository ppa:webupd8team/java

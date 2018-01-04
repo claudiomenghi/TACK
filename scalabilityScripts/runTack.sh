@@ -1,9 +1,10 @@
 valuate () {
-command="java -jar tack.jar "$1" "$2" "$3"; exit \$res; echo \$res >>" $outputfile
+command="java -jar tack.jar "$1" "$2" "$3"; exit \$res;"
 
 echo $command
 #timeout 5s bash -c 'eval '+$command
-#eval $command
+eval $command
+echo $res >> $outputfile
 
 timeout 6h $command
 
