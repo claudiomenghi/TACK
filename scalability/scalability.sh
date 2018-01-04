@@ -3,13 +3,12 @@
 touch results.txt
 echo "" > results.txt
 
-for j in {1..3}
+for j in {1..2}
 do
     echo "--------------------------------------------" >> results.txt
     echo "Property "$j >> results.txt
 
 #    for bound in `seq 10 5 30`
-     for bound in `seq 10 5 15`
      do
         echo "--------------------------------------------" >> results.txt
         echo "bound"$bound >> results.txt

@@ -22,4 +22,10 @@ Type the following commands
 - `git clone https://github.com/claudiomenghi/TACK.git`
 - `docker image build ./ --tag  tack/tack`
 - `docker run -it tack/tack bash`
+- `java -jar tack.jar model.ta property.mitli bound`
+
+To copy the results on your local machine 
+- `docker cp <containerId>:/file/path/within/container /host/path/target`
+
+
 

@@ -11,23 +11,22 @@ do
     echo "--------------------------------------------" >> $file
     echo "Property "$j >> $file
 
-    for bound in $(seq 10 5 15)
-    #for bound in $(seq 10 5 20)
+    for bound in $(seq 10 5 30)
      do
         echo "--------------------------------------------" >> $file
         echo "bound: "$bound >> $file
-        for i in $(seq 2 9);
+        for i in $(seq 2 10);
 
-	do 
-	    echo "Fisher:" $i >> $file  
-        message="Test: 0"$i
-            echo $message;
-            param=0$i;
-            (time sh runTack.sh $param $j $bound $file; ) 2>> $file
+        do 
+            echo "Fisher:" $i >> $file  
+            message="Test: 0"$i
+                echo $message;
+                param=0$i;
+                (time sh runTack.sh $param $j $bound $file; ) 2>> $file
 
-            #mytime="$(time ( " $command"  ) 2>&1 1>/dev/null )"
-            echo "$mytime" >> $file        
-	done
+                #mytime="$(time ( " $command"  ) 2>&1 1>/dev/null )"
+                echo "$mytime" >> $file        
+        done
 
 	#i=10
 	#message="Test: "$i
