@@ -41,7 +41,7 @@ public class ZotRunner {
 	public boolean run() throws IOException, ZotException {
 		String lispFile = "tmp.zot";
 
-		out.println("Running zot");
+		out.println("Writing the zot file");
 		FileUtils.writeStringToFile(new File(lispFile), zotEncoding);
 
 		out.println("Considering the file " + new File(lispFile).getAbsolutePath());
@@ -87,17 +87,20 @@ public class ZotRunner {
 			if (line.contains(" bytes consed")) {
 				this.checkingspace = new OutputSpaceParser().getSpace();
 			}
-
-			if (resultfound) {
-				out.println("Stdout: " + line);
+			if(line.contains("seconds of real time")){
+				out.println("Verification time:" +line.subSequence(0, line.indexOf("seconds of real time")));
 			}
+
+			//if (resultfound) {
+				//out.println("Stdout: " + line);
+			//}
 		}
-		System.out.println("Result1: Zot ends");
+		//System.out.println("Result1: Zot ends");
 		if (!resultfound) {
 			throw new ZotException("Problems in ZOT detected");
 		}
 
-		out.print("Zot ends");
+		//out.print("Zot ends");
 		timer.stop();
 		this.checkingtime=timer.elapsed(TimeUnit.MILLISECONDS);
 		

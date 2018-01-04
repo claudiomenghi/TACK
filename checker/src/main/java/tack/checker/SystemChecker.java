@@ -179,11 +179,11 @@ public class SystemChecker  {
 		
 
 		
-		out.println("\n");
-		out.println("\n");
-		out.println("\n");
-		out.println("************************************************");
-		out.println("**************     VOCABULARY     ***************");
+		//out.println("\n");
+		//out.println("\n");
+		//out.println("\n");
+		//out.println("************************************************");
+		//out.println("**************     VOCABULARY     ***************");
 
 		StringBuilder vocabularyBuilder = new StringBuilder();
 		vocabular.entrySet().forEach(e -> vocabularyBuilder.append(e.getValue() + "\t" + e.getKey() + "\n"));
@@ -203,15 +203,15 @@ public class SystemChecker  {
 		
 		out.println("TA converted in CLTLoc");
 
-		out.println("------------------");
+		//out.println("------------------");
 		timer.stop();
 		this.ta2clclocTime=timer.elapsed(TimeUnit.MILLISECONDS);
 		
 		out.println("-------------INFO--------");
-		out.println(system.getGlobalClocks());
-		out.println("TA encoding");
-		out.println(taFormula);
-		out.println("************************************************");
+		//out.println(system.getGlobalClocks());
+		//out.println("TA encoding");
+		//out.println(taFormula);
+		//out.println("************************************************");
 		
 		final StringBuilder builder = new StringBuilder();
 
@@ -254,7 +254,7 @@ public class SystemChecker  {
 		// out.println(formula);
 		// out.println(translator.getVocabulary());
 
-		out.println("Creating the conjunction of the formulae");
+		out.println("Creating the of the CLTLoc formulae of the model and the property");
 		CLTLocFormula conjunctionFormula = 
 				new CLTLocYesterday(
 						CLTLocFormula.getAnd(taFormula, formula,additionalConstraints));
