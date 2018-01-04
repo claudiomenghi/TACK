@@ -8,12 +8,14 @@ do
     echo "--------------------------------------------" >> results.txt
     echo "Property "$j >> results.txt
 
-    for bound in `seq 10 5 30`
-    do
+#    for bound in `seq 10 5 30`
+     for bound in `seq 10 5 15`
+     do
         echo "--------------------------------------------" >> results.txt
         echo "bound"$bound >> results.txt
 
-        for i in 0{2..9} 10;
+    #    for i in 0{2..9} 10;
+        for i in 0{2..4};
         do 
             message="Test: "$i
             echo $message;
