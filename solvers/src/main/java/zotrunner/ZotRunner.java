@@ -87,9 +87,9 @@ public class ZotRunner {
 			if (line.contains(" bytes consed")) {
 				this.checkingspace = new OutputSpaceParser().getSpace();
 			}
-			if(line.contains("seconds of real time")){
-				out.println("Verification time:" +line.subSequence(0, line.indexOf("seconds of real time")));
-			}
+			//if(line.contains("seconds of real time")){
+			//	out.println("Verification time:" +line.subSequence(0, line.indexOf("seconds of real time")));
+			//}
 
 			//if (resultfound) {
 				//out.println("Stdout: " + line);
@@ -100,7 +100,7 @@ public class ZotRunner {
 			throw new ZotException("Problems in ZOT detected");
 		}
 
-		//out.print("Zot ends");
+		out.print("Zot ends");
 		timer.stop();
 		this.checkingtime=timer.elapsed(TimeUnit.MILLISECONDS);
 		
