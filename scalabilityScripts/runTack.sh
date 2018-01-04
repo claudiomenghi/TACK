@@ -1,5 +1,5 @@
 valuate () {
-command="java -jar tack.jar "$1" "$2" "$3"; exit $res; && echo $res >>" $4
+command="java -jar tack.jar "$1" "$2" "$3"; exit \$res; echo \$res >>" $outputfile
 
 echo $command
 #timeout 5s bash -c 'eval '+$command
