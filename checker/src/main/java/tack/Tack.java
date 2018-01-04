@@ -21,7 +21,7 @@ import tack.checker.SystemChecker;
 
 public class Tack {
 
-	public static int main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		PrintStream out = System.out;
 		/*PrintStream out = 
 				new PrintStream(ByteStreams.nullOutputStream());
@@ -78,7 +78,7 @@ public class Tack {
 		out.println(((result) ? "" : "check the file output.hist.smt.txt to see the violating trace"));
 		out.println(((result) ? "" : "the mapping between the elements of the model and the used id can be found in the file elementsIDmap.txt"));
 		out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
-		return (result) ?  1 :0;
+		System.exit( (result) ?  1 :0);
 	}
 
 }
