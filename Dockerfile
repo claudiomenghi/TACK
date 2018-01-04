@@ -32,5 +32,5 @@ RUN  mv /workspace/TACK/checker/build/libs/checker-all.jar /workspace/tack.jar
 ADD fischer fischer
 ADD scalabilityScripts/runTack.sh  runTack.sh 
 ADD scalabilityScripts/scalability.sh  scalability.sh 
- 
+ADD run_zot.sh run_zot.sh
 COPY entrypoint.sh /usr/local/bin/

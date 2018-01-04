@@ -77,7 +77,6 @@ public class ZotRunner {
 			
 
 			String resultTime=" seconds of real time";
-			System.out.println(line);
 			if (line.contains(resultTime)) {
 				String extracted = line
 						.substring(new String("   ").length() - 1, line.indexOf(resultTime))

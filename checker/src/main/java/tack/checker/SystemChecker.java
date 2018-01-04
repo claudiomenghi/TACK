@@ -136,17 +136,16 @@ public class SystemChecker  {
 		Stopwatch timer = Stopwatch.createUnstarted();
 		timer.start();
 		out.println("************************************************");
-		out.println("************************************************");
-		out.println("MITLI formula:  " + mitliformula);
+		//out.println("MITLI formula:  " + mitliformula);
 		MITLIFormula negatedFormula = MITLIFormula.not(mitliformula);
 		out.println("Converting the MITLI formula in CLTLoc");
 		MITLI2CLTLoc translator = new MITLI2CLTLoc(negatedFormula);
 		formula = translator.apply();
 		out.println("MITLI formula converted in CLTLoc");
-		out.println("************************************************");
-		out.println("**  MITLI FORMULA CLTLoc ENCODING                **");
-		translator.printFancy(out);
-		out.println("************************************************");
+		//out.println("************************************************");
+		//	out.println("**  MITLI FORMULA CLTLoc ENCODING                **");
+		//translator.printFancy(out);
+		//out.println("************************************************");
 		timer.stop();
 		mitli2cltlocTime=timer.elapsed(TimeUnit.MILLISECONDS);
 		
@@ -174,9 +173,9 @@ public class SystemChecker  {
 				}		
 				).collect(Collectors.toSet());
 				
-		out.println("------------------");
-		out.println("CLTLoc encoding");
-		out.println(formula);
+		//out.println("------------------");
+		//out.println("CLTLoc encoding");
+		//out.println(formula);
 		
 
 		
@@ -188,7 +187,7 @@ public class SystemChecker  {
 
 		StringBuilder vocabularyBuilder = new StringBuilder();
 		vocabular.entrySet().forEach(e -> vocabularyBuilder.append(e.getValue() + "\t" + e.getKey() + "\n"));
-		out.print(vocabularyBuilder.toString());
+		//out.print(vocabularyBuilder.toString());
 
 		out.println("************************************************");
 		out.println("************************************************");
@@ -198,7 +197,6 @@ public class SystemChecker  {
 		timer.start();
 		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
 		
-		System.out.println(system.getTimedAutomata().iterator().next().getIdentifier());
 		
 		taFormula = converter.convert(system,  atomicpropositions, atomicpropositionsVariable);
 		
@@ -232,11 +230,11 @@ public class SystemChecker  {
 		variables.forEach(variable -> builder.append(variable.toString() + "\t"));
 		builder.append("\n");
 
-		out.println(builder.toString());
+		//out.println(builder.toString());
 		out.println("************************************************");
 		
 		
-		out.println(converter.getMapStateId());
+		//out.println(converter.getMapStateId());
 		StringBuilder stateIdMappingBuilder=new StringBuilder();
 		system.getTimedAutomata().stream().forEach(ta -> ta.getStates().stream().forEach(s-> stateIdMappingBuilder.append(ta.getIdentifier()+"\t"+s.getStringId()+":\t"+
 		converter.getMapStateId().get(

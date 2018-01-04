@@ -23,7 +23,7 @@ do
         message="Test: 0"$i
             echo $message;
             param=0$i;
-            (time sh runTack.sh $param $j $bound ; )# 2>> $file
+            (time sh runTack.sh $param $j $bound ; ) 2>> $file
 
             #mytime="$(time ( " $command"  ) 2>&1 1>/dev/null )"
             echo "$mytime" >> $file        
