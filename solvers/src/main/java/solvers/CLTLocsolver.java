@@ -46,14 +46,13 @@ public class CLTLocsolver {
 
 		// String zotEncoding = new CLTLoc2Ae2sbvzot(bound).apply(formula);
 
-		String workingDir = System.getProperty("user.dir");
-
-		File f = new File(workingDir + "solver.txt");
+		
+		File f = new File("solver.txt");
 		ZotPlugin p = null;
 		if (f.exists()) {
 			BufferedReader reader = new BufferedReader(new FileReader(f));
 			String solver = reader.readLine();
-			p = ZotPlugin.valueOf(solver);
+			p = ZotPlugin.valueOf(solver.toUpperCase());
 			reader.close();
 		} else {
 			p = ZotPlugin.AE2ZOT;

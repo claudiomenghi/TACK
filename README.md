@@ -19,10 +19,20 @@ TACK has been submitted to FM 2018.
 
 ### Running tack using docker
 Type the following commands 
+
+1. `xhost +local:root`
+2. `docker pull claudiomenghi/tack`
+3. `docker run --name tack -it claudiomenghi/tack bash`
+5. `java -jar tack.jar model.ta property.mitli bound` for example, run
+`java -jar tack.jar fischer/fischer_input_02.ta fischer/fischer_input_P0.mitli 10`
+
+### Creating a new image
 - `git clone https://github.com/claudiomenghi/TACK.git`
-- `docker image build ./ --tag  tack/tack`
-- `docker run -it tack/tack bash`
-- `java -jar tack.jar model.ta property.mitli bound`
+- `docker image build ./ --tag  claudiomenghi/tack`
+- `docker image tag  claudiomenghi/tack/latest`
+- `docker login`
+- `docker push claudiomenghi/tack`
+
 
 To copy the results on your local machine 
 - `docker cp <containerId>:/file/path/within/container /host/path/target`
