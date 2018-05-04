@@ -20,16 +20,63 @@ TACK has been submitted to FM 2018.
 ### Running tack using docker
 Type the following commands 
 
-1. `xhost +local:root`
-2. `docker pull claudiomenghi/tack`
-3. `docker run --name tack -it claudiomenghi/tack bash`
-5. `java -jar tack.jar model.ta property.mitli bound` for example, run
+1. `docker pull claudiomenghi/tack`
+2. `docker run --name tack -it claudiomenghi/tack bash`
+3. `java -jar tack.jar model.ta property.mitli bound` for example, run
 `java -jar tack.jar fischer/fischer_input_02.ta fischer/fischer_input_P0.mitli 10`
+
+
+## Tool inputs
+Two inputs must be provided to the tool:
+
+1. a Timed Automaton to be verified (file .ta)
+2. a property of interest (file .mitli)
+
+# Timed Automaton
+
+```
+clock x1, x2;
+int id{0,1,2}=0;
+
+process p1 {
+  state  a, b {x1<=2}, c, cs;
+  init   a;
+  trans  a -> b {
+           guard  id==0;
+           assign x1:=0;
+         },
+           b -> c {
+           guard  x1<=2;
+           assign x1:=0,id:=1;
+         },
+           c -> b {
+           guard  id==0;
+           assign x1:=0;
+         },
+           -> cs {
+           guard  x1>2,id==1;
+         },
+           cs -> a {
+           assign x1:=0,id:=0;
+         };
+}
+system p1;
+```
+
+# Property of interest
+
+
+### Replicate the experiment 
+1. `docker pull claudiomenghi/tack`
+2. `docker run --name tack -it claudiomenghi/tack bash`
+3. choose the solver to be used by changing the file `solver.txt`
+4. `sh scalability.sh`
+
 
 ### Creating a new image
 - `git clone https://github.com/claudiomenghi/TACK.git`
 - `docker image build ./ --tag  claudiomenghi/tack`
-- `docker image tag  claudiomenghi/tack/latest`
+- `docker image tag claudiomenghi/tack  claudiomenghi/tack/latest`
 - `docker login`
 - `docker push claudiomenghi/tack`
 

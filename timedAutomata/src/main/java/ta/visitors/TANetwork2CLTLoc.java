@@ -429,7 +429,7 @@ public class TANetwork2CLTLoc {
 				this.intervalsAreRightClosed(propositionsOfInterest),
 				this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
 				this.variableIntervalsAreRightClosed(atomicpropositionsVariable),
-				this.finallyOneTransitionPerformed(system), 
+				this.livenessEachTAperformsATransition(system), 
 				this.getInvariant(system),
 				this.getTransitionConstraint(system), 
 				this.stateChangesImpliesTransition(system),
@@ -765,7 +765,7 @@ public class TANetwork2CLTLoc {
 	 *            the system to be considered
 	 * @return the liveness condition phisem1
 	 */
-	protected CLTLocFormula finallyOneTransitionPerformed(SystemDecl system) {
+	protected CLTLocFormula livenessEachTAperformsATransition(SystemDecl system) {
 
 		CLTLocFormula f = CLTLocFormula.TRUE;
 		for (TA ta : system.getTimedAutomata()) {
