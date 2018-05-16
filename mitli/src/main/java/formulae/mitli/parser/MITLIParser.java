@@ -635,9 +635,14 @@ public class MITLIParser extends Parser {
 							MITLIFormula f = null;
 							String s = String.valueOf((((FmlaContext)_localctx).G_inf_OP!=null?((FmlaContext)_localctx).G_inf_OP.getText():null));
 							
-							if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0){
-									f = MITLIFormula.G_inf((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null))); 
-									}
+							if (s.compareTo("G_e+") == 0){
+								f = MITLIFormula.G_inf((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null)));  
+							}
+							if(s.compareTo("G_i+") == 0){
+								f = 
+									MITLIFormula.and(((FmlaContext)_localctx).f1.r,
+									MITLIFormula.G_inf((MITLIFormula)((FmlaContext)_localctx).f1.r, Integer.valueOf((((FmlaContext)_localctx).a!=null?((FmlaContext)_localctx).a.getText():null))));  	
+							}
 							((FmlaContext)_localctx).r =  f;
 						
 				}

@@ -183,7 +183,7 @@ fmla returns [MITLIFormula r]
 			}
 			if(s.compareTo("G_i+") == 0){
 				f = 
-					MITLIFormula.or($f1.r,
+					MITLIFormula.and($f1.r,
 					MITLIFormula.G_inf((MITLIFormula)$f1.r, Integer.valueOf($a.text)));  	
 			}
 			$r = f;
