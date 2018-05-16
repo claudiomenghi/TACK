@@ -47,6 +47,7 @@ import formulae.mitli.MITLIImplies;
 import formulae.mitli.MITLINegation;
 import formulae.mitli.MITLIPast_AtoB;
 import formulae.mitli.MITLIPast_ZerotoB;
+import formulae.mitli.MITLIRelease;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
@@ -231,87 +232,73 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		int leftChildId = formulaIdMap.get(formula.getLeftChild());
 		int rightChildId = formulaIdMap.get(formula.getRightChild());
 
-/*
+
 		CLTLocFormula f1 = IFF.apply(first.apply(formulaId), rest.apply(formulaId));
 
 		CLTLocFormula f2 = 
-				AND.apply(
-						IFF.apply(rest.apply(formulaId), first.apply(formulaId)),
-				OR.apply(rest.apply(rightChildId), 
-						X.apply(
-								U.apply(
-										up.apply(leftChildId),
-										OR.apply(
-												AND.apply(
-														up.apply(leftChildId), 
-														rest.apply(rightChildId)), 
-												first.apply(rightChildId)
-										)
-								)
-					   )
-
-				));
-
-		return G.apply(AND.apply(f1, f2));*/
-		
-		
-		CLTLocFormula f1 = 
-				IFF.apply(first.apply(formulaId), 
-						CLTLocFormula.getOr(
-								first.apply(rightChildId),
-								CLTLocFormula.getAnd(
-										first.apply(leftChildId),
-										U.apply(
-											rest.apply(leftChildId),
-											rest.apply(rightChildId)
-											)
-								)
-								,
-								CLTLocFormula.getAnd(
-										first.apply(leftChildId),
-										U.apply(
-												rest.apply(leftChildId),
-												first.apply(rightChildId)
-										)
-								),
-								CLTLocFormula.getAnd(
-										first.apply(leftChildId),
-										rest.apply(rightChildId)
+				IFF.apply(rest.apply(formulaId), 
+						AND.apply(
+								rest.apply(leftChildId),
+								OR.apply(rest.apply(rightChildId), 
+										X.apply(
+												U.apply(
+														up.apply(leftChildId),
+														OR.apply(
+																AND.apply(
+																		up.apply(leftChildId), 
+																		rest.apply(rightChildId)), 
+																first.apply(rightChildId)
+														)
+												)
+									   )
 								)
 						)
 				);
 
-		CLTLocFormula f2 = 
-				IFF.apply(
-								rest.apply(formulaId), 
-								CLTLocFormula.getOr(
-										rest.apply(rightChildId),
-										U.apply(
-												rest.apply(leftChildId),
-												CLTLocFormula.getAnd(
-														rest.apply(leftChildId),
-														rest.apply(rightChildId)
-														)
-												)
-										,
-										U.apply(
-												rest.apply(leftChildId),
-												first.apply(rightChildId)
-										)
-										)
-						);
-
-		return G.apply(AND.apply(f1, f2));
-		
-		//CLTLocFormula f1 =IFF.apply(rest.apply(formulaId),
-		//		CLTLocFormula.getAnd(
-		//				rest.apply(leftChildId),
-		//				new CLTLocUntil(rest.apply(leftChildId), rest.apply(rightChildId))
-		//			)
-		//		);
-	//return G.apply(f1);
+		return G.apply(AND.apply(f1, f2));	
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public CLTLocFormula visit(MITLIRelease formula) {
+
+		int formulaId = formulaIdMap.get(formula);
+		int leftChildId = formulaIdMap.get(formula.getLeftChild());
+		int rightChildId = formulaIdMap.get(formula.getRightChild());
+
+
+		CLTLocFormula f1 = IFF.apply(first.apply(formulaId), rest.apply(formulaId));
+
+		CLTLocFormula f2 = 
+				IFF.apply(rest.apply(formulaId), 
+						AND.apply(
+								rest.apply(rightChildId),
+								OR.apply(rest.apply(leftChildId), 
+										X.apply(
+												U.apply(
+														up.apply(rightChildId),
+														OR.apply(
+																AND.apply(
+																		up.apply(rightChildId), 
+																		rest.apply(leftChildId)),
+																AND.apply(
+																		first.apply(leftChildId),
+																		first.apply(rightChildId))
+														)
+												)
+									   )
+								)
+						)
+				);
+
+		return G.apply(AND.apply(f1, f2));	
+	}
+
+	
+	
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -335,16 +322,16 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLIEventually_ZerotoB formula) {
-
+		/* NEW TRANSLATION BASED IN CLTLOC WITH RESET OPERATOR */
 		
 		int formulaId = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
 
 		CLTLocClock z0 = newz0clock.apply(formula);
-		CLTLocClock z1 = newz1clock.apply(formula);
+		// CLTLocClock z1 = newz1clock.apply(formula);
 
 		CLTLocClock z0child = newz0clock.apply(formula.getChild());
-		CLTLocClock z1child = newz1clock.apply(formula.getChild());
+		// CLTLocClock z1child = newz1clock.apply(formula.getChild());
 
 		int b = formula.upperbound();
 		// contains the formula with id7 of the paper
@@ -378,10 +365,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 																						CLTLocFormula.getAnd(
 																								beforeDownNowUp.apply(childId),
 																								EQ.apply(z0, new Constant(b)),
-																								OR.apply(
-																										GEQ.apply(z0child, new Constant(b)),
-																										GEQ.apply(z1child, new Constant(b))
-																								)
+																								GEQ.apply(z0child, new Constant(b))
 																								)
 																						)
 																	)
@@ -391,39 +375,16 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 					CLTLocFormula.getAnd(
 							NEG.apply(ORIGIN),
 							NEG.apply(first.apply(formulaId)),
-							CLTLocFormula.getOr(
-									CLTLocFormula.getAnd(
-											EQ.apply(z0, ZERO),
-											X.apply(
-													U.apply(
-														GE.apply(z0, ZERO),
-														CLTLocFormula.getAnd(
-																beforeDownNowUp.apply(childId),
-																EQ.apply(z0, new Constant(b)),
-																OR.apply(GE.apply(z0child, new Constant(b)),
-																				GE.apply(z1child, new Constant(b))
-
-																)
-														)
-												)
-										 )
-								 ), 
-									CLTLocFormula.getAnd(
-											EQ.apply(z1, ZERO),
-											X.apply(
-													U.apply(
-														GE.apply(z1, ZERO),
-														CLTLocFormula.getAnd(
-																beforeDownNowUp.apply(childId),
-																EQ.apply(z1, new Constant(b)),
-																OR.apply(GE.apply(z0child, new Constant(b)),
-																				GE.apply(z1child, new Constant(b))
-
-																)
-														)
-												)
-										 )
-								 )
+							EQ.apply(z0, ZERO),
+							X.apply(
+									U.apply(
+										GE.apply(z0, ZERO),
+										CLTLocFormula.getAnd(
+												beforeDownNowUp.apply(childId),
+												EQ.apply(z0, new Constant(b)),
+												GE.apply(z0child, new Constant(b))
+										)
+								)
 						)
 				 )
 			)
@@ -434,14 +395,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 						CLTLocFormula.getAnd(
 								GEQ.apply(NOW, new Constant(b)),
 								beforeDownNowUp.apply(childId),
-								CLTLocFormula.getOr(
-											GEQ.apply(z0child, new Constant(b)), 
-											GEQ.apply(z1child, new Constant(b)))
+								GEQ.apply(z0child, new Constant(b)) 
+								
 							),
-				CLTLocFormula.getOr(
-						EQ.apply(z0, new Constant(b)), 
-						EQ.apply(z1, new Constant(b)))
-				);
+				EQ.apply(z0, new Constant(b)));
 
 		CLTLocFormula f10 = 
 				IFF.apply(
@@ -454,16 +411,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 													NEG.apply(beforeDownNowUp.apply(childId)),
 													CLTLocFormula.getAnd(
 															beforeDownNowUp.apply(childId), 
-															OR.apply(
-																	AND.apply(
-																			GE.apply(z0child, ZERO),
-																			LEQ.apply(z0child,
-																					new Constant(b))),
-																	AND.apply(
-																			GE.apply(z1child, ZERO),
-																			LEQ.apply(z1child, new Constant(
-																					b)))
-																	)
+															AND.apply(
+																	GE.apply(z0child, ZERO),
+																	LEQ.apply(z0child,
+																			new Constant(b)))					
 															)
 													)
 											)
@@ -484,10 +435,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 												),
 										CLTLocFormula.getAnd(
 												beforeDownNowUp.apply(childId), 
-												OR.apply(
-															EQ.apply(z0child,new Constant(b)),
-															EQ.apply(z1child, new Constant(b))
-														)
+												EQ.apply(z0child,new Constant(b))		
 												)
 										)
 								)
@@ -523,6 +471,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLIGlobally_AtoInf formula) {
+		//TODO: CHECK CORRECTNESS AND MODIFY THE ENCODING TO USE CLTLOC BASED ON RESET
 
 		int formulaId = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
@@ -561,6 +510,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLIGlobally_ZerotoB formula) {
+		//TODO: CHECK CORRECTNESS AND MODIFY THE ENCODING TO USE CLTLOC BASED ON RESET
 
 		int idFormula = formulaIdMap.get(formula);
 		int child = formulaIdMap.get(formula.getChild());
@@ -753,6 +703,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLIGlobally_AtoB mitliGlobally_AtoB) {
+		//TODO: CHECK CORRECTNESS AND MODIFY THE ENCODING TO USE CLTLOC BASED ON RESET
 
 		int idFormula = formulaIdMap.get(mitliGlobally_AtoB);
 		int childId = formulaIdMap.get(mitliGlobally_AtoB.getChild());
@@ -857,6 +808,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLIEventually_AtoB formula) {
+		//TODO: CHECK CORRECTNESS AND MODIFY THE ENCODING TO USE CLTLOC BASED ON RESET
 
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
@@ -940,6 +892,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLIEventually_AtoInf formula) {
+		//TODO: CHECK CORRECTNESS AND MODIFY THE ENCODING TO USE CLTLOC BASED ON RESET
 
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
@@ -1016,6 +969,8 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	 */
 	@Override
 	public CLTLocFormula visit(MITLIPast_ZerotoB formula) {
+		//TODO: CHECK CORRECTNESS AND MODIFY THE ENCODING TO USE CLTLOC BASED ON RESET
+		
 		int idFormula = formulaIdMap.get(formula);
 		int childId = formulaIdMap.get(formula.getChild());
 		Constant b = new Constant(formula.upperbound());
@@ -1342,13 +1297,13 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		int idFormula = formulaIdMap.get(formula);
 
 		CLTLocClock z0 = newz0clock.apply(formula);
-		CLTLocClock z1 = newz1clock.apply(formula);
+		//CLTLocClock z1 = newz1clock.apply(formula);
 
-		if ((formula instanceof MITLIEventually_ZerotoB) || (formula instanceof MITLIEventually_AtoInf)) {
+		if ((formula instanceof MITLIEventually_AtoB) || (formula instanceof MITLIEventually_ZerotoB) || (formula instanceof MITLIEventually_AtoInf)) {
 			CLTLocFormula f1 = EQ.apply(z0, ZERO);
 			result = f1;
 		} else {
-			if (parentRelation.containsKey(formula) &&( parentRelation.get(formula) instanceof MITLIEventually_ZerotoB || parentRelation.get(formula) instanceof MITLIEventually_AtoInf)) {
+			if (parentRelation.containsKey(formula) && ( parentRelation.get(formula) instanceof MITLIEventually_ZerotoB || parentRelation.get(formula) instanceof MITLIEventually_AtoInf)) {
 				CLTLocFormula f1 = EQ.apply(z0, ZERO);
 				result = f1;
 			}
@@ -1368,21 +1323,22 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		
 		// Formula (2)
 		 CLTLocFormula f2 =
-		 IFF.apply(OR.apply(beforeDownNowUp.apply(idFormula),
-		 beforeUpNowDown.apply(idFormula)),
-		 OR.apply(EQ.apply(z0, ZERO), EQ.apply(z1, ZERO)));
+		 IFF.apply(
+				 OR.apply(beforeDownNowUp.apply(idFormula),
+						 beforeUpNowDown.apply(idFormula)),
+				 EQ.apply(z0, ZERO));
 
 		 
 		 
 		// formula (3)
-		CLTLocFormula f3a = IMPL.apply(EQ.apply(z0, ZERO), X.apply(R.apply(EQ.apply(z1, ZERO), GE.apply(z0, ZERO))));
+		//CLTLocFormula f3a = IMPL.apply(EQ.apply(z0, ZERO), X.apply(R.apply(EQ.apply(z1, ZERO), GE.apply(z0, ZERO))));
 
-		CLTLocFormula f3b = IMPL.apply(EQ.apply(z1, ZERO), X.apply(R.apply(EQ.apply(z0, ZERO), GE.apply(z1, ZERO))));
+		//CLTLocFormula f3b = IMPL.apply(EQ.apply(z1, ZERO), X.apply(R.apply(EQ.apply(z0, ZERO), GE.apply(z1, ZERO))));
 
-		CLTLocFormula f3 = AND.apply(f3a, f3b);
+		//CLTLocFormula f3 = AND.apply(f3a, f3b);
 
 		
-		result = AND.apply(result, G.apply(AND.apply(f2, f3)));
+		result = AND.apply(result, G.apply(f2));
 
 		
 		return result;

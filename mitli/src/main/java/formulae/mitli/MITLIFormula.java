@@ -15,6 +15,7 @@ public abstract class MITLIFormula extends Formula {
 
 	public static final MITLIFormula TRUE = new MITLITrue();
 
+
 	public MITLIFormula() {
 		super();
 
@@ -66,13 +67,13 @@ public abstract class MITLIFormula extends Formula {
 		return new MITLISince(f1, f2);
 	}
 
-	// Eventually: F_<0,b]
+	// Eventually: F_(0,b)
 	public static MITLIFormula F(MITLIFormula f, int b) {
 		return new MITLIEventually_ZerotoB(f, b);
 
 	}
 
-	// Eventually: F_<a,b]
+	// Eventually: F_(a,b)
 	public static MITLIFormula F(MITLIFormula f, int a, int b) {
 		if (a == 0)
 			return F(f, b);
@@ -80,7 +81,7 @@ public abstract class MITLIFormula extends Formula {
 			return new MITLIEventually_AtoB(f, a, b);
 	}
 
-	// Eventually: F_<a,+oo]
+	// Eventually: F_(a,+oo)
 	public static MITLIFormula F_inf(MITLIFormula f, int a) {
 		if (a == 0)
 			return U(new MITLITrue(), f);
@@ -88,12 +89,12 @@ public abstract class MITLIFormula extends Formula {
 			return new MITLIEventually_AtoInf(f, a);
 	}
 
-	// Globally: G_<0,b]
+	// Globally: G_(0,b)
 	public static MITLIFormula G(MITLIFormula f, int b) {
 		return new MITLIGlobally_ZerotoB(f, b);
 	}
 
-	// Globally: G_<a,b]
+	// Globally: G_(a,b)
 	public static MITLIFormula G(MITLIFormula f, int a, int b) {
 		if (a == 0)
 			return G(f, b);
@@ -101,7 +102,7 @@ public abstract class MITLIFormula extends Formula {
 			return new MITLIGlobally_AtoB(f, a, b);
 	}
 
-	// Globally: F_<a,+oo]
+	// Globally: G_(a,+oo)
 	public static MITLIFormula G_inf(MITLIFormula f, int a) {
 		Preconditions.checkNotNull(f, "The formula cannot be null");
 		if (a == 0) {
@@ -111,13 +112,15 @@ public abstract class MITLIFormula extends Formula {
 			return new MITLIGlobally_AtoInf(f, a);
 		}
 	}
+	
+	// Globally: G_<0,b>
 	public static MITLIFormula G(MITLIFormula f, boolean abopen, int b, boolean dbopen) {
 		if (abopen && dbopen) { // G_(0,b)
 			return new MITLIGlobally_ZerotoB(f, b);
 		} else if (!abopen && dbopen) // G_[0,b)
 			return and(f, G(f, true, b, dbopen));
 
-		else if (abopen && !dbopen)
+		else if (abopen && !dbopen) // G_(0,b]
 			return and(G(f, true, b, true), G(F(f, true, b, true), true, b, true));
 
 		else
@@ -125,7 +128,7 @@ public abstract class MITLIFormula extends Formula {
 
 	}
 
-
+	// Globally: G_<a,b>
 	public static MITLIFormula G(MITLIFormula f, int a, boolean abopen, int b, boolean dbopen) {
 		if (a == 0){
 			return G(f, abopen, b, dbopen);
@@ -214,7 +217,8 @@ public abstract class MITLIFormula extends Formula {
 
 	// Producers method to build derived temporal CLTL formulae
 	public static MITLIFormula R(MITLIFormula f1, MITLIFormula f2) {
-		return not(U(not(f1), not(f2)));
+		//return not(U(not(f1), not(f2)));
+		return new MITLIRelease(f1, f2);
 	}
 
 	
@@ -258,6 +262,7 @@ public abstract class MITLIFormula extends Formula {
 
 	}
 
+	// Eventually: F_<a,b>
 	public static MITLIFormula F(MITLIFormula f, int a, boolean aB, int b, boolean bB) {
 		if (a == 0){
 			return F(f, aB, b, bB);
