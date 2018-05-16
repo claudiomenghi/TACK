@@ -17,6 +17,7 @@ import formulae.mitli.MITLIImplies;
 import formulae.mitli.MITLINegation;
 import formulae.mitli.MITLIPast_AtoB;
 import formulae.mitli.MITLIPast_ZerotoB;
+import formulae.mitli.MITLIRelease;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
@@ -84,6 +85,18 @@ public class SubformulaeVisitor implements MITLIVisitor<List<MITLIFormula>> {
 		return formulae;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<MITLIFormula> visit(MITLIRelease formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
+		formulae.addAll(formula.getLeftChild().accept(this));
+		formulae.addAll(formula.getRightChild().accept(this));
+		formulae.add(formula);
+		return formulae;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
