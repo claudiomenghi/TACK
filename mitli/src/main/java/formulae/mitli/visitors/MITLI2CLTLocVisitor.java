@@ -606,7 +606,8 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		CLTLocFormula f2 = 
 				IMPL.apply(
-						AND.apply(
+						CLTLocFormula.getAnd(
+								GEQ.apply(NOW, new Constant(b)),
 								beforeUpNowDown.apply(child), 
 								GEQ.apply(z0child, upperbound)),
 					
