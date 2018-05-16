@@ -467,7 +467,7 @@ public class TANetwork2CLTLoc {
 		return CLTLocFormula.getAnd(globalClocks, localClocks);
 	}
 
-	protected CLTLocFormula getClock2(SystemDecl system) {
+/*	protected CLTLocFormula getClock2(SystemDecl system) {
 
 		Set<Clock> clocks = system.getGlobalClocks();
 
@@ -524,7 +524,7 @@ public class TANetwork2CLTLoc {
 
 		return CLTLocFormula.getAnd(globalClocks, localClocks);
 	}
-
+*/
 	/**
 	 * encodes formula phi5 of the paper
 	 * 
