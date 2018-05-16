@@ -178,9 +178,14 @@ fmla returns [MITLIFormula r]
 			MITLIFormula f = null;
 			String s = String.valueOf($G_inf_OP.text);
 			
-			if (s.compareTo("G_e+") == 0 || s.compareTo("G_i+") == 0){
-					f = MITLIFormula.G_inf((MITLIFormula)$f1.r, Integer.valueOf($a.text)); 
-					}
+			if (s.compareTo("G_e+") == 0){
+				f = MITLIFormula.G_inf((MITLIFormula)$f1.r, Integer.valueOf($a.text));  
+			}
+			if(s.compareTo("G_i+") == 0){
+				f = 
+					MITLIFormula.or($f1.r,
+					MITLIFormula.G_inf((MITLIFormula)$f1.r, Integer.valueOf($a.text)));  	
+			}
 			$r = f;
 		}	
 	|    P_OP a=INT b=INT LPAR f1=fmla RPAR 
