@@ -53,7 +53,7 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 			rightChild = rightChild.replaceFirst("(" + formula.operator, "");
 			rightChild = rightChild.substring(0, rightChild.length() - 1);
 		}
-		return "(&&" + leftChild + " " + rightChild + ")";
+		return "(&& " + leftChild + " " + rightChild + ")";
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class CLTLoc2FancyZotVisitor implements CLTLocVisitor<String> {
 	 */
 	@Override
 	public String visit(CLTLocDisjunction formula) {
-		return "(||" + formula.getLeftChild().accept(this) + " " + formula.getRightChild().accept(this) + ")";
+		return "(|| " + formula.getLeftChild().accept(this) + " " + formula.getRightChild().accept(this) + ")";
 	}
 
 	/**
