@@ -326,13 +326,13 @@ public class TANetwork2CLTLoc {
 		Set<ClockConstraintAtom> assignments = t.getGuard().getClockConstraints();
 		CLTLocFormula f=assignments.stream().map(c -> {
 			String prefix = ta.getLocalClocks().contains(c.getClock()) ? ta.getIdentifier() + "_" : "";
-			return (CLTLocFormula) CLTLocDisjunction.getCLTLocDisjunction(
-					CLTLocFormula.getAnd(new CLTLocNegation(new CLTLocSelector(prefix + c.getClock().getName() + "_v")),
+			return (CLTLocFormula) //CLTLocDisjunction.getCLTLocDisjunction(
+					//CLTLocFormula.getAnd(new CLTLocNegation(new CLTLocSelector(prefix + c.getClock().getName() + "_v")),
 							new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"),
-									new Constant(c.getValue()), Relation.parse(c.getOperator().toString()))),
-					CLTLocFormula.getAnd(new CLTLocSelector(prefix + c.getClock().getName() + "_v"),
-							new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
-									new Constant(c.getValue()), Relation.parse(c.getOperator().toString()))));
+									new Constant(c.getValue()), Relation.parse(c.getOperator().toString())); //),
+					//CLTLocFormula.getAnd(new CLTLocSelector(prefix + c.getClock().getName() + "_v"),
+					//		new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
+						//			new Constant(c.getValue()), Relation.parse(c.getOperator().toString()))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		return f;
 
@@ -386,11 +386,11 @@ public class TANetwork2CLTLoc {
 		Set<ClockAssignement> assignments = t.getAssignement().getClockassigments();
 		return assignments.stream().map(c -> {
 			String prefix = ta.getLocalClocks().contains(c.getClock()) ? ta.getIdentifier() + "_" : "";
-			return (CLTLocFormula) CLTLocDisjunction.getCLTLocDisjunction(
+			return (CLTLocFormula) //CLTLocDisjunction.getCLTLocDisjunction(
 					new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"),
-							new Constant(c.getValue().value), Relation.EQ),
-					new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
-							new Constant(c.getValue().value), Relation.EQ));
+							new Constant(c.getValue().value), Relation.EQ); //,
+					//new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
+					//		new Constant(c.getValue().value), Relation.EQ));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 
@@ -423,8 +423,8 @@ public class TANetwork2CLTLoc {
 				this.initAssignments(system, atomicpropositionsVariable));
 
 		CLTLocFormula glo = globallyOperator.apply(CLTLocFormula.getAnd(
-				this.getClock2(system), 
-				this.getClock3(system),
+				//this.getClock2(system), 
+				//this.getClock3(system),
 				this.labeIsAreTrueOnlyInTheStates(system, propositionsOfInterest),
 				this.intervalsAreRightClosed(propositionsOfInterest),
 				this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
@@ -449,19 +449,19 @@ public class TANetwork2CLTLoc {
 		Set<Clock> clocks = system.getGlobalClocks();
 
 		CLTLocFormula globalClocks = clocks.stream().map(c -> {
-			return (CLTLocFormula) CLTLocFormula.getAnd(
-					new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), new Constant(0), Relation.EQ),
-					new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), new Constant(0), Relation.GE),
-					new CLTLocNegation(new CLTLocSelector(c.getName() + "_v")));
+			return (CLTLocFormula) //CLTLocFormula.getAnd(
+					new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), new Constant(0), Relation.EQ); //,
+					//new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), new Constant(0), Relation.GE),
+					//new CLTLocNegation(new CLTLocSelector(c.getName() + "_v")));
 
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta -> ta.getLocalClocks().stream().map(c -> {
 			String prefix = ta.getIdentifier() + "_";
-			return (CLTLocFormula) CLTLocFormula.getAnd(
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), new Constant(0), Relation.EQ),
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), new Constant(0), Relation.GE),
-					new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")));
+			return (CLTLocFormula) //CLTLocFormula.getAnd(
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), new Constant(0), Relation.EQ); //,
+					//new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), new Constant(0), Relation.GE),
+					//new CLTLocNegation(new CLTLocSelector(prefix + c.getName() + "_v")));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator)).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		return CLTLocFormula.getAnd(globalClocks, localClocks);
@@ -687,18 +687,18 @@ public class TANetwork2CLTLoc {
 		CLTLocFormula globalClocks = clocks.stream().map(c -> {
 			CLTLocFormula f = this.getTransitionsThatResetTheGlobalClock(system, c);
 			
-			return (CLTLocFormula) implicationOperator.apply(new CLTLocNext(CLTLocDisjunction.getCLTLocDisjunction(
-					new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.EQ),
-					new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ))), f);
+			return (CLTLocFormula) implicationOperator.apply(new CLTLocNext( //CLTLocDisjunction.getCLTLocDisjunction(
+					new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), zero, Relation.EQ)), f); //,
+					// new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.EQ))), f);
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta -> ta.getLocalClocks().stream().map(c -> {
 			String prefix = ta.getIdentifier() + "_";
 			CLTLocFormula f = this.getTransitionsThatResetTheLocalClock(system, c);
 			
-			return (CLTLocFormula) implicationOperator.apply(new CLTLocNext(CLTLocDisjunction.getCLTLocDisjunction(
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ),
-					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ))), f);
+			return (CLTLocFormula) implicationOperator.apply(new CLTLocNext( //CLTLocDisjunction.getCLTLocDisjunction(
+					new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ)), f);
+					//new CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ))), f);
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator)).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		return CLTLocFormula.getAnd(globalClocks, localClocks);
