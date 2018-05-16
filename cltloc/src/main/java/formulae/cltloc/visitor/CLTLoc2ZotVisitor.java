@@ -167,10 +167,12 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	@Override
 	public String visit(CLTLocAP cltLocAP) {
 		if (cltLocAP.equals(CLTLocAP.TRUE)) {
-			return "(||  (-P- a) (!!(-P- a)))";
+			//return "(||  (-P- a) (!!(-P- a)))";
+			return "(-P- true)";
 		}
 		if (cltLocAP.equals(CLTLocAP.FALSE)) {
-			return "(&&  (-P- a) (!!(-P- a)))";
+			//return "(&&  (-P- a) (!!(-P- a)))";
+			return "(!! (-P- true))";
 		}
 		return "(-P- " + cltLocAP.toString() + ")";
 	}
