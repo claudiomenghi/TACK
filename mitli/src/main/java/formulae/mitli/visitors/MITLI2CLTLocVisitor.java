@@ -270,24 +270,27 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		CLTLocFormula f1 = IFF.apply(first.apply(formulaId), rest.apply(formulaId));
 
 		CLTLocFormula f2 = 
-				IFF.apply(rest.apply(formulaId), 
-						AND.apply(
-								rest.apply(rightChildId),
-								OR.apply(rest.apply(leftChildId), 
-										X.apply(
-												U.apply(
-														up.apply(rightChildId),
-														OR.apply(
-																AND.apply(
-																		up.apply(rightChildId), 
-																		rest.apply(leftChildId)),
-																AND.apply(
-																		first.apply(leftChildId),
-																		first.apply(rightChildId))
-														)
-												)
-									   )
-								)
+				IFF.apply(rest.apply(formulaId),
+						OR.apply(
+							G.apply(up.apply(rightChildId)),	
+							AND.apply(
+									rest.apply(rightChildId),
+									OR.apply(rest.apply(leftChildId), 
+											X.apply(
+													U.apply(
+															up.apply(rightChildId),
+															OR.apply(
+																	AND.apply(
+																			up.apply(rightChildId), 
+																			rest.apply(leftChildId)),
+																	AND.apply(
+																			first.apply(leftChildId),
+																			first.apply(rightChildId))
+															)
+													)
+										   )
+									)
+							)
 						)
 				);
 
@@ -1259,34 +1262,53 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		CLTLocClock z0 = newz0clock.apply(formula);
 		//CLTLocClock z1 = newz1clock.apply(formula);
 
+		 CLTLocFormula f2=CLTLocFormula.TRUE;
+
 		if ((formula instanceof MITLIEventually_AtoB) || (formula instanceof MITLIEventually_ZerotoB) || (formula instanceof MITLIEventually_AtoInf)) {
 			CLTLocFormula f1 = EQ.apply(z0, ZERO);
 			result = f1;
+			
+			f2 =
+					 IFF.apply(
+							 OR.apply(beforeDownNowUp.apply(idFormula),
+									 beforeUpNowDown.apply(idFormula)),
+							 EQ.apply(z0, ZERO));
 		} else {
 			if (parentRelation.containsKey(formula) && ( parentRelation.get(formula) instanceof MITLIEventually_ZerotoB || parentRelation.get(formula) instanceof MITLIEventually_AtoInf)) {
 				CLTLocFormula f1 = EQ.apply(z0, ZERO);
 				result = f1;
+				f2 =
+						 IFF.apply(
+								 OR.apply(beforeDownNowUp.apply(idFormula),
+										 beforeUpNowDown.apply(idFormula)),
+								 EQ.apply(z0, ZERO));
 			}
 		}
 		
 		if ((formula instanceof MITLIGlobally_AtoB) || (formula instanceof MITLIGlobally_AtoInf) || (formula instanceof MITLIGlobally_ZerotoB)) {
 			CLTLocFormula f1 = EQ.apply(z0, ZERO);
 			result = f1;
+			f2 =
+					 IFF.apply(
+							 OR.apply(beforeDownNowUp.apply(idFormula),
+									 beforeUpNowDown.apply(idFormula)),
+							 EQ.apply(z0, ZERO));
 		} else {
 			if (parentRelation.containsKey(formula) && (parentRelation.get(formula) instanceof MITLIGlobally_AtoInf || parentRelation.get(formula) instanceof MITLIGlobally_ZerotoB )) {
 				CLTLocFormula f1 = EQ.apply(z0, ZERO);
 				result = f1;
+			
+				f2 =
+					 IFF.apply(
+							 OR.apply(beforeDownNowUp.apply(idFormula),
+									 beforeUpNowDown.apply(idFormula)),
+							 EQ.apply(z0, ZERO));
 			}
 		}
 
 
 		
 		// Formula (2)
-		 CLTLocFormula f2 =
-		 IFF.apply(
-				 OR.apply(beforeDownNowUp.apply(idFormula),
-						 beforeUpNowDown.apply(idFormula)),
-				 EQ.apply(z0, ZERO));
 
 		 
 		 
@@ -1297,11 +1319,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		//CLTLocFormula f3 = AND.apply(f3a, f3b);
 
+		if (result.equals(CLTLocFormula.TRUE) && f2.equals(CLTLocFormula.TRUE))
+			return CLTLocFormula.TRUE;
 		
-		result = AND.apply(result, G.apply(f2));
-
-		
-		return result;
+		return AND.apply(result, G.apply(f2));
 	}
 
 	@Override

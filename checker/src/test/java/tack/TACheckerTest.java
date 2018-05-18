@@ -15,6 +15,7 @@ import org.junit.Test;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.parser.MITLILexer;
 import formulae.mitli.parser.MITLIParser;
+import solvers.MITLIsolver;
 import ta.SystemDecl;
 import ta.TA;
 import ta.parser.TALexer;
@@ -407,6 +408,25 @@ public class TACheckerTest {
 		boolean result = checker.check(null);
 
 		assertTrue(result);
+	}
+	
+	@Test
+	public void test13() throws IOException, ZotException {
+	
+		String path = ClassLoader.getSystemResource("tack/ta/examples/formula13.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		MITLIsolver solver=new MITLIsolver(formula, System.out, 20);
+
+
+		assertTrue(solver.solve());
+
 	}
 
 }

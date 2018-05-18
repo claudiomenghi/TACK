@@ -217,8 +217,8 @@ public abstract class MITLIFormula extends Formula {
 
 	// Producers method to build derived temporal CLTL formulae
 	public static MITLIFormula R(MITLIFormula f1, MITLIFormula f2) {
-		//return not(U(not(f1), not(f2)));
-		return new MITLIRelease(f1, f2);
+		return not(U(not(f1), not(f2)));
+		//return new MITLIRelease(f1, f2);
 	}
 
 	

@@ -1,8 +1,9 @@
+int Astop{0,1,2}=0;
 
 process SenderA {
 clock c;
 clock Ac;
-int Astop=0;
+
 chan Acheck;
 
   state  call_check, ex_jam;
