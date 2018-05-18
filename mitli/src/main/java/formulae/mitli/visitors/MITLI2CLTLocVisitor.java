@@ -231,7 +231,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		int leftChildId = formulaIdMap.get(formula.getLeftChild());
 		int rightChildId = formulaIdMap.get(formula.getRightChild());
 
-/*
+
 		CLTLocFormula f1 = IFF.apply(first.apply(formulaId), rest.apply(formulaId));
 
 		CLTLocFormula f2 = 
@@ -252,9 +252,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 				));
 
-		return G.apply(AND.apply(f1, f2));*/
+		return G.apply(AND.apply(f1, f2));
 		
-		
+		/*
 		CLTLocFormula f1 = 
 				IFF.apply(first.apply(formulaId), 
 						CLTLocFormula.getOr(
@@ -310,6 +310,8 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		//			)
 		//		);
 	//return G.apply(f1);
+	 * 
+	 */
 	}
 
 	/**

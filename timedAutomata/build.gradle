@@ -13,7 +13,7 @@ generateGrammarSource{
 	        from "${buildDir}/generated-src/antlr4/main"
 	        into "src/main/java/ta/parser"
 	    }
-	    delete "${buildDir}/generated-src/antlr/main"
+	    delete "${buildDir}/generated-src/antlr4/main"
 	}
 }
 
