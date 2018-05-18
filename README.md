@@ -17,7 +17,7 @@ TACK has been submitted to FM 2018.
 - Pierluigi San Pietro - pierluigisanpietro@gmail.com
 
 
-### Running tack using docker
+### Running TACK using docker
 Type the following commands 
 
 1. `docker pull claudiomenghi/tack`
@@ -34,6 +34,9 @@ Two inputs must be provided to the tool:
 
 # Timed Automaton
 
+Timed Automata are described using the same syntax of UPPAAL. The interested reader can see TOBEADDED for additional information.
+
+An example of Timed Automaton is described in the following
 ```
 clock x1, x2;
 int id{0,1,2}=0;

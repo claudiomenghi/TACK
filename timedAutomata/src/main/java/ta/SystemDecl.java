@@ -43,7 +43,10 @@ public class SystemDecl {
 		this.clockDeclarations = clockDeclarations;
 		this.variableDeclaration = variableDeclaration;
 
-		this.variableDeclaration.forEach(v -> variables.add(new Variable(v.getId())));
+		
+		this.variableDeclaration.forEach(v -> {
+			System.out.println("Adding the variable "+v.getId());
+			variables.add(new Variable(v.getId()));});
 		
 		allClocks=new HashSet<>();
 		this.allClocks.addAll(this.getGlobalClocks());
