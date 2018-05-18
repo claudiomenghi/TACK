@@ -103,6 +103,7 @@ public class SystemChecker  {
 		this.bound = bound;
 		this.out = out;
 
+		System.out.println(mitliformula.toString());
 	}
 
 	
@@ -187,7 +188,7 @@ public class SystemChecker  {
 
 		StringBuilder vocabularyBuilder = new StringBuilder();
 		vocabular.entrySet().forEach(e -> vocabularyBuilder.append(e.getValue() + "\t" + e.getKey() + "\n"));
-		//out.print(vocabularyBuilder.toString());
+		System.out.print(vocabularyBuilder.toString());
 
 		out.println("************************************************");
 		out.println("************************************************");
