@@ -354,5 +354,59 @@ public class TACheckerTest {
 
 		assertTrue(result);
 	}
+	
+	@Test
+	public void test13() throws FileNotFoundException, IOException, ZotException {
+		String path = ClassLoader.getSystemResource("tack/ta/examples/formula12.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/examples/example4.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		parser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		TA ta = system.getTimedAutomata().iterator().next();
+
+		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void test14() throws FileNotFoundException, IOException, ZotException {
+		String path = ClassLoader.getSystemResource("tack/ta/examples/formula12.mitli").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/examples/example5.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		parser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		TA ta = system.getTimedAutomata().iterator().next();
+
+		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
 
 }

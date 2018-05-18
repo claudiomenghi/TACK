@@ -6,10 +6,10 @@
  @members {  boolean matchedEOF=false;
  	
  	 private static Map<String, String> declarations = new HashMap<String, String>();
- 	  private static Map<String, String> currentTaDeclarations = new HashMap<String, String>();
- 	  private static Map<String,Set<Integer>> boundedVariablesValues=new HashMap<>();
- 	  private static String currentProc;
- 	   private boolean definedVar(String name){
+ 	 private static Map<String, String> currentTaDeclarations = new HashMap<String, String>();
+ 	 private static Map<String,Set<Integer>> boundedVariablesValues=new HashMap<>();
+ 	 private static String currentProc;
+ 	 private boolean definedVar(String name){
  	    if(!currentTaDeclarations.containsKey(name) && !declarations.containsKey(name)){
         	return false;
         }
@@ -59,8 +59,6 @@ import operators.*;
 
  ta returns [SystemDecl systemret]  @init { 
 	Set<TA> timedAutomata=new HashSet<>();
-	declarations = new HashMap<String, String>();	
-	currentTaDeclarations = new HashMap<String, String>();
 	  Set<VariableDecl> variableDeclaration=new HashSet<>();
 	  Set<ClockDecl> clockDeclaration=new HashSet<>();
 	  Map<String, String> variabledeclret=new HashMap<>();
@@ -99,24 +97,22 @@ import operators.*;
 				}
 			
 			if(boundedVariablesValues.containsKey(entry.getKey())){
-			variableDeclaration.add(new BoundedVariableDecl(type,  entry.getKey(), entry.getValue(),boundedVariablesValues.get(entry.getKey())));	
-		}
-		else{
-			variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));	
+				System.out.println("Variable: "+entry.getKey());
+				variableDeclaration.add(new BoundedVariableDecl(type,  entry.getKey(), entry.getValue(),boundedVariablesValues.get(entry.getKey())));	
+			}
+			else{
+				variableDeclaration.add(new VariableDecl(type,  entry.getKey(), entry.getValue()));	
 			}
 			
-				}
 		}
+	}
 		if(clockinitializationret!=null){
 			for(Entry<String,  Value> entry :clockinitializationret.entrySet()){
 				 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
 			}
 		}
-		
-	
 		$systemret= new SystemDecl(timedAutomata, clockDeclaration, variableDeclaration);
-	
- 	}
+	}
  ;
 
  declaration returns [TA timedAutomaton, Map<String, String> variabledeclret, Map<String, Expression> variableinitializationret, Map<String, Value> clockinitializationret]@init { 
@@ -129,7 +125,7 @@ import operators.*;
  :
   	boundedVariableDecl
 		 {
-				declarations.putAll($boundedVariableDecl.variabledeclret);
+		 	declarations.putAll($boundedVariableDecl.variabledeclret);
 			$variabledeclret.putAll($boundedVariableDecl.variabledeclret);
  			$variableinitializationret.putAll($boundedVariableDecl.variableinitializationret);
  			
@@ -231,8 +227,6 @@ import operators.*;
 		}
 	}
 		
-		
-		
 	Set<ClockDecl> clockDeclaration=new HashSet<>();
 	Map<String, Value> clockinitializationret=$procBody.clockinitializationret;
 	
@@ -241,12 +235,9 @@ import operators.*;
 			 clockDeclaration.add(new ClockDecl("clock",  entry.getKey(), entry.getValue()));
 		}
 	}
-	
-	
 		
 	$timedAutomaton=new TA($ID.text, null, $procBody.stateset, $procBody.transitionsetret, $procBody.initstate, clocks,variables, variableDeclaration, clockDeclaration);
 }
-
  ;
 
 
@@ -279,6 +270,13 @@ import operators.*;
 				}
 				
 			
+		}
+		| boundedVariableDecl
+		 {
+		 	$variabledeclret.putAll($boundedVariableDecl.variabledeclret);
+ 			$variableinitializationret.putAll($boundedVariableDecl.variableinitializationret);
+ 			currentTaDeclarations.putAll($boundedVariableDecl.variabledeclret);
+ 			
 		}
 
 
@@ -334,7 +332,6 @@ boundedVariableDecl returns
 		
  			}
  			$variabledeclret.put($ID.text, $type.text);
- 			boundedVariablesValues.put($ID.text, values);
  		
  		}
  		 (
@@ -799,8 +796,10 @@ boundedVariableDecl returns
 			throw new InternalError("The set of the declarations cannot be null");	
 		}
 		String identifier=$id.text;
-		if(!declarations.containsKey($id.text) && (currentTaDeclarations==null || !currentTaDeclarations.containsKey($id.text))){
-			throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Variable:"+$id.text+" not defined");
+		if(!declarations.containsKey($id.text) && 
+		!boundedVariablesValues.containsKey($id.text) &&
+		(currentTaDeclarations==null || !currentTaDeclarations.containsKey($id.text))){
+			throw new IllegalStateException ("Line: "+_localctx.start.getLine()+"\t Variable: "+$id.text+" not defined");
 		}
 		
 		

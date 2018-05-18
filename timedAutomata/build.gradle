@@ -10,13 +10,32 @@ generateGrammarSource{
 	doLast {
 	    println "Copying generated grammar lexer/parser files to main directory."
 	    copy {
-	        from "${buildDir}/generated-src/antlr/main"
+	        from "${buildDir}/generated-src/antlr4/main"
 	        into "src/main/java/ta/parser"
 	    }
 	    delete "${buildDir}/generated-src/antlr/main"
 	}
 }
 
+buildscript {
+    repositories {
+        maven {
+            name 'JFrog OSS snapshot repo'
+            url  'https://oss.jfrog.org/oss-snapshot-local/'
+        }
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'me.champeau.gradle:antlr4-gradle-plugin:0.1'
+    }
+}
+
+repositories {
+   jcenter()
+}
+
+apply plugin: 'me.champeau.gradle.antlr4'
 
 
 // In this section you declare where to find the dependencies of your project
