@@ -214,24 +214,9 @@ public class SystemChecker  {
 		//out.println(taFormula);
 		//out.println("************************************************");
 		
-		final StringBuilder builder = new StringBuilder();
-
-		system.getTimedAutomata().stream().forEach(ta -> builder.append(ta+"\n"));
+	
 		
-		builder.append("clock: \t");
-		Set<CLTLocClock> clocks = taFormula.accept(new GetClocksVisitor());
-		clocks.forEach(clock -> builder.append(clock.toString() + "\t"));
-		builder.append("\n");
-		builder.append("signals: \t");
-		Set<Signal> signals = taFormula.accept(new GetSignalVisitor());
-		signals.forEach(signal -> builder.append(signal.toString() + "\t"));
-		builder.append("\n");
-		builder.append("variables: \t");
-		Set<Variable> variables = taFormula.accept(new GetVariablesVisitor());
-		variables.forEach(variable -> builder.append(variable.toString() + "\t"));
-		builder.append("\n");
-
-		//out.println(builder.toString());
+		out.println(system.toString());
 		out.println("************************************************");
 		
 		
