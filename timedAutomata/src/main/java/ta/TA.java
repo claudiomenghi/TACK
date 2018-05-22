@@ -83,6 +83,8 @@ public class TA {
 		return this.variableDeclaration.stream().map(d -> d.getId())
 				.collect(Collectors.toSet()).contains(variableId);
 	}
+	
+	
 	public boolean isBounded(String variableId) {
 		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId())
 				.collect(Collectors.toSet()).contains(variableId);
