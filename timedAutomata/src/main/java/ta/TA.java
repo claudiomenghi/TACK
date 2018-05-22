@@ -78,6 +78,11 @@ public class TA {
 	private final Map<Entry<State, State>, Set<Transition>> mapSourceDestinationTransitions;
 
 	private final Map<State, Set<State>> successors;
+	
+	public boolean containsVariable(String variableId) {
+		return this.variableDeclaration.stream().map(d -> d.getId())
+				.collect(Collectors.toSet()).contains(variableId);
+	}
 	public boolean isBounded(String variableId) {
 		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId())
 				.collect(Collectors.toSet()).contains(variableId);

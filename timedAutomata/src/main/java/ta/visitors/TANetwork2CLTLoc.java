@@ -892,13 +892,13 @@ public class TANetwork2CLTLoc {
 
 		return (CLTLocFormula) atomicpropositionsVariable.stream().map(ap -> {
 
+			System.out.println("Automaton!!!!");
+			System.out.println(ap.getAutomaton());
 			if (ap.getAutomaton().equals("")) {
 				formulae.cltloc.atoms.Variable variable = system.isBounded(ap.getVariable().getName())
 						? formulae.cltloc.atoms.BoundedVariable
-								.getBoundedVariable((ap.getAutomaton() != "" ? ap.getAutomaton() + "_" : "")
-										+ ap.getVariable().getName(), system.getBound(ap.getVariable().getName()))
-						: new formulae.cltloc.atoms.Variable(
-								(ap.getAutomaton() != "" ? ap.getAutomaton() + "_" : "") + ap.getVariable().getName());
+								.getBoundedVariable(ap.getVariable().getName(), system.getBound(ap.getVariable().getName()))
+						: new formulae.cltloc.atoms.Variable(ap.getVariable().getName());
 
 				return (CLTLocFormula) iffOperator.apply(first.apply(ap.getEncodingSymbol()),
 
@@ -906,7 +906,10 @@ public class TANetwork2CLTLoc {
 			} else {
 				for (TA ta : system.getTimedAutomata()) {
 					if (ta.getIdentifier().equals(ap.getAutomaton())) {
-
+						
+						if(!ta.containsVariable(ap.getVariable().getName())) {
+							throw new IllegalArgumentException("The variable: "+ap.getVariable().getName()+" is not a variable of the TA "+ta.getIdentifier());
+						}
 						formulae.cltloc.atoms.Variable variable = ta.isBounded(ap.getVariable().getName())
 								? formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(
 										ap.getAutomaton() + "_" + ap.getVariable().getName(),
