@@ -1031,6 +1031,7 @@ public class TAParser extends Parser {
 					
 			 			}
 			 			_localctx.variabledeclret.put((((BoundedVariableDeclContext)_localctx).ID!=null?((BoundedVariableDeclContext)_localctx).ID.getText():null), (((BoundedVariableDeclContext)_localctx).type!=null?_input.getText(((BoundedVariableDeclContext)_localctx).type.start,((BoundedVariableDeclContext)_localctx).type.stop):null));
+			 			boundedVariablesValues.put((((BoundedVariableDeclContext)_localctx).ID!=null?((BoundedVariableDeclContext)_localctx).ID.getText():null),values);
 			 		
 			 		
 			setState(234);

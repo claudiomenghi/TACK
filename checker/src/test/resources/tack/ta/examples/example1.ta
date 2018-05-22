@@ -1,6 +1,8 @@
-int Astop{0,1,2}=0;
 
 process SenderA {
+
+int Astop{0,1,2}=0;
+
 clock c;
 clock Ac;
 

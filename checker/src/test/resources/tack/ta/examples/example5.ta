@@ -1,8 +1,9 @@
+int Astop{1,2,3}=0;
+
 
 process SenderA {
 clock c;
 clock Ac;
-int Astop{1,2,3}=0;
 
 chan Acheck;
 

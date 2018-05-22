@@ -332,6 +332,7 @@ boundedVariableDecl returns
 		
  			}
  			$variabledeclret.put($ID.text, $type.text);
+ 			boundedVariablesValues.put($ID.text,values);
  		
  		}
  		 (
