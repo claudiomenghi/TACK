@@ -35,7 +35,6 @@ public class MITLIsolverTest2 {
 		BufferedReader br = new BufferedReader(fileReader);
 		String line;
 		while ((line = br.readLine()) != null) {
-			System.out.println("AAAAA consideredFormula: "+line);
 			ANTLRInputStream input = new ANTLRInputStream(new ByteArrayInputStream(line.getBytes()));
 			MITLILexer lexer = new MITLILexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -44,7 +43,6 @@ public class MITLIsolverTest2 {
 			MITLIFormula formula = parser.mitli().formula;
 
 			
-			System.out.println("AAAAA consideredFormula: "+formula);
 			
 			for(MITLIFormula f: formula.accept(new SubformulaeVisitor())){
 				System.out.println(f+"\t"+f.getClass());
@@ -67,7 +65,6 @@ public class MITLIsolverTest2 {
 		BufferedReader br = new BufferedReader(fileReader);
 		String line;
 		while ((line = br.readLine()) != null) {
-			System.out.println("AAAAA consideredFormula: "+line);
 			ANTLRInputStream input = new ANTLRInputStream(new ByteArrayInputStream(line.getBytes()));
 			MITLILexer lexer = new MITLILexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -76,7 +73,6 @@ public class MITLIsolverTest2 {
 			MITLIFormula formula = parser.mitli().formula;
 
 			
-			System.out.println("AAAAA consideredFormula: "+formula);
 			
 			for(MITLIFormula f: formula.accept(new SubformulaeVisitor())){
 				System.out.println(f+"\t"+f.getClass());

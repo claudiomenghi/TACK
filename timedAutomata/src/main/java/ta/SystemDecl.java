@@ -23,9 +23,14 @@ public class SystemDecl {
 	private final Set<Variable> variables;
 	
 	public boolean isBounded(String variableId){
+		System.out.println(variableDeclaration);
 		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId()).collect(Collectors.toSet()).contains(variableId);
 	}
 	
+	public boolean isGlobal(String variableId) {
+		return (variableDeclaration.stream().map(v -> v.getId()).collect(Collectors.toSet())).contains(variableId);
+	}
+		
 	public Set<Integer> getBound(String variableId){
 		Set<Integer> retSet=new HashSet<>();
 		this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> ((BoundedVariableDecl) d).getValues()).forEach(c -> retSet.addAll(c));
