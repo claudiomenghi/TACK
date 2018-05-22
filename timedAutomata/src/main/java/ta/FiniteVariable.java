@@ -19,5 +19,10 @@ public class FiniteVariable extends Variable {
 		return values;
 	}
 
+	@Override
+	public String toString() {
+		return this.getName()+"{" + values + "}";
+	}
+
 
 }

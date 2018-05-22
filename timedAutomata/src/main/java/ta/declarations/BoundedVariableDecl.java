@@ -22,4 +22,8 @@ public class BoundedVariableDecl extends VariableDecl {
 		return values;
 	}
 
+	@Override
+	public String toString() {
+		return this.getType() + " " + this.getId() + "{"+this.values+"}=" + this.getExp();
+	}
 }
