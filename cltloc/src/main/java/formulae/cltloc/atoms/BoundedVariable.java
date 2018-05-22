@@ -21,6 +21,7 @@ public class BoundedVariable extends Variable {
 			throw new IllegalArgumentException("The set of values cannot be null");
 		}
 		this.values=values;
+		System.out.println("Creating new bounded variable: "+name);
 	}
 
 	public Set<Integer> getValues() {
@@ -38,6 +39,12 @@ public class BoundedVariable extends Variable {
 		}
 	}
 	
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
