@@ -40,7 +40,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class TAParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -177,7 +177,13 @@ public class TAParser extends Parser {
 	public final TaContext ta() throws RecognitionException {
 		TaContext _localctx = new TaContext(_ctx, getState());
 		enterRule(_localctx, 0, RULE_ta);
-		 
+		 	
+		 		declarations = new HashMap<>();
+		 	 	currentTaDeclarations = new HashMap<>();
+		 	 	boundedVariablesValues=new HashMap<>();
+			 	 currentProc="";
+			 	 
+		 	
 			Set<TA> timedAutomata=new HashSet<>();
 			  Set<VariableDecl> variableDeclaration=new HashSet<>();
 			  Set<ClockDecl> clockDeclaration=new HashSet<>();

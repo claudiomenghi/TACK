@@ -57,7 +57,13 @@ import ta.transition.guard.VariableConstraintAtom.VariableConstraintAtomOperator
 import operators.*;
 }
 
- ta returns [SystemDecl systemret]  @init { 
+ ta returns [SystemDecl systemret]  @init { 	
+ 		declarations = new HashMap<>();
+ 	 	currentTaDeclarations = new HashMap<>();
+ 	 	boundedVariablesValues=new HashMap<>();
+	 	 currentProc="";
+	 	 
+ 	
 	Set<TA> timedAutomata=new HashSet<>();
 	  Set<VariableDecl> variableDeclaration=new HashSet<>();
 	  Set<ClockDecl> clockDeclaration=new HashSet<>();
@@ -67,7 +73,11 @@ import operators.*;
 	  
 }
  :
+ 	
  	(
+	 
+ 
+ 		
  		dec = declaration
  		{
 
