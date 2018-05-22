@@ -358,7 +358,7 @@ public class TACheckerTest {
 	
 	@Test
 	public void test13() throws FileNotFoundException, IOException, ZotException {
-		String path = ClassLoader.getSystemResource("tack/ta/examples/formula12.mitli").getPath();
+		String path = ClassLoader.getSystemResource("tack/ta/examples/formula15.mitli").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
