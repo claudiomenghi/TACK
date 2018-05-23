@@ -49,7 +49,7 @@ public class P2FischerTest {
 		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
 		boolean result = checker.check(null);
 
-		assertFalse(result);
+		assertTrue(result);
 
 	}
 	
