@@ -50,7 +50,7 @@ public class P4FischerTest {
 		SystemChecker checker = new SystemChecker(system, formula, 40, System.out);
 		boolean result = checker.check(null);
 
-		assertFalse(result);
+		assertTrue(result);
 
 	}
 	
