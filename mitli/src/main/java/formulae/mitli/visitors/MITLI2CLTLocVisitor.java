@@ -50,6 +50,7 @@ import formulae.mitli.MITLIPast_ZerotoB;
 import formulae.mitli.MITLIRelease;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
+import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
 import formulae.mitli.atoms.MITLITrue;
@@ -235,8 +236,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		CLTLocFormula f1 = IFF.apply(first.apply(formulaId), rest.apply(formulaId));
 
-		CLTLocFormula f2 = 
-				IFF.apply(rest.apply(formulaId), 
+		CLTLocFormula f2 = null;
+		
+		if (! formula.getLeftChild().equals(MITLIFormula.TRUE)){
+			f2 =	IFF.apply(rest.apply(formulaId), 
 						AND.apply(
 								rest.apply(leftChildId),
 								OR.apply(rest.apply(rightChildId), 
@@ -254,7 +257,19 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 								)
 						)
 				);
-
+		} else {
+			f2 =	IFF.apply(rest.apply(formulaId), 
+						OR.apply(rest.apply(rightChildId), 
+								 X.apply(
+										 F.apply(
+												OR.apply(
+														rest.apply(rightChildId), 
+														first.apply(rightChildId))
+													)
+											)
+								   )
+							);
+		}
 		return G.apply(AND.apply(f1, f2));	
 	}
 
@@ -271,8 +286,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		CLTLocFormula f1 = IFF.apply(first.apply(formulaId), rest.apply(formulaId));
 
-		CLTLocFormula f2 = 
-				IFF.apply(rest.apply(formulaId),
+		CLTLocFormula f2 = null;
+		
+		if (! formula.getLeftChild().equals(MITLIFormula.FALSE)){
+			f2 = IFF.apply(rest.apply(formulaId),
 						OR.apply(
 							G.apply(up.apply(rightChildId)),	
 							AND.apply(
@@ -295,6 +312,19 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 							)
 						)
 				);
+		} else {
+			f2 = IFF.apply(rest.apply(formulaId), 
+					AND.apply(rest.apply(rightChildId), 
+							 X.apply(
+									 G.apply(
+											AND.apply(
+													rest.apply(rightChildId), 
+													first.apply(rightChildId))
+												)
+										)
+							   )
+						);
+		}
 
 		return G.apply(AND.apply(f1, f2));	
 	}
@@ -309,9 +339,19 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 	public CLTLocFormula visit(MITLITrue formula) {
 		int formulaId = formulaIdMap.get(formula);
 
-		return G.apply(AND.apply(first.apply(formulaId), rest.apply(formulaId)));
+		return CLTLocFormula.TRUE; //G.apply(AND.apply(first.apply(formulaId), rest.apply(formulaId)));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public CLTLocFormula visit(MITLIFalse formula) {
+		int formulaId = formulaIdMap.get(formula);
+
+		return CLTLocFormula.TRUE; //G.apply(AND.apply(first.apply(formulaId), rest.apply(formulaId)));
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

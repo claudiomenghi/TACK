@@ -20,6 +20,7 @@ import formulae.mitli.MITLIPast_ZerotoB;
 import formulae.mitli.MITLIRelease;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
+import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
 import formulae.mitli.atoms.MITLITrue;
@@ -48,6 +49,17 @@ public class SubformulaeVisitor implements MITLIVisitor<List<MITLIFormula>> {
 		return formulae;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<MITLIFormula> visit(MITLIFalse formula) {
+		List<MITLIFormula> formulae = new ArrayList<>();
+		formulae.add(formula);
+		return formulae;
+	}
+	
+	
 	/**
 	 * {@inheritDoc}
 	 */
