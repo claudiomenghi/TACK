@@ -16,6 +16,7 @@ import formulae.mitli.MITLIPast_ZerotoB;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
 import formulae.mitli.MITLIRelease;
+import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
 import formulae.mitli.atoms.MITLITrue;
@@ -26,6 +27,8 @@ public interface MITLIVisitor<T> {
 
 
 	public T visit(MITLITrue formula);
+	
+	public T visit(MITLIFalse formula);
 
 	public T visit(MITLIConjunction formula);
 

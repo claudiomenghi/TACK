@@ -19,6 +19,7 @@ import formulae.mitli.MITLIPast_ZerotoB;
 import formulae.mitli.MITLISince;
 import formulae.mitli.MITLIUntil;
 import formulae.mitli.MITLIRelease;
+import formulae.mitli.atoms.MITLIFalse;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
 import formulae.mitli.atoms.MITLITrue;
@@ -47,6 +48,15 @@ public class GetPropositionalAtomsVisitor implements MITLIVisitor<Set<MITLIPropo
 		return formulae;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<MITLIPropositionalAtom> visit(MITLIFalse formula) {
+		Set<MITLIPropositionalAtom> formulae = new HashSet<>();
+		return formulae;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
