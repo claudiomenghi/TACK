@@ -31,28 +31,6 @@ process p1 {
          };
 }
 
-process p2 {
-  state  a, b {x2<=2}, c, cs;
-  init   a;
-  trans  a -> b {
-           guard  id==0;
-           assign x2:=0;
-         },
-           b -> c {
-           guard  x2<=2;
-           assign x2:=0,id:=2;
-         },
-           c -> b {
-           guard  id==0;
-           assign x2:=0;
-         },
-           -> cs {
-           guard  x2>2, id==2;
-         },
-           cs -> a {
-           assign x2:=0,id:=0;
-         };
-}
 
-system p1, p2;
+system p1;
 
