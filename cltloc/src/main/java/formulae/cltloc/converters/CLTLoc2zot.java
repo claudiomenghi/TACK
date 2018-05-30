@@ -80,6 +80,7 @@ public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 		// ae2zot
 		builder.append("(" + plugin + ":zot " + bound + " (&&" + formula.accept(new CLTLoc2ZotVisitor(plugin)) + ")\n\n"
 				+ ":smt-lib :smt2 \n" + ":over-clocks " + maxConstant + "\n"
+				+ ":logic :QF_UFLRA" + "\n" 
 				+ ":gen-symbolic-val nil\n");
 
 		if (plugin.equals(ZotPlugin.AE2SBVZOT) || plugin.equals(ZotPlugin.AE2ZOT)) {
