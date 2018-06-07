@@ -411,7 +411,7 @@ public class TACheckerTest {
 	}
 	
 	@Test
-	public void test13() throws IOException, ZotException {
+	public void test15() throws IOException, ZotException {
 	
 		String path = ClassLoader.getSystemResource("tack/ta/examples/formula13.mitli").getPath();
 
