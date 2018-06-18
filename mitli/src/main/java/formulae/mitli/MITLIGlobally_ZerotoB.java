@@ -1,6 +1,7 @@
 package formulae.mitli;
 
 import formulae.mitli.visitors.MITLIVisitor;
+
 public class MITLIGlobally_ZerotoB extends MITLIGlobally_AtoB {
 
 	public MITLIGlobally_ZerotoB(MITLIFormula subformula, int b) {

@@ -18,14 +18,14 @@ public abstract class MITLIFormula extends Formula {
 
 	public static final MITLIFormula FALSE = new MITLIFalse();
 
-
 	public MITLIFormula() {
 		super();
 
 	}
 
+
 	public abstract Set<MITLIFormula> getChildren();
-	
+
 	public abstract <T> T accept(MITLIVisitor<T> visitor);
 
 	public int maxIntComparedto() {
@@ -46,10 +46,10 @@ public abstract class MITLIFormula extends Formula {
 	}
 
 	public static MITLIFormula not(MITLIFormula f) {
-		if(f instanceof MITLINegation){
+		if (f instanceof MITLINegation) {
 			return ((MITLINegation) f).getChild();
 		}
-		
+
 		return new MITLINegation(f);
 	}
 
@@ -109,13 +109,12 @@ public abstract class MITLIFormula extends Formula {
 	public static MITLIFormula G_inf(MITLIFormula f, int a) {
 		Preconditions.checkNotNull(f, "The formula cannot be null");
 		if (a == 0) {
-			return R(
-					FALSE, f);
+			return R(FALSE, f);
 		} else {
 			return new MITLIGlobally_AtoInf(f, a);
 		}
 	}
-	
+
 	// Globally: G_<0,b>
 	public static MITLIFormula G(MITLIFormula f, boolean abopen, int b, boolean dbopen) {
 		if (abopen && dbopen) { // G_(0,b)
@@ -133,26 +132,24 @@ public abstract class MITLIFormula extends Formula {
 
 	// Globally: G_<a,b>
 	public static MITLIFormula G(MITLIFormula f, int a, boolean abopen, int b, boolean dbopen) {
-		if (a == 0){
+		if (a == 0) {
 			return G(f, abopen, b, dbopen);
-		}
-		else {
+		} else {
 
 			/* Following implementation uses native encoding for Globally */
 
 			// distance between the upper bound and the lower
 			int distance = b - a;
-			
+
 			MITLIFormula fm = f;
 
 			int low = a;
 			int upp = b;
 			// shifts the formula using the distance every time
-			for (; low >= distance; low = low - distance, upp = upp - distance){
-				if (low == a){
+			for (; low >= distance; low = low - distance, upp = upp - distance) {
+				if (low == a) {
 					fm = F(G(fm, 0, abopen, distance, dbopen), 0, true, distance, true);
-				}
-				else{
+				} else {
 					fm = F(G(fm, 0, true, distance, true), 0, true, distance, true);
 				}
 			}
@@ -160,17 +157,17 @@ public abstract class MITLIFormula extends Formula {
 			if (low > 0) {
 				MITLIFormula orf = fm;
 
-				for (int h = low; h > 0; h--){
+				for (int h = low; h > 0; h--) {
 					orf = F(G(orf, 0, true, 1, true), 0, true, 1, true);
 				}
-					
+
 				return G(orf, 0, true, 1, true);
-			} else{
+			} else {
 				return G(fm, 0, true, 1, true);
 			}
 		}
 	}
-	
+
 	// Past: P_<0,b]
 	public static MITLIFormula P(MITLIFormula f, int b) {
 		return new MITLIPast_ZerotoB(f, b);
@@ -220,12 +217,10 @@ public abstract class MITLIFormula extends Formula {
 
 	// Producers method to build derived temporal CLTL formulae
 	public static MITLIFormula R(MITLIFormula f1, MITLIFormula f2) {
-		//return not(U(not(f1), not(f2)));
+		// return not(U(not(f1), not(f2)));
 		return new MITLIRelease(f1, f2);
 	}
 
-	
-	
 	// Eventually: F_<a,+oo)
 	public static MITLIFormula F(MITLIFormula f, int a, boolean aB) {
 
@@ -251,7 +246,7 @@ public abstract class MITLIFormula extends Formula {
 	// Eventually: F_<0,b>
 	public static MITLIFormula F(MITLIFormula f, boolean aB, int b, boolean bB) {
 		if (aB == true && bB == true) { // F_(0,b)
-		
+
 			return new MITLIEventually_ZerotoB(f, b);
 
 		} else if (aB == false && bB == true) // F_[0,b)
@@ -267,10 +262,9 @@ public abstract class MITLIFormula extends Formula {
 
 	// Eventually: F_<a,b>
 	public static MITLIFormula F(MITLIFormula f, int a, boolean aB, int b, boolean bB) {
-		if (a == 0){
+		if (a == 0) {
 			return F(f, aB, b, bB);
-		}
-		else {
+		} else {
 			int d = b - a;
 			MITLIFormula fm = f;
 

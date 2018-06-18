@@ -13,6 +13,8 @@ public class MITLIDisjunction extends MITLIFormula implements BinaryFormula<MITL
 	private final MITLIFormula leftChild;
 	private final MITLIFormula rightChild;
 	private final String operator = "OR";
+	
+	private final int hash;
 
 	public MITLIDisjunction(MITLIFormula leftChild, MITLIFormula rightChild) {
 		super();
@@ -20,6 +22,7 @@ public class MITLIDisjunction extends MITLIFormula implements BinaryFormula<MITL
 		Preconditions.checkNotNull(rightChild, "The second subformula cannot be null");
 		this.leftChild = leftChild;
 		this.rightChild = rightChild;
+		this.hash=computeHash();
 
 	}
 
@@ -52,12 +55,9 @@ public class MITLIDisjunction extends MITLIFormula implements BinaryFormula<MITL
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((leftChild == null) ? 0 : leftChild.hashCode());
-		result = prime * result + ((rightChild == null) ? 0 : rightChild.hashCode());
-		return result;
+		return hash;
 	}
+	
 
 	/**
 	 * {@inheritDoc}
@@ -101,5 +101,13 @@ public class MITLIDisjunction extends MITLIFormula implements BinaryFormula<MITL
 		formulae.add(leftChild);
 		formulae.add(rightChild);
 		return formulae;
+	}
+
+	private int computeHash() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((leftChild == null) ? 0 : leftChild.hashCode());
+		result = prime * result + ((rightChild == null) ? 0 : rightChild.hashCode());
+		return result;
 	}
 }

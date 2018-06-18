@@ -15,10 +15,13 @@ public class MITLINegation extends MITLIFormula implements UnaryFormula<MITLIFor
 
 	private final String operator = "NEG";
 
+	private final int hash;
+
 	public MITLINegation(MITLIFormula subformula) {
 
 		Preconditions.checkNotNull(subformula, "The subformula cannot be null");
 		this.subformula = subformula;
+		this.hash = computeHash();
 	}
 
 	@Override
@@ -38,14 +41,19 @@ public class MITLINegation extends MITLIFormula implements UnaryFormula<MITLIFor
 	public String toString() {
 		return "(" + this.operator + this.getChild() + ")";
 	}
-	
-	@Override
-	public int hashCode() {
+
+	private int computeHash() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
 		result = prime * result + ((subformula == null) ? 0 : subformula.hashCode());
 		return result;
+
+	}
+
+	@Override
+	public int hashCode() {
+		return hash;
 	}
 
 	@Override
@@ -75,7 +83,7 @@ public class MITLINegation extends MITLIFormula implements UnaryFormula<MITLIFor
 	 */
 	@Override
 	public Set<MITLIFormula> getChildren() {
-		Set<MITLIFormula> formulae=new HashSet<>();
+		Set<MITLIFormula> formulae = new HashSet<>();
 		formulae.add(subformula);
 		return formulae;
 	}

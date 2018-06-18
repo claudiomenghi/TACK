@@ -15,6 +15,8 @@ public class MITLIConjunction extends MITLIFormula implements BinaryFormula<MITL
 
 	private final String operator = "AND";
 
+	private final int hash;
+
 	public MITLIConjunction(MITLIFormula leftChild, MITLIFormula rightChild) {
 
 		super();
@@ -22,6 +24,7 @@ public class MITLIConjunction extends MITLIFormula implements BinaryFormula<MITL
 		Preconditions.checkNotNull(rightChild, "The second subformula cannot be null");
 		this.leftChild = leftChild;
 		this.rightChild = rightChild;
+		this.hash = this.computeHash();
 
 	}
 
@@ -54,11 +57,16 @@ public class MITLIConjunction extends MITLIFormula implements BinaryFormula<MITL
 	 */
 	@Override
 	public int hashCode() {
+		return hash;
+	}
+
+	private int computeHash() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((leftChild == null) ? 0 : leftChild.hashCode());
 		result = prime * result + ((rightChild == null) ? 0 : rightChild.hashCode());
 		return result;
+
 	}
 
 	/**
@@ -99,7 +107,7 @@ public class MITLIConjunction extends MITLIFormula implements BinaryFormula<MITL
 	 */
 	@Override
 	public Set<MITLIFormula> getChildren() {
-		Set<MITLIFormula> formulae=new HashSet<>();
+		Set<MITLIFormula> formulae = new HashSet<>();
 		formulae.add(leftChild);
 		formulae.add(rightChild);
 		return formulae;

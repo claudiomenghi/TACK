@@ -10,12 +10,12 @@ import formulae.mitli.visitors.MITLIVisitor;
 
 public class MITLIIff extends MITLIFormula implements BinaryFormula<MITLIFormula> {
 
-
-
 	private final MITLIFormula subformula1;
 	private final MITLIFormula subformula2;
 
 	private final String operator = "IFF";
+
+	private final int hash;
 
 	public MITLIIff(MITLIFormula subformula1, MITLIFormula subformula2) {
 		super();
@@ -23,6 +23,7 @@ public class MITLIIff extends MITLIFormula implements BinaryFormula<MITLIFormula
 		Preconditions.checkNotNull(subformula2, "The second subformula cannot be null");
 		this.subformula1 = subformula1;
 		this.subformula2 = subformula2;
+		this.hash = this.computeHash();
 	}
 
 	/**
@@ -56,26 +57,30 @@ public class MITLIIff extends MITLIFormula implements BinaryFormula<MITLIFormula
 	public String toString() {
 		return "(" + this.subformula1 + " " + operator + " " + this.subformula2 + ")";
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Set<MITLIFormula> getChildren() {
-		Set<MITLIFormula> formulae=new HashSet<>();
+		Set<MITLIFormula> formulae = new HashSet<>();
 		formulae.add(subformula1);
 		formulae.add(subformula2);
 		return formulae;
 	}
-	
-	@Override
-	public int hashCode() {
+
+	private int computeHash() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
 		result = prime * result + ((subformula1 == null) ? 0 : subformula1.hashCode());
 		result = prime * result + ((subformula2 == null) ? 0 : subformula2.hashCode());
 		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		return hash;
 	}
 
 	@Override

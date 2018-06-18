@@ -11,12 +11,15 @@ public class MITLIPast_AtoB extends MITLIPast implements TemporizedFormula {
 
 	private final String operator = "P";
 	
+	private final int hash;
+	
 	public MITLIPast_AtoB(MITLIFormula subformula, int a, int b) {
 		super(subformula);
 		this.a = a;
 		this.b = b;
 
 		subformula.maxIntComparedto(b - a);
+		this.hash=computeHash();
 	}
 
 	/**
@@ -45,6 +48,10 @@ public class MITLIPast_AtoB extends MITLIPast implements TemporizedFormula {
 	
 	@Override
 	public int hashCode() {
+		return this.hash;
+	}
+	
+	private int computeHash() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + a;

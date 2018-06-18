@@ -10,12 +10,15 @@ public class MITLIGlobally_AtoInf extends MITLIGlobally implements TemporizedFor
 	private final int a;
 
 	private final String operator = "G";
+	
+	private final int hash;
 
 	public MITLIGlobally_AtoInf(MITLIFormula subformula, int a) {
 		super(subformula);
 		this.a = a;
 
 		this.maxIntComparedto(a);
+		this.hash=computeHash();
 	}
 
 	/**
@@ -51,13 +54,17 @@ public class MITLIGlobally_AtoInf extends MITLIGlobally implements TemporizedFor
 	}
 	
 	
-	@Override
-	public int hashCode() {
+
+	private int computeHash() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + a;
 		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
 		return result;
+	}
+	@Override
+	public int hashCode() {
+		return hash;
 	}
 
 	@Override
