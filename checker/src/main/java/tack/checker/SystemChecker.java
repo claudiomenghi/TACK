@@ -1,6 +1,10 @@
 package tack.checker;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.AbstractMap;
@@ -31,12 +35,13 @@ import formulae.mitli.visitors.GetRelationalAtomsVisitor;
 import solvers.CLTLocsolver;
 import ta.StateAP;
 import ta.SystemDecl;
+import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.Value;
 import ta.visitors.TANetwork2CLTLoc;
 import zotrunner.ZotException;
 
-public class SystemChecker  {
+public class SystemChecker {
 
 	/**
 	 * The MITLI formula to be considered
@@ -46,7 +51,7 @@ public class SystemChecker  {
 	/**
 	 * The bound to be considered in the verification
 	 */
-	protected  int bound;
+	protected int bound;
 
 	/**
 	 * The stream to be used to write output messages
@@ -58,26 +63,22 @@ public class SystemChecker  {
 	protected CLTLocFormula formula;
 
 	protected final SystemDecl system;
-	
+
 	private float checkingtime;
-	
+
 	private double checkingspace;
-	
-	private long mitli2cltlocTime=0;
-	
-	private long ta2clclocTime=0;
-	
-	
-	private long cltloc2zotTime=0;
-	
-	private long sattime=0;
-	
-	
+
+	private long mitli2cltlocTime = 0;
+
+	private long ta2clclocTime = 0;
+
+	private long cltloc2zotTime = 0;
+
+	private long sattime = 0;
+
 	public long getCltloc2zotTime() {
 		return cltloc2zotTime;
 	}
-
-
 
 	/**
 	 * 
@@ -94,11 +95,11 @@ public class SystemChecker  {
 	 * @throws IllegalArgumentException
 	 *             if the bound is not grater than zero
 	 */
-	public SystemChecker( SystemDecl system, MITLIFormula mitliformula, int bound, PrintStream out) {
+	public SystemChecker(SystemDecl system, MITLIFormula mitliformula, int bound, PrintStream out) {
 		Preconditions.checkNotNull(mitliformula, "The formula of interest cannot be null");
 		Preconditions.checkArgument(bound > 0, "The bound should be grater than of zero");
 
-		this.system=system;
+		this.system = system;
 		this.mitliformula = mitliformula;
 		this.bound = bound;
 		this.out = out;
@@ -106,19 +107,13 @@ public class SystemChecker  {
 		System.out.println(mitliformula.toString());
 	}
 
-	
-
 	public long getMitli2cltlocTime() {
 		return mitli2cltlocTime;
 	}
 
-
-
 	public long getTa2clclocTime() {
 		return ta2clclocTime;
 	}
-
-
 
 	/**
 	 * checks the timed automaton with respect to the property of interest
@@ -130,61 +125,64 @@ public class SystemChecker  {
 	 */
 	public boolean check(CLTLocFormula additionalConstraints) throws IOException, ZotException {
 
-		if(additionalConstraints==null){
-			additionalConstraints=CLTLocFormula.TRUE;
+		if (additionalConstraints == null) {
+			additionalConstraints = CLTLocFormula.TRUE;
 		}
-		
+
 		Stopwatch timer = Stopwatch.createUnstarted();
 		timer.start();
 		out.println("************************************************");
-		//out.println("MITLI formula:  " + mitliformula);
+		// out.println("MITLI formula: " + mitliformula);
 		MITLIFormula negatedFormula = MITLIFormula.not(mitliformula);
 		out.println("Converting the MITLI formula in CLTLoc");
 		MITLI2CLTLoc translator = new MITLI2CLTLoc(negatedFormula);
 		formula = translator.apply();
 		out.println("MITLI formula converted in CLTLoc");
-		//out.println("************************************************");
-		//	out.println("**  MITLI FORMULA CLTLoc ENCODING                **");
-		//translator.printFancy(out);
-		//out.println("************************************************");
+		// out.println("************************************************");
+		// out.println("** MITLI FORMULA CLTLoc ENCODING **");
+		// translator.printFancy(out);
+		// out.println("************************************************");
 		timer.stop();
-		mitli2cltlocTime=timer.elapsed(TimeUnit.MILLISECONDS);
-		
+		mitli2cltlocTime = timer.elapsed(TimeUnit.MILLISECONDS);
+
 		BiMap<MITLIFormula, Integer> vocabular = translator.getVocabulary().inverse();
 		Set<MITLIRelationalAtom> atoms = mitliformula.accept(new GetRelationalAtomsVisitor());
-		Set<VariableAssignementAP> atomicpropositionsVariable = atoms.stream()
-				.map(a -> new VariableAssignementAP(
-						(a.getIdentifier().contains("_") ?  a.getIdentifier().substring(0, a.getIdentifier().indexOf("_")) : ""),
-						vocabular.get(a),
-						new ta.Variable(a.getIdentifier().contains("_") ?  a.getIdentifier().substring( a.getIdentifier().indexOf("_")+1, a.getIdentifier().length()) :  a.getIdentifier()), new Value(Integer.toString(a.getValue()))))
+		Set<VariableAssignementAP> atomicpropositionsVariable = atoms
+				.stream().map(
+						a -> new VariableAssignementAP(
+								(a.getIdentifier().contains("_") ? a
+										.getIdentifier().substring(0, a.getIdentifier().indexOf("_")) : ""),
+								vocabular.get(a),
+								new ta.Variable(a.getIdentifier().contains("_") ? a.getIdentifier()
+										.substring(a.getIdentifier().indexOf("_") + 1, a.getIdentifier().length())
+										: a.getIdentifier()),
+								new Value(Integer.toString(a.getValue()))))
 				.collect(Collectors.toSet());
-		
-		
-		Set<MITLIPropositionalAtom> propositionalAtoms = mitliformula.accept(new GetPropositionalAtomsVisitor());
-		Set<StateAP> atomicpropositions=
-				propositionalAtoms.stream().map(a ->  {
-				if(!vocabular.containsKey(a)){
-					throw new IllegalArgumentException("The proposition "+a+ "is not contained in the alphabet of the vocabulary");
-				}
-				if( a.getAtomName().indexOf("_")==-1){
-					throw new IllegalArgumentException("Error in the proposition: "+a.getAtomName()+"A state proposition  must have the form state_ap");
-							
-				}
-				return new StateAP(vocabular.get(a),a.getAtomName().substring(0, a.getAtomName().indexOf("_")), a.getAtomName().substring(a.getAtomName().indexOf("_")+1, a.getAtomName().length()));
-				}		
-				).collect(Collectors.toSet());
-				
-		//out.println("------------------");
-		//out.println("CLTLoc encoding");
-		//out.println(formula);
-		
 
-		
-		//out.println("\n");
-		//out.println("\n");
-		//out.println("\n");
-		//out.println("************************************************");
-		//out.println("**************     VOCABULARY     ***************");
+		Set<MITLIPropositionalAtom> propositionalAtoms = mitliformula.accept(new GetPropositionalAtomsVisitor());
+		Set<StateAP> atomicpropositions = propositionalAtoms.stream().map(a -> {
+			if (!vocabular.containsKey(a)) {
+				throw new IllegalArgumentException(
+						"The proposition " + a + "is not contained in the alphabet of the vocabulary");
+			}
+			if (a.getAtomName().indexOf("_") == -1) {
+				throw new IllegalArgumentException("Error in the proposition: " + a.getAtomName()
+						+ "A state proposition  must have the form state_ap");
+
+			}
+			return new StateAP(vocabular.get(a), a.getAtomName().substring(0, a.getAtomName().indexOf("_")),
+					a.getAtomName().substring(a.getAtomName().indexOf("_") + 1, a.getAtomName().length()));
+		}).collect(Collectors.toSet());
+
+		// out.println("------------------");
+		// out.println("CLTLoc encoding");
+		// out.println(formula);
+
+		// out.println("\n");
+		// out.println("\n");
+		// out.println("\n");
+		// out.println("************************************************");
+		// out.println("************** VOCABULARY ***************");
 
 		StringBuilder vocabularyBuilder = new StringBuilder();
 		vocabular.entrySet().forEach(e -> vocabularyBuilder.append(e.getValue() + "\t" + e.getKey() + "\n"));
@@ -193,68 +191,103 @@ public class SystemChecker  {
 		out.println("************************************************");
 		out.println("************************************************");
 		out.println("Converting the TA in CLTLoc");
-		
+
 		timer.reset();
 		timer.start();
 		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
-		
-		
-		taFormula = converter.convert(system,  atomicpropositions, atomicpropositionsVariable);
-		
-		
+
+		taFormula = converter.convert(system, atomicpropositions, atomicpropositionsVariable);
+
 		out.println("TA converted in CLTLoc");
 
-		//out.println("------------------");
+		// out.println("------------------");
 		timer.stop();
-		this.ta2clclocTime=timer.elapsed(TimeUnit.MILLISECONDS);
-		
+		this.ta2clclocTime = timer.elapsed(TimeUnit.MILLISECONDS);
+
 		out.println("-------------INFO--------");
-		//out.println(system.getGlobalClocks());
-		//out.println("TA encoding");
-		//out.println(taFormula);
-		//out.println("************************************************");
-		
-	
-		
+		// out.println(system.getGlobalClocks());
+		// out.println("TA encoding");
+		// out.println(taFormula);
+		// out.println("************************************************");
+
 		out.println(system.toString());
 		out.println("************************************************");
-		
-		
-		//out.println(converter.getMapStateId());
-		StringBuilder stateIdMappingBuilder=new StringBuilder();
-		system.getTimedAutomata().stream().forEach(ta -> ta.getStates().stream().forEach(s-> stateIdMappingBuilder.append(ta.getIdentifier()+"\t"+s.getStringId()+":\t"+
-		converter.getMapStateId().get(
-				new AbstractMap.SimpleEntry<>(ta, s.getStringId())
-				)+"\n")));
-		File stateIdStringMappingfile=new File("elementsIDmap.txt");
-		
+
+		// out.println(converter.getMapStateId());
+		StringBuilder stateIdMappingBuilder = new StringBuilder();
+		system.getTimedAutomata().stream()
+				.forEach(ta -> ta.getStates().stream()
+						.forEach(s -> stateIdMappingBuilder.append(ta.getIdentifier() + "\t" + s.getStringId() + ":\t"
+								+ converter.getMapStateId().get(new AbstractMap.SimpleEntry<>(ta, s.getStringId()))
+								+ "\n")));
+		File stateIdStringMappingfile = new File("elementsIDmap.txt");
+
 		FileUtils.writeStringToFile(stateIdStringMappingfile, stateIdMappingBuilder.toString());
-		
-		StringBuilder transitionsIdMappingBuilder=new StringBuilder();
-		system.getTimedAutomata().stream().forEach(ta-> ta.getTransitions().stream().forEach(
-				s-> 
-					transitionsIdMappingBuilder.append(ta.getIdentifier()+"\t"+s.getSource().getStringId()+"\t"+s.getDestination().getStringId()+"\t"+s.getId()+"\n")
-				));
+
+		StringBuilder transitionsIdMappingBuilder = new StringBuilder();
+		system.getTimedAutomata().stream()
+				.forEach(ta -> ta.getTransitions().stream().forEach(
+						s -> transitionsIdMappingBuilder.append(ta.getIdentifier() + "\t" + s.getSource().getStringId()
+								+ "\t" + s.getDestination().getStringId() + "\t" + s.getId() + "\n")));
 		FileUtils.writeStringToFile(stateIdStringMappingfile, transitionsIdMappingBuilder.toString(), true);
-		
+
 		// out.println(formula);
 		// out.println(translator.getVocabulary());
 
 		out.println("Creating the of the CLTLoc formulae of the model and the property");
-		CLTLocFormula conjunctionFormula = 
-				new CLTLocYesterday(
-						CLTLocFormula.getAnd(taFormula, formula,additionalConstraints));
+		CLTLocFormula conjunctionFormula = new CLTLocYesterday(
+				CLTLocFormula.getAnd(taFormula, formula, additionalConstraints));
 		out.println("Conjunction of the formulae created");
 
-		
-		CLTLocsolver cltlocSolver=new CLTLocsolver(conjunctionFormula, out, bound);
+		CLTLocsolver cltlocSolver = new CLTLocsolver(conjunctionFormula, out, bound);
 		boolean sat = cltlocSolver.solve();
-		this.sattime=cltlocSolver.getSattime();
-		this.checkingspace=cltlocSolver.getCheckingspace();
+		this.sattime = cltlocSolver.getSattime();
+		this.checkingspace = cltlocSolver.getCheckingspace();
 
-		this.cltloc2zotTime=cltlocSolver.getCltloc2zottime();
-		this.checkingtime=cltlocSolver.getCheckingtime();
+		this.cltloc2zotTime = cltlocSolver.getCltloc2zottime();
+		this.checkingtime = cltlocSolver.getCheckingtime();
+
+		if (sat == true) {
+			this.generateTACKHistory("./output.hist.txt", "tack_history.txt", converter);
+		}
 		return sat ? false : true;
+	}
+
+	private void generateTACKHistory(String zotHistoryFile, String tackHistoryFile, TANetwork2CLTLoc converter) {
+
+		System.out.println("\n Back parsing the history");
+		File zotHistory = new File(zotHistoryFile);
+		File tackHistory = new File(tackHistoryFile);
+
+		try {
+			BufferedWriter wr = new BufferedWriter(new FileWriter(tackHistory));
+			BufferedReader br = new BufferedReader(new FileReader(zotHistory));
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				if (line.startsWith("------ time")) {
+					wr.write(line + "\n");
+				}
+				if (line.toUpperCase().startsWith(converter.STATE_PREFIX)) {
+					String taID = line.toUpperCase().substring(converter.STATE_PREFIX.length(), line.indexOf(" ="));
+					TA ta=converter.getMapIdTA().get(Integer.parseInt(taID));
+					String taName = ta.getIdentifier();
+					String stateID = line.toUpperCase().substring(line.indexOf("= ") + 2, line.length());
+					
+					String stateName =converter.getMapIdStateName().get(Integer.parseInt(stateID));
+					wr.write(taName+"."+stateName+"\n");
+				}
+				if (line.startsWith("now")) {
+					wr.write(line + "\n");
+				}
+			}
+			br.close();
+			wr.close();
+		} catch (Exception e) {
+			System.out.println("Error! No file " + zotHistoryFile + " detected");
+			e.printStackTrace();
+		}
+
 	}
 
 	public CLTLocFormula getTAEncoding() {
@@ -264,6 +297,7 @@ public class SystemChecker  {
 	public SystemDecl getSystem() {
 		return system;
 	}
+
 	public CLTLocFormula getFormulaEncoding() {
 		return formula;
 	}
@@ -276,17 +310,15 @@ public class SystemChecker  {
 		return sattime;
 	}
 
-
-
 	public double getCheckingspace() {
 		return checkingspace;
 	}
-	
-	public void printCheckingStatistics(){
+
+	public void printCheckingStatistics() {
 		out.println("********* CHECHER STATISTICS ********* ");
-		out.println("mitli2cltloc: "+this.mitli2cltlocTime);
-		out.println("ta2cltloc: "+this.ta2clclocTime);
-		out.println("sat: "+this.checkingtime);
-		
+		out.println("mitli2cltloc: " + this.mitli2cltlocTime);
+		out.println("ta2cltloc: " + this.ta2clclocTime);
+		out.println("sat: " + this.checkingtime);
+
 	}
 }
