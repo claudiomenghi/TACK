@@ -2,6 +2,7 @@ package formulae.mitli.converters;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class MITLI2CLTLoc {
 	private final Map<MITLIFormula, CLTLocFormula> generatedFormulaMap;
 	private final Map<MITLIFormula, CLTLocFormula> clockcontraintFormulaMap;
 
-	private final Map<MITLIFormula, MITLIFormula> parentRelation;
+	private final Map<MITLIFormula, Set<MITLIFormula>> parentRelation;
 
 	public MITLI2CLTLoc(MITLIFormula formula) {
 		this.formula = formula;
@@ -44,7 +45,15 @@ public class MITLI2CLTLoc {
 
 	private void populateParentRelation(MITLIFormula f) {
 		Set<MITLIFormula> chidren = f.getChildren();
-		chidren.forEach(c -> parentRelation.put(c, f));
+		chidren.forEach(c ->
+
+		{
+			if (!parentRelation.containsKey(c)) {
+				parentRelation.put(f, new HashSet<>());
+			}
+			parentRelation.get(f).add(c);
+
+		});
 
 		chidren.forEach(c -> this.populateParentRelation(c));
 
@@ -54,48 +63,39 @@ public class MITLI2CLTLoc {
 
 		this.populateParentRelation(formula);
 
-		
-		//CLTLocFormula init = 
-		//	  (formula instanceof MITLINegation )? 
-		//				  CLTLocFormula.getNeg(MITLI2CLTLocVisitor.first.apply(visitor.formulaIdMap.get(formula)))
+		// CLTLocFormula init =
+		// (formula instanceof MITLINegation )?
+		// CLTLocFormula.getNeg(MITLI2CLTLocVisitor.first.apply(visitor.formulaIdMap.get(formula)))
 		CLTLocFormula init = MITLI2CLTLocVisitor.first.apply(visitor.formulaIdMap.get(formula));
-		// init  =CLTLocFormula.TRUE;
-				
+		// init =CLTLocFormula.TRUE;
 
 		CLTLocFormula conjunction = CLTLocFormula.TRUE;
 		for (MITLIFormula f : formula.accept(new SubformulaeVisitor())) {
 
 			CLTLocFormula f1 = visitor.getckTheta(f, parentRelation);
 			CLTLocFormula f2 = f.accept(visitor);
-			
+
 			CLTLocFormula formula = MITLI2CLTLocVisitor.AND.apply(f1, f2);
 			this.generatedFormulaMap.put(f, f1);
 			this.clockcontraintFormulaMap.put(f, f2);
-			
-			
-			
-			conjunction = CLTLocFormula.getAnd( conjunction, formula);
-		
+
+			conjunction = CLTLocFormula.getAnd(conjunction, formula);
+
 		}
 
-		
-		CLTLocFormula nowConstraint=
-				CLTLocFormula.getAnd(
-						new CLTLocEQRelation(new CLTLocClock("Now"), new Constant(0)),
-						new CLTLocNext(CLTLocGlobally.create(new CLTLocGERelation(new CLTLocClock("Now"), new Constant(0))))
-						);
-		
+		CLTLocFormula nowConstraint = CLTLocFormula.getAnd(
+				new CLTLocEQRelation(new CLTLocClock("Now"), new Constant(0)),
+				new CLTLocNext(CLTLocGlobally.create(new CLTLocGERelation(new CLTLocClock("Now"), new Constant(0)))));
 
 		Set<CLTLocClock> clocks = conjunction.accept(new GetClocksVisitor());
-		
-		CLTLocFormula clockConstraint=CLTLocFormula.TRUE;
-		
-		for(CLTLocClock clock:  clocks){
-			clockConstraint=CLTLocFormula.getAnd(clockConstraint, new CLTLocGEQRelation(clock, new Constant(0)));
+
+		CLTLocFormula clockConstraint = CLTLocFormula.TRUE;
+
+		for (CLTLocClock clock : clocks) {
+			clockConstraint = CLTLocFormula.getAnd(clockConstraint, new CLTLocGEQRelation(clock, new Constant(0)));
 		}
-				
-				
-		CLTLocFormula formula = CLTLocFormula.getAnd( nowConstraint, clockConstraint, init, conjunction);
+
+		CLTLocFormula formula = CLTLocFormula.getAnd(nowConstraint, clockConstraint, init, conjunction);
 
 		converted = true;
 		return formula;

@@ -3,6 +3,7 @@ package formulae.mitli.visitors;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -1297,7 +1298,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 	}
 
-	public CLTLocFormula getckTheta(MITLIFormula formula, Map<MITLIFormula, MITLIFormula> parentRelation) {
+	public CLTLocFormula getckTheta(MITLIFormula formula, Map<MITLIFormula, Set<MITLIFormula>> parentRelation) {
 		CLTLocFormula result = CLTLocFormula.TRUE;
 
 		int idFormula = formulaIdMap.get(formula);
@@ -1306,6 +1307,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		//CLTLocClock z1 = newz1clock.apply(formula);
 
 		 CLTLocFormula f2=CLTLocFormula.TRUE;
+		 System.out.println(formula);
 
 		if ((formula instanceof MITLIEventually_AtoB) || (formula instanceof MITLIEventually_ZerotoB) || (formula instanceof MITLIEventually_AtoInf)) {
 			CLTLocFormula f1 = EQ.apply(z0, ZERO);
@@ -1350,20 +1352,10 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		}
 
 
-		
-		// Formula (2)
-
-		 
-		 
-		// formula (3)
-		//CLTLocFormula f3a = IMPL.apply(EQ.apply(z0, ZERO), X.apply(R.apply(EQ.apply(z1, ZERO), GE.apply(z0, ZERO))));
-
-		//CLTLocFormula f3b = IMPL.apply(EQ.apply(z1, ZERO), X.apply(R.apply(EQ.apply(z0, ZERO), GE.apply(z1, ZERO))));
-
-		//CLTLocFormula f3 = AND.apply(f3a, f3b);
-
 		if (result.equals(CLTLocFormula.TRUE) && f2.equals(CLTLocFormula.TRUE))
 			return CLTLocFormula.TRUE;
+		System.out.println(f2);
+
 		
 		return AND.apply(result, G.apply(f2));
 	}
