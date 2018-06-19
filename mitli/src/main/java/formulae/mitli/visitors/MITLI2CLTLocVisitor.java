@@ -338,7 +338,8 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 																						CLTLocFormula.getAnd(
 																								beforeDownNowUp
 																										.apply(childId),
-																								GE.apply(z0, ZERO),
+																								//GE.apply(z0, ZERO),
+																								NEG.apply(ORIGIN),
 																								LE.apply(z0,
 																										new Constant(
 																												b))),
@@ -466,7 +467,9 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		CLTLocFormula f1 = IFF.apply(stepDown.apply(idFormula), OR.apply(AND.apply(ORIGIN,
 				OR.apply(AND.apply(NEG.apply(first.apply(idFormula)),
 						OR.apply(stepDown.apply(child), X.apply(U.apply(GE.apply(z0, ZERO), CLTLocFormula
-								.getAnd(beforeUpNowDown.apply(child), GE.apply(z0, ZERO), LE.apply(z0, new Constant(b)))
+								.getAnd(beforeUpNowDown.apply(child), //GE.apply(z0, ZERO),
+										NEG.apply(ORIGIN),
+										LE.apply(z0, new Constant(b)))
 
 						)))),
 						CLTLocFormula.getAnd(first.apply(idFormula), stepUp.apply(child),
