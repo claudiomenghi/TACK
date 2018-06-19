@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ import zotrunner.ZotException;
 
 public class TAGetThetaTest {
 
-	Map<MITLIFormula, MITLIFormula> parentRelation = new HashMap<>();
+	Map<MITLIFormula, Set<MITLIFormula>> parentRelation = new HashMap<>();
 
 	/**
 	 * The property is not related to the model and thus it is not satisfied
@@ -72,7 +73,13 @@ public class TAGetThetaTest {
 
 	private void populateParentRelation(MITLIFormula f) {
 		Set<MITLIFormula> chidren = f.getChildren();
-		chidren.forEach(c -> parentRelation.put(c, f));
+		chidren.forEach(c -> 
+		{
+			if(!parentRelation.containsKey(c)) {
+				parentRelation.put(c, new HashSet<>());
+			}
+			parentRelation.get(c).add(f);
+		});
 
 		chidren.forEach(c -> this.populateParentRelation(c));
 
