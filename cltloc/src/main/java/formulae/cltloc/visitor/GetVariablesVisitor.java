@@ -241,7 +241,9 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 	@Override
 	public Set<Variable> visit(AssignNextVariable formula) {
 		Set<Variable> formulae = new HashSet<>();
-		formulae.add(formula.getVariable());
+		if(!(formula.getVariable() instanceof BoundedVariable)) {
+			formulae.add(formula.getVariable());
+		}
 		formulae.addAll(formula.getNextExpression().accept(this));
 		return formulae;
 	}
@@ -285,7 +287,10 @@ public class GetVariablesVisitor implements CLTLocVisitor<Set<Variable>> {
 	@Override
 	public Set<Variable> visit(AssignVariable assignVariable) {
 		Set<Variable> formulae = new HashSet<>();
-		formulae.add(assignVariable.getVariable());
+		if(!(assignVariable.getVariable() instanceof BoundedVariable)) {
+			formulae.add(assignVariable.getVariable());
+		}
+
 		formulae.addAll(assignVariable.getExpression().accept(this));
 
 		return formulae;

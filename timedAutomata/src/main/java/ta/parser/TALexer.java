@@ -40,7 +40,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class TALexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -102,8 +102,15 @@ public class TALexer extends Lexer {
 	        return true;
 	    }
 	    
+	    private void clean(){
+	    	boundedVariablesValues=new HashMap<>();
+	    	 declarations = new HashMap<String, String>();
+	    	 currentTaDeclarations = new HashMap<String, String>();
+	    	  currentProc="";
+	    }
 	    private void cleanCurrentTA(){
 	    	currentTaDeclarations = new HashMap<String, String>();
+	    	
 	    }
 
 	    private void addCurrentTADeecl(String name, String type){

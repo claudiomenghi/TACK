@@ -89,5 +89,49 @@ public class FischerTest {
 		assertTrue(solver.solve());
 
 	}
+	
+	@Test
+	public void testModelFisherSatisfiable() throws IOException, ZotException {
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/fisher7b/fischer_input.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		System.out.println(system);
+
+		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		CLTLocFormula res = converter.convert(system, new HashSet<>(), new HashSet<>());
+
+		CLTLocsolver solver = new CLTLocsolver(res, System.out, 20);
+
+		assertTrue(solver.solve());
+
+	}
+	
+	@Test
+	public void testModelFisherSatisfiable1() throws IOException, ZotException {
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/fisher7b/fischer_input1.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		System.out.println(system);
+
+		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		CLTLocFormula res = converter.convert(system, new HashSet<>(), new HashSet<>());
+
+		CLTLocsolver solver = new CLTLocsolver(res, System.out, 20);
+
+		assertTrue(solver.solve());
+
+	}
 
 }

@@ -50,7 +50,7 @@ public class MITLIEventually_AtoB extends MITLIEventually implements TemporizedF
 	 */
 	@Override
 	public String toString() {
-		return "(" + this.operator + "[" + String.valueOf(a) + "," + String.valueOf(b) + "]" + this.getChild() + ")";
+		return "(" + this.operator + "(" + String.valueOf(a) + "," + String.valueOf(b) + ")" + this.getChild() + ")";
 	}
 
 	/**

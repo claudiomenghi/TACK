@@ -1,10 +1,12 @@
 package tack.ta.fischer7;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -29,7 +31,7 @@ public class FischerTest {
 
 	@Test
 	public void test() throws IOException, ZotException {
-	
+
 		String path = ClassLoader.getSystemResource("tack/ta/fischer7/fischer_input_07.q").getPath();
 
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
@@ -47,18 +49,15 @@ public class FischerTest {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
-		boolean result = checker.check(null);
-
+		boolean result;
+		result = checker.check(null);
 		assertTrue(result);
 
 	}
-	
-	
-	
-	
+
 	@Test
 	public void testFormulaSatisfiable() throws IOException, ZotException {
-	
+
 		String path = ClassLoader.getSystemResource("tack/ta/fischer7/fischer_input_07.q").getPath();
 		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 		MITLILexer lexer = new MITLILexer(input);
@@ -67,14 +66,13 @@ public class FischerTest {
 		parser.setBuildParseTree(true);
 		MITLIFormula formula = parser.mitli().formula;
 
-		MITLIsolver solver=new MITLIsolver(formula, System.out, 20);
+		MITLIsolver solver = new MITLIsolver(formula, System.out, 20);
 		assertTrue(solver.solve());
 
 	}
-	
+
 	@Test
 	public void testModelSatisfiable() throws IOException, ZotException {
-
 
 		ANTLRInputStream tainput = new ANTLRFileStream(
 				ClassLoader.getSystemResource("tack/ta/fischer7/fischer_input_07.ta").getPath());
@@ -85,16 +83,14 @@ public class FischerTest {
 		SystemDecl system = taparser.ta().systemret;
 
 		System.out.println(system);
-		
-		TANetwork2CLTLoc converter=new TANetwork2CLTLoc();
-		CLTLocFormula res=converter.convert(system, new HashSet<>(), new HashSet<>());
-		
-		CLTLocsolver solver=new CLTLocsolver(res, System.out , 20);
+
+		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		CLTLocFormula res = converter.convert(system, new HashSet<>(), new HashSet<>());
+
+		CLTLocsolver solver = new CLTLocsolver(res, System.out, 20);
 
 		assertTrue(solver.solve());
 
 	}
-	
-	
 
 }

@@ -16,8 +16,15 @@
         return true;
     }
     
+    private void clean(){
+    	boundedVariablesValues=new HashMap<>();
+    	 declarations = new HashMap<String, String>();
+    	 currentTaDeclarations = new HashMap<String, String>();
+    	  currentProc="";
+    }
     private void cleanCurrentTA(){
     	currentTaDeclarations = new HashMap<String, String>();
+    	
     }
 
     private void addCurrentTADeecl(String name, String type){
@@ -73,6 +80,7 @@ import operators.*;
 	  
 }
  :
+ {clean();}
  	
  	(
 	 
