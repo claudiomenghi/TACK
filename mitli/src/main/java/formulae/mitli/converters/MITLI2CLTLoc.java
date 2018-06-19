@@ -48,10 +48,10 @@ public class MITLI2CLTLoc {
 		chidren.forEach(c ->
 
 		{
-			if (!parentRelation.containsKey(f)) {
-				parentRelation.put(f, new HashSet<>());
+			if (!parentRelation.containsKey(c)) {
+				parentRelation.put(c, new HashSet<>());
 			}
-			parentRelation.get(f).add(c);
+			parentRelation.get(c).add(f);
 
 		});
 
