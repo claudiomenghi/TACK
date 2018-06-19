@@ -53,7 +53,7 @@ public class MITLIGlobally_AtoB extends MITLIGlobally implements TemporizedFormu
 	 */
 	@Override
 	public String toString() {
-		return "(" + this.operator + "[" + String.valueOf(a) + "," + String.valueOf(b) + "]" + this.getChild() + ")";
+		return "(" + this.operator + "(" + String.valueOf(a) + "," + String.valueOf(b) + ")" + this.getChild() + ")";
 	}
 
 	/**

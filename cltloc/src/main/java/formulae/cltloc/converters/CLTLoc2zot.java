@@ -36,7 +36,7 @@ public class CLTLoc2zot implements Function<CLTLocFormula, String> {
 
 	public CLTLoc2zot(int bound, int maxConstant, ZotPlugin plugin) {
 		Preconditions.checkArgument(bound > 0, "The bound must be grather than zero");
-		this.bound = Math.max(10, bound);
+		this.bound = bound;
 		this.maxConstant = maxConstant;
 		this.plugin = plugin;
 	}
