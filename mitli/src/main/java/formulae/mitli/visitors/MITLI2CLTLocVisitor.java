@@ -292,7 +292,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		int formulaId = formulaIdMap.get(formula);
 
 		// return CLTLocFormula.TRUE;
-		return NEG.apply(G.apply(AND.apply(first.apply(formulaId), rest.apply(formulaId))));
+		return G.apply(AND.apply(NEG.apply(first.apply(formulaId)), NEG.apply(rest.apply(formulaId))));
 	}
 
 	/**
