@@ -67,15 +67,34 @@ system p1;
 ```
 
 # Property of interest
-
-
-### Operators
-
-1. `F_xy lower_time_bound upper_time_bound formula` 
+- `F_xy lower_time_bound upper_time_bound formula` 
     It represents the finally operator 
     -   `x` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the lower_time_bound instant
     -   `y` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the upper_time_bound instant
-
+- `G_xy lower_time_bound upper_time_bound formula`
+     It represents the globally operator 
+    -   `x` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the lower_time_bound instant
+    -   `y` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the upper_time_bound instant
+- `G_x+ lower_time_bound formula`
+    It represents the globally operator. The formula should hold from the lower_time_bound forever (no upper bound is provided). 
+    -   `x` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the lower_time_bound instant
+-  `F_x+ lower_time_bound formula`
+    It represents the finally operator (no upper bound is provided). 
+    -   `x` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the lower_time_bound instant
+-   `-> (formula1) (formula2)` 
+    It represents the implication operator
+-   `&& (formula1) (formula2)` 
+    It represents the AND operator
+-   `|| (formula1) (formula2)` 
+    It represents the OR operator
+-   `<-> (formula1) (formula2)` 
+    It represents the OR operator
+-   `U (formula1) (formula2)` 
+    It represents the UNTIL operator
+-   `id = INT` 
+    specifies the value of the variable `id`. If the variable is a local variable it should have the form `process_id`, where `process` is the process within which the variable is defined.
+-   `p_s` 
+    specifies that the process `p` is in the state `s`.
 
 # Developers corner
 
