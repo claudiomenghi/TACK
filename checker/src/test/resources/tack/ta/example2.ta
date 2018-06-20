@@ -7,8 +7,9 @@
 // Wed Sep 19 11:48:20 2001 
 // ------------------------------------------------------------ 
 
-
+int id=0;
 process P0 {
+int id1=0;
 clock x,z; 
 state bus_idle, bus_active, 
 bus_collision1{ x < 26 }, 

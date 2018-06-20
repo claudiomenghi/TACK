@@ -8,8 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.AbstractMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -248,17 +250,26 @@ public class SystemChecker {
 		this.checkingtime = cltlocSolver.getCheckingtime();
 
 		if (sat == true) {
-			this.generateTACKHistory("./output.hist.txt", "tack_history.txt", converter);
+			this.generateTACKHistory("./output.hist.txt", "tack_history.txt", converter, system);
 		}
 		return sat ? false : true;
 	}
 
-	private void generateTACKHistory(String zotHistoryFile, String tackHistoryFile, TANetwork2CLTLoc converter) {
+	private void generateTACKHistory(String zotHistoryFile, String tackHistoryFile, TANetwork2CLTLoc converter,SystemDecl system) {
 
 		System.out.println("\n Back parsing the history");
 		File zotHistory = new File(zotHistoryFile);
 		File tackHistory = new File(tackHistoryFile);
 
+		Set<String> variables = new HashSet<>();
+
+
+		for (TA ta : converter.getMapIdTA().values()) {
+			variables.addAll(ta.getAllVariables().stream().map(v -> (ta.getIdentifier()+"_"+v.getName()).toUpperCase()).collect(Collectors.toSet()));
+		}
+		
+		variables.addAll(	system.getVariableDeclaration().stream().map(v -> v.getId().toUpperCase()).collect(Collectors.toSet()));
+		System.out.println(variables);
 		try {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(tackHistory));
 			BufferedReader br = new BufferedReader(new FileReader(zotHistory));
@@ -270,12 +281,18 @@ public class SystemChecker {
 				}
 				if (line.toUpperCase().startsWith(converter.STATE_PREFIX)) {
 					String taID = line.toUpperCase().substring(converter.STATE_PREFIX.length(), line.indexOf(" ="));
-					TA ta=converter.getMapIdTA().get(Integer.parseInt(taID));
+					TA ta = converter.getMapIdTA().get(Integer.parseInt(taID));
 					String taName = ta.getIdentifier();
 					String stateID = line.toUpperCase().substring(line.indexOf("= ") + 2, line.length());
-					
-					String stateName =converter.getMapIdStateName().get(Integer.parseInt(stateID));
-					wr.write(taName+"."+stateName+"\n");
+
+					String stateName = converter.getMapIdStateName().get(Integer.parseInt(stateID));
+					wr.write(taName + "." + stateName + "\n");
+				}
+
+				if (line.contains(" =")) {
+					if (variables.contains(line.substring(0, line.indexOf(" =")).toUpperCase())) {
+						wr.write(line+"\n");
+					}
 				}
 				if (line.startsWith("now")) {
 					wr.write(line + "\n");
