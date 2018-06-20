@@ -8,7 +8,6 @@ The bipartite schema of the adopted decision procedure allows for decoupling sof
 On the one hand, software engineering concerns can be easily handled  by proposing an encoding of new TA semantics in the intermediate language.
 On the other hand, more efficient solvers can be developed for  the intermediate language. 
 
-TACK has been submitted to FM 2018.
 
 ### Authors
 - Claudio Menghi - claudio.menghi@gu.se
