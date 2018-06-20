@@ -16,6 +16,12 @@ RUN apt-get update && apt-get install -y oracle-java8-installer
 WORKDIR usr/local/
 RUN git clone https://github.com/fm-polimi/zot.git
 WORKDIR ../../
+WORKDIR usr/local/zot
+RUN git fetch
+RUN git checkout cltloc-reset
+WORKDIR ../../../
+
+
 
 RUN mkdir workspace
 WORKDIR workspace/
@@ -23,6 +29,8 @@ RUN git clone https://github.com/claudiomenghi/TACK.git
 
 
 WORKDIR TACK/checker/
+RUN git fetch
+RUN git checkout cltloc-reset
 RUN gradle fatJar
 WORKDIR ../../
 

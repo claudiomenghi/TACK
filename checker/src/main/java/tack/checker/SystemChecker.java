@@ -250,7 +250,7 @@ public class SystemChecker {
 		this.checkingtime = cltlocSolver.getCheckingtime();
 
 		if (sat == true) {
-			this.generateTACKHistory("./output.hist.txt", "tack_history.txt", converter, system);
+			this.generateTACKHistory("./output.hist.txt", "counterexample.txt", converter, system);
 		}
 		return sat ? false : true;
 	}
