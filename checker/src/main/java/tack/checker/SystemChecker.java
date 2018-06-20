@@ -294,7 +294,7 @@ public class SystemChecker {
 						wr.write(line+"\n");
 					}
 				}
-				if (line.toUpperCase().startsWith("NOW")) {
+				if (line.toUpperCase().contains("NOW")) {
 					wr.write(line + "\n");
 				}
 				if(line.toUpperCase().contains("LOOP")) {
