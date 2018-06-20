@@ -69,6 +69,16 @@ system p1;
 # Property of interest
 
 
+### Operators
+
+1. `F_xy lower_time_bound upper_time_bound formula` 
+    It represents the finally operator 
+    -   `x` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the lower_time_bound instant
+    -   `y` must be associated to the value `i` (included) or `e` excluded and specify whether the formula should hold in the upper_time_bound instant
+
+
+# Developers corner
+
 ### Replicate the experiment 
 1. `docker pull claudiomenghi/tack`
 2. `docker run --name tack -it claudiomenghi/tack bash`
