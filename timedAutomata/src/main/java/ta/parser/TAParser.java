@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.4
+// Generated from TA.g4 by ANTLR 4.6
 
 package ta.parser;
 
@@ -40,7 +40,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class TAParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.6", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =

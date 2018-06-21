@@ -1,4 +1,4 @@
-// Generated from TA.g4 by ANTLR 4.4
+// Generated from TA.g4 by ANTLR 4.6
 
 package ta.parser;
 
