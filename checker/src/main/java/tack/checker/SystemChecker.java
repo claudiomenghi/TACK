@@ -19,6 +19,7 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.BiMap;
+import com.google.common.io.ByteStreams;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.atoms.CLTLocClock;
@@ -241,7 +242,7 @@ public class SystemChecker {
 				CLTLocFormula.getAnd(taFormula, formula, additionalConstraints));
 		out.println("Conjunction of the formulae created");
 
-		CLTLocsolver cltlocSolver = new CLTLocsolver(conjunctionFormula, out, bound);
+		CLTLocsolver cltlocSolver = new CLTLocsolver(conjunctionFormula, new PrintStream( ByteStreams.nullOutputStream()), bound);
 		boolean sat = cltlocSolver.solve();
 		this.sattime = cltlocSolver.getSattime();
 		this.checkingspace = cltlocSolver.getCheckingspace();

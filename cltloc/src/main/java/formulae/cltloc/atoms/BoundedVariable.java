@@ -15,7 +15,6 @@ public class BoundedVariable extends Variable {
 			throw new IllegalArgumentException("The set of values cannot be null");
 		}
 		this.values = values;
-		System.out.println("Creating new bounded variable: " + name);
 	}
 
 	public Set<Integer> getValues() {

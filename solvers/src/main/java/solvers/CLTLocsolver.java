@@ -47,18 +47,18 @@ public class CLTLocsolver {
 		// String zotEncoding = new CLTLoc2Ae2sbvzot(bound).apply(formula);
 
 		
-		File f = new File("solver.txt");
-		ZotPlugin p = null;
+		File f = new File("config.txt");
+		ZotPlugin zotPlugin = null;
 		if (f.exists()) {
 			BufferedReader reader = new BufferedReader(new FileReader(f));
 			String solver = reader.readLine();
-			p = ZotPlugin.valueOf(solver.toUpperCase());
+			zotPlugin = ZotPlugin.valueOf(solver.toUpperCase());
 			reader.close();
 		} else {
-			p = ZotPlugin.AE2ZOT;
+			zotPlugin = ZotPlugin.AE2ZOT;
 		}
 
-		String zotEncoding = new CLTLoc2zot(bound, formula.accept(new CLTLocGetMaxBound()), p).apply(formula);
+		String zotEncoding = new CLTLoc2zot(bound, formula.accept(new CLTLocGetMaxBound()), zotPlugin).apply(formula);
 		timer.stop();
 		cltloc2zottime = timer.elapsed(TimeUnit.MILLISECONDS);
 
