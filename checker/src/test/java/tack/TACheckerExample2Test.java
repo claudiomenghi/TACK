@@ -21,6 +21,7 @@ import ta.SystemDecl;
 import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.visitors.TANetwork2CLTLocRC;
 import tack.checker.SystemChecker;
 import zotrunner.ZotException;
 
@@ -58,7 +59,7 @@ public class TACheckerExample2Test {
 		
 		System.out.println(ta);
 		System.out.println(ta.getLocalVariables());
-		SystemChecker checker = new SystemChecker(system, formula2, 20, System.out);
+		SystemChecker checker = new SystemChecker(system, formula2, 20, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
@@ -95,7 +96,7 @@ public class TACheckerExample2Test {
 		TA ta = system.getTimedAutomata().iterator().next();
 
 
-		SystemChecker checker = new SystemChecker(system, formula3, 20, System.out);
+		SystemChecker checker = new SystemChecker(system, formula3, 20, new TANetwork2CLTLocRC(),System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);

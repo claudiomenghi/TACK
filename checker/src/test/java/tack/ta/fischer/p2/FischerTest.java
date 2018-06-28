@@ -20,7 +20,7 @@ import solvers.MITLIsolver;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
-import ta.visitors.TANetwork2CLTLoc;
+import ta.visitors.TANetwork2CLTLocRC;
 import tack.checker.SystemChecker;
 import zotrunner.ZotException;
 
@@ -46,7 +46,7 @@ public class FischerTest {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 20, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -73,7 +73,7 @@ public class FischerTest {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 20, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 20, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);

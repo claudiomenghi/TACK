@@ -20,6 +20,7 @@ import ta.SystemDecl;
 import ta.TA;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.visitors.TANetwork2CLTLocRC;
 import tack.checker.SystemChecker;
 import zotrunner.ZotException;
 
@@ -44,8 +45,7 @@ public class TACheckerTest {
 		parser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-	
-		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
@@ -72,7 +72,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
@@ -99,13 +99,11 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
-
-	
 
 	/**
 	 * The property is not related to the model and thus it is not satisfied
@@ -135,7 +133,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
@@ -162,7 +160,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
@@ -189,7 +187,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -216,7 +214,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -243,13 +241,12 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
-	
-	
+
 	@Test
 	public void test9() throws FileNotFoundException, IOException, ZotException {
 		String path = ClassLoader.getSystemResource("tack/ta/examples/formula9.mitli").getPath();
@@ -271,7 +268,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -296,12 +293,12 @@ public class TACheckerTest {
 		parser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
-	
+
 	@Test
 	public void test11() throws FileNotFoundException, IOException, ZotException {
 		String path = ClassLoader.getSystemResource("tack/ta/examples/formula11.mitli").getPath();
@@ -323,7 +320,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system, formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -350,12 +347,12 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
-	
+
 	@Test
 	public void test13() throws FileNotFoundException, IOException, ZotException {
 		String path = ClassLoader.getSystemResource("tack/ta/examples/formula15.mitli").getPath();
@@ -377,12 +374,12 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);
 	}
-	
+
 	@Test
 	public void test14() throws FileNotFoundException, IOException, ZotException {
 		String path = ClassLoader.getSystemResource("tack/ta/examples/formula14.mitli").getPath();
@@ -404,7 +401,7 @@ public class TACheckerTest {
 
 		TA ta = system.getTimedAutomata().iterator().next();
 
-		SystemChecker checker = new SystemChecker(system,  formula, 5, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 5, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertTrue(result);

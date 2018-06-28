@@ -1,6 +1,9 @@
 package tack;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,12 +14,16 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import com.google.common.base.Preconditions;
 
+import formulae.cltloc.visitor.ZotPlugin;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.parser.MITLILexer;
 import formulae.mitli.parser.MITLIParser;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.visitors.TANetwork2CLTLoc;
+import ta.visitors.TANetwork2CLTLocO;
+import ta.visitors.TANetwork2CLTLocRC;
 import tack.checker.SystemChecker;
 
 public class Tack {
@@ -67,7 +74,35 @@ public class Tack {
 		SystemDecl system = taparser.ta().systemret;
 
 		out.println("Model loaded");
-		SystemChecker checker = new SystemChecker(system, formula, Integer.parseInt(bound), System.out);
+		
+		
+		TANetwork2CLTLoc converter=null;
+		File f = new File("config.txt");
+		ZotPlugin zotPlugin = null;
+		if (f.exists()) {
+			BufferedReader reader = new BufferedReader(new FileReader(f));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if(line.startsWith("tasemantics: ")) {
+					if(line.substring("tasemantics: ".length(),line.length()).equals("rightclosed")) {
+						converter =   new TANetwork2CLTLocRC();
+					}
+					if(line.substring("tasemantics: ".length(),line.length()).equals("open")) {
+						converter =   new TANetwork2CLTLocO();
+					}
+				}
+			}
+			reader.close();
+		} 
+		
+		if(converter==null){
+			converter =   new TANetwork2CLTLocRC();
+		}
+		
+		out.println("Semantic loaded");
+		
+		
+		SystemChecker checker = new SystemChecker(system, formula, Integer.parseInt(bound), converter,  System.out);
 		boolean result = checker.check(null);
 
 		out.println();

@@ -23,6 +23,7 @@ import formulae.mitli.parser.MITLIParser;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.visitors.TANetwork2CLTLocRC;
 import tack.checker.SystemChecker;
 
 public class TackFisherScalability {
@@ -74,7 +75,7 @@ public class TackFisherScalability {
 		SystemDecl system = taparser.ta().systemret;
 
 		out.println("Model loaded");
-		SystemChecker checker = new SystemChecker(system, formula, Integer.parseInt(bound), System.out);
+		SystemChecker checker = new SystemChecker(system, formula, Integer.parseInt(bound), new TANetwork2CLTLocRC(), System.out);
 		
 		CLTLocFormula f=CLTLocFormula.FALSE;
 		for(int i=1; i<=exampleNumber; i++){

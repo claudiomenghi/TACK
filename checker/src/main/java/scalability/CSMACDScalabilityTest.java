@@ -21,6 +21,7 @@ import formulae.mitli.parser.MITLIParser;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
+import ta.visitors.TANetwork2CLTLocRC;
 import tack.checker.SystemChecker;
 import zotrunner.ZotException;
 
@@ -66,7 +67,7 @@ public class CSMACDScalabilityTest {
 				SystemDecl system = taparser.ta().systemret;
 		
 				System.out.println("Running the model checker");
-				SystemChecker checker = new SystemChecker(system, formula, bound, new PrintStream(ByteStreams.nullOutputStream()));
+				SystemChecker checker = new SystemChecker(system, formula, bound, new TANetwork2CLTLocRC(), new PrintStream(ByteStreams.nullOutputStream()));
 				boolean result = checker.check(null);
 				fileWriter.write(bound+"\t"+numberOfWriters+"\t"+"\t"+checker.getMitli2cltlocTime()+"\t"+checker.getTa2clclocTime()+"\t"+checker.getCltloc2zotTime()+"\t"+checker.getCheckingTime()+"\t"+checker.getSattime()+"\t"+checker.getCheckingspace()+"\n");
 				System.out.println("BOUND \t NUMBER OF WRITERS \t MITLI2CLTLoc \t TA2CLTLoc \t CLTLoc2zot \t CHECKING \t SAT \t CHEKING SPACE \n");

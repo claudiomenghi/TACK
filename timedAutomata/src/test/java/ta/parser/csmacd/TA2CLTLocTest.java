@@ -15,7 +15,7 @@ import ta.StateAP;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
-import ta.visitors.TANetwork2CLTLoc;
+import ta.visitors.TANetwork2CLTLocRC;
 
 public class TA2CLTLocTest {
 
@@ -31,7 +31,7 @@ public class TA2CLTLocTest {
 		assertEquals("The system must contain the right number of automata", 3, system.getTimedAutomata().size());
 
 		
-		TANetwork2CLTLoc ta2cltloc=new TANetwork2CLTLoc();
+		TANetwork2CLTLocRC ta2cltloc=new TANetwork2CLTLocRC();
 		Set<StateAP> ap=new HashSet<>();
 		
 		ta2cltloc.convert(system, ap, new HashSet<>());

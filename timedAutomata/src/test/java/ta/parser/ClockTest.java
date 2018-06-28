@@ -19,7 +19,7 @@ import formulae.cltloc.visitor.GetClocksVisitor;
 import ta.StateAP;
 import ta.SystemDecl;
 import ta.TA;
-import ta.visitors.TANetwork2CLTLoc;
+import ta.visitors.TANetwork2CLTLocRC;
 
 public class ClockTest {
 
@@ -38,7 +38,7 @@ public class ClockTest {
 
 		Set<StateAP> propositionsOfInterest = new HashSet<>();
 
-		CLTLocFormula formula = new TANetwork2CLTLoc().convert(system, propositionsOfInterest, new HashSet<>());
+		CLTLocFormula formula = new TANetwork2CLTLocRC().convert(system, propositionsOfInterest, new HashSet<>());
 
 		
 		Set<CLTLocClock> clocks = formula.accept(new GetClocksVisitor());

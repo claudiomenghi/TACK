@@ -20,7 +20,7 @@ import solvers.MITLIsolver;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
-import ta.visitors.TANetwork2CLTLoc;
+import ta.visitors.TANetwork2CLTLocRC;
 import tack.checker.SystemChecker;
 import zotrunner.ZotException;
 
@@ -41,7 +41,7 @@ public class Examples {
 
 		System.out.println(system);
 
-		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		TANetwork2CLTLocRC converter = new TANetwork2CLTLocRC();
 		CLTLocFormula res = converter.convert(system, new HashSet<>(), new HashSet<>());
 
 		CLTLocsolver solver = new CLTLocsolver(res, System.out, 20);
@@ -69,7 +69,7 @@ public class Examples {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 10, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -96,7 +96,7 @@ public class Examples {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 10, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -149,7 +149,7 @@ public class Examples {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 10, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		assertFalse(result);
@@ -179,7 +179,7 @@ public class Examples {
 		SystemDecl system = taparser.ta().systemret;
 
 		System.out.println(system);
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 10, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		CLTLocFormula taEncoding = checker.getTAEncoding();
@@ -210,7 +210,7 @@ public class Examples {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		SystemChecker checker = new SystemChecker(system, formula, 10, System.out);
+		SystemChecker checker = new SystemChecker(system, formula, 10, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
 		CLTLocFormula taEncoding = checker.getTAEncoding();

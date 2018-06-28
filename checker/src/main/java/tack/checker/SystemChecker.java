@@ -29,6 +29,7 @@ import formulae.cltloc.operators.unary.CLTLocYesterday;
 import formulae.cltloc.visitor.GetClocksVisitor;
 import formulae.cltloc.visitor.GetSignalVisitor;
 import formulae.cltloc.visitor.GetVariablesVisitor;
+import formulae.cltloc.visitor.ZotPlugin;
 import formulae.mitli.MITLIFormula;
 import formulae.mitli.atoms.MITLIPropositionalAtom;
 import formulae.mitli.atoms.MITLIRelationalAtom;
@@ -42,6 +43,8 @@ import ta.TA;
 import ta.VariableAssignementAP;
 import ta.expressions.Value;
 import ta.visitors.TANetwork2CLTLoc;
+import ta.visitors.TANetwork2CLTLocO;
+import ta.visitors.TANetwork2CLTLocRC;
 import zotrunner.ZotException;
 
 public class SystemChecker {
@@ -79,6 +82,7 @@ public class SystemChecker {
 
 	private long sattime = 0;
 
+	private final TANetwork2CLTLoc converter;
 	public long getCltloc2zotTime() {
 		return cltloc2zotTime;
 	}
@@ -98,7 +102,7 @@ public class SystemChecker {
 	 * @throws IllegalArgumentException
 	 *             if the bound is not grater than zero
 	 */
-	public SystemChecker(SystemDecl system, MITLIFormula mitliformula, int bound, PrintStream out) {
+	public SystemChecker(SystemDecl system, MITLIFormula mitliformula, int bound, TANetwork2CLTLoc converter, PrintStream out) {
 		Preconditions.checkNotNull(mitliformula, "The formula of interest cannot be null");
 		Preconditions.checkArgument(bound > 0, "The bound should be grater than of zero");
 
@@ -106,8 +110,8 @@ public class SystemChecker {
 		this.mitliformula = mitliformula;
 		this.bound = bound;
 		this.out = out;
+		this.converter=converter;
 
-		System.out.println(mitliformula.toString());
 	}
 
 	public long getMitli2cltlocTime() {
@@ -197,7 +201,12 @@ public class SystemChecker {
 
 		timer.reset();
 		timer.start();
-		TANetwork2CLTLoc converter = new TANetwork2CLTLoc();
+		
+		
+	
+		
+
+		final TANetwork2CLTLoc conv=converter;
 
 		taFormula = converter.convert(system, atomicpropositions, atomicpropositionsVariable);
 
@@ -221,7 +230,7 @@ public class SystemChecker {
 		system.getTimedAutomata().stream()
 				.forEach(ta -> ta.getStates().stream()
 						.forEach(s -> stateIdMappingBuilder.append(ta.getIdentifier() + "\t" + s.getStringId() + ":\t"
-								+ converter.getMapStateId().get(new AbstractMap.SimpleEntry<>(ta, s.getStringId()))
+								+ conv.getMapStateId().get(new AbstractMap.SimpleEntry<>(ta, s.getStringId()))
 								+ "\n")));
 		File stateIdStringMappingfile = new File("elementsIDmap.txt");
 

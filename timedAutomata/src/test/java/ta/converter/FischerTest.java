@@ -14,7 +14,7 @@ import formulae.cltloc.CLTLocFormula;
 import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
-import ta.visitors.TANetwork2CLTLoc;
+import ta.visitors.TANetwork2CLTLocRC;
 
 public class FischerTest {
 
@@ -30,7 +30,7 @@ public class FischerTest {
 		taparser.setBuildParseTree(true);
 		SystemDecl system = taparser.ta().systemret;
 
-		TANetwork2CLTLoc  ta2cltloc=new TANetwork2CLTLoc();
+		TANetwork2CLTLocRC  ta2cltloc=new TANetwork2CLTLocRC();
 		CLTLocFormula f=ta2cltloc.convert(system, new HashSet<>(), new HashSet<>());
 
 		assertNotNull(f);

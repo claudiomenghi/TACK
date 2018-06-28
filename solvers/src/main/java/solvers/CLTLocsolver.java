@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Stopwatch;
 
 import formulae.cltloc.CLTLocFormula;
 import formulae.cltloc.converters.CLTLoc2zot;
-import formulae.cltloc.visitor.CLTLoc2StringVisitor;
 import formulae.cltloc.visitor.CLTLocGetMaxBound;
 import formulae.cltloc.visitor.ZotPlugin;
 import zotrunner.ZotException;
@@ -46,15 +44,21 @@ public class CLTLocsolver {
 
 		// String zotEncoding = new CLTLoc2Ae2sbvzot(bound).apply(formula);
 
-		
 		File f = new File("config.txt");
 		ZotPlugin zotPlugin = null;
 		if (f.exists()) {
 			BufferedReader reader = new BufferedReader(new FileReader(f));
-			String solver = reader.readLine();
-			zotPlugin = ZotPlugin.valueOf(solver.toUpperCase());
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if(line.startsWith("solver: ")) {
+					String solver = line;
+					zotPlugin = ZotPlugin.valueOf(line.substring("solver: ".length(), line.length()).toUpperCase());
+				}
+			}
 			reader.close();
-		} else {
+		} 
+		
+		if(zotPlugin==null){
 			zotPlugin = ZotPlugin.AE2ZOT;
 		}
 
