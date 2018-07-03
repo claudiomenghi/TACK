@@ -232,14 +232,14 @@ public class CLTLoc2ZotVisitor implements CLTLocVisitor<String> {
 	@Override
 	public String visit(AssignNextVariable formula) {
 		if (plugin.equals(ZotPlugin.AE2SBVZOTB1)) {
-			return "([=] (next (-V-  " + formula.getVariable() + "))  " + formula.getNextExpression().accept(this) + " )";
+			return "(next ([=]  (-V-  " + formula.getVariable() + ") " + formula.getNextExpression().accept(this) + " ))";
 		}
 
 		if (formula.getVariable() instanceof BoundedVariable) {
 			return " (next  (" + formula.getVariable() + "='" + formula.getNextExpression().accept(this) + " ))";
 		} else {
-			return "([=] (next (-V- " + formula.getVariable() + "))  " + formula.getNextExpression().accept(this)
-					+ " )";
+			return "(next ([=]  (-V- " + formula.getVariable() + ")  " + formula.getNextExpression().accept(this)
+					+ " ))";
 		}
 	}
 

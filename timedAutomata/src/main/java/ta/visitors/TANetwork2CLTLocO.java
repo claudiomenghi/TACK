@@ -421,28 +421,6 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 		}
 
 		return f;
-
-		/*
-		 * CLTLocFormula f=(CLTLocFormula) system.getTimedAutomata() .stream().map( ta
-		 * -> (CLTLocFormula) ta.getStates().stream() .map(s1 -> (CLTLocFormula)
-		 * ta.getStates().stream().filter(s2 -> !s2.equals(s1)) .map(s2 ->
-		 * (CLTLocFormula) implicationOperator.apply( conjunctionOperator.apply( new
-		 * CLTLocEQRelation(
-		 * formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(STATE_PREFIX +
-		 * ta.getId(), this.getPossibleStateVariableValues(ta)), new Constant(
-		 * this.getId(ta, s1))), new CLTLocNext(new CLTLocEQRelation(
-		 * formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(STATE_PREFIX +
-		 * ta.getId(), this.getPossibleStateVariableValues(ta)), new
-		 * Constant(this.getId(ta, s2))))), ta.getTransitions().stream() .filter(t1 ->
-		 * t1.getSource().equals(s1) && t1.getDestination().equals(s2)) .map(t1 ->
-		 * (CLTLocFormula) new CLTLocEQRelation(
-		 * formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta.getId(),
-		 * this.getPossibleTransitionVariableValues(ta)), new Constant(t1.getId())))
-		 * .reduce(CLTLocFormula.FALSE, disjunctionOperator)))
-		 * .reduce(CLTLocFormula.TRUE, conjunctionOperator)) .reduce(CLTLocFormula.TRUE,
-		 * conjunctionOperator)) .reduce(CLTLocFormula.TRUE, conjunctionOperator);
-		 */
-
 	}
 
 	protected CLTLocFormula getInvariant(SystemDecl system) {

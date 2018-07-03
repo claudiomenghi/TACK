@@ -37,6 +37,7 @@ import ta.transition.Transition;
 import ta.transition.assignments.ClockAssignement;
 import ta.transition.assignments.VariableAssignement;
 import ta.transition.guard.ClockConstraintAtom;
+import ta.transition.sync.SyncExpression.Operator;
 
 public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 
@@ -130,7 +131,7 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 	 */
 	private CLTLocFormula getTransitionConstraint(SystemDecl system) {
 
-		CLTLocFormula ret = CLTLocFormula.TRUE;
+		CLTLocFormula ret1 = CLTLocFormula.TRUE;
 		for (TA ta : system.getTimedAutomata()) {
 			CLTLocFormula f = CLTLocFormula.TRUE;
 			for (Transition t : ta.getTransitions()) {
@@ -161,10 +162,121 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 														this.getAssignclock(ta, t)))));
 				f = conjunctionOperator.apply(f, transFormula);
 			}
-			ret = conjunctionOperator.apply(ret, f);
+			ret1 = conjunctionOperator.apply(ret1, f);
 		}
-
-		return (CLTLocFormula) ret;
+		
+		CLTLocFormula ret2 = CLTLocFormula.TRUE;
+		
+		
+		for (TA ta : system.getTimedAutomata()) {
+			CLTLocFormula taf = CLTLocFormula.TRUE;
+			
+			for (Transition t : ta.getTransitions()) {
+				
+				if(t.getSync().getOperator().equals(Operator.BROADCAST_SEND)) {
+				
+					
+					CLTLocFormula broadcastinTransition=new CLTLocEQRelation(
+							formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta.getId(),
+									this.getPossibleTransitionVariableValues(ta)),
+							new Constant(t.getId()));
+					
+					CLTLocFormula otherautomatatransitions=CLTLocFormula.TRUE;
+					for (TA ta2 : system.getTimedAutomata()) {
+						if(!ta2.equals(ta)) {
+							CLTLocFormula transitionFired=CLTLocFormula.TRUE;
+							
+							for(Transition t2: ta2.getTransitions()) {
+								transitionFired=CLTLocFormula.getOr(transitionFired, 
+								new CLTLocEQRelation(
+										formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta2.getId(),
+												this.getPossibleTransitionVariableValues(ta2)),
+										new Constant(t2.getId())));
+							}
+							
+							CLTLocFormula noTransitionFired=CLTLocFormula.TRUE;
+							
+							for(Transition t2: ta2.getTransitions()) {
+								noTransitionFired= CLTLocFormula.getAnd(noTransitionFired, 
+										CLTLocFormula.getOr(
+										new CLTLocNext(CLTLocFormula.getNeg(this.getClockGuard(ta2, t2))),
+										CLTLocFormula.getNeg(this.getVariableGuard(system, ta2, t2)),
+										CLTLocFormula.getNeg(new CLTLocEQRelation(
+												formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(
+														STATE_PREFIX + ta2.getId(),
+														this.getPossibleStateVariableValues(ta2)),
+												new Constant(this.getId(ta2, t2.getSource())))
+										)
+										)
+										);
+							}
+							
+							CLTLocFormula noOtherBroadcast=CLTLocFormula.TRUE;
+							
+							for(Transition t2: ta2.getTransitions()) {
+								if(t2.getSync().getOperator().equals(Operator.BROADCAST_SEND)) {
+									noOtherBroadcast= CLTLocFormula.getAnd(noOtherBroadcast,  
+											CLTLocFormula.getNeg(new CLTLocEQRelation(
+													formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta2.getId(),
+															this.getPossibleTransitionVariableValues(ta2)),
+													new Constant(t2.getId()))));
+								}
+							}
+							otherautomatatransitions=CLTLocFormula.getAnd(otherautomatatransitions,
+							CLTLocFormula.getAnd(CLTLocFormula.getOr(transitionFired, noTransitionFired), noOtherBroadcast));
+							
+						}
+					}
+					
+					CLTLocFormula firingtransition=implicationOperator.apply(broadcastinTransition, otherautomatatransitions);
+					taf=CLTLocFormula.getAnd(taf, firingtransition);
+					
+				}
+				
+				
+				
+				ret2=CLTLocFormula.getAnd(ret2,taf);
+			}
+		}
+		
+		CLTLocFormula ret3=CLTLocFormula.TRUE;
+		
+		for (TA ta : system.getTimedAutomata()) {
+			CLTLocFormula taf = CLTLocFormula.TRUE;
+			
+			for (Transition t : ta.getTransitions()) {
+				if(t.getSync().getOperator().equals(Operator.BROADCAST_RECEIVE)){
+					
+					CLTLocFormula firingTransition=new CLTLocEQRelation(
+							formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta.getId(),
+									this.getPossibleTransitionVariableValues(ta)),
+							new Constant(t.getId()));
+					
+					CLTLocFormula broadCastTransitions=CLTLocFormula.TRUE;
+					for (TA ta2 : system.getTimedAutomata()) {
+						if(!ta2.equals(ta)) {
+								 
+							for (Transition t2 : ta.getTransitions()) {
+								if(t.getSync().getOperator().equals(Operator.BROADCAST_SEND)){
+									CLTLocFormula firingSenderTransition=new CLTLocEQRelation(
+											formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta2.getId(),
+													this.getPossibleTransitionVariableValues(ta2)),
+											new Constant(t2.getId()));
+								
+									broadCastTransitions=CLTLocFormula.getOr(broadCastTransitions, firingSenderTransition);
+							}
+						}
+					}
+					
+						taf=CLTLocFormula.getAnd(taf, implicationOperator.apply(firingTransition, broadCastTransitions));
+				}
+				
+				}
+			}
+			ret3=CLTLocFormula.getAnd(ret3,taf);
+		}
+		
+		return (CLTLocFormula) CLTLocFormula.getAnd(ret1,ret2,ret3);
 
 	}
 
@@ -351,59 +463,7 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 		return CLTLocFormula.getAnd(globalClocks, localClocks);
 	}
 
-	/*
-	 * protected CLTLocFormula getClock2(SystemDecl system) {
-	 * 
-	 * Set<Clock> clocks = system.getGlobalClocks();
-	 * 
-	 * CLTLocFormula globalClocks = clocks.stream().map(c -> { return
-	 * (CLTLocFormula) CLTLocImplies.create( new CLTLocRelation(new
-	 * CLTLocClock(c.getName() + "_0"), zero, Relation.EQ), new CLTLocNext(new
-	 * CLTLocRelease( new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero,
-	 * Relation.EQ), CLTLocConjunction.getAnd(new CLTLocNegation(new
-	 * CLTLocSelector(c.getName() + "_v")), new CLTLocRelation(new
-	 * CLTLocClock(c.getName() + "_0"), zero, Relation.GE)))));
-	 * }).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-	 * 
-	 * CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta ->
-	 * ta.getLocalClocks().stream().map(c -> { String prefix = ta.getIdentifier() +
-	 * "_"; return (CLTLocFormula) CLTLocImplies.create( new CLTLocRelation(new
-	 * CLTLocClock(prefix + c.getName() + "_0"), zero, Relation.EQ), new
-	 * CLTLocNext(new CLTLocRelease( new CLTLocRelation(new CLTLocClock(prefix +
-	 * c.getName() + "_1"), zero, Relation.EQ), CLTLocConjunction.getAnd( new
-	 * CLTLocNegation( new CLTLocSelector(prefix + c.getName() + "_v")), new
-	 * CLTLocRelation(new CLTLocClock(prefix + c.getName() + "_0"), zero,
-	 * Relation.GE))))); }).reduce(CLTLocFormula.TRUE,
-	 * conjunctionOperator)).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-	 * 
-	 * return CLTLocFormula.getAnd(globalClocks, localClocks); }
-	 * 
-	 * protected CLTLocFormula getClock3(SystemDecl system) {
-	 * 
-	 * Set<Clock> clocks = system.getClockDeclarations().stream().map(c -> (Clock)
-	 * new Clock(c.getId())) .collect(Collectors.toSet());
-	 * 
-	 * CLTLocFormula globalClocks = clocks.stream() .map(c -> (CLTLocFormula)
-	 * CLTLocImplies.create( new CLTLocRelation(new CLTLocClock(c.getName() + "_1"),
-	 * zero, Relation.EQ), new CLTLocNext(new CLTLocRelease( new CLTLocRelation(new
-	 * CLTLocClock(c.getName() + "_0"), zero, Relation.EQ),
-	 * CLTLocConjunction.getAnd(new CLTLocSelector(c.getName() + "_v"), new
-	 * CLTLocRelation(new CLTLocClock(c.getName() + "_1"), zero, Relation.GE))))))
-	 * .reduce(CLTLocFormula.TRUE, conjunctionOperator);
-	 * 
-	 * CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta ->
-	 * ta.getLocalClocks().stream().map(c -> { String prefix = ta.getIdentifier() +
-	 * "_"; return (CLTLocFormula) CLTLocImplies.create( new CLTLocRelation(new
-	 * CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.EQ), new
-	 * CLTLocNext(new CLTLocRelease( new CLTLocRelation(new CLTLocClock(prefix +
-	 * c.getName() + "_0"), zero, Relation.EQ), CLTLocConjunction.getAnd(new
-	 * CLTLocSelector(prefix + c.getName() + "_v"), new CLTLocRelation(new
-	 * CLTLocClock(prefix + c.getName() + "_1"), zero, Relation.GE)))));
-	 * }).reduce(CLTLocFormula.TRUE,
-	 * conjunctionOperator)).reduce(CLTLocFormula.TRUE, conjunctionOperator);
-	 * 
-	 * return CLTLocFormula.getAnd(globalClocks, localClocks); }
-	 */
+	
 	/**
 	 * encodes formula phi5 of the paper
 	 * 

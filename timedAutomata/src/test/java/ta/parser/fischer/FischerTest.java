@@ -15,6 +15,7 @@ import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.transition.Transition;
 import ta.transition.sync.SyncExpression;
+import ta.transition.sync.SyncExpression.Operator;
 
 public class FischerTest {
 
@@ -40,7 +41,7 @@ public class FischerTest {
 		
 		for(Transition t: ta.getTransitions()){
 			SyncExpression e=t.getSync();
-			assertTrue(e.getOperator().equals("TAU"));
+			assertTrue(e.getOperator().equals(Operator.TAU));
 		}
 	}
 

@@ -4,6 +4,60 @@ import com.google.common.base.Preconditions;
 
 public class SyncExpression {
 
+	private final String event;
+	private final Operator operator;
+
+	public SyncExpression(String event, String operator) {
+		Preconditions.checkNotNull(event, "The event cannot be null");
+		Preconditions.checkNotNull(operator, "The operator cannot be null");
+		this.event = event;
+		this.operator = Operator.parse(operator);
+
+	}
+
+	public String getEvent() {
+		return this.event;
+	}
+
+	
+
+	public Operator getOperator() {
+		return operator;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return event +operator;
+	}
+
+	public enum Operator {
+		BROADCAST_SEND("#"), BROADCAST_RECEIVE("@"), TAU("TAU");
+
+		private final String operaor;
+
+		private Operator(String operator) {
+			this.operaor = operator;
+		}
+
+		public static Operator parse(String value) {
+			switch (value) {
+			case "!":
+				return Operator.BROADCAST_SEND;
+			case "?":
+				return Operator.BROADCAST_RECEIVE;
+			default:
+				return Operator.TAU;
+			}
+		}
+
+		public String toString() {
+			return this.operaor;
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -33,55 +87,5 @@ public class SyncExpression {
 		} else if (!operator.equals(other.operator))
 			return false;
 		return true;
-	}
-
-
-	private final String event;
-	private final String operator;
-
-	public SyncExpression(String event, String operator) {
-		Preconditions.checkNotNull(event, "The event cannot be null");
-		Preconditions.checkNotNull(operator, "The operator cannot be null");
-		this.event = event;
-		this.operator = operator;
-
-	}
-
-	public String getEvent() {
-		return this.event;
-	}
-
-	public String getOperator() {
-		return operator;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		return event + operator;
-	}
-	
-	
-	public enum Operator {
-		SEND("?"), RECEIVED("!"), TAU("TAU");
-
-		private final String operaor;
-
-		private Operator(String operator) {
-			this.operaor = operator;
-		}
-
-		public static Operator parse(String value){
-			switch(value){
-				case "?": return Operator.SEND;
-				case "!": return Operator.RECEIVED;
-				default: return Operator.TAU;
-			}
-		}
-		public String toString() {
-			return this.operaor;
-		}
 	}
 }

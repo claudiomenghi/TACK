@@ -26,6 +26,7 @@ import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.state.State;
 import ta.transition.Transition;
+import ta.transition.sync.SyncExpression.Operator;
 import ta.visitors.TAVisitor;
 
 public class TA {
@@ -78,13 +79,11 @@ public class TA {
 	private final Map<Entry<State, State>, Set<Transition>> mapSourceDestinationTransitions;
 
 	private final Map<State, Set<State>> successors;
-	
+
 	public boolean containsVariable(String variableId) {
-		return this.variableDeclaration.stream().map(d -> d.getId())
-				.collect(Collectors.toSet()).contains(variableId);
+		return this.variableDeclaration.stream().map(d -> d.getId()).collect(Collectors.toSet()).contains(variableId);
 	}
-	
-	
+
 	public boolean isBounded(String variableId) {
 		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId())
 				.collect(Collectors.toSet()).contains(variableId);
@@ -138,15 +137,16 @@ public class TA {
 			t.getGuard().getConditions().forEach(g -> allVariables.addAll(g.getVariables()));
 			t.getAssignement().getVariableassigments().forEach(v -> allVariables.add(v.getVariable()));
 			if (t.getSync() != null && t.getSync().getEvent() != null) {
-				if (t.getSync().getOperator() != "TAU" && t.getSync().getOperator() != "tau") {
+				if (t.getSync().getOperator() != Operator.TAU) {
 					if (!this.actions.contains(t.getSync().getEvent())) {
 						this.actions.add(t.getSync().getEvent());
 					}
-					if (!this.sendActions.contains(t.getSync().getEvent()) && t.getSync().getOperator().equals("!")) {
+					if (!this.sendActions.contains(t.getSync().getEvent())
+							&& t.getSync().getOperator().equals(Operator.BROADCAST_SEND)) {
 						this.sendActions.add(t.getSync().getEvent());
 					}
 					if (!this.receiveActions.contains(t.getSync().getEvent())
-							&& t.getSync().getOperator().equals("?")) {
+							&& t.getSync().getOperator().equals(Operator.BROADCAST_RECEIVE)) {
 						this.receiveActions.add(t.getSync().getEvent());
 					}
 				}
@@ -170,11 +170,10 @@ public class TA {
 						.get(new AbstractMap.SimpleEntry<>(t.getSource(), t.getDestination())).add(t);
 			}
 		}
-		
-		
-		this.successors=new HashMap<>();
-		
-		for(State s: this.states){
+
+		this.successors = new HashMap<>();
+
+		for (State s : this.states) {
 			this.successors.put(s, new HashSet<>());
 		}
 		for (Transition t : this.transitions) {
@@ -182,9 +181,10 @@ public class TA {
 		}
 	}
 
-	public Set<State> successors(State s){
+	public Set<State> successors(State s) {
 		return this.successors.get(s);
 	}
+
 	public Set<Transition> getTransitions(State source, State destination) {
 		if (this.mapSourceDestinationTransitions.containsKey(new AbstractMap.SimpleEntry<>(source, destination))) {
 			return this.mapSourceDestinationTransitions.get(new AbstractMap.SimpleEntry<>(source, destination));
