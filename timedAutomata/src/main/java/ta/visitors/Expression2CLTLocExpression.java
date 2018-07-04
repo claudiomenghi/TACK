@@ -24,8 +24,7 @@ public class Expression2CLTLocExpression {
 			}
 		}
 		
-		System.out.println("left "+left);
-
+		
 		formulae.cltloc.atoms.Expression right;
 		if (binaryArithmeticExpression.getRightChild() instanceof Identifier) {
 			right = new Variable(((Identifier) binaryArithmeticExpression.getRightChild()).getId());
@@ -37,7 +36,6 @@ public class Expression2CLTLocExpression {
 			}
 		}
 		
-		System.out.println("right "+right);
 		return new CLTLocArithmeticExpression(left, binaryArithmeticExpression.getOperator(), right);
 	}
 

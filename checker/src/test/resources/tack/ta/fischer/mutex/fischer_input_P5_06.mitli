@@ -1,0 +1,1 @@
+G_i+ 0 (! (|| (&& (p1_cs) (|| (p2_cs)  (p3_cs)  (p4_cs)  (p5_cs)  (p6_cs) ) ) (&& (p2_cs) (|| (p3_cs)  (p4_cs)  (p5_cs)  (p6_cs) ) ) (&& (p3_cs) (|| (p4_cs)  (p5_cs)  (p6_cs) ) ) (&& (p4_cs) (|| (p5_cs)  (p6_cs) ) ) (&& (p5_cs) (p6_cs) ) ) )

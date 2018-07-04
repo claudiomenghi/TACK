@@ -23,7 +23,6 @@ public class SystemDecl {
 	private final Set<Variable> variables;
 	
 	public boolean isBounded(String variableId){
-		System.out.println(variableDeclaration);
 		return this.variableDeclaration.stream().filter(d -> d instanceof BoundedVariableDecl).map(d -> d.getId()).collect(Collectors.toSet()).contains(variableId);
 	}
 	
@@ -50,7 +49,6 @@ public class SystemDecl {
 
 		
 		this.variableDeclaration.forEach(v -> {
-			System.out.println("Adding the variable "+v.getId());
 			variables.add(new Variable(v.getId()));});
 		
 		allClocks=new HashSet<>();

@@ -181,20 +181,11 @@ public class SystemChecker {
 					a.getAtomName().substring(a.getAtomName().indexOf("_") + 1, a.getAtomName().length()));
 		}).collect(Collectors.toSet());
 
-		// out.println("------------------");
-		// out.println("CLTLoc encoding");
-		// out.println(formula);
-
-		// out.println("\n");
-		// out.println("\n");
-		// out.println("\n");
-		// out.println("************************************************");
-		// out.println("************** VOCABULARY ***************");
+		
 
 		StringBuilder vocabularyBuilder = new StringBuilder();
 		vocabular.entrySet().forEach(e -> vocabularyBuilder.append(e.getValue() + "\t" + e.getKey() + "\n"));
-		System.out.print(vocabularyBuilder.toString());
-
+	
 		out.println("************************************************");
 		out.println("************************************************");
 		out.println("Converting the TA in CLTLoc");
@@ -212,17 +203,9 @@ public class SystemChecker {
 
 		out.println("TA converted in CLTLoc");
 
-		// out.println("------------------");
 		timer.stop();
 		this.ta2clclocTime = timer.elapsed(TimeUnit.MILLISECONDS);
 
-		out.println("-------------INFO--------");
-		// out.println(system.getGlobalClocks());
-		// out.println("TA encoding");
-		// out.println(taFormula);
-		// out.println("************************************************");
-
-		out.println(system.toString());
 		out.println("************************************************");
 
 		// out.println(converter.getMapStateId());
@@ -243,14 +226,13 @@ public class SystemChecker {
 								+ "\t" + s.getDestination().getStringId() + "\t" + s.getId() + "\n")));
 		FileUtils.writeStringToFile(stateIdStringMappingfile, transitionsIdMappingBuilder.toString(), true);
 
-		// out.println(formula);
-		// out.println(translator.getVocabulary());
 
 		out.println("Creating the of the CLTLoc formulae of the model and the property");
 		CLTLocFormula conjunctionFormula = new CLTLocYesterday(
 				CLTLocFormula.getAnd(taFormula, formula, additionalConstraints));
 		out.println("Conjunction of the formulae created");
 
+		out.println("Running ZOT... This might take a while");
 		CLTLocsolver cltlocSolver = new CLTLocsolver(conjunctionFormula, new PrintStream( ByteStreams.nullOutputStream()), bound);
 		boolean sat = cltlocSolver.solve();
 		this.sattime = cltlocSolver.getSattime();
@@ -279,7 +261,6 @@ public class SystemChecker {
 		}
 		
 		variables.addAll(	system.getVariableDeclaration().stream().map(v -> v.getId().toUpperCase()).collect(Collectors.toSet()));
-		System.out.println(variables);
 		try {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(tackHistory));
 			BufferedReader br = new BufferedReader(new FileReader(zotHistory));

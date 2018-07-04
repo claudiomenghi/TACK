@@ -115,7 +115,6 @@ import operators.*;
 				}
 			
 			if(boundedVariablesValues.containsKey(entry.getKey())){
-				System.out.println("Variable: "+entry.getKey());
 				variableDeclaration.add(new BoundedVariableDecl(type,  entry.getKey(), entry.getValue(),boundedVariablesValues.get(entry.getKey())));	
 			}
 			else{

@@ -558,7 +558,6 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 
 				}).reduce(CLTLocFormula.TRUE, conjunctionOperator)).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
-		System.out.println(localVariables);
 		return CLTLocFormula.getAnd(localVariables, globalVariables);
 	}
 
@@ -639,9 +638,7 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 	protected CLTLocFormula variablesAreTrueOnlyIfAssignmentsAreSatisfied(SystemDecl system,
 			Set<VariableAssignementAP> atomicpropositionsVariable) {
 
-		System.out.println(atomicpropositionsVariable);
-		System.out.println(system.isBounded("Astop"));
-
+		
 		return (CLTLocFormula) atomicpropositionsVariable.stream().map(ap ->
 
 		{
@@ -700,8 +697,6 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 
 		return (CLTLocFormula) atomicpropositionsVariable.stream().map(ap -> {
 
-			System.out.println("Automaton!!!!");
-			System.out.println(ap.getAutomaton());
 			if (ap.getAutomaton().equals("")) {
 				formulae.cltloc.atoms.Variable variable = system.isBounded(ap.getVariable().getName())
 						? formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(ap.getVariable().getName(),

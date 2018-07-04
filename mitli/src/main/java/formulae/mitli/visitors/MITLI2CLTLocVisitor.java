@@ -1073,8 +1073,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 		// CLTLocClock z1 = newz1clock.apply(formula);
 
 		CLTLocFormula f2 = CLTLocFormula.TRUE;
-		System.out.println(formula);
-
+		
 		if ((formula instanceof MITLIEventually_AtoB) || (formula instanceof MITLIEventually_ZerotoB)
 				|| (formula instanceof MITLIEventually_AtoInf)) {
 			CLTLocFormula f1 = EQ.apply(z0, ZERO);
@@ -1121,8 +1120,7 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		if (result.equals(CLTLocFormula.TRUE) && f2.equals(CLTLocFormula.TRUE))
 			return CLTLocFormula.TRUE;
-		System.out.println(f2);
-
+	
 		return AND.apply(result, G.apply(f2));
 	}
 
