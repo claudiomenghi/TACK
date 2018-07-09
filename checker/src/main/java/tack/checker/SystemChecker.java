@@ -227,7 +227,7 @@ public class SystemChecker {
 		FileUtils.writeStringToFile(stateIdStringMappingfile, transitionsIdMappingBuilder.toString(), true);
 
 
-		out.println("Creating the of the CLTLoc formulae of the model and the property");
+		out.println("Creating the CLTLoc formulae of the model and the property");
 		CLTLocFormula conjunctionFormula = new CLTLocYesterday(
 				CLTLocFormula.getAnd(taFormula, formula, additionalConstraints));
 		out.println("Conjunction of the formulae created");
