@@ -23,7 +23,11 @@ Type the following commands
 2. `docker run --name tack -it claudiomenghi/tack bash`
 3. `java -jar tack.jar model.ta property.mitli bound` for example, run
 `java -jar tack.jar fischer/fischer_input_02.ta fischer/fischer_input_P0.mitli 10`
+4. `exit` exits the docker machine
 
+To restart the machine after it has been exited use the following commands
+1. `docker start tack`
+2. `docker attach tack`
 
 ## Tool inputs
 Two inputs must be provided to the tool:
