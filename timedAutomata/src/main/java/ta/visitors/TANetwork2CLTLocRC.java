@@ -155,7 +155,6 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 																				this.getPossibleStateVariableValues(
 																						ta)),
 																new Constant(this.getId(ta, t.getDestination()))),
-
 														this.getClockGuard(ta, t),
 														t.getDestination().getInvariant().accept(ta,
 																new ReverseInvariantVisitor()),

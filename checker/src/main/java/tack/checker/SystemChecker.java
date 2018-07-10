@@ -254,6 +254,7 @@ public class SystemChecker {
 		File tackHistory = new File(tackHistoryFile);
 
 		Set<String> variables = new HashSet<>();
+		Set<String> clocks = new HashSet<>();
 
 
 		for (TA ta : converter.getMapIdTA().values()) {
@@ -261,30 +262,40 @@ public class SystemChecker {
 		}
 		
 		variables.addAll(	system.getVariableDeclaration().stream().map(v -> v.getId().toUpperCase()).collect(Collectors.toSet()));
+		clocks.addAll(system.getClockDeclarations().stream().map(v -> v.getId().toUpperCase()+"_0").collect(Collectors.toSet()));
+		
 		try {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(tackHistory));
 			BufferedReader br = new BufferedReader(new FileReader(zotHistory));
 			String line;
 
 			while ((line = br.readLine()) != null) {
-				if (line.startsWith("------ time")) {
+				line=line.replace(" ", "");
+				if (line.startsWith("------time")) {
 					wr.write(line + "\n");
 				}
 				if (line.toUpperCase().startsWith(converter.STATE_PREFIX)) {
-					String taID = line.toUpperCase().substring(converter.STATE_PREFIX.length(), line.indexOf(" ="));
+					
+					String taID = line.toUpperCase().substring(converter.STATE_PREFIX.length(), line.indexOf("="));
 					TA ta = converter.getMapIdTA().get(Integer.parseInt(taID));
 					String taName = ta.getIdentifier();
-					String stateID = line.toUpperCase().substring(line.indexOf("= ") + 2, line.length());
+					String stateID = line.toUpperCase().substring(line.indexOf("=") + 1, line.length());
 
 					String stateName = converter.getMapIdStateName().get(Integer.parseInt(stateID));
 					wr.write(taName + "." + stateName + "\n");
 				}
-
-				if (line.contains(" =")) {
-					if (variables.contains(line.substring(0, line.indexOf(" =")).toUpperCase())) {
+				
+				if (line.contains("=")) {
+					if (variables.contains(line.substring(0, line.indexOf("=")).toUpperCase())) {
 						wr.write(line+"\n");
 					}
 				}
+				if (line.contains("=")) {
+					if (clocks.contains(line.substring(0, line.indexOf("=")).toUpperCase())) {
+						wr.write(line.replace("_0", "")+"\n");
+					}
+				}
+
 				if (line.toUpperCase().contains("NOW")) {
 					wr.write(line + "\n");
 				}
