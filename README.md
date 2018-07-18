@@ -15,6 +15,8 @@ On the other hand, more efficient solvers can be developed for  the intermediate
 - Matteo Rossi - matteo.rossi@polimi.it
 - Pierluigi San Pietro - pierluigisanpietro@gmail.com
 
+### Related tool
+- QTLSolver is the ancestor of TACK solving the satisfiability for MITL formulae over signals. The active repository is https://github.com/fm-polimi/qtlsolver while the original one with a more comprehensive user wiki is at https://code.google.com/archive/p/qtlsolver/.
 
 ### Running TACK using docker
 Type the following commands 
