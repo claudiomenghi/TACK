@@ -19,8 +19,6 @@ public class SyncExpression {
 		return this.event;
 	}
 
-	
-
 	public Operator getOperator() {
 		return operator;
 	}
@@ -30,11 +28,11 @@ public class SyncExpression {
 	 */
 	@Override
 	public String toString() {
-		return event +operator;
+		return event + operator;
 	}
 
 	public enum Operator {
-		BROADCAST_SEND("#"), BROADCAST_RECEIVE("@"), TAU("TAU");
+		BROADCAST_SEND("#"), BROADCAST_RECEIVE("@"), TAU("TAU"), CHANNEL_SEND("!"), CHANNEL_RECEIVED("?");
 
 		private final String operaor;
 
@@ -44,10 +42,15 @@ public class SyncExpression {
 
 		public static Operator parse(String value) {
 			switch (value) {
-			case "!":
+			case "#":
 				return Operator.BROADCAST_SEND;
-			case "?":
+			case "@":
 				return Operator.BROADCAST_RECEIVE;
+			case "!":
+				return Operator.CHANNEL_SEND;
+			case "?":
+				return Operator.CHANNEL_RECEIVED;
+
 			default:
 				return Operator.TAU;
 			}
