@@ -63,6 +63,8 @@ public abstract class MITLIFormula extends Formula {
 	}
 
 	public static MITLIFormula U(MITLIFormula f1, MITLIFormula f2) {
+		Preconditions.checkNotNull(f1, "left child cannot be null");
+		Preconditions.checkNotNull(f2, "left child cannot be null");
 		return new MITLIUntil(f1, f2);
 	}
 
@@ -109,7 +111,7 @@ public abstract class MITLIFormula extends Formula {
 	public static MITLIFormula G_inf(MITLIFormula f, int a) {
 		Preconditions.checkNotNull(f, "The formula cannot be null");
 		if (a == 0) {
-			return R(FALSE, f);
+			return R(new MITLIFalse(), f);
 		} else {
 			return new MITLIGlobally_AtoInf(f, a);
 		}

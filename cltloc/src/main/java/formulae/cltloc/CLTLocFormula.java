@@ -36,6 +36,12 @@ public abstract class CLTLocFormula extends Formula {
 		if (f2.equals(CLTLocFormula.TRUE)) {
 			return f1;
 		}
+		if (f1.equals(CLTLocFormula.FALSE)) {
+			return CLTLocFormula.FALSE;
+		}
+		if (f2.equals(CLTLocFormula.FALSE)) {
+			return CLTLocFormula.FALSE;
+		}
 		return CLTLocConjunction.getCLTLocConjunction(f1, f2);
 	}
 	
@@ -48,6 +54,12 @@ public abstract class CLTLocFormula extends Formula {
 		}
 		if (f2.equals(CLTLocFormula.FALSE)) {
 			return f1;
+		}
+		if (f1.equals(CLTLocFormula.TRUE)) {
+			return CLTLocFormula.TRUE;
+		}
+		if (f2.equals(CLTLocFormula.TRUE)) {
+			return CLTLocFormula.TRUE;
 		}
 		return CLTLocDisjunction.getCLTLocDisjunction(f1, f2);
 	}

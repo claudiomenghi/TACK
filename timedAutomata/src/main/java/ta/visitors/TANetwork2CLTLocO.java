@@ -37,8 +37,9 @@ import ta.transition.Transition;
 import ta.transition.assignments.ClockAssignement;
 import ta.transition.assignments.VariableAssignement;
 import ta.transition.guard.ClockConstraintAtom;
+import ta.visitors.liveness.Liveness2CLTLoc;
 
-public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
+public class TANetwork2CLTLocO extends TANetwork2CLTLoc {
 
 	private Map<Entry<TA, String>, Integer> mapStateId;
 
@@ -48,6 +49,17 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 
 	protected final File statisticsFile;
 	protected PrintWriter writer;
+
+	public TANetwork2CLTLocO(Liveness2CLTLoc converter) {
+		super(converter);
+		this.statisticsFile = new File("TA2CLTLocstatistics.txt");
+		try {
+			writer = new PrintWriter(statisticsFile);
+		} catch (FileNotFoundException e) {
+			writer = new PrintWriter(ByteStreams.nullOutputStream());
+			e.printStackTrace();
+		}
+	}
 
 	public TANetwork2CLTLocO() {
 		this.statisticsFile = new File("TA2CLTLocstatistics.txt");
@@ -185,10 +197,6 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 			// c.getClock().getName() + "_v")),
 			new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"), new Constant(c.getValue()),
 					Relation.parse(c.getOperator().toString())); // ),
-			// CLTLocFormula.getAnd(new CLTLocSelector(prefix + c.getClock().getName() +
-			// "_v"),
-			// new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
-			// new Constant(c.getValue()), Relation.parse(c.getOperator().toString()))));
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		return f;
 
@@ -238,11 +246,8 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 		Set<ClockAssignement> assignments = t.getAssignement().getClockassigments();
 		return assignments.stream().map(c -> {
 			String prefix = ta.getLocalClocks().contains(c.getClock()) ? ta.getIdentifier() + "_" : "";
-			return (CLTLocFormula) // CLTLocDisjunction.getCLTLocDisjunction(
-			new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"),
-					new Constant(c.getValue().value), Relation.EQ); // ,
-			// new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
-			// new Constant(c.getValue().value), Relation.EQ));
+			return (CLTLocFormula) new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"),
+					new Constant(c.getValue().value), Relation.EQ);
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 
@@ -277,17 +282,15 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 		CLTLocFormula semantic = CLTLocFormula.getAnd(this.initialFirstValues(system, propositionsOfInterest),
 				this.initAssignments(system, atomicpropositionsVariable));
 
-		CLTLocFormula glo = globallyOperator.apply(CLTLocFormula.getAnd(
-				// this.getClock2(system),
-				// this.getClock3(system),
-				this.labeIsAreTrueOnlyInTheStates(system, propositionsOfInterest),
-				this.intervalsAreRightClosed(propositionsOfInterest),
-				this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
-				this.variableIntervalsAreRightClosed(atomicpropositionsVariable),
-				this.livenessEachTAperformsATransition(system), this.getInvariant(system),
-				this.getTransitionConstraint(system), this.stateChangesImpliesTransition(system),
-				this.resetImpliesTransition(system), this.variableChangeImpliesTransition(system),
-				this.eachAutomatonIsInOneOfItsStates(system)));
+		CLTLocFormula glo = globallyOperator
+				.apply(CLTLocFormula.getAnd(this.labeIsAreTrueOnlyInTheStates(system, propositionsOfInterest),
+						this.intervalsAreRightClosed(propositionsOfInterest),
+						this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
+						this.variableIntervalsAreRightClosed(atomicpropositionsVariable),
+						this.getLivenessConverter().getLivenessConstraint(system), this.getInvariant(system),
+						this.getTransitionConstraint(system), this.stateChangesImpliesTransition(system),
+						this.resetImpliesTransition(system), this.variableChangeImpliesTransition(system),
+						this.eachAutomatonIsInOneOfItsStates(system)));
 
 		testTimer.stop();
 		writer.write("variable1: " + testTimer.elapsed(TimeUnit.MILLISECONDS) + "\n");
@@ -331,11 +334,7 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 
 		CLTLocFormula globalClocks = clocks.stream().map(c -> {
 			return (CLTLocFormula) // CLTLocFormula.getAnd(
-			new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), new Constant(0), Relation.EQ); // ,
-			// new CLTLocRelation(new CLTLocClock(c.getName() + "_1"), new Constant(0),
-			// Relation.GE),
-			// new CLTLocNegation(new CLTLocSelector(c.getName() + "_v")));
-
+			new CLTLocRelation(new CLTLocClock(c.getName() + "_0"), new Constant(0), Relation.EQ);
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
 		CLTLocFormula localClocks = system.getTimedAutomata().stream().map(ta -> ta.getLocalClocks().stream().map(c -> {
@@ -561,32 +560,6 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 		return CLTLocFormula.getAnd(localVariables, globalVariables);
 	}
 
-	/**
-	 * encodes the liveness condition phisem1
-	 * 
-	 * @param system
-	 *            the system to be considered
-	 * @return the liveness condition phisem1
-	 */
-	protected CLTLocFormula livenessEachTAperformsATransition(SystemDecl system) {
-
-		CLTLocFormula f = CLTLocFormula.TRUE;
-		for (TA ta : system.getTimedAutomata()) {
-			CLTLocFormula taf = CLTLocFormula.FALSE;
-			Set<Integer> values = this.getPossibleTransitionVariableValues(ta);
-
-			taf = eventuallyOperator.apply(ta.getTransitions().stream()
-					.map(t -> (CLTLocFormula) new CLTLocEQRelation(
-							formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta.getId(), values),
-							new Constant(t.getId())))
-					.reduce(CLTLocFormula.FALSE, disjunctionOperator));
-
-			f = conjunctionOperator.apply(f, taf);
-		}
-
-		return f;
-	}
-
 	protected CLTLocFormula labeIsAreTrueOnlyInTheStates(SystemDecl system, Set<StateAP> propositionsOfInterest) {
 
 		return (CLTLocFormula) propositionsOfInterest.stream()
@@ -638,7 +611,6 @@ public class TANetwork2CLTLocO implements TANetwork2CLTLoc {
 	protected CLTLocFormula variablesAreTrueOnlyIfAssignmentsAreSatisfied(SystemDecl system,
 			Set<VariableAssignementAP> atomicpropositionsVariable) {
 
-		
 		return (CLTLocFormula) atomicpropositionsVariable.stream().map(ap ->
 
 		{

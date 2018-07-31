@@ -1,0 +1,1 @@
+F_e+ 1 ( ! (U (P1_sender_transm)  (&& (P2_sender_transm) (P1_sender_transm))) )

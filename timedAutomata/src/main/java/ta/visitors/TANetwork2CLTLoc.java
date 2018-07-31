@@ -27,27 +27,50 @@ import ta.SystemDecl;
 import ta.TA;
 import ta.VariableAssignementAP;
 import ta.state.State;
+import ta.visitors.liveness.Liveness2CLTLoc;
+import ta.visitors.liveness.LivenessEachTAProgresses;
 
-public interface TANetwork2CLTLoc {
-	
+public abstract class TANetwork2CLTLoc {
+
 	public static final CLTLocFormula ORIGIN = CLTLocFormula.getNeg(new CLTLocYesterday(CLTLocFormula.TRUE));
 
+	private Liveness2CLTLoc converter;
+
+	public TANetwork2CLTLoc() {
+		this.converter = new LivenessEachTAProgresses();
+	}
+
+	public TANetwork2CLTLoc(Liveness2CLTLoc converter) {
+		if (converter == null) {
+			this.converter = new LivenessEachTAProgresses();
+		} else {
+			this.converter = converter;
+		}
+
+	}
+
+	public void setLivenessConverter(Liveness2CLTLoc converter) {
+		Preconditions.checkNotNull(converter, "The converter cannot be null");
+		this.converter = converter;
+	}
+
+	public Liveness2CLTLoc getLivenessConverter() {
+		return this.converter;
+	}
 
 	public final static String STATE_PREFIX = "S_";
-	
-	public CLTLocFormula convert(SystemDecl system, Set<StateAP> propositionsOfInterest,
+
+	public abstract CLTLocFormula convert(SystemDecl system, Set<StateAP> propositionsOfInterest,
 			Set<VariableAssignementAP> atomicpropositionsVariable);
 
-	public Map<Entry<TA, String>, Integer> getMapStateId();
-	
+	public abstract Map<Entry<TA, String>, Integer> getMapStateId();
+
 	public static final Constant zero = new Constant(0);
 
+	public abstract Map<Integer, TA> getMapIdTA();
 
+	public abstract Map<Integer, String> getMapIdStateName();
 
-	public Map<Integer, TA> getMapIdTA();
-	
-	public Map<Integer, String> getMapIdStateName();
-	
 	public static final Function<Integer, CLTLocFormula> rest = (s) -> new CLTLocAP("H_" + s);
 
 	public static final Function<Integer, CLTLocFormula> first = (s) -> new CLTLocAP("P_" + s);
@@ -56,19 +79,7 @@ public interface TANetwork2CLTLoc {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
 		Preconditions.checkNotNull(right, "The right formula cannot be null");
 
-		if (left.equals(CLTLocFormula.TRUE)) {
-			return right;
-		}
-		if (left.equals(CLTLocFormula.FALSE)) {
-			return left;
-		}
-		if (right.equals(CLTLocFormula.TRUE)) {
-			return left;
-		}
-		if (right.equals(CLTLocFormula.FALSE)) {
-			return right;
-		}
-		return CLTLocConjunction.getAnd(left, right);
+		return CLTLocFormula.getAnd(left, right);
 	};
 
 	public static final BinaryOperator<CLTLocFormula> iffOperator = (left, right) -> {
@@ -87,14 +98,8 @@ public interface TANetwork2CLTLoc {
 	public static final BinaryOperator<CLTLocFormula> disjunctionOperator = (left, right) -> {
 		Preconditions.checkNotNull(left, "The left formula cannot be null");
 		Preconditions.checkNotNull(right, "The right formula cannot be null");
-		if (left.equals(CLTLocFormula.FALSE)) {
-			return right;
-		}
-		if (right.equals(CLTLocFormula.FALSE)) {
-			return left;
-		}
 
-		return CLTLocDisjunction.getCLTLocDisjunction(left, right);
+		return CLTLocFormula.getOr(left, right);
 	};
 
 	public static final UnaryOperator<CLTLocFormula> eventuallyOperator = (formula) -> {

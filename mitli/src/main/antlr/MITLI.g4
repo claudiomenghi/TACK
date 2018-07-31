@@ -210,7 +210,7 @@ fmla returns [MITLIFormula r]
 				 
 			$r = f;
 		}								
-	|    UNTIL_OP LPAR f1=fmla f2=fmla RPAR 
+	|    UNTIL_OP LPAR f1=fmla RPAR  LPAR f2=fmla  RPAR
 		{
 			MITLIFormula f = null;
 				f = MITLIFormula.U((MITLIFormula)$f1.r,(MITLIFormula)$f2.r);

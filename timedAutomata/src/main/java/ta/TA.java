@@ -331,4 +331,11 @@ public class TA {
 	public int getId() {
 		return id;
 	}
+
+	public Set<Integer> getPossibleTransitionVariableValues() {
+		Set<Integer> values = new HashSet<>();
+		this.getTransitions().stream().forEach(t -> values.add(t.getId()));
+		values.add(-1);
+		return values;
+	}
 }

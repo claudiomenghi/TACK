@@ -1,0 +1,41 @@
+
+int y=0;
+process P0 {
+    clock x,z; 
+    state s1, s2; 
+    init  s1; 
+    trans 
+        s1 -> s2 { sync begin!; assign x:= 0; }, 
+        s2 -> s2 { assign x:= 0 ; }; 
+}
+
+
+process P1 {
+    clock x,z; 
+    state s1, s2; 
+    init  s1; 
+    trans 
+        s1 -> s2 { sync begin?; assign x:= 0,y:=1; }, 
+        s2 -> s2 { assign x:= 0; }; 
+}
+
+process P2 {
+    clock x,z; 
+    state s1, s2; 
+    init  s1; 
+    trans 
+        s1 -> s2 { sync begin?; assign x:= 0; }, 
+        s2 -> s2 { assign x:= 0; }; 
+}
+
+process P3 {
+    clock x,z; 
+    state s1, s2; 
+    init  s1; 
+    trans 
+        s1 -> s1 { assign x:= 0; };
+}
+
+
+system P0, P1, P2, P3;
+

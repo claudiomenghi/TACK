@@ -838,9 +838,11 @@ boundedVariableDecl returns
  	(
  		'!'
  		| '?'
+ 		| '#'
+ 		| '@'
  		
  	) ';'){
- 		if($op.text.equals("!") || $op.text.equals("?")){
+ 		if($op.text.equals("!") || $op.text.equals("?") || $op.text.equals("@") || $op.text.equals("#")){
  				$syncexp=new SyncExpression($exp2.text, $op.text);		
  		}
  		else{

@@ -37,9 +37,13 @@ import ta.transition.Transition;
 import ta.transition.assignments.ClockAssignement;
 import ta.transition.assignments.VariableAssignement;
 import ta.transition.guard.ClockConstraintAtom;
-import ta.transition.sync.SyncExpression.Operator;
+import ta.visitors.liveness.Liveness2CLTLoc;
+import ta.visitors.sync.WeakBroadcastSync;
+import ta.visitors.sync.ChannelSynch;
+import ta.visitors.sync.WeakBroadcastSync;
+import ta.visitors.sync.Sync2CLTLoc;
 
-public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
+public class TANetwork2CLTLocRC extends TANetwork2CLTLoc {
 
 	private Map<Entry<TA, String>, Integer> mapStateId;
 
@@ -49,6 +53,8 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 
 	protected final File statisticsFile;
 	protected PrintWriter writer;
+	
+	private Set<Sync2CLTLoc> sync=new HashSet<>();
 
 	public TANetwork2CLTLocRC() {
 		this.statisticsFile = new File("TA2CLTLocstatistics.txt");
@@ -58,6 +64,23 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 			writer = new PrintWriter(ByteStreams.nullOutputStream());
 			e.printStackTrace();
 		}
+		
+		this.sync.add(new WeakBroadcastSync(this));
+		this.sync.add(new ChannelSynch());
+	}
+	
+
+	public TANetwork2CLTLocRC(Liveness2CLTLoc converter) {
+		super(converter);
+		this.statisticsFile = new File("TA2CLTLocstatistics.txt");
+		try {
+			writer = new PrintWriter(statisticsFile);
+		} catch (FileNotFoundException e) {
+			writer = new PrintWriter(ByteStreams.nullOutputStream());
+			e.printStackTrace();
+		}
+		this.sync.add(new WeakBroadcastSync(this));
+		this.sync.add(new ChannelSynch());
 	}
 
 	/**
@@ -76,7 +99,7 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 	}
 
-	private Set<Integer> getPossibleStateVariableValues(TA ta) {
+	public Set<Integer> getPossibleStateVariableValues(TA ta) {
 		return ta.getStates().stream().map(s -> this.getId(ta, s)).collect(Collectors.toSet());
 	}
 
@@ -165,263 +188,24 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 
 		CLTLocFormula ret2 = getSync(system);
 
-		CLTLocFormula ret3 = CLTLocFormula.TRUE;
+		
 
-		for (TA ta : system.getTimedAutomata()) {
-			CLTLocFormula taf = CLTLocFormula.TRUE;
-
-			for (Transition t : ta.getTransitions()) {
-				if (t.getSync().getOperator().equals(Operator.BROADCAST_RECEIVE)) {
-
-					CLTLocFormula firingTransition = new CLTLocEQRelation(formulae.cltloc.atoms.BoundedVariable
-							.getBoundedVariable("t" + ta.getId(), this.getPossibleTransitionVariableValues(ta)),
-							new Constant(t.getId()));
-
-					CLTLocFormula broadCastTransitions = CLTLocFormula.TRUE;
-					for (TA ta2 : system.getTimedAutomata()) {
-						if (!ta2.equals(ta)) {
-
-							for (Transition t2 : ta.getTransitions()) {
-								if (t.getSync().getOperator().equals(Operator.BROADCAST_SEND)) {
-									CLTLocFormula firingSenderTransition = new CLTLocEQRelation(
-											formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta2.getId(),
-													this.getPossibleTransitionVariableValues(ta2)),
-											new Constant(t2.getId()));
-
-									broadCastTransitions = CLTLocFormula.getOr(broadCastTransitions,
-											firingSenderTransition);
-								}
-							}
-						}
-
-						taf = CLTLocFormula.getAnd(taf,
-								implicationOperator.apply(firingTransition, broadCastTransitions));
-					}
-
-				}
-			}
-			ret3 = CLTLocFormula.getAnd(ret3, taf);
-		}
-
-		return (CLTLocFormula) CLTLocFormula.getAnd(ret1, ret2, ret3);
+		return (CLTLocFormula) CLTLocFormula.getAnd(ret1, ret2);
 
 	}
+
 
 	private CLTLocFormula getSync(SystemDecl system) {
-		CLTLocFormula broadcastSync = getBroadcastSync(system);
-
-		CLTLocFormula channelSync = getChannelsSync(system);
-
-		return CLTLocFormula.getAnd(broadcastSync, channelSync);
+		
+		CLTLocFormula f = this.sync.stream().map(s -> s.getSyncConstraint(system)).reduce(conjunctionOperator).orElse(CLTLocFormula.TRUE);
+		
+		return f;
 	}
 
-	private CLTLocFormula getBroadcastSync(SystemDecl system) {
-		CLTLocFormula ret2 = CLTLocFormula.TRUE;
+	
+	
 
-		for (TA ta : system.getTimedAutomata()) {
-			CLTLocFormula taf = CLTLocFormula.TRUE;
-
-			for (Transition t : ta.getTransitions()) {
-
-				if (t.getSync().getOperator().equals(Operator.BROADCAST_SEND)) {
-
-					CLTLocFormula broadcastinTransition = new CLTLocEQRelation(formulae.cltloc.atoms.BoundedVariable
-							.getBoundedVariable("t" + ta.getId(), this.getPossibleTransitionVariableValues(ta)),
-							new Constant(t.getId()));
-
-					CLTLocFormula otherautomatatransitions = CLTLocFormula.TRUE;
-					for (TA ta2 : system.getTimedAutomata()) {
-						if (!ta2.equals(ta)) {
-							CLTLocFormula transitionFired = CLTLocFormula.TRUE;
-
-							for (Transition t2 : ta2.getTransitions()) {
-								transitionFired = CLTLocFormula.getOr(transitionFired,
-										new CLTLocEQRelation(formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(
-												"t" + ta2.getId(), this.getPossibleTransitionVariableValues(ta2)),
-												new Constant(t2.getId())));
-							}
-
-							CLTLocFormula noTransitionFired = CLTLocFormula.TRUE;
-
-							for (Transition t2 : ta2.getTransitions()) {
-								noTransitionFired = CLTLocFormula
-										.getAnd(noTransitionFired,
-												CLTLocFormula.getOr(
-														new CLTLocNext(
-																CLTLocFormula.getNeg(this.getClockGuard(ta2, t2))),
-														CLTLocFormula.getNeg(this.getVariableGuard(system, ta2, t2)),
-														CLTLocFormula.getNeg(new CLTLocEQRelation(
-																formulae.cltloc.atoms.BoundedVariable
-																		.getBoundedVariable(STATE_PREFIX + ta2.getId(),
-																				this.getPossibleStateVariableValues(
-																						ta2)),
-																new Constant(this.getId(ta2, t2.getSource()))))));
-							}
-
-							CLTLocFormula noOtherBroadcast = CLTLocFormula.TRUE;
-
-							for (Transition t2 : ta2.getTransitions()) {
-								if (t2.getSync().getOperator().equals(Operator.BROADCAST_SEND)) {
-									noOtherBroadcast = CLTLocFormula.getAnd(noOtherBroadcast,
-											CLTLocFormula.getNeg(new CLTLocEQRelation(
-													formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(
-															"t" + ta2.getId(),
-															this.getPossibleTransitionVariableValues(ta2)),
-													new Constant(t2.getId()))));
-								}
-							}
-							otherautomatatransitions = CLTLocFormula.getAnd(otherautomatatransitions, CLTLocFormula
-									.getAnd(CLTLocFormula.getOr(transitionFired, noTransitionFired), noOtherBroadcast));
-
-						}
-					}
-
-					CLTLocFormula firingtransition = implicationOperator.apply(broadcastinTransition,
-							otherautomatatransitions);
-					taf = CLTLocFormula.getAnd(taf, firingtransition);
-
-				}
-
-				ret2 = CLTLocFormula.getAnd(ret2, taf);
-			}
-		}
-		return ret2;
-	}
-
-	private CLTLocFormula getChannelsSync(SystemDecl system) {
-		CLTLocFormula v1 = CLTLocFormula.TRUE;
-
-		for (TA ta : system.getTimedAutomata()) {
-			CLTLocFormula taf = CLTLocFormula.TRUE;
-
-			for (Transition t : ta.getTransitions()) {
-
-				if (t.getSync().getOperator().equals(Operator.CHANNEL_SEND)) {
-
-					CLTLocFormula channelSend = new CLTLocEQRelation(formulae.cltloc.atoms.BoundedVariable
-							.getBoundedVariable("t" + ta.getId(), this.getPossibleTransitionVariableValues(ta)),
-							new Constant(t.getId()));
-
-					CLTLocFormula otherautomatatransitions = CLTLocFormula.TRUE;
-
-					for (TA ta2 : system.getTimedAutomata()) {
-						if (!ta2.equals(ta)) {
-
-							CLTLocFormula oneReceives = CLTLocFormula.FALSE;
-							CLTLocFormula noOtherReceives = CLTLocFormula.FALSE;
-
-							for (Transition t2 : ta2.getTransitions()) {
-
-								if (t2.getSync().getOperator().equals(Operator.CHANNEL_RECEIVED)
-										&& t.getSync().getEvent().equals(t2.getSync().getEvent())) {
-
-									oneReceives = new CLTLocEQRelation(
-											formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta2.getId(),
-													this.getPossibleTransitionVariableValues(ta2)),
-											new Constant(t2.getId()));
-
-									for (TA ta3 : system.getTimedAutomata()) {
-										for (Transition t3 : ta3.getTransitions()) {
-											if (t3.getSync().getOperator().equals(Operator.CHANNEL_RECEIVED)
-													&& t.getSync().getEvent().equals(t3.getSync().getEvent())) {
-												noOtherReceives = CLTLocFormula.getAnd(noOtherReceives,
-														CLTLocFormula.getNeg(new CLTLocEQRelation(
-																formulae.cltloc.atoms.BoundedVariable
-																		.getBoundedVariable("t" + ta3.getId(), this
-																				.getPossibleTransitionVariableValues(
-																						ta3)),
-																new Constant(t3.getId()))));
-											}
-										}
-									}
-								}
-
-							}
-
-							otherautomatatransitions = CLTLocFormula.getOr(otherautomatatransitions,
-									CLTLocFormula.getAnd(oneReceives, noOtherReceives));
-
-						}
-					}
-
-					CLTLocFormula firingtransition = implicationOperator.apply(channelSend, otherautomatatransitions);
-
-					taf = CLTLocFormula.getAnd(taf, firingtransition);
-
-				}
-
-				v1 = CLTLocFormula.getAnd(v1, taf);
-			}
-		}
-
-		CLTLocFormula v2 = CLTLocFormula.TRUE;
-
-		for (TA ta : system.getTimedAutomata()) {
-			CLTLocFormula taf = CLTLocFormula.TRUE;
-
-			for (Transition t : ta.getTransitions()) {
-
-				if (t.getSync().getOperator().equals(Operator.CHANNEL_RECEIVED)) {
-
-					CLTLocFormula channelSend = new CLTLocEQRelation(formulae.cltloc.atoms.BoundedVariable
-							.getBoundedVariable("t" + ta.getId(), this.getPossibleTransitionVariableValues(ta)),
-							new Constant(t.getId()));
-
-					CLTLocFormula otherautomatatransitions = CLTLocFormula.TRUE;
-
-					for (TA ta2 : system.getTimedAutomata()) {
-						if (!ta2.equals(ta)) {
-
-							CLTLocFormula oneReceives = CLTLocFormula.FALSE;
-							CLTLocFormula noOtherReceives = CLTLocFormula.FALSE;
-
-							for (Transition t2 : ta2.getTransitions()) {
-
-								if (t2.getSync().getOperator().equals(Operator.CHANNEL_SEND)
-										&& t.getSync().getEvent().equals(t2.getSync().getEvent())) {
-
-									oneReceives = new CLTLocEQRelation(
-											formulae.cltloc.atoms.BoundedVariable.getBoundedVariable("t" + ta2.getId(),
-													this.getPossibleTransitionVariableValues(ta2)),
-											new Constant(t2.getId()));
-
-									for (TA ta3 : system.getTimedAutomata()) {
-										for (Transition t3 : ta3.getTransitions()) {
-											if (t3.getSync().getOperator().equals(Operator.CHANNEL_SEND)
-													&& t.getSync().getEvent().equals(t3.getSync().getEvent())) {
-												noOtherReceives = CLTLocFormula.getAnd(noOtherReceives,
-														CLTLocFormula.getNeg(new CLTLocEQRelation(
-																formulae.cltloc.atoms.BoundedVariable
-																		.getBoundedVariable("t" + ta3.getId(), this
-																				.getPossibleTransitionVariableValues(
-																						ta3)),
-																new Constant(t3.getId()))));
-											}
-										}
-									}
-								}
-
-							}
-
-							otherautomatatransitions = CLTLocFormula.getOr(otherautomatatransitions,
-									CLTLocFormula.getAnd(oneReceives, noOtherReceives));
-
-						}
-					}
-
-					CLTLocFormula firingtransition = implicationOperator.apply(channelSend, otherautomatatransitions);
-
-					taf = CLTLocFormula.getAnd(taf, firingtransition);
-
-				}
-
-				v2 = CLTLocFormula.getAnd(v2, taf);
-			}
-		}
-		return CLTLocFormula.getAnd(v1, v2);
-	}
-
-	protected int getId(TA ta, State s) {
+	public int getId(TA ta, State s) {
 		if (!this.mapStateId.containsKey(new AbstractMap.SimpleEntry<>(ta, s.getStringId()))) {
 			throw new IllegalArgumentException("TA with name: " + ta.getId() + ", " + ta.getIdentifier() + " state "
 					+ s.getStringId() + " not found");
@@ -429,26 +213,20 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 		return this.mapStateId.get(new AbstractMap.SimpleEntry<>(ta, s.getStringId()));
 	}
 
-	protected CLTLocFormula getClockGuard(TA ta, Transition t) {
+	public CLTLocFormula getClockGuard(TA ta, Transition t) {
 
 		Set<ClockConstraintAtom> assignments = t.getGuard().getClockConstraints();
 		CLTLocFormula f = assignments.stream().map(c -> {
 			String prefix = ta.getLocalClocks().contains(c.getClock()) ? ta.getIdentifier() + "_" : "";
-			return (CLTLocFormula) // CLTLocDisjunction.getCLTLocDisjunction(
-			// CLTLocFormula.getAnd(new CLTLocNegation(new CLTLocSelector(prefix +
-			// c.getClock().getName() + "_v")),
+			return (CLTLocFormula) 
 			new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_0"), new Constant(c.getValue()),
-					Relation.parse(c.getOperator().toString())); // ),
-			// CLTLocFormula.getAnd(new CLTLocSelector(prefix + c.getClock().getName() +
-			// "_v"),
-			// new CLTLocRelation(new CLTLocClock(prefix + c.getClock().getName() + "_1"),
-			// new Constant(c.getValue()), Relation.parse(c.getOperator().toString()))));
+					Relation.parse(c.getOperator().toString())); 
 		}).reduce(CLTLocFormula.TRUE, conjunctionOperator);
 		return f;
 
 	}
 
-	protected CLTLocFormula getVariableGuard(SystemDecl system, TA ta, Transition t) {
+	public CLTLocFormula getVariableGuard(SystemDecl system, TA ta, Transition t) {
 		return (CLTLocFormula) t.getGuard().getConditions().stream().map(condition -> {
 			String prefix = ta.getLocalVariables().contains(condition.getVariable()) ? ta.getIdentifier() + "_" : "";
 
@@ -532,13 +310,11 @@ public class TANetwork2CLTLocRC implements TANetwork2CLTLoc {
 				this.initAssignments(system, atomicpropositionsVariable));
 
 		CLTLocFormula glo = globallyOperator.apply(CLTLocFormula.getAnd(
-				// this.getClock2(system),
-				// this.getClock3(system),
 				this.labeIsAreTrueOnlyInTheStates(system, propositionsOfInterest),
 				this.intervalsAreRightClosed(propositionsOfInterest),
 				this.variablesAreTrueOnlyIfAssignmentsAreSatisfied(system, atomicpropositionsVariable),
 				this.variableIntervalsAreRightClosed(atomicpropositionsVariable),
-				this.livenessEachTAperformsATransition(system), this.getInvariant(system),
+				this.getLivenessConverter().getLivenessConstraint(system), this.getInvariant(system),
 				this.getTransitionConstraint(system), this.stateChangesImpliesTransition(system),
 				this.resetImpliesTransition(system), this.variableChangeImpliesTransition(system),
 				this.eachAutomatonIsInOneOfItsStates(system)));

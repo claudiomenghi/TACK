@@ -45,6 +45,7 @@ import ta.expressions.Value;
 import ta.visitors.TANetwork2CLTLoc;
 import ta.visitors.TANetwork2CLTLocO;
 import ta.visitors.TANetwork2CLTLocRC;
+import ta.visitors.liveness.Liveness2CLTLoc;
 import zotrunner.ZotException;
 
 public class SystemChecker {
@@ -102,7 +103,8 @@ public class SystemChecker {
 	 * @throws IllegalArgumentException
 	 *             if the bound is not grater than zero
 	 */
-	public SystemChecker(SystemDecl system, MITLIFormula mitliformula, int bound, TANetwork2CLTLoc converter, PrintStream out) {
+	public SystemChecker(SystemDecl system, MITLIFormula mitliformula, int bound, TANetwork2CLTLoc converter, PrintStream out
+			) {
 		Preconditions.checkNotNull(mitliformula, "The formula of interest cannot be null");
 		Preconditions.checkArgument(bound > 0, "The bound should be grater than of zero");
 
@@ -139,8 +141,10 @@ public class SystemChecker {
 		Stopwatch timer = Stopwatch.createUnstarted();
 		timer.start();
 		out.println("************************************************");
+		out.println(mitliformula);
 		// out.println("MITLI formula: " + mitliformula);
 		MITLIFormula negatedFormula = MITLIFormula.not(mitliformula);
+		out.println(negatedFormula);
 		out.println("Converting the MITLI formula in CLTLoc");
 		MITLI2CLTLoc translator = new MITLI2CLTLoc(negatedFormula);
 		formula = translator.apply();
@@ -186,6 +190,11 @@ public class SystemChecker {
 		StringBuilder vocabularyBuilder = new StringBuilder();
 		vocabular.entrySet().forEach(e -> vocabularyBuilder.append(e.getValue() + "\t" + e.getKey() + "\n"));
 	
+		
+		File binding = new File("binding.txt");
+		FileUtils.writeStringToFile(binding, vocabularyBuilder.toString());
+
+		
 		out.println("************************************************");
 		out.println("************************************************");
 		out.println("Converting the TA in CLTLoc");

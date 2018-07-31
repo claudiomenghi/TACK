@@ -18,6 +18,8 @@ import ta.SystemDecl;
 import ta.parser.TALexer;
 import ta.parser.TAParser;
 import ta.visitors.TANetwork2CLTLocRC;
+import ta.visitors.liveness.LivenessEachTAProgresses;
+import ta.visitors.liveness.NoProgressesRequired;
 import tack.checker.SystemChecker;
 import zotrunner.ZotException;
 
@@ -128,7 +130,7 @@ public class SyncTest {
 	}
 	
 	@Test
-	public void test5() throws IOException, ZotException {
+	public void test4a() throws IOException, ZotException {
 
 		String path = ClassLoader.getSystemResource("tack/ta/sync/sync1.q").getPath();
 
@@ -148,6 +150,112 @@ public class SyncTest {
 		SystemDecl system = taparser.ta().systemret;
 
 		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	
+	@Test
+	public void test5() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/sync/sync5.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/sync/sync5.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void test6() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/sync/sync6.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/sync/sync6.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(new NoProgressesRequired()), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	@Test
+	public void test6b() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/sync/sync6.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/sync/sync6b.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(new LivenessEachTAProgresses()), System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void test7() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/sync/sync6.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/sync/sync6.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(new NoProgressesRequired()), System.out);
+		
 		boolean result = checker.check(null);
 
 		assertFalse(result);

@@ -1,0 +1,1 @@
+(&& (G_ee 0 52 (P1_sender_transm)) (F_e+ 52 (&& (P2_sender_transm) (P1_sender_transm))) )

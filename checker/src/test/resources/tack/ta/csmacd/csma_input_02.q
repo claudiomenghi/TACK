@@ -1,1 +1,1 @@
-G_e+ 0 (! (&& (P1_sender_transm)  (P2_sender_transm)))
+G_i+ 0 (! (G_ii 0 52 (U  (&& (P1_sender_transm) (!(P2_sender_transm)))  (&& (P2_sender_transm) (P1_sender_transm)))))
