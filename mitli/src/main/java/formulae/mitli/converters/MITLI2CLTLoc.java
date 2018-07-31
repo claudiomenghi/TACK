@@ -73,9 +73,13 @@ public class MITLI2CLTLoc {
 		for (MITLIFormula f : formula.accept(new SubformulaeVisitor())) {
 
 			CLTLocFormula f1 = visitor.getckTheta(f, parentRelation);
+			
 			CLTLocFormula f2 = f.accept(visitor);
 
-			CLTLocFormula formula = MITLI2CLTLocVisitor.AND.apply(f1, f2);
+			CLTLocFormula f3= CLTLocFormula.TRUE;
+			f3 = visitor.getClockProgression(f, parentRelation);
+			
+			CLTLocFormula formula = CLTLocFormula.getAnd(f1, f2, f3);
 			this.generatedFormulaMap.put(f, f1);
 			this.clockcontraintFormulaMap.put(f, f2);
 
@@ -92,9 +96,13 @@ public class MITLI2CLTLoc {
 		CLTLocFormula clockConstraint = CLTLocFormula.TRUE;
 
 		for (CLTLocClock clock : clocks) {
-			clockConstraint = CLTLocFormula.getAnd(clockConstraint, new CLTLocGEQRelation(clock, new Constant(0)));
+			clockConstraint = CLTLocFormula.getAnd(clockConstraint, 
+					new CLTLocGEQRelation(clock, new Constant(0)));
 		}
 
+	
+		
+		
 		CLTLocFormula formula = CLTLocFormula.getAnd(nowConstraint, clockConstraint, init, conjunction);
 
 		converted = true;
