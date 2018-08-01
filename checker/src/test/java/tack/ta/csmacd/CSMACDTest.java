@@ -657,4 +657,31 @@ public class CSMACDTest {
 
 		assertTrue(solver.solve());
 	}
+	
+	
+	@Test
+	public void testBoundedDelay() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_boundedDelay.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
 }
