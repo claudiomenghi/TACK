@@ -709,26 +709,33 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 
 		// Formula (15)
 		CLTLocFormula f1;
-		f1 = IFF.apply(stepUp.apply(idFormula),
-				AND.apply(
-						first.apply(idFormula)
-						,
-				U.apply(OR.apply(GE.apply(z0, ZERO), ORIGIN),
-						OR.apply(
-								AND.apply(rest.apply(childId),
-										OR.apply(GE.apply(z0, a),
-												AND.apply(LEQ.apply(z0, a), X.apply(GE.apply(z0, a))))),
-								AND.apply(first.apply(childId), GE.apply(z0, a))))));
+		f1 = IFF.apply(
+				stepUp.apply(idFormula),
+				CLTLocFormula.getAnd(
+						first.apply(idFormula),
+						ORIGIN, 
+						U.apply(OR.apply(GE.apply(z0, ZERO), ORIGIN),
+								OR.apply(
+									AND.apply(rest.apply(childId),
+											OR.apply(GE.apply(z0, a),
+													AND.apply(LEQ.apply(z0, a), X.apply(GE.apply(z0, a))))),
+									AND.apply(first.apply(childId), GE.apply(z0, a))))));
 
 		// Formula (16)
 		CLTLocFormula f2;
-		f2 = IFF.apply(stepDown.apply(idFormula), OR.apply(
-				AND.apply(EQ.apply(z1, ZERO),
-						X.apply(U.apply(GE.apply(z1, ZERO),
-								AND.apply(stepDown.apply(childId),
-										AND.apply(EQ.apply(z1, a), G.apply(NEG.apply(stepUp.apply(childId)))))))),
-				AND.apply(ORIGIN, NEG.apply(stepUp.apply(idFormula))))
-
+		f2 = IFF.apply(
+				stepDown.apply(idFormula), 
+				AND.apply(
+						NEG.apply(first.apply(idFormula)),
+						OR.apply(
+								CLTLocFormula.getAnd(
+										NEG.apply(ORIGIN),
+										EQ.apply(z1, ZERO),
+										X.apply(U.apply(GE.apply(z1, ZERO),
+												AND.apply(stepDown.apply(childId),
+														AND.apply(EQ.apply(z1, a), G.apply(NEG.apply(stepUp.apply(childId)))))))),
+								AND.apply(ORIGIN, NEG.apply(stepUp.apply(idFormula))))
+						)
 		);
 
 		CLTLocFormula f3;
@@ -739,14 +746,18 @@ public class MITLI2CLTLocVisitor implements MITLIVisitor<CLTLocFormula> {
 				AND.apply(rest.apply(idFormula), OR.apply(Y.apply(rest.apply(idFormula)), ORIGIN)));
 		
 	
-		CLTLocFormula f5 = IMPL.apply(stepUp.apply(idFormula), first.apply(idFormula));
+		CLTLocFormula f5 = GE.apply(z1, ZERO);
+				//	AND.apply(
+				//			IMPL.apply(stepUp.apply(idFormula), first.apply(idFormula)),
+				//			IMPL.apply(stepDown.apply(idFormula), NEG.apply(first.apply(idFormula)))
+				//			);
 
 
 		///f4=CLTLocFormula.TRUE;
-		f2=CLTLocFormula.TRUE;
-		f1=CLTLocFormula.TRUE;
+		//f2=CLTLocFormula.TRUE;
+		//f1=CLTLocFormula.TRUE;
 		
-		return G.apply(CLTLocFormula.getAnd(f1, f2, f3, f4, f5));
+		return AND.apply(f5, G.apply(CLTLocFormula.getAnd(f1, f2, f3, f4)));
 
 	}
 
