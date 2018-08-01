@@ -154,7 +154,7 @@ public class CSMACDTest {
 		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
-		assertFalse(result);
+		assertTrue(result);
 	}
 	
 	@Test
