@@ -57,8 +57,10 @@ public abstract class Sync2CLTLoc {
 
 				}
 
-				v2 = CLTLocFormula.getAnd(v2, taf);
+				
 			}
+			v2 = CLTLocFormula.getAnd(v2, taf);
+			
 		}
 		return v2;
 	}
