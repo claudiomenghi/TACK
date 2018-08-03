@@ -39,11 +39,11 @@ public abstract class Sync2CLTLoc {
 										t2.getSync().getEvent().equals(t.getSync().getEvent())) {
 									
 									sendingTransitions = CLTLocFormula.getOr(sendingTransitions,
-											CLTLocFormula.getNeg(new CLTLocEQRelation(
+											new CLTLocEQRelation(
 													formulae.cltloc.atoms.BoundedVariable.getBoundedVariable(
 															"t" + ta2.getId(),
 															ta2.getPossibleTransitionVariableValues()),
-													new Constant(t2.getId()))));
+													new Constant(t2.getId())));
 								}
 							}
 							
