@@ -31,8 +31,6 @@ public class FischerScalabilityTest {
 	public static void main(String [ ] args) throws IOException, ZotException{
 	
 
-		System.out.println("Scalability test new--");
-		System.out.println("Starting the Fischer scalability test ");
 		File file=new File("FisherScalabilityresults.txt");
 		FileWriter fileWriter=new FileWriter(file, false);
 		
@@ -43,11 +41,9 @@ public class FischerScalabilityTest {
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 				Date date = new Date();
 				
-				System.out.println(dateFormat.format(date)+"\t BOUND: "+bound+"\t NUMBER OF STATIONS: "+stationsNumber);
 				String path = (stationsNumber<10) ? ClassLoader.getSystemResource("./fischer_input_0"+stationsNumber+".q").getPath():
 					ClassLoader.getSystemResource("./fischer_input_"+stationsNumber+".q").getPath();
 		
-				System.out.println("Parsing the formula");
 				ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
 				MITLILexer lexer = new MITLILexer(input);
 				CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -55,7 +51,6 @@ public class FischerScalabilityTest {
 				parser.setBuildParseTree(true);
 				MITLIFormula formula = parser.mitli().formula;
 		
-				System.out.println("Parsing the TA");
 				path = (stationsNumber<10) ? ClassLoader.getSystemResource("./fischer_input_0"+stationsNumber+".ta").getPath():
 					ClassLoader.getSystemResource("./fischer_input_"+stationsNumber+".ta").getPath();
 		
@@ -66,14 +61,10 @@ public class FischerScalabilityTest {
 				taparser.setBuildParseTree(true);
 				SystemDecl system = taparser.ta().systemret;
 		
-				System.out.println("Running the model checker");
 				SystemChecker checker = new SystemChecker(system, formula, bound, new TANetwork2CLTLocRC(), new PrintStream(ByteStreams.nullOutputStream()));
 				boolean result = checker.check(null);
 			
 				fileWriter.write(bound+"\t"+stationsNumber+"\t"+"\t"+checker.getMitli2cltlocTime()+"\t"+checker.getTa2clclocTime()+"\t"+checker.getCltloc2zotTime()+"\t"+checker.getCheckingTime()+"\t"+checker.getSattime()+"\t"+checker.getCheckingspace()+"\n");
-				System.out.println("BOUND \t NUMBER OF STATIONS \t MITLI2CLTLoc \t TA2CLTLoc \t CLTLoc2zot \t CHECKING \t SAT \t CHEKING SPACE \n");
-				
-				System.out.println(dateFormat.format(date)+"\t"+bound+"\t"+stationsNumber+"\t"+checker.getMitli2cltlocTime()+"\t"+checker.getTa2clclocTime()+"\t"+checker.getCltloc2zotTime()+"\t"+checker.getCheckingTime()+"\t"+checker.getSattime()+"\t"+checker.getCheckingspace()+"\n");
 				fileWriter.close();
 			}
 		}

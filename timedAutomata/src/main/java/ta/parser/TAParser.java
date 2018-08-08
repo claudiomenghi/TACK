@@ -1143,7 +1143,13 @@ public class TAParser extends Parser {
 					
 			 			}
 			 			_localctx.variabledeclret.put(((VariableDeclContext)_localctx).var1.id, (((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null));
-			 			if(!(((VariableDeclContext)_localctx).type!=null?_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")){
+			 			if(
+			 					!(((VariableDeclContext)_localctx).type!=null?
+			 							_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("clock")
+			 					&&
+			 					!(((VariableDeclContext)_localctx).type!=null?
+			 							_input.getText(((VariableDeclContext)_localctx).type.start,((VariableDeclContext)_localctx).type.stop):null).equals("chan")
+			 					){
 			 				if(((VariableDeclContext)_localctx).var1.exp!=null){
 			 					_localctx.variableinitializationret.put(((VariableDeclContext)_localctx).var1.id, ((VariableDeclContext)_localctx).var1.exp);
 			 				}

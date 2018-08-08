@@ -125,7 +125,11 @@ public abstract class MITLIFormula extends Formula {
 			return and(f, G(f, true, b, dbopen));
 
 		else if (abopen && !dbopen) // G_(0,b]
-			return and(G(f, true, b, true), G(F(f, true, b, true), true, b, true));
+			return // and(
+					//G(f, true, b, true), 
+					//and(first(f), 
+					G(U(f,f), true, b, true);
+//					G(F(f, true, b, true), true, b, true));
 
 		else
 			return and(f, G(f, true, b, false)); // G_[0,b]
@@ -255,7 +259,10 @@ public abstract class MITLIFormula extends Formula {
 			return or(f, F(f, true, b, bB));
 
 		else if (aB == true && bB == false) // F_(0,b]
-			return or(F(f, true, b, true), and(first(f), G(F(f, true, b, true), true, b, true)));
+			return or(F(f, true, b, true), 
+					and(first(f), 
+					G(F(f, true, b, true), true, b, true))
+					);
 
 		else
 			return or(f, F(f, true, b, false)); // F_[0,b]

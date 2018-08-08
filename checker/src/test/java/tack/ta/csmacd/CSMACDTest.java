@@ -313,7 +313,7 @@ public class CSMACDTest {
 		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
 		boolean result = checker.check(null);
 
-		assertFalse(result);
+		assertTrue(result);
 	}
 	
 
@@ -659,6 +659,323 @@ public class CSMACDTest {
 	}
 	
 	
+	
+	@Test
+	public void testBounded() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_bounded.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testBounded2() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_bounded2.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
+	
+
+	@Test
+	public void testBounded6() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_bounded6.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	
+	@Test
+	public void testBounded3() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_bounded3.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testBounded4() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_bounded4.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	
+	@Test
+	public void testReach() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_reach1.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testReach2() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_reach2.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testReach3() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_reach3.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	
+	@Test
+	public void testReach5() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_reach5.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
+	
+	@Test
+	public void testReach6() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_reach6.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	@Test
+	public void testReach4() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_reach4.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testBounded5() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_bounded5.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
+	}
+	
 	@Test
 	public void testBoundedDelay() throws IOException, ZotException {
 
@@ -683,5 +1000,58 @@ public class CSMACDTest {
 		boolean result = checker.check(null);
 
 		assertTrue(result);
+	}
+	
+	
+	@Test
+	public void testBoundedDelay2() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_boundedDelay2.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testBoundedDelay3() throws IOException, ZotException {
+
+		String path = ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_boundedDelay3.q").getPath();
+
+		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(path));
+		MITLILexer lexer = new MITLILexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MITLIParser parser = new MITLIParser(tokens);
+		parser.setBuildParseTree(true);
+		MITLIFormula formula = parser.mitli().formula;
+
+		ANTLRInputStream tainput = new ANTLRFileStream(
+				ClassLoader.getSystemResource("tack/ta/csmacd/csma_input_02.ta").getPath());
+		TALexer talexer = new TALexer(tainput);
+		CommonTokenStream tatokens = new CommonTokenStream(talexer);
+		TAParser taparser = new TAParser(tatokens);
+		taparser.setBuildParseTree(true);
+		SystemDecl system = taparser.ta().systemret;
+
+		SystemChecker checker = new SystemChecker(system, formula, 30, new TANetwork2CLTLocRC(), System.out);
+		boolean result = checker.check(null);
+
+		assertFalse(result);
 	}
 }

@@ -18,20 +18,20 @@ public class WeakBroadcastSync extends Sync2CLTLoc {
 	public WeakBroadcastSync(TANetwork2CLTLocRC converter) {
 		this.converter = converter;
 	}
-
-	@Override
-	public CLTLocFormula getSyncConstraint(SystemDecl system) {
+	
+	public  CLTLocFormula getSyncConstraint(SystemDecl system) {
+		
 		CLTLocFormula v1 = ifSentAllReceive(system);
 
-		//v1=CLTLocFormula.TRUE;
 		CLTLocFormula v2 = 			ifReceivedItIsSent(system);
 
-		v2=CLTLocFormula.TRUE;
+		
 		return CLTLocFormula.getAnd(v1, v2);
 
 	}
 
-	private CLTLocFormula ifSentAllReceive(SystemDecl system) {
+
+	protected CLTLocFormula ifSentAllReceive(SystemDecl system) {
 		CLTLocFormula v1 = CLTLocFormula.TRUE;
 
 		for (TA ta : system.getTimedAutomata()) {
@@ -40,6 +40,7 @@ public class WeakBroadcastSync extends Sync2CLTLoc {
 
 			for (Transition t : ta.getTransitions()) {
 
+				
 				if (t.getSync().getOperator().equals(Operator.BROADCAST_SEND)) {
 
 					CLTLocFormula broadcastingTransition = new CLTLocEQRelation(formulae.cltloc.atoms.BoundedVariable

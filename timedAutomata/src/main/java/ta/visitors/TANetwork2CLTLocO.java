@@ -116,6 +116,7 @@ public class TANetwork2CLTLocO extends TANetwork2CLTLoc {
 								new Constant(v.getExp().evaluate())))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
 
+		
 		CLTLocFormula localVariables = system.getTimedAutomata().stream()
 				.map(ta -> ta.getLocalVariables().stream()
 						.map(v -> (CLTLocFormula) new CLTLocEQRelation(
@@ -128,7 +129,7 @@ public class TANetwork2CLTLocO extends TANetwork2CLTLoc {
 								new Constant(ta.getInitialValue(v).value)))
 						.reduce(CLTLocFormula.TRUE, conjunctionOperator))
 				.reduce(CLTLocFormula.TRUE, conjunctionOperator);
-
+		
 		return CLTLocFormula.getAnd(globalVariables, localVariables);
 	}
 
@@ -295,6 +296,7 @@ public class TANetwork2CLTLocO extends TANetwork2CLTLoc {
 		testTimer.stop();
 		writer.write("variable1: " + testTimer.elapsed(TimeUnit.MILLISECONDS) + "\n");
 
+		
 		return CLTLocFormula.getAnd(clockConstraint, automaton, semantic, glo);
 	}
 

@@ -10,10 +10,11 @@ import ta.transition.sync.SyncExpression.Operator;
 import ta.visitors.TANetwork2CLTLoc;
 
 public abstract class Sync2CLTLoc {
-
+	
+	
 	public abstract CLTLocFormula getSyncConstraint(SystemDecl system);
 	
-	public CLTLocFormula ifReceivedItIsSent(SystemDecl system) {
+	protected CLTLocFormula ifReceivedItIsSent(SystemDecl system) {
 		CLTLocFormula v2 = CLTLocFormula.TRUE;
 		
 		for (TA ta : system.getTimedAutomata()) {

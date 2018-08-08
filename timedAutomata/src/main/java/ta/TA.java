@@ -179,6 +179,8 @@ public class TA {
 		for (Transition t : this.transitions) {
 			this.successors.get(t.getSource()).add(t.getDestination());
 		}
+
+		
 	}
 
 	public Set<State> successors(State s) {
@@ -203,6 +205,7 @@ public class TA {
 
 	public Set<Variable> getVariables() {
 		return variables;
+
 	}
 
 	public Value getInitialValue(Variable v) {

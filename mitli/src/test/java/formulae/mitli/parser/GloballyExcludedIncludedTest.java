@@ -11,8 +11,8 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.Test;
 
-import formulae.mitli.MITLIConjunction;
 import formulae.mitli.MITLIFormula;
+import formulae.mitli.MITLIGlobally_ZerotoB;
 
 public class GloballyExcludedIncludedTest {
 
@@ -28,7 +28,7 @@ public class GloballyExcludedIncludedTest {
 		MITLIFormula formula = parser.mitli().formula;
 		assertNotNull("The parsed formula cannot be null", formula);
 
-		assertTrue(formula instanceof  MITLIConjunction);
+		assertTrue(formula instanceof  MITLIGlobally_ZerotoB);
 	}
 
 }

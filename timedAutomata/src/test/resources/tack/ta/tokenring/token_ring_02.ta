@@ -1,0 +1,51 @@
+chan tt1,tt2,
+     rt1, rt2;
+
+process RING { 
+clock x; 
+state 
+  ring_to_1{x <= 0}, ring_1,
+  ring_to_2{x <= 0}, ring_2;
+init ring_to_1; 
+trans 
+ring_to_1 -> ring_1 { guard x <= 0; sync tt1!; }, 
+ring_1  -> ring_to_2 { sync rt1?; assign x:= 0; } ,
+ring_to_2 -> ring_2 { guard x <= 0; sync tt2!; }, 
+ring_2  -> ring_to_1 { sync rt2?; assign x:= 0; } ;
+}
+
+process ST1 {
+clock x, y, z;
+state station_z_idle, station_z_sync{ x<=20 }, station_z_async{ z<=120 }, 
+station_y_idle, station_y_sync{ x<=20 }, station_y_async{ y<=120 }; 
+init station_z_idle; 
+trans
+station_z_idle -> station_z_sync { sync tt1?; assign y := 0, x:= 0; }, 
+station_z_sync -> station_y_idle { guard x >= 20, z >= 120 ; sync rt1!; }, 
+station_z_sync -> station_z_async { guard x >= 20, z < 120 ; }, 
+station_z_async -> station_y_idle { sync rt1!; }, 
+
+station_y_idle -> station_y_sync { sync tt1?; assign z := 0, x:= 0; }, 
+station_y_sync -> station_z_idle { guard x >= 20, y >= 120 ; sync rt1!; }, 
+station_y_sync -> station_y_async { guard x >= 20, y < 120 ; }, 
+station_y_async -> station_z_idle { sync rt1!; }; 
+} 
+
+process ST2 {
+clock x, y, z;
+state station_z_idle, station_z_sync{ x<=20 }, station_z_async{ z<=120 }, 
+station_y_idle, station_y_sync{ x<=20 }, station_y_async{ y<=120 }; 
+init station_z_idle; 
+trans
+station_z_idle -> station_z_sync { sync tt2?; assign y := 0, x:= 0; }, 
+station_z_sync -> station_y_idle { guard x >= 20, z >= 120 ; sync rt2!; }, 
+station_z_sync -> station_z_async { guard x >= 20, z < 120 ; }, 
+station_z_async -> station_y_idle { sync rt2!; }, 
+
+station_y_idle -> station_y_sync { sync tt2?; assign z := 0, x:= 0; }, 
+station_y_sync -> station_z_idle { guard x >= 20, y >= 120 ; sync rt2!; }, 
+station_y_sync -> station_y_async { guard x >= 20, y < 120 ; }, 
+station_y_async -> station_z_idle { sync rt2!; }; 
+} 
+
+system RING, ST1, ST2;

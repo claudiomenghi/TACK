@@ -45,11 +45,15 @@ public class SystemDecl {
 		this.variables=new HashSet<>();
 		this.timedAutomata = timedAutomata;
 		this.clockDeclarations = clockDeclarations;
-		this.variableDeclaration = variableDeclaration;
+		this.variableDeclaration = variableDeclaration.stream().filter(v -> !v.getType().equals("chan")).collect(Collectors.toSet());
 
 		
-		this.variableDeclaration.forEach(v -> {
-			variables.add(new Variable(v.getId()));});
+		this.variableDeclaration.forEach(v -> 
+		
+		{	
+			
+			if(!v.getType().equals("chan")) {
+			variables.add(new Variable(v.getId()));}});
 		
 		allClocks=new HashSet<>();
 		this.allClocks.addAll(this.getGlobalClocks());

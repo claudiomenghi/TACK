@@ -84,6 +84,7 @@ public class SystemChecker {
 	private long sattime = 0;
 
 	private final TANetwork2CLTLoc converter;
+
 	public long getCltloc2zotTime() {
 		return cltloc2zotTime;
 	}
@@ -103,8 +104,8 @@ public class SystemChecker {
 	 * @throws IllegalArgumentException
 	 *             if the bound is not grater than zero
 	 */
-	public SystemChecker(SystemDecl system, MITLIFormula mitliformula, int bound, TANetwork2CLTLoc converter, PrintStream out
-			) {
+	public SystemChecker(SystemDecl system, MITLIFormula mitliformula, int bound, TANetwork2CLTLoc converter,
+			PrintStream out) {
 		Preconditions.checkNotNull(mitliformula, "The formula of interest cannot be null");
 		Preconditions.checkArgument(bound > 0, "The bound should be grater than of zero");
 
@@ -112,7 +113,7 @@ public class SystemChecker {
 		this.mitliformula = mitliformula;
 		this.bound = bound;
 		this.out = out;
-		this.converter=converter;
+		this.converter = converter;
 
 	}
 
@@ -141,10 +142,8 @@ public class SystemChecker {
 		Stopwatch timer = Stopwatch.createUnstarted();
 		timer.start();
 		out.println("************************************************");
-		out.println(mitliformula);
 		// out.println("MITLI formula: " + mitliformula);
 		MITLIFormula negatedFormula = MITLIFormula.not(mitliformula);
-		out.println(negatedFormula);
 		out.println("Converting the MITLI formula in CLTLoc");
 		MITLI2CLTLoc translator = new MITLI2CLTLoc(negatedFormula);
 		formula = translator.apply();
@@ -185,28 +184,20 @@ public class SystemChecker {
 					a.getAtomName().substring(a.getAtomName().indexOf("_") + 1, a.getAtomName().length()));
 		}).collect(Collectors.toSet());
 
-		
-
 		StringBuilder vocabularyBuilder = new StringBuilder();
 		vocabular.entrySet().forEach(e -> vocabularyBuilder.append(e.getValue() + "\t" + e.getKey() + "\n"));
-	
-		
+
 		File binding = new File("binding.txt");
 		FileUtils.writeStringToFile(binding, vocabularyBuilder.toString());
 
-		
 		out.println("************************************************");
 		out.println("************************************************");
 		out.println("Converting the TA in CLTLoc");
 
 		timer.reset();
 		timer.start();
-		
-		
-	
-		
 
-		final TANetwork2CLTLoc conv=converter;
+		final TANetwork2CLTLoc conv = converter;
 
 		taFormula = converter.convert(system, atomicpropositions, atomicpropositionsVariable);
 
@@ -235,14 +226,15 @@ public class SystemChecker {
 								+ "\t" + s.getDestination().getStringId() + "\t" + s.getId() + "\n")));
 		FileUtils.writeStringToFile(stateIdStringMappingfile, transitionsIdMappingBuilder.toString(), true);
 
-
 		out.println("Creating the CLTLoc formulae of the model and the property");
 		CLTLocFormula conjunctionFormula = new CLTLocYesterday(
 				CLTLocFormula.getAnd(taFormula, formula, additionalConstraints));
 		out.println("Conjunction of the formulae created");
 
 		out.println("Running ZOT... This might take a while");
-		CLTLocsolver cltlocSolver = new CLTLocsolver(conjunctionFormula, new PrintStream( ByteStreams.nullOutputStream()), bound);
+		
+		CLTLocsolver cltlocSolver = new CLTLocsolver(conjunctionFormula,
+				new PrintStream(ByteStreams.nullOutputStream()), bound);
 		boolean sat = cltlocSolver.solve();
 		this.sattime = cltlocSolver.getSattime();
 		this.checkingspace = cltlocSolver.getCheckingspace();
@@ -256,7 +248,8 @@ public class SystemChecker {
 		return sat ? false : true;
 	}
 
-	private void generateTACKHistory(String zotHistoryFile, String tackHistoryFile, TANetwork2CLTLoc converter,SystemDecl system) {
+	private void generateTACKHistory(String zotHistoryFile, String tackHistoryFile, TANetwork2CLTLoc converter,
+			SystemDecl system) {
 
 		System.out.println("\n Back parsing the history");
 		File zotHistory = new File(zotHistoryFile);
@@ -265,26 +258,32 @@ public class SystemChecker {
 		Set<String> variables = new HashSet<>();
 		Set<String> clocks = new HashSet<>();
 
-
 		for (TA ta : converter.getMapIdTA().values()) {
-			variables.addAll(ta.getAllVariables().stream().map(v -> (ta.getIdentifier()+"_"+v.getName()).toUpperCase()).collect(Collectors.toSet()));
+			variables.addAll(ta.getAllVariables().stream()
+					.map(v -> (ta.getIdentifier() + "_" + v.getName()).toUpperCase()).collect(Collectors.toSet()));
 		}
-		
-		variables.addAll(	system.getVariableDeclaration().stream().map(v -> v.getId().toUpperCase()).collect(Collectors.toSet()));
-		clocks.addAll(system.getClockDeclarations().stream().map(v -> v.getId().toUpperCase()+"_0").collect(Collectors.toSet()));
-		
+
+		variables.addAll(
+				system.getVariableDeclaration().stream().map(v -> v.getId().toUpperCase()).collect(Collectors.toSet()));
+		clocks.addAll(system.getClockDeclarations().stream().map(v -> v.getId().toUpperCase() + "_0")
+				.collect(Collectors.toSet()));
+
+		for (TA ta : system.getTimedAutomata()) {
+			clocks.addAll(ta.getClocks().stream().map(c -> (ta.getIdentifier()+"_"+c.getName()+ "_0").toUpperCase()).collect(Collectors.toSet()));
+		}
+
 		try {
 			BufferedWriter wr = new BufferedWriter(new FileWriter(tackHistory));
 			BufferedReader br = new BufferedReader(new FileReader(zotHistory));
 			String line;
 
 			while ((line = br.readLine()) != null) {
-				line=line.replace(" ", "");
+				line = line.replace(" ", "");
 				if (line.startsWith("------time")) {
 					wr.write(line + "\n");
 				}
 				if (line.toUpperCase().startsWith(converter.STATE_PREFIX)) {
-					
+
 					String taID = line.toUpperCase().substring(converter.STATE_PREFIX.length(), line.indexOf("="));
 					TA ta = converter.getMapIdTA().get(Integer.parseInt(taID));
 					String taName = ta.getIdentifier();
@@ -293,22 +292,22 @@ public class SystemChecker {
 					String stateName = converter.getMapIdStateName().get(Integer.parseInt(stateID));
 					wr.write(taName + "." + stateName + "\n");
 				}
-				
+
 				if (line.contains("=")) {
 					if (variables.contains(line.substring(0, line.indexOf("=")).toUpperCase())) {
-						wr.write(line+"\n");
+						wr.write(line + "\n");
 					}
 				}
 				if (line.contains("=")) {
 					if (clocks.contains(line.substring(0, line.indexOf("=")).toUpperCase())) {
-						wr.write(line.replace("_0", "")+"\n");
+						wr.write(line.replace("_0", "") + "\n");
 					}
 				}
 
 				if (line.toUpperCase().contains("NOW")) {
 					wr.write(line + "\n");
 				}
-				if(line.toUpperCase().contains("LOOP")) {
+				if (line.toUpperCase().contains("LOOP")) {
 					wr.write(line + "\n");
 				}
 			}

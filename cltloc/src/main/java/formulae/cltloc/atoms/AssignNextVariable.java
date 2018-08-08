@@ -18,6 +18,7 @@ public class AssignNextVariable extends CLTLocFormula {
 
 	public AssignNextVariable(Variable variable,  formulae.cltloc.atoms.Expression nextVariable) {
 		super();
+
 		Preconditions.checkNotNull(variable, "The variable cannot be null");
 		this.variable = variable;
 		this.nextVariable=nextVariable;

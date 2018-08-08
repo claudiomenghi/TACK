@@ -24,6 +24,7 @@ public class VariableDecl {
 	private final String type;
 
 	public VariableDecl(String type, String id, Expression exp) {
+		
 		this.type = type;
 		this.id = id;
 		this.exp = exp;

@@ -44,10 +44,8 @@ public class APTest {
 		Set<StateAP> propositionsOfInterest = new HashSet<>();
 		CLTLocFormula formula = new TANetwork2CLTLocRC().convert(system, propositionsOfInterest, new HashSet<>());
 
-		System.out.println(formula);
 		Set<CLTLocAP> atomicPropositions = formula.accept(new GetAPVisitor());
 
-		System.out.println(atomicPropositions);
 		Set<CLTLocAP> expectedSet = new HashSet<>();
 		expectedSet.add(new CLTLocAP("s_start"));
 		expectedSet.add(new CLTLocAP("s_call_check"));
@@ -55,7 +53,7 @@ public class APTest {
 		expectedSet.add(new CLTLocAP("s_check_eof"));
 		expectedSet.add(new CLTLocAP("s_ex_jam"));
 		expectedSet.add(new CLTLocAP("True"));
-		System.out.println(expectedSet);
+		
 		assertEquals(expectedSet, atomicPropositions);
 
 	}

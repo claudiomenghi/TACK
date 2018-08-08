@@ -89,7 +89,6 @@ public class ZotRunner {
 			// out.println("Stdout: " + line);
 			// }
 		}
-		// System.out.println("Result1: Zot ends");
 		if (!resultfound) {
 			throw new ZotException("Problems in ZOT detected");
 		}

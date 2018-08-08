@@ -30,6 +30,7 @@ public class Variable {
 	 */
 	public Variable(String name) {
 		Preconditions.checkNotNull(name, "The name of the clock cannot be null");
+		
 		this.name = name;
 		this.hash = name.hashCode();
 	}
